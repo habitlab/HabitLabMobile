@@ -7,11 +7,12 @@ Image {
 	width: 120;
 	height: 120;
 	vertical-align: middle;
-	margin-top: 150;
-	margin-bottom: 40;
+	margin-top: 50;
+	margin-bottom: 70;
 }
 
 #title {
+	margin-top: 100;
 	font-size: 32;
 }
 

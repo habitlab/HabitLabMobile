@@ -2,7 +2,7 @@
     <StackLayout orientation="vertical" tap="goToNavView">
     	<Label id="title" text= "Congratulations!" />
     	<Label id="subtitle" text= "You're all set!" />
-    	<Image src= "res://icon" verticalalignment="center"/>
+    	<Image src= "res://logo_bubbles" verticalalignment="center"/>
     	<Label id="swipe" text="Swipe to start building better habits"/> 
 	</StackLayout>
 </Page>
