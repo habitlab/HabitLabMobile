@@ -1,6 +1,6 @@
-<Page loaded="pageLoaded">
+<Page loaded="pageLoaded" actionBarHidden="true">
 
-  <ActionBar title="HabitLabMobile" class="action-bar" android.icon="res://icon" android.iconVisibility="always"></ActionBar>
+  <Image src="res://icon" />
 
   <StackLayout orientation="vertical">
     <Button text="Progress" tap="goToProgress" />
