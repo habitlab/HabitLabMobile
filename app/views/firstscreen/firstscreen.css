@@ -1,6 +1,12 @@
 Page {
-	background-color: blue;
+	background-color: #ADD8E6;
 }
 Label {
 	color: white;
+}
+Image {
+	width: 100;
+	height: 100;
+	align-content: center;
+	vertical-align: middle;
 }
