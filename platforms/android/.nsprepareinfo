@@ -1,15 +1,7 @@
 {
-<<<<<<< HEAD
-	"time": "Thu Jun 29 2017 17:25:47 GMT-0700 (PDT)",
+	"time": "Fri Jun 30 2017 08:45:37 GMT-0700 (PDT)",
 	"bundle": false,
 	"release": false,
 	"changesRequireBuild": true,
-	"changesRequireBuildTime": "Thu Jun 29 2017 17:25:47 GMT-0700 (PDT)"
-=======
-	"time": "Thu Jun 29 2017 17:27:02 GMT-0700 (Pacific Daylight Time)",
-	"bundle": false,
-	"release": false,
-	"changesRequireBuild": true,
-	"changesRequireBuildTime": "Thu Jun 29 2017 17:27:02 GMT-0700 (Pacific Daylight Time)"
->>>>>>> b7320409b2efb7dc3a4e534a588f18194ca757de
+	"changesRequireBuildTime": "Fri Jun 30 2017 08:45:37 GMT-0700 (PDT)"
 }

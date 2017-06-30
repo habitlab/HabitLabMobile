@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
+        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/incremental/mergeF0DebugResources/merged.dir/values-xlarge-v4/values-xlarge-v4.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 121
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 192
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -49,7 +49,7 @@
                     "endOffset": 262
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -68,7 +68,7 @@
                     "endOffset": 332
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -87,7 +87,7 @@
                     "endOffset": 400
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
@@ -106,7 +106,7 @@
                     "endOffset": 468
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-xlarge-v4/values-xlarge-v4.xml",
                     "position": {
                         "startLine": 7,
                         "startColumn": 4,
@@ -119,7 +119,7 @@
         ]
     },
     {
-        "outputFile": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
+        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
         "map": [
             {
                 "to": {
@@ -130,7 +130,7 @@
                     "endOffset": 121
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -149,7 +149,7 @@
                     "endOffset": 192
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -168,7 +168,7 @@
                     "endOffset": 262
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -187,7 +187,7 @@
                     "endOffset": 332
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -206,7 +206,7 @@
                     "endOffset": 400
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
@@ -225,7 +225,126 @@
                     "endOffset": 468
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 405,
+                        "endColumn": 67,
+                        "endOffset": 468
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-xlarge-v4\\values-xlarge-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 70,
+                    "endOffset": 121
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 70,
+                        "endOffset": 121
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 126,
+                    "endColumn": 70,
+                    "endOffset": 192
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 126,
+                        "endColumn": 70,
+                        "endOffset": 192
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 197,
+                    "endColumn": 69,
+                    "endOffset": 262
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 197,
+                        "endColumn": 69,
+                        "endOffset": 262
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 267,
+                    "endColumn": 69,
+                    "endOffset": 332
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 267,
+                        "endColumn": 69,
+                        "endOffset": 332
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 337,
+                    "endColumn": 67,
+                    "endOffset": 400
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 337,
+                        "endColumn": 67,
+                        "endOffset": 400
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 405,
+                    "endColumn": 67,
+                    "endOffset": 468
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-xlarge-v4\\values-xlarge-v4.xml",
                     "position": {
                         "startLine": 7,
                         "startColumn": 4,

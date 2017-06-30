@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
         "map": [
             {
                 "to": {
@@ -12,7 +12,7 @@
                     "endOffset": 327
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -26,7 +26,7 @@
         ]
     },
     {
-        "outputFile": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/incremental/mergeF0DebugResources/merged.dir/values-hdpi-v4/values-hdpi-v4.xml",
         "map": [
             {
                 "to": {
@@ -38,7 +38,33 @@
                     "endOffset": 327
                 },
                 "from": {
-                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 6,
+                        "endColumn": 13,
+                        "endOffset": 327
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-hdpi-v4\\values-hdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 6,
+                    "endColumn": 13,
+                    "endOffset": 327
+                },
+                "from": {
+                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
