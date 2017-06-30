@@ -1,0 +1,7 @@
+<Page loaded="pageLoaded">
+  <ActionBar title="My App" class="action-bar">
+
+  </ActionBar>
+  
+  <Image src="~/images/apple.jpg"></Image>
+</Page>
