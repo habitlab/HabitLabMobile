@@ -1,4 +1,5 @@
 <Page>
+   
     <StackLayout orientation="vertical" tap="goToNavView">
     	<Image src="https://habitlab.stanford.edu/images/icon_white.png" verticalalignment="center"/>
     	<Label id="title" text= "HabitLab" />
