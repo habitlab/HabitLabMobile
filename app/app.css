@@ -12,3 +12,8 @@
 TabView {
   font-family: sans-serif;
 }
+
+Button {
+  margin: 10;
+  padding: 10;
+}
