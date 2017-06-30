@@ -1,18 +1,22 @@
 [
     {
-        "merged": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
-        "source": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
     },
     {
-        "merged": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
-        "source": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
     },
     {
-        "merged": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
-        "source": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/drawable-nodpi-v4/splash_screen.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/src/main/res/drawable-nodpi/splash_screen.xml"
     },
     {
-        "merged": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
-        "source": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
+    },
+    {
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-nodpi-v4\\splash_screen.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-nodpi\\splash_screen.xml"
     }
 ]
