@@ -1,5 +1,5 @@
 <Page actionBarHidden="true">
-    <StackLayout orientation="vertical" tap="goToNavView">
+    <StackLayout orientation="vertical" tap="goToCongrats">
     	<Image src= "res://icon" verticalalignment="center"/>
     	<Label id="title" text= "HabitLab" />
     	<Label id="welcome" text="Welcome! Swipe left to get started"/> 
