@@ -49,8 +49,8 @@ android.content.DialogInterface.OnDismissListener*_ftns_modules_tns_core_modules
 text_base_1.TextBase*_frnal_ts_helpers_l58_c38__EditableTextBase****
 java.lang.Object*_frnal_ts_helpers_l58_c38__EditTextListenersImpl*beforeTextChanged,onTextChanged,afterTextChanged,onFocusChange,onEditorAction***android.text.TextWatcher,android.view.View.OnFocusChangeListener,android.widget.TextView.OnEditorActionListener
 editable_text_base_common_1.EditableTextBase*_frnal_ts_helpers_l58_c38__EditableTextBase*_onReturnPress,createNativeView,initNativeView,_disposeNativeView,dismissSoftInput,focus,_setInputType,,,,,,,,,,,,,,,,,***
-android.app.Fragment**onHiddenChanged,onCreateAnimator,onCreate,onCreateView,onSaveInstanceState,onDestroyView,onDestroy,toString*com.tns.FragmentClass*tns_modules/tns-core-modules/ui/frame/fragment.js*
 android.app.Activity**onCreate,onSaveInstanceState,onStart,onStop,onDestroy,onBackPressed,onRequestPermissionsResult,onActivityResult*com.tns.NativeScriptActivity*tns_modules/tns-core-modules/ui/frame/activity.js*
+android.app.Fragment**onHiddenChanged,onCreateAnimator,onCreate,onCreateView,onSaveInstanceState,onDestroyView,onDestroy,toString*com.tns.FragmentClass*tns_modules/tns-core-modules/ui/frame/fragment.js*
 view_1.CustomLayoutView*_frnal_ts_helpers_l58_c38__FrameBase*canGoBack,goBack,navigate,_processNavigationQueue,navigationQueueIsEmpty,_isEntryBackstackVisible,_updateActionBar,_processNavigationContext,performNavigation,performGoBack,_goBackCore,_navigateCore,_onNavigatingTo,_pushInFrameStack,_popFromFrameStack,eachChildView,_getIsAnimatedNavigation,_getNavigationTransition,_getNavBarVisible,_addViewToNativeVisualTree,_removeViewFromNativeVisualTree,_printFrameBackStack,_backstackEntryTrace***
 frame_common_1.FrameBase*_frnal_ts_helpers_l58_c38__Frame*_navigateCore,_clearHistory,_goBackCore,createNativeView,initNativeView,disposeNativeView,_popFromFrameStack,_printNativeBackStack,_getNavBarVisible,_processNavigationContext***
 frame_common_1.Observable*_frnal_ts_helpers_l58_c38__AndroidFrame*canGoBack,fragmentForPage***
@@ -116,9 +116,9 @@ java.lang.Object*_frnal_ts_helpers_l58_c38__TabContentFactoryImpl*createTabConte
 android.widget.TabHost*_frnal_ts_helpers_l58_c38__TabHostImpl*onAttachedToWindow***
 segmented_bar_common_1.SegmentedBarItemBase*_frnal_ts_helpers_l58_c38__SegmentedBarItem*createNativeView,setupNativeView,_update,,,,,,,,***
 segmented_bar_common_1.SegmentedBarBase*_frnal_ts_helpers_l58_c38__SegmentedBar*shouldChangeSelectedIndex,createNativeView,initNativeView,disposeNativeView,insertTab,,,,***
+view_1.View*_frnal_ts_helpers_l58_c38__SliderBase****
 java.lang.Object*_frnal_ts_helpers_l58_c38__SeekBarChangeListenerImpl*onProgressChanged,onStartTrackingTouch,onStopTrackingTouch***android.widget.SeekBar.OnSeekBarChangeListener
 slider_common_1.SliderBase*_frnal_ts_helpers_l58_c38__Slider*createNativeView,initNativeView,disposeNativeView,setNativeValuesSilently,,,,,,,,,,,,***
-view_1.View*_frnal_ts_helpers_l58_c38__SliderBase****
 font_common_1.FontBase*_frnal_ts_helpers_l58_c38__Font*withFontFamily,withFontStyle,withFontWeight,withFontSize,getAndroidTypeface,getUIFont***
 css_selector_1.SelectorCore*_frnal_ts_helpers_l58_c38__InlineSelector*match***
 observable_1.Observable*_frnal_ts_helpers_l58_c38__Style****
@@ -140,11 +140,11 @@ editable_text_base_1.EditableTextBase*_frnal_ts_helpers_l58_c38__TextView*_confi
 view_1.View*_frnal_ts_helpers_l58_c38__TimePickerBase****
 java.lang.Object*_frnal_ts_helpers_l58_c38__TimeChangedListenerImpl*onTimeChanged***android.widget.TimePicker.OnTimeChangedListener
 time_picker_common_1.TimePickerBase*_frnal_ts_helpers_l58_c38__TimePicker*createNativeView,initNativeView,,***
+transition_1.Transition*_frnal_ts_helpers_l58_c38__FadeTransition*createAndroidAnimator***
+transition_1.Transition*_frnal_ts_helpers_l58_c38__FlipTransition*createAndroidAnimator***
+transition.Transition*_frnal_ts_helpers_l58_c38__SlideTransition*createAndroidAnimator,toString***
 android.transition.Transition.TransitionListener*_ftns_modules_tns_core_modules_ui_transition_transition_l389_c30__*onTransitionCancel,onTransitionEnd,onTransitionPause,onTransitionResume,onTransitionStart***
 android.animation.Animator.AnimatorListener*_ftns_modules_tns_core_modules_ui_transition_transition_l499_c34__*onAnimationStart,onAnimationRepeat,onAnimationEnd,onAnimationCancel***
-transition_1.Transition*_frnal_ts_helpers_l58_c38__FadeTransition*createAndroidAnimator***
-transition.Transition*_frnal_ts_helpers_l58_c38__SlideTransition*createAndroidAnimator,toString***
-transition_1.Transition*_frnal_ts_helpers_l58_c38__FlipTransition*createAndroidAnimator***
 view_1.View*_frnal_ts_helpers_l58_c38__WebViewBase*_onLoadFinished,_onLoadStarted,,***
 android.webkit.WebViewClient*_frnal_ts_helpers_l58_c38__WebViewClientImpl*shouldOverrideUrlLoading,onPageStarted,onPageFinished,onReceivedError***
 web_view_common_1.WebViewBase*_frnal_ts_helpers_l58_c38__WebView*createNativeView,initNativeView,resetNativeView,_loadUrl,_loadData,stopLoading,goBack,goForward,reload***

@@ -149,3 +149,6 @@
 /Users/radhajain/HabitLabMobile/platforms/android/src/main/assets/app/tns_modules/tns-core-modules/utils/utils.js
 /Users/radhajain/HabitLabMobile/platforms/android/src/main/assets/app/tns_modules/tns-core-modules/xhr/xhr.js
 /Users/radhajain/HabitLabMobile/platforms/android/src/main/assets/app/tns_modules/tns-core-modules/xml/xml.js
+/Users/radhajain/HabitLabMobile/platforms/android/src/main/assets/app/views/firstscreen/firstscreen.js
+/Users/radhajain/HabitLabMobile/platforms/android/src/main/assets/app/views/goalsView/goalsView.js
+/Users/radhajain/HabitLabMobile/platforms/android/src/main/assets/app/views/interventionsView/interventionsView.js

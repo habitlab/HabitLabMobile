@@ -1,59 +1,11 @@
 [
     {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\logo.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\logo.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\icon.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\icon.png"
-    },
-    {
         "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/drawable-xxxhdpi/background.png",
         "source": "/Users/radhajain/HabitLabMobile/platforms/android/src/main/res/drawable-xxxhdpi/background.png"
     },
     {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\icon.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\icon.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\icon.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\icon.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\logo.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\logo.png"
-    },
-    {
         "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/drawable-xxxhdpi/logo.png",
         "source": "/Users/radhajain/HabitLabMobile/platforms/android/src/main/res/drawable-xxxhdpi/logo.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\background.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\background.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\background.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\background.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\icon.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\icon.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\logo.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\logo.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\logo.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\logo.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\background.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\background.png"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\drawable-xxxhdpi\\background.png",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\src\\main\\res\\drawable-xxxhdpi\\background.png"
     },
     {
         "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/drawable-xxxhdpi/icon.png",

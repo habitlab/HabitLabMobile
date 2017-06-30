@@ -1,11 +1,11 @@
 [
     {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_template_big_media_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_template_big_media_custom.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_template_big_media_narrow_custom.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_template_big_media_narrow_custom.xml"
     },
     {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_custom.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_template_big_media_custom.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_template_big_media_custom.xml"
     },
     {
         "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_media_action.xml",
@@ -16,107 +16,11 @@
         "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_template_big_media_narrow.xml"
     },
     {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_media_cancel_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_media_cancel_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_cancel_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_cancel_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_template_big_media_narrow_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_cancel_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_cancel_action.xml"
-    },
-    {
         "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_template_big_media.xml",
         "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_template_big_media.xml"
     },
     {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_cancel_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_cancel_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_cancel_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_cancel_action.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_template_big_media_narrow_custom.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
-    },
-    {
-        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\res\\merged\\F0\\debug\\layout-v11\\notification_media_action.xml",
-        "source": "/Users/radhajain/HabitLabMobile/platforms/android/C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\layout-v11\\notification_media_action.xml"
+        "merged": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/res/merged/F0/debug/layout-v11/notification_media_cancel_action.xml",
+        "source": "/Users/radhajain/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/res/layout-v11/notification_media_cancel_action.xml"
     }
 ]
