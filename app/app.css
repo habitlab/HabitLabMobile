@@ -1,19 +1,9 @@
 @import "nativescript-theme-core/css/core.light.css";
 @import url('~/platform.css');
 
-
-.action-bar {
-  background-color: blue;
-  color: white;
-  margin: auto;
-  font-family: "century gothic", sans-serif;
-}
-
-TabView {
-  font-family: sans-serif;
-}
-
-Button {
-  margin: 10;
-  padding: 10;
+Page.onboarding {
+  background-image: url("res://background")
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: cover;
 }

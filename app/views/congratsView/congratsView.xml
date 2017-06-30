@@ -1,4 +1,4 @@
-<Page actionBarHidden="true">
+<Page actionBarHidden="true" class="onboarding">
     <StackLayout orientation="vertical" tap="goToNavView">
     	<Image src= "res://icon" verticalalignment="center"/>
     	<Label id="title" text= "HabitLab" />

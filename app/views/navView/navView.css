@@ -1,6 +1,24 @@
 Button {
-  width: 40%;
+  width: 90%;
   text-transform: none;
-  background-color: cadetblue;
   color: white;
+  height: 23%;
+  margin: 1%;
+  font-size: 30%;
+}
+
+.button-progress {
+  background-color: #BE7A9F;
+}
+
+.button-goals {
+  background-color: #FED966;
+}
+
+.button-interventions {
+  background-color: #E3666A;
+}
+
+.button-settings {
+  background-color: #93C47C;
 }

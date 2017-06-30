@@ -3,10 +3,10 @@
   <Image src="res://icon" />
 
   <StackLayout orientation="vertical">
-    <Button text="Progress" tap="goToProgress" />
-    <Button text="Goals" tap="goToGoals" />
-    <Button text="Interventions" tap="goToInterventions" />
-    <Button text="Settings" tap="goToSettings" />
+    <Button text="Progress" tap="goToProgress" class="button-progress" />
+    <Button text="Goals" tap="goToGoals" class="button-goals" />
+    <Button text="Interventions" tap="goToInterventions" class="button-interventions" />
+    <Button text="Settings" tap="goToSettings" class="button-settings" />
   </StackLayout>
 
 </Page>
