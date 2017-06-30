@@ -7,7 +7,7 @@ Image {
 	height: 120;
 	vertical-align: middle;
 	margin-top: 150;
-	margin-bottom: 20;
+	margin-bottom: 40;
 }
 
 #title {
@@ -15,7 +15,7 @@ Image {
 }
 
 #subtitle {
-	font-size: 20;
+	font-size: 25;
 }
 
 #swipe {
