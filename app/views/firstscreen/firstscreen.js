@@ -1,5 +1,5 @@
 var frameModule = require("ui/frame");
 
-exports.goToNavView = function() {
-  frameModule.topmost().navigate("views/navView/navView");
+exports.goToCongrats = function() {
+  frameModule.topmost().navigate("views/congratulationsView/congrats");
 }
