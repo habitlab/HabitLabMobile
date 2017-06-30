@@ -1,7 +1,7 @@
 <Page>
     <StackLayout orientation="vertical" tap="goToNavView">
-    	<Image src="https://habitlab.stanford.edu/images/icon_white.png" />
-    	<Label text = "HabitLab" textSize="32"/>
-    	<Label text="Welcome! Let's get you set up."/>
+    	<Image src="https://habitlab.stanford.edu/images/icon_white.png" verticalalignment="center"/>
+    	<Label id="title" text= "HabitLab" />
+    	<Label id="welcome" text="Welcome! Swipe left to get started"/> 
 	</StackLayout>
 </Page>
