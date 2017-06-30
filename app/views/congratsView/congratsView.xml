@@ -1,5 +1,5 @@
 <Page actionBarHidden="true" class="onboarding">
-    <StackLayout orientation="vertical" tap="goToNavView">
+    <StackLayout orientation="vertical" swipe="goToNavView">
     	<Label id="title" text= "Congratulations!" />
     	<Label id="subtitle" text= "You're all set!" />
     	<Image src= "res://logo_bubbles" verticalalignment="center"/>

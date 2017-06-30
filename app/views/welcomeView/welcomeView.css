@@ -3,26 +3,34 @@ Page {
 	background-repeat: no-repeat;
 	background-position: top;
 	background-size: cover;
+/*	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;*/
 }
 
 Label {
 	color: white;
 	text-align: center;
 }
+
+
+StackLayout {
+	vertical-align: middle;	
+}
+
 Image {
 	width: 120;
-	height: 120;
-	vertical-align: middle;
-	margin-top: 150;
-	margin-bottom: 20;
+
 }
 
 #title {
+	padding-top: 30;
 	font-size: 32;
 }
 
 #welcome {
-	margin-top: 30;
+	margin-top: 80;
 	font-size: 18;
 	animation-name: opacity;
 	animation-duration: 4;

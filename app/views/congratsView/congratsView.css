@@ -5,14 +5,14 @@ Label {
 
 Image {
 	width: 120;
-	height: 120;
+	/*height: 150;*/
 	vertical-align: middle;
 	margin-top: 50;
-	margin-bottom: 70;
+	margin-bottom: 60;
 }
 
 #title {
-	margin-top: 100;
+	margin-top: 70;
 	font-size: 32;
 }
 
@@ -21,7 +21,7 @@ Image {
 }
 
 #swipe {
-	margin-top: 30;
+	margin-top: 10;
 	font-size: 18;
 	animation-name: opacity;
 	animation-duration: 4;
