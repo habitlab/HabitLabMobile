@@ -1,151 +1,151 @@
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\app.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\main-page.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\bundle-entry-points.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application\application-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application\application.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application-settings\application-settings-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application-settings\application-settings.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\color\color-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\color\color.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\color\known-colors.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\connectivity\connectivity.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\console\console.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\css\index.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\css\lib\parse\index.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\css-value\index.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\debugger\debugger.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\fetch\fetch.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\file-system\file-system-access.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\file-system\file-system.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\fps-meter\fps-meter.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\fps-meter\fps-native.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\globals\decorators.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\globals\globals.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\http\http.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\http\http-request\http-request.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\image-asset\image-asset-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\image-asset\image-asset.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\image-source\image-source.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\platform\platform.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\profiling\profiling.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\text\formatted-string.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\text\span.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\text\text.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\timer\timer.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\trace\trace.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\action-bar\action-bar-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\action-bar\action-bar.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\activity-indicator\activity-indicator-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\activity-indicator\activity-indicator.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\animation\animation-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\animation\animation.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\animation\keyframe-animation.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\border\border.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\builder\binding-builder.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\builder\builder.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\builder\component-builder\component-builder.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\button\button-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\button\button.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\content-view\content-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\bindable\bindable.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\dependency-observable\dependency-observable.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\properties\properties.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\view\view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\view\view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\view-base\view-base.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\weak-event-listener\weak-event-listener.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\date-picker\date-picker-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\date-picker\date-picker.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\dialogs\dialogs-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\dialogs\dialogs.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\editable-text-base\editable-text-base-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\editable-text-base\editable-text-base.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\enums\enums.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\activity.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\fragment.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\frame-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\frame.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\gestures\gestures-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\gestures\gestures.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\html-view\html-view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\html-view\html-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image\image-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image\image.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image-cache\image-cache-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image-cache\image-cache.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\label\label-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\label\label.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\layout-base-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\layout-base.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\absolute-layout\absolute-layout-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\absolute-layout\absolute-layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\dock-layout\dock-layout-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\dock-layout\dock-layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\flexbox-layout\flexbox-layout-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\flexbox-layout\flexbox-layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\grid-layout\grid-layout-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\grid-layout\grid-layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\stack-layout\stack-layout-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\stack-layout\stack-layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\wrap-layout\wrap-layout-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\wrap-layout\wrap-layout.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-picker\list-picker-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-picker\list-picker.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-view\list-view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-view\list-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\page\constants.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\page\page-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\page\page.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\placeholder\placeholder.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\progress\progress-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\progress\progress.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\proxy-view-container\proxy-view-container.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\repeater\repeater.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\scroll-view\scroll-view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\scroll-view\scroll-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\search-bar\search-bar-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\search-bar\search-bar.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\segmented-bar\segmented-bar-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\segmented-bar\segmented-bar.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\slider\slider-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\slider\slider.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\background-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\background.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\converters.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\css-animation-parser.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\css-selector-parser.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\font-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\font.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\style-properties.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\style-scope.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\css-selector\css-selector.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\style\style.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\switch\switch-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\switch\switch.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\tab-view\tab-view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\tab-view\tab-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-base\text-base-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-base\text-base.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-field\text-field-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-field\text-field.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-view\text-view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-view\text-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\time-picker\time-picker-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\time-picker\time-picker.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\fade-transition.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\flip-transition.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\slide-transition.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\transition.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\web-view\web-view-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\web-view\web-view.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\debug-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\debug.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\lazy.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\module-merge.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\number-utils.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\types.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\utils-common.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\utils.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\xhr\xhr.js
-C:\Users\Sara\Documents\NativeScript Projects\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\xml\xml.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\app.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\main-page.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\bundle-entry-points.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application\application-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application\application.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application-settings\application-settings-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\application-settings\application-settings.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\color\color-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\color\color.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\color\known-colors.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\connectivity\connectivity.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\console\console.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\css\index.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\css\lib\parse\index.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\css-value\index.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\debugger\debugger.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\fetch\fetch.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\file-system\file-system-access.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\file-system\file-system.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\fps-meter\fps-meter.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\fps-meter\fps-native.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\globals\decorators.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\globals\globals.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\http\http.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\http\http-request\http-request.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\image-asset\image-asset-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\image-asset\image-asset.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\image-source\image-source.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\platform\platform.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\profiling\profiling.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\text\formatted-string.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\text\span.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\text\text.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\timer\timer.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\trace\trace.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\action-bar\action-bar-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\action-bar\action-bar.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\activity-indicator\activity-indicator-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\activity-indicator\activity-indicator.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\animation\animation-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\animation\animation.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\animation\keyframe-animation.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\border\border.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\builder\binding-builder.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\builder\builder.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\builder\component-builder\component-builder.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\button\button-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\button\button.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\content-view\content-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\bindable\bindable.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\dependency-observable\dependency-observable.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\properties\properties.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\view\view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\view\view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\view-base\view-base.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\core\weak-event-listener\weak-event-listener.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\date-picker\date-picker-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\date-picker\date-picker.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\dialogs\dialogs-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\dialogs\dialogs.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\editable-text-base\editable-text-base-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\editable-text-base\editable-text-base.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\enums\enums.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\activity.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\fragment.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\frame-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\frame\frame.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\gestures\gestures-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\gestures\gestures.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\html-view\html-view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\html-view\html-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image\image-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image\image.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image-cache\image-cache-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\image-cache\image-cache.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\label\label-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\label\label.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\layout-base-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\layout-base.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\absolute-layout\absolute-layout-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\absolute-layout\absolute-layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\dock-layout\dock-layout-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\dock-layout\dock-layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\flexbox-layout\flexbox-layout-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\flexbox-layout\flexbox-layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\grid-layout\grid-layout-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\grid-layout\grid-layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\stack-layout\stack-layout-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\stack-layout\stack-layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\wrap-layout\wrap-layout-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\layouts\wrap-layout\wrap-layout.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-picker\list-picker-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-picker\list-picker.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-view\list-view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\list-view\list-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\page\constants.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\page\page-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\page\page.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\placeholder\placeholder.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\progress\progress-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\progress\progress.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\proxy-view-container\proxy-view-container.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\repeater\repeater.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\scroll-view\scroll-view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\scroll-view\scroll-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\search-bar\search-bar-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\search-bar\search-bar.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\segmented-bar\segmented-bar-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\segmented-bar\segmented-bar.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\slider\slider-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\slider\slider.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\background-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\background.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\converters.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\css-animation-parser.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\css-selector-parser.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\font-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\font.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\style-properties.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\style-scope.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\css-selector\css-selector.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\styling\style\style.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\switch\switch-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\switch\switch.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\tab-view\tab-view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\tab-view\tab-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-base\text-base-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-base\text-base.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-field\text-field-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-field\text-field.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-view\text-view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\text-view\text-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\time-picker\time-picker-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\time-picker\time-picker.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\fade-transition.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\flip-transition.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\slide-transition.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\transition\transition.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\web-view\web-view-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\ui\web-view\web-view.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\debug-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\debug.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\lazy.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\module-merge.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\number-utils.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\types.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\utils-common.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\utils.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\xhr\xhr.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\xml\xml.js
