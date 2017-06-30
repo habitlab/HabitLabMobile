@@ -1,7 +1,0 @@
-<Page>
-    <StackLayout orientation="vertical">
-    	<Label text = "HabitLab"/>
-    	<Label text="Welcome! Let's get you set up."/>
-		<Image src="https://habitlab.stanford.edu/images/icon_white.png" />
-	</StackLayout>
-</Page>
