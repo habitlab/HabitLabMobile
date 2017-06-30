@@ -1,9 +1,17 @@
 Page {
+	/*background-color: #9CD2FF;*/
 	background-image: url("res://background")
 	background-repeat: no-repeat;
 	background-position: top;
 	background-size: cover;
 }
+
+/*.coverImage {
+	background-image: url("res://background")
+	background-repeat: no-repeat;
+	background-position: center;
+}
+*/
 
 Label {
 	color: white;
@@ -21,7 +29,11 @@ Image {
 	font-size: 32;
 }
 
-#welcome {
+#subtitle {
+	font-size: 20;
+}
+
+#swipe {
 	margin-top: 30;
 	font-size: 18;
 	animation-name: opacity;
