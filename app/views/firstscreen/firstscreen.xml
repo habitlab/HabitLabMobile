@@ -1,12 +1,7 @@
 <Page>
-<<<<<<< HEAD
-    <StackLayout orientation="vertical">
+    <StackLayout orientation="vertical" tap="goToNavView">
     	<Image src="https://habitlab.stanford.edu/images/icon_white.png" />
     	<Label text = "HabitLab" textSize="32"/>
-=======
-    <StackLayout orientation="vertical" tap="goToNavView">
-    	<Label text = "HabitLab"/>
->>>>>>> origin/master
     	<Label text="Welcome! Let's get you set up."/>
 	</StackLayout>
 </Page>
