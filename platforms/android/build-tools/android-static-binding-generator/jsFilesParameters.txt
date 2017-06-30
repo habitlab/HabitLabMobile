@@ -149,3 +149,6 @@ C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\
 C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\utils\utils.js
 C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\xhr\xhr.js
 C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\tns_modules\tns-core-modules\xml\xml.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\views\firstscreen\firstscreen.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\views\goalsView\goalsView.js
+C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\src\main\assets\app\views\interventionsView\interventionsView.js

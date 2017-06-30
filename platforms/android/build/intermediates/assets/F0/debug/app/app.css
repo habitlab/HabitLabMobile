@@ -1,19 +1,19 @@
 @import "nativescript-theme-core/css/core.light.css";
+@import url('~/platform.css');
 
-@keyframes spin {
-  from { transform: rotate(0); }
-  to { transform: rotate(360); }
-}
-Image {
-  animation-name: spin; 
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
 
 .action-bar {
   background-color: blue;
   color: white;
-  text-align: center;
+  margin: auto;
   font-family: "century gothic", sans-serif;
+}
+
+TabView {
+  font-family: sans-serif;
+}
+
+Button {
+  margin: 10;
+  padding: 10;
 }

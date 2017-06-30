@@ -1,7 +1,14 @@
-<Page loaded="pageLoaded">
-  <ActionBar title="My App" class="action-bar">
+<Page xmlns:goalsView="views/goalsView" 
+      xmlns:progressView="views/progressView"
+      xmlns:settingsView="views/settingsView"
+      xmlns:interventionsView="views/interventionsView"
+      loaded="pageLoaded">
 
-  </ActionBar>
-  
-  <Image src="~/images/apple.jpg"></Image>
+  <ActionBar title="HabitLabMobile" class="action-bar" android.icon="res://icon" android.iconVisibility="always"></ActionBar>
+
+  <Button text="Progress" />
+  <Button text="Goals" />
+  <Button text="Interventions" />
+  <Button text="Settings" />
+
 </Page>
