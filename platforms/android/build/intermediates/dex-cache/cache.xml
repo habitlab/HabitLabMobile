@@ -3,147 +3,147 @@
 
     <item
         is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-v4/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-v4-25.3.1_646ddcfe5873169e08b88abe9b54745309e377e9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-compat/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-compat-25.3.1_6e5b1236b4e83785a7b2b856bbce30cac93da2cd.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-core-ui-25.3.1_3ea08ef46db54840aaaa6427f8780dcf43db4f3d.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-appcompat-v7-25.3.1_5962387dcbbdf3dcadbbc7695556d85a00e98fc5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/transition/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-transition-25.3.1_d5186fbe60eb626c09cfdbddcf1196b2020439fd.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-animated-vector-drawable-25.3.1_9d6f2fbd78eac7427f1996a9b054d03379b93318.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/design/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-design-25.3.1_130deaf7743b2dbbfa0aecb61e229f656e5e5281.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-vector-drawable-25.3.1_995264d835d8665550e753388825fe90d8bdecf1.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/widgets-release/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="ed69cd5603304a6fc9a36a94c8be977a1d0e4857">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/intermediates-exploded-aar-widgets-release_f16bd2b5c715f74c201df45a1b501ed5c7953cc9.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/HabitLabMobile/runtime/unspecified/jars/libs/binding-generator.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="a3e74f5f1ebe12c7cfa6591158ef298c95a5275f">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/binding-generator_268a7c5b9d28c675f601b75d5ca07df7741fadff.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-core-utils-25.3.1_3e903df91bee0e56615c1c340dc95314651f8481.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.3.1/jars/classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.2"
-        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-media-compat-25.3.1_2184eb8aeec60af11930cfee81418c96044c0b71.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="/Users/jamescarroll/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jar="C:\Users\Sara\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.3.1\support-annotations-25.3.1.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/support-annotations-25.3.1_67cfcc83a65c661c3854ab8a46fb76a3f06ab44e.jar" />
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\support-annotations-25.3.1_adeb49b1667d70576edf24cf15bfa55b77f9667e.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/support-fragment/25.3.1/jars/classes.jar"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-vector-drawable-25.3.1_fc1ac61e1956bee00f1c2388a3c132e9a44edccc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-core-ui-25.3.1_2dbbd322a97e2ea8d87707e41b1e5ebf7a428502.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\design\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="38789e20ace9ab7dbd00554bd2673ab424478d3b">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-design-25.3.1_fba8e46bf8c0a67948ba506dfb830a8bb3cee2df.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-core-utils-25.3.1_3b5afd54e5d2cc79646fb28d3e4170c7fa09fc50.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\HabitLabMobile\runtime\unspecified\jars\libs\binding-generator.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a3e74f5f1ebe12c7cfa6591158ef298c95a5275f">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\binding-generator_8cf5a4ce2a4af361a2a1de569b75517724e25da7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-support-fragment-25.3.1_a79878fdcf9e9d18587772f8e4e682b08fafb05d.jar" />
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-fragment-25.3.1_3ff318820989d6e31ceb0d8e59aba8b098a0224e.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/HabitLabMobile/runtime/unspecified/jars/classes.jar"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
-        sha1="30b97ea5d6274e02330dcc69943087778363c172">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/HabitLabMobile-runtime-unspecified_185a744688b34c20ac9e3a87a54d4a402f140891.jar" />
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-appcompat-v7-25.3.1_e62efb84ea9e31cd848e954f1045770872a4efb6.jar" />
     </item>
     <item
         is-multidex="false"
-        jar="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.3.1/jars/classes.jar"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-transition-25.3.1_19c2b6c66a9044fb678e3ed0c6e374682ccf5fff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.3.1\jars\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.2"
         sha1="95519720620b553f63afc789beba9ad582807f7c">
-        <dex dex="/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/pre-dexed/F0/debug/com.android.support-recyclerview-v7-25.3.1_9c70fca420bba4d51ab14be49af49cbc5a053e12.jar" />
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-recyclerview-v7-25.3.1_8cc5d04810b24fd2fa6804a6143593d0c8d05004.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\widgets-release\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ed69cd5603304a6fc9a36a94c8be977a1d0e4857">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\intermediates-exploded-aar-widgets-release_7ec47265f1dd076ec2b2e824f6e52ac6075a40c8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-media-compat-25.3.1_a4741e65f7dbc15ab1c312e75236961b2be479aa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-v4-25.3.1_094a460afb503cc84969d47218f53ba063607a84.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-animated-vector-drawable-25.3.1_75d7a2b0adb173f4b199ab09e512586f014f8bca.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\HabitLabMobile\runtime\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="30b97ea5d6274e02330dcc69943087778363c172">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\HabitLabMobile-runtime-unspecified_19733b6f6d9a15adb0d22210b2b7932c884c5a9a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="C:\Users\Sara\Documents\GitHub\HabitLabMobile\platforms\android\build\intermediates\pre-dexed\F0\debug\com.android.support-support-compat-25.3.1_ab6b3533743dd4fc7c89bf41a17bc6c50f8d5b18.jar" />
     </item>
 
 </items>

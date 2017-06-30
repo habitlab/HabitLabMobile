@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/incremental/mergeF0DebugResources/merged.dir/values-v13/values-v13.xml",
+        "outputFile": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-v13\\values-v13.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 109
                 },
                 "from": {
-                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/values-v13/values-v13.xml",
+                    "file": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-v13\\values-v13.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -24,7 +24,7 @@
         ]
     },
     {
-        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-v13\\values-v13.xml",
+        "outputFile": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-v13\\values-v13.xml",
         "map": [
             {
                 "to": {
@@ -35,7 +35,7 @@
                     "endOffset": 109
                 },
                 "from": {
-                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-v13\\values-v13.xml",
+                    "file": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-v13\\values-v13.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -48,7 +48,7 @@
         ]
     },
     {
-        "outputFile": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-v13\\values-v13.xml",
+        "outputFile": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-v13\\values-v13.xml",
         "map": [
             {
                 "to": {
@@ -59,7 +59,31 @@
                     "endOffset": 109
                 },
                 "from": {
-                    "file": "/Users/jamescarroll/Documents/GitHub/HabitLabMobile/platforms/android/C:\\Users\\Sara\\Documents\\NativeScript Projects\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-v13\\values-v13.xml",
+                    "file": "C:\\Users\\Sara\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-v13\\values-v13.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 58,
+                        "endOffset": 109
+                    }
+                }
+            }
+        ]
+    },
+    {
+        "outputFile": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\incremental\\mergeF0DebugResources\\merged.dir\\values-v13\\values-v13.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 58,
+                    "endOffset": 109
+                },
+                "from": {
+                    "file": "C:\\Users\\jamescarroll\\Documents\\GitHub\\HabitLabMobile\\platforms\\android\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.3.1\\res\\values-v13\\values-v13.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
