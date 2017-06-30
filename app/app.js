@@ -1,2 +1,2 @@
 var applicationModule = require("application");
-applicationModule.start({ moduleName: "views/firstscreen/firstscreen" });
+applicationModule.start({ moduleName: "views/welcomeView/welcomeView" });
