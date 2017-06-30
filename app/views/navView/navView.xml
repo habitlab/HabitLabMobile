@@ -1,14 +1,12 @@
-<Page xmlns:goalsView="views/goalsView" 
-      xmlns:progressView="views/progressView"
-      xmlns:settingsView="views/settingsView"
-      xmlns:interventionsView="views/interventionsView"
-      loaded="pageLoaded">
+<Page loaded="pageLoaded">
 
   <ActionBar title="HabitLabMobile" class="action-bar" android.icon="res://icon" android.iconVisibility="always"></ActionBar>
 
-  <Button text="Progress" />
-  <Button text="Goals" />
-  <Button text="Interventions" />
-  <Button text="Settings" />
+  <StackLayout orientation="vertical">
+    <Button text="Progress" tap="goToProgress" />
+    <Button text="Goals" tap="goToGoals" />
+    <Button text="Interventions" tap="goToInterventions" />
+    <Button text="Settings" tap="goToSettings" />
+  </StackLayout>
 
 </Page>

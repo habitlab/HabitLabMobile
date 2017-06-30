@@ -1,1 +1,3 @@
-<Label text="interventions" />
+<Page loaded="pageLoaded">
+  <Label text="Interventions" />
+</Page>

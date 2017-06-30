@@ -1,1 +1,3 @@
-<Label text="goals" />
+<Page loaded="pageLoaded">
+  <Label text="Goals" />
+</Page>

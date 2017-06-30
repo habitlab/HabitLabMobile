@@ -1,1 +1,3 @@
-<Label text="Tab3" />
+<Page loaded="pageLoaded">
+  <Label text="Settings" />
+</Page>
