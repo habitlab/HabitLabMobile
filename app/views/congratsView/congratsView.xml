@@ -1,7 +1,8 @@
 <Page actionBarHidden="true">
     <StackLayout orientation="vertical" tap="goToNavView">
+    	<Label id="title" text= "Congratulations!" />
+    	<Label id="subtitle" text= "You're all set!" />
     	<Image src= "res://icon" verticalalignment="center"/>
-    	<Label id="title" text= "HabitLab" />
-    	<Label id="welcome" text="Welcome! Swipe left to get started"/> 
+    	<Label id="swipe" text="Swipe to start building better habits"/> 
 	</StackLayout>
 </Page>
