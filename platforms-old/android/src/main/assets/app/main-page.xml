@@ -1,0 +1,32 @@
+<Page xmlns:goalsView="views/goalsView" 
+      xmlns:progressView="views/progressView"
+      xmlns:settingsView="views/settingsView"
+      xmlns:interventionsView="views/interventionsView"
+      loaded="pageLoaded">
+
+  <ActionBar title="HabitLabMobile" class="action-bar" android.icon="res://icon" android.iconVisibility="always"></ActionBar>
+
+  <TabView><TabView.items>
+  <TabViewItem title="Progress">
+    <TabViewItem.view>
+      <progressView:progressView loaded="onViewLoaded" unloaded="onViewUnloaded"/>
+    </TabViewItem.view>
+  </TabViewItem>
+  <TabViewItem title="Goals">
+    <TabViewItem.view>
+      <goalsView:goalsView loaded="onViewLoaded" unloaded="onViewUnloaded"/>
+    </TabViewItem.view>
+  </TabViewItem>
+  <TabViewItem title="Interventions">
+    <TabViewItem.view>
+      <interventionsView:interventionsView loaded="onViewLoaded" unloaded="onViewUnloaded"/>
+    </TabViewItem.view>
+  </TabViewItem>
+  <TabViewItem title="Settings">
+    <TabViewItem.view>
+      <settingsView:settingsView loaded="onViewLoaded" unloaded="onViewUnloaded"/>
+    </TabViewItem.view>
+  </TabViewItem>
+</TabView.items></TabView>
+
+</Page>
