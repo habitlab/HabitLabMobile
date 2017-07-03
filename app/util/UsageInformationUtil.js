@@ -6,11 +6,13 @@ var Intent = android.content.Intent;
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 var Context = android.content.Context;
+var PackageManager = android.content.pm.PackageManager;
 
 // contexts
 var context = application.android.context.getApplicationContext();
 var foregroundActivity = application.android.foregroundActivity;
 
+// global information
 var pm = context.getPackageManager();	
 var mainIntent = new Intent(Intent.ACTION_MAIN, null);
 mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -19,13 +21,14 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
 
 /* getApplicationList
  * ------------------
- * Returns list of objects containing: 
+ * Returns list of objects containing following fields: 
  * 
- *     label: application label
- *     iconSource: icon bitmap that can be assigned to <Image> src field
- *     maxUsage: usage (in milliseconds from epoch) over last 2 years
- *     todayUsage: usage (in milliseconds from epoch) since 12:00:00 AM today
- *     lastActivated: last time (in milliseconds from epoch) app was activated (-1 if not used)
+ *     label: application label,
+ *     iconSource: icon bitmap that can be assigned to <Image> src field,
+ *     maxUsage: usage (in milliseconds from epoch) over last 2 years,
+ *     todayUsage: usage (in milliseconds from epoch) since 12:00:00 AM today,
+ *     lastActivated: last time (in milliseconds from epoch) app was activated (-1 if not used),
+ *     installationTime: time (in milliseconds from epoch) since application was first installed on device
  *     
  * for every application in the system.
 */
@@ -52,10 +55,30 @@ function getApplicationList() {
 	var list = [];
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
+
+		// get package name
+		var packageName;
+		if (info.activityInfo) {
+			packageName = info.activityInfo.packageName;
+		} else if (info.serviceInfo) {
+			packageName = info.serviceInfo.packageName;
+		} else {
+			packageName = info.providerInfo.packageName;
+		}
+
+		// installation time
+		var installationTime;
+		try {
+            installationTime = pm.getPackageInfo(packageName, 0).firstInstallTime;
+        } catch (error) {
+            installationTime = -1;
+        }
+
 		var label = info.loadLabel(pm).toString();
 		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
-		var maxUsageStats = usageStatsMapMax.get(info.activityInfo.packageName);
-		var todayUsageStats = usageStatsMapToday.get(info.activityInfo.packageName);
+		var maxUsageStats = usageStatsMapMax.get(packageName);
+		var todayUsageStats = usageStatsMapToday.get(packageName);
+
 
 		// construct object
 		var applicationObj = {
@@ -63,7 +86,8 @@ function getApplicationList() {
 			iconSource: iconSource, 
 			maxUsage: maxUsageStats ? maxUsageStats.getTotalTimeInForeground() : 0,
 			todayUsage: todayUsageStats ? todayUsageStats.getTotalTimeInForeground() : 0,
-			lastActivated: maxUsageStats ? maxUsageStats.getLastTimeUsed() : -1
+			lastActivated: maxUsageStats ? maxUsageStats.getLastTimeUsed() : -1,
+			installationTime: installationTime
 		};
 
 		list.push(applicationObj);
