@@ -1,3 +1,16 @@
-<Page loaded="pageLoaded" actionBarHidden="true">
-  <Label text="Goals" />
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded" xmlns:mycomponent="shared/sidedrawer" navigatingTo="onNavigatingTo">
+
+<ActionBar title="HabitLab" class="action-bar">
+    <ActionItem tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_btn_add" ios.position="left" />
+</ActionBar>
+
+    <sd:RadSideDrawer id="sideDrawer">
+        <sd:RadSideDrawer.drawerContent>
+            <mycomponent:sidedrawer/>
+        </sd:RadSideDrawer.drawerContent>
+
+    </sd:RadSideDrawer>
+
+    <Label text="Goals"/>
+
 </Page>

@@ -1,10 +1,16 @@
 var usageUtil = require('~/util/UsageInformationUtil.js');
 var permissionUtil = require('~/util/PermissionUtil.js');
+var drawerModule = require("nativescript-telerik-ui/sidedrawer");
+var frameModule = require("ui/frame");
+var view = require("ui/core/view");
+var drawer;
 
 // native APIs
 var Calendar = java.util.Calendar;
 
 exports.pageLoaded = function (args) {
+	var page = args.object;
+    drawer = view.getViewById(page, "sideDrawer");
 	if (!permissionUtil.checkActionUsagePermission()) {
 		permissionUtil.lauchActionUsageIntent();
 	}
@@ -22,4 +28,9 @@ exports.pageLoaded = function (args) {
 
 
 }
+
+
+exports.toggleDrawer = function() {
+    drawer.toggleDrawerState();
+};
 
