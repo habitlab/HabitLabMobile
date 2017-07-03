@@ -1,0 +1,4 @@
+.idea
+.vscode
+native-src/
+platforms/android/README.md
