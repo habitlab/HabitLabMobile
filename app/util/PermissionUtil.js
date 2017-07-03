@@ -33,12 +33,10 @@ function checkActionUsagePermission() {
  * launches intent to the system page where user can
  * allow permission.
  */
-function checkActionUsagePermissionAndLaunchIntent() {
-	if (!checkActionUsagePermission()) {
-		var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-		foregroundActivity.startActivity(int);
-	}
-
-
-	
+function launchActionUsageIntent() {
+	var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+	foregroundActivity.startActivity(int);	
 }
+
+module.exports = {checkActionUsagePermission: checkActionUsagePermission, 
+	launchActionUsageIntent: launchActionUsageIntent};

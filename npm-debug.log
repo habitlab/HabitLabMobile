@@ -1,0 +1,79 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'view',
+1 verbose cli   '@progress/nativescript-telerik-ui',
+1 verbose cli   'versions' ]
+2 info using npm@3.10.10
+3 info using node@v6.11.0
+4 silly mapToRegistry name @progress/nativescript-telerik-ui
+5 silly mapToRegistry scope (from package name) @progress
+6 verbose mapToRegistry no registry URL found in name for scope @progress
+7 silly mapToRegistry using default registry
+8 silly mapToRegistry registry https://registry.npmjs.org/
+9 silly mapToRegistry data Result {
+9 silly mapToRegistry   raw: '@progress/nativescript-telerik-ui',
+9 silly mapToRegistry   scope: '@progress',
+9 silly mapToRegistry   escapedName: '@progress%2fnativescript-telerik-ui',
+9 silly mapToRegistry   name: '@progress/nativescript-telerik-ui',
+9 silly mapToRegistry   rawSpec: '',
+9 silly mapToRegistry   spec: 'latest',
+9 silly mapToRegistry   type: 'tag' }
+10 silly mapToRegistry uri https://registry.npmjs.org/@progress%2fnativescript-telerik-ui
+11 verbose request uri https://registry.npmjs.org/@progress%2fnativescript-telerik-ui
+12 verbose request no auth needed
+13 info attempt registry request try #1 at 11:06:25 AM
+14 verbose request id c1ecc0da006df461
+15 http request GET https://registry.npmjs.org/@progress%2fnativescript-telerik-ui
+16 http 404 https://registry.npmjs.org/@progress%2fnativescript-telerik-ui
+17 verbose headers { 'content-type': 'application/json',
+17 verbose headers   'cache-control': 'max-age=0',
+17 verbose headers   'content-length': '21',
+17 verbose headers   'accept-ranges': 'bytes',
+17 verbose headers   date: 'Mon, 03 Jul 2017 18:06:26 GMT',
+17 verbose headers   via: '1.1 varnish',
+17 verbose headers   age: '0',
+17 verbose headers   connection: 'keep-alive',
+17 verbose headers   'x-served-by': 'cache-sjc3635-SJC',
+17 verbose headers   'x-cache': 'MISS',
+17 verbose headers   'x-cache-hits': '0',
+17 verbose headers   'x-timer': 'S1499105186.983656,VS0,VE176' }
+18 silly get cb [ 404,
+18 silly get   { 'content-type': 'application/json',
+18 silly get     'cache-control': 'max-age=0',
+18 silly get     'content-length': '21',
+18 silly get     'accept-ranges': 'bytes',
+18 silly get     date: 'Mon, 03 Jul 2017 18:06:26 GMT',
+18 silly get     via: '1.1 varnish',
+18 silly get     age: '0',
+18 silly get     connection: 'keep-alive',
+18 silly get     'x-served-by': 'cache-sjc3635-SJC',
+18 silly get     'x-cache': 'MISS',
+18 silly get     'x-cache-hits': '0',
+18 silly get     'x-timer': 'S1499105186.983656,VS0,VE176' } ]
+19 verbose stack Error: Not found : @progress/nativescript-telerik-ui
+19 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:302:12)
+19 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:290:14)
+19 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:210:14)
+19 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:187:22)
+19 verbose stack     at emitTwo (events.js:106:13)
+19 verbose stack     at Request.emit (events.js:191:7)
+19 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1048:10)
+19 verbose stack     at emitOne (events.js:96:13)
+19 verbose stack     at Request.emit (events.js:188:7)
+19 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:969:12)
+20 verbose statusCode 404
+21 verbose pkgid @progress/nativescript-telerik-ui
+22 verbose cwd /Users/radhajain/HabitLabMobile
+23 error Darwin 16.3.0
+24 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "view" "@progress/nativescript-telerik-ui" "versions"
+25 error node v6.11.0
+26 error npm  v3.10.10
+27 error code E404
+28 error 404 Not found : @progress/nativescript-telerik-ui
+29 error 404
+30 error 404 '@progress/nativescript-telerik-ui' is not in the npm registry.
+31 error 404 You should bug the author to publish it (or use the name yourself!)
+32 error 404 Note that you can also install from a
+33 error 404 tarball, folder, http url, or git url.
+34 verbose exit [ 1, true ]
