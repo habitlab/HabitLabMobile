@@ -6,7 +6,20 @@
 
     <sd:RadSideDrawer id="sideDrawer">
         <sd:RadSideDrawer.drawerContent>
-            <mycomponent:sidedrawer/>
+        	<StackLayout class="sidedrawer-left">  
+	<StackLayout class="sidedrawer-header">
+	  <Label text="Menu" class="sidedrawer-header-brand" />
+	</StackLayout>
+		<StackLayout class="sidedrawer-content">
+		<Label text="Progress" class="sidedrawer-list-item-text" tap="goToProgress"/>
+	     <Label text="Goals" class="sidedrawer-list-item-text" tap="goToGoals"/>
+	  	<Label text="Interventions" class="sidedrawer-list-item-text" tap="goToInterventions"/>
+	  	 <Label text="Settings" class="sidedrawer-list-item-text" tap="goToSettings"/>
+		</StackLayout>
+</StackLayout>
+
+
+          <!--   <mycomponent:sidedrawer/> -->
         </sd:RadSideDrawer.drawerContent>
 
     </sd:RadSideDrawer>
