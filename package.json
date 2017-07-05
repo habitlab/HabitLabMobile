@@ -10,6 +10,7 @@
     }
   },
   "dependencies": {
+    "nativescript-drop-down": "^3.1.0",
     "nativescript-local-notifications": "^1.2.1",
     "nativescript-telerik-ui": "^3.0.1",
     "nativescript-theme-core": "~1.0.4",

@@ -19,6 +19,39 @@ mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0);
 
 
+// Returns an array of the amount of time spent (minutes) on a particular app this week
+// i.e. getTimeonApp(facebookPackageName, 07052017, 3) 
+
+function getTimeOnAppThisWeek(String packageName) {
+
+	var today = Calendar.getInstance();
+	var firstDayOfWeek = Calendar.set(Calendar.DAY, today.firstDayOfWeek)
+	// 	set(int year, int month, int date, int hourOfDay, int minute)
+	
+
+}
+
+
+
+// Returns the amount of time (in minutes) a particular app was used on a specified day.
+function getTimeonAppOneDay (packageName, day) {
+	
+	var start = Calendar.setTime(day);
+	// set(int year, int month, int date, int hourOfDay, int minute)
+	start.set(start.get(Year), start.get(Month), start.get(date), 0, 0);
+	
+	var end = Calendar.setTime(day);
+	end.set(start.get(Year), start.get(Month), start.get(date).add(Calendar.DAY, 1), 0, 0);
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMapToday  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end);
+
+
+
+}
+
+
+
 /* getApplicationList
  * ------------------
  * Returns list of objects containing following fields: 
