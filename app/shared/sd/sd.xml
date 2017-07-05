@@ -1,4 +1,5 @@
-<StackLayout class="sidedrawer-left">  
+<StackLayout>
+	<StackLayout class="sidedrawer-left">  
 	<StackLayout class="sidedrawer-header">
 	  <Label text="Menu" class="sidedrawer-header-brand" />
 	</StackLayout>
@@ -8,5 +9,7 @@
 	  	<Label text="Interventions" class="sidedrawer-list-item-text" tap="goToInterventions"/>
 	  	 <Label text="Settings" class="sidedrawer-list-item-text" tap="goToSettings"/>
 		</StackLayout>
-	</StackLayout>
+</StackLayout>
 
+
+</StackLayout>

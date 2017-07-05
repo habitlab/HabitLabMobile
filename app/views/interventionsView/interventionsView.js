@@ -6,34 +6,29 @@ var drawer;
 
 exports.pageLoaded = function(args) {
     var page = args.object;
-    drawer = page.getViewById("sideDrawer");
+    drawer = view.getViewById(page, "sideDrawer");
 };
-
-exports.onSelectApp = function(index) {
-
-};
-
-
 
 exports.toggleDrawer = function() {
     drawer.toggleDrawerState();
 };
 
-exports.goToProgress = function() {
-  frameModule.topmost().navigate("views/progressView/progressView");
-};
+// exports.goToProgress = function() {
+//   frameModule.topmost().navigate("views/progressView/progressView");
+// };
 
 
-exports.goToGoals = function() {
-  frameModule.topmost().navigate("views/goalsView/goalsView");
-};
+// exports.goToGoals = function() {
+//   frameModule.topmost().navigate("views/goalsView/goalsView");
+// };
 
 
-exports.goToSettings = function() {
-  frameModule.topmost().navigate("views/settingsView/settingsView");
-};
+// exports.goToSettings = function() {
+//   frameModule.topmost().navigate("views/settingsView/settingsView");
+// };
 
 
-exports.goToInterventions = function() {
-  frameModule.topmost().navigate("views/interventionsView/interventionsView");
-};
+// exports.goToInterventions = function() {
+//   frameModule.topmost().navigate("views/interventionsView/interventionsView");
+// };
+
