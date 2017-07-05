@@ -7,3 +7,9 @@ Page.onboarding {
   background-position: top;
   background-size: cover;
 }
+
+.action-bar {
+	background-color: #77C2FF;
+	color: white;
+
+}

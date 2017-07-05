@@ -1,12 +1,5 @@
-.sidedrawer-list-item-text {
-	font-size: 18;
-	color: blue;
-	padding: 10;
-}
 
-.sidedrawer-content {
 
-}
 
 .sidedrawer-header {
 	height: 56;
@@ -14,8 +7,3 @@
 	vertical-align: center;
 }
 
-.action-bar {
-	color:blue;
-	text-align: center;
-	text-decoration-color: white;
-}
