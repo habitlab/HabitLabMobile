@@ -2,6 +2,8 @@ var frameModule = require("ui/frame");
 var page;
 var onboarding = {};
 var gestures = require("ui/gestures");
+var localStorage = require( "nativescript-localstorage" );
+
 
 onboarding.texts = [
   'Design how you spend time on your mobile device.',
@@ -66,5 +68,6 @@ exports.pageLoaded = function(args) {
 };
 
 exports.goToNavView = function(args) {
+  localStorage.setItem('onboarded', true);
   frameModule.topmost().navigate("views/navView/navView");
 };
