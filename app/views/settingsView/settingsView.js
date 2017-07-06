@@ -12,19 +12,31 @@ exports.pageLoaded = function (args) {
 	var page = args.object;
     drawer = view.getViewById(page, "sideDrawer");
 	if (!permissionUtil.checkActionUsagePermission()) {
-		permissionUtil.lauchActionUsageIntent();
+		permissionUtil.launchActionUsageIntent();
 	}
 
 	var list = usageUtil.getApplicationList();
 
-	for (var i = 0; i < list.length; i++) {
-		var app = list[i];
+	var packageName = "com.facebook.katana";
 
-		var installDate = Calendar.getInstance();
-		installDate.setTimeInMillis(app.installationTime);
+	console.log("Facebook usage breakdown: ")
+	console.log("     Minutes: ", usageUtil.getTimeOnApplicationSingleDay(packageName, 2));
 
-		console.log(app.label, "INSTALLED: ", (installDate.get(Calendar.MONTH) + 1) + "/" + installDate.get(Calendar.DAY_OF_MONTH) + "/" + installDate.get(Calendar.YEAR));
-	}
+
+
+
+
+
+
+
+	// for (var i = 0; i < list.length; i++) {
+	// 	var app = list[i];
+
+	// 	var installDate = Calendar.getInstance();
+	// 	installDate.setTimeInMillis(app.installationTime);
+
+	// 	console.log(app.label, "INSTALLED: ", (installDate.get(Calendar.MONTH) + 1) + "/" + installDate.get(Calendar.DAY_OF_MONTH) + "/" + installDate.get(Calendar.YEAR));
+	// }
 
 
 }

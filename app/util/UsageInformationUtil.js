@@ -22,7 +22,7 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
 // Returns an array of the amount of time spent (minutes) on a particular app this week
 // i.e. getTimeonApp(facebookPackageName, 07052017, 3) 
 
-function getTimeOnAppThisWeek(String packageName) {
+function getTimeOnAppThisWeek(packageName) {
 
 	var today = Calendar.getInstance();
 	var firstDayOfWeek = Calendar.set(Calendar.DAY, today.firstDayOfWeek)
@@ -33,21 +33,28 @@ function getTimeOnAppThisWeek(String packageName) {
 
 
 
-// Returns the amount of time (in minutes) a particular app was used on a specified day.
-function getTimeonAppOneDay (packageName, day) {
+/* getTimeOnApplicationSingleDay
+ * -----------------------------
+ * Returns time (in ms since epoch) that the provided application
+ * has been active. Returns -1 if there is no usage information
+ * found.
+ */
+function getTimeOnApplicationSingleDay (packageName, daysAgo) {
+	var startOfTarget = Calendar.getInstance();
+	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+	startOfTarget.set(Calendar.MINUTE, 0);
+	startOfTarget.set(Calendar.SECOND, 0);
+	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
+
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
 	
-	var start = Calendar.setTime(day);
-	// set(int year, int month, int date, int hourOfDay, int minute)
-	start.set(start.get(Year), start.get(Month), start.get(date), 0, 0);
-	
-	var end = Calendar.setTime(day);
-	end.set(start.get(Year), start.get(Month), start.get(date).add(Calendar.DAY, 1), 0, 0);
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
-    var usageStatsMapToday  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
 
-
-
+    var stats = usageStatsMap.get(packageName);
+    return stats === null ? -1 : stats.getTotalTimeInForeground();
 }
 
 
@@ -64,7 +71,7 @@ function getTimeonAppOneDay (packageName, day) {
  *     installationTime: time (in milliseconds from epoch) since application was first installed on device
  *     
  * for every application in the system.
-*/
+ */
 function getApplicationList() {
 	// 2 years ago from now
 	var maxTimeAgo = Calendar.getInstance();
@@ -129,4 +136,4 @@ function getApplicationList() {
 	return list;
 }
 
-module.exports = {getApplicationList: getApplicationList};
+module.exports = {getApplicationList: getApplicationList, getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay};
