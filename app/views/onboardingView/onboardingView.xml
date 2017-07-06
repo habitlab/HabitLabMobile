@@ -27,7 +27,7 @@
 
       <Slides:Slide id='lastslide' class="slide">
         <Label text="{{titles[4]}}" class='title' />
-        <Image src="{{visuals[4]}}" class='padded' />
+        <Image src="{{visuals[4]}}" class="squish" />
         <Label text="{{texts[4]}}" textWrap='true' />
       </Slides:Slide>
 

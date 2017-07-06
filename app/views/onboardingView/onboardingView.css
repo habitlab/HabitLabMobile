@@ -6,21 +6,18 @@ Label {
 }
 
 Image {
-	width: 50%;
+	height: 50%;
 	margin: 5%;
+}
+
+.squish {
+	width: 60%;
+	height: auto;
 }
 
 .title {
 	font-size: 35%;
 	margin-top: 5%;
-}
-
-.text {
-	padding-bottom: 5%;
-}
-
-.padded {
-	margin: 10%;
 }
 
 .slide {
@@ -30,7 +27,11 @@ Image {
 
 .skip {
 	font-size: 17%;
-	padding-bottom: 3%;
+	transform: translateY(-10%);
+}
+
+#slides {
+	transform: translateY(40%);
 }
 
 .slide-indicator-inactive{
