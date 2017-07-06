@@ -19,6 +19,133 @@ mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0);
 
 
+/* getTimeOnApplicationSingleDay
+ * -----------------------------
+ * Returns array of time (in ms since epoch) that the provided 
+ * application has been active over the last 7 days (including 
+ * today). Format:
+ * 
+ *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
+ *  
+ * Populates index with  -1 if there is no usage information 
+ * found for that day.
+ */
+function getTimeOnAppThisWeek(packageName) {
+	var weeklyUsageStatistics = [];
+
+	for (var i = 6; i >= 0; i--) {
+		weeklyUsageStatistics.push(getTimeOnApplicationSingleDay(packageName, i));
+	}
+	return weeklyUsageStatistics;
+}
+
+
+
+/* getTimeOnApplicationSingleDay
+ * -----------------------------
+ * Returns time (in ms since epoch) that the provided application
+ * has been active. Returns -1 if there is no usage information
+ * found.
+ */
+function getTimeOnApplicationSingleDay (packageName, daysAgo) {
+	var startOfTarget = Calendar.getInstance();
+	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+	startOfTarget.set(Calendar.MINUTE, 0);
+	startOfTarget.set(Calendar.SECOND, 0);
+	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
+
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
+	
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var stats = usageStatsMap.get(packageName);
+    return stats === null ? -1 : stats.getTotalTimeInForeground();
+}
+
+
+/* getTimeOnPhoneSingleDay
+ * -----------------------------
+ * Returns time (in minutes since epoch) that the phone
+ * has been active. Returns -1 if there is no usage information
+ * found.
+ */
+function getTimeOnPhoneSingleDay (daysAgo) {
+	var startOfTarget = Calendar.getInstance();
+	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+	startOfTarget.set(Calendar.MINUTE, 0);
+	startOfTarget.set(Calendar.SECOND, 0);
+	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
+
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
+	
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var totalTimeOnPhone = 0;
+    //Calculate sum of all time spent on apps in a single day
+    var list = [];
+	for (var i = 0; i < applications.size(); i++) {
+		var info = applications.get(i);
+		// get package name
+		packageName = getPackageName(info);
+		//Time on one app
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0,
+
+		totalTimeOnPhone = totalTimeOnPhone + appUsage;
+	}
+	totalTimeOnPhone = (totalTimeOnPhone/60000);
+    return totalTimeOnPhone;
+}
+
+
+/* getTimeOnPhoneThisWeek
+ * -----------------------------
+ * Returns array of time (in ms since epoch) that the phone has been active over the last 7 days (including 
+ * today). Format:
+ * 
+ *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
+ *  
+ * Populates index with  -1 if there is no usage information 
+ * found for that day.
+ */
+
+function getTimeOnPhoneThisWeek() {
+	var weeklyUsageStatistics = [];
+	for (var i = 6; i >= 0; i--) {
+		weeklyUsageStatistics.push(getTimeOnPhoneSingleDay(i));
+	}
+
+	return weeklyUsageStatistics;
+}
+
+
+
+
+
+//Helper function, takes in the ResolveInfo of an App and returns the package name
+function getPackageName(info) {
+	var packageName;
+		if (info.activityInfo) {
+			packageName = info.activityInfo.packageName;
+		} else if (info.serviceInfo) {
+			packageName = info.serviceInfo.packageName;
+		} else {
+			packageName = info.providerInfo.packageName;
+		}
+	return packageName;
+}
+
+
+
+
+
+
 /* getApplicationList
  * ------------------
  * Returns list of objects containing following fields: 
@@ -31,7 +158,7 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
  *     installationTime: time (in milliseconds from epoch) since application was first installed on device
  *     
  * for every application in the system.
-*/
+ */
 function getApplicationList() {
 	// 2 years ago from now
 	var maxTimeAgo = Calendar.getInstance();
@@ -96,4 +223,4 @@ function getApplicationList() {
 	return list;
 }
 
-module.exports = {getApplicationList: getApplicationList};
+module.exports = {getApplicationList: getApplicationList, getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, getTimeOnPhoneThisWeek : getTimeOnPhoneThisWeek, getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, getTimeOnAppThisWeek : getTimeOnAppThisWeek};
