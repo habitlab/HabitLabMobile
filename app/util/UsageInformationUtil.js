@@ -19,16 +19,25 @@ mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0);
 
 
-// Returns an array of the amount of time spent (minutes) on a particular app this week
-// i.e. getTimeonApp(facebookPackageName, 07052017, 3) 
-
+/* getTimeOnApplicationSingleDay
+ * -----------------------------
+ * Returns array of time (in ms since epoch) that the provided 
+ * application has been active over the last 7 days (including 
+ * today). Format:
+ * 
+ *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
+ *  
+ * Populates index with  -1 if there is no usage information 
+ * found for that day.
+ */
 function getTimeOnAppThisWeek(packageName) {
+	var weeklyUsageStatistics;
 
-	var today = Calendar.getInstance();
-	var firstDayOfWeek = Calendar.set(Calendar.DAY, today.firstDayOfWeek)
-	// 	set(int year, int month, int date, int hourOfDay, int minute)
-	
+	for (var i = 6; i >= 0; i--) {
+		weeklyUsageStatistics.push(getTimeOnApplicationSingleDay(packageName, i));
+	}
 
+	return weeklyUsageStatistics;
 }
 
 
