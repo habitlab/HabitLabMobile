@@ -1,5 +1,7 @@
 .sidedrawer-list-item-text {
 	padding: 10;
+	color: #011627;
+	text-align: center;
 
 }
 
@@ -11,7 +13,7 @@
 
 
 .sidedrawer-content {
-
+	background-color: white;
 }
 
 .sidedrawer-header-brand {
