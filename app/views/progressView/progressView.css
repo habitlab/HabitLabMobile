@@ -1,3 +1,26 @@
+.small-text {
+	font-size: 10;
+}
+
+.number-emphasis {
+	font-size: 30;
+
+}
+
+Label {
+	text-align: center;
+}
 
 
 
+.normal-text {
+	padding: 5;
+}
+
+.left-elem {
+	margin-right: 10;
+}
+
+.right-elem {
+	margin-left: 10;
+}

@@ -10,12 +10,19 @@
         </sd:RadSideDrawer.drawerContent>
     
 
-	    <sd:RadSideDrawer.mainContent>
+	    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 	            <StackLayout>
-	            	<Button text="Today's Stats" class="btn btn-primary"/>
-	            	<Label text="You have spent" class="normal-text"/>
-	            	<Label text={{todayMin}} class="number-emphasis"/>
-	            	<Label text="on your phone today" class="normal-text"/>
+	            	<Button text="Today's Stats" className="btn btn-primary"/>
+	            	<Label text="You have spent" className="normal-text" margin-top="30"/>
+	            	<StackLayout orientation="horizontal" horizontalAlignment="center">
+	            		<Label text="{{ todayHrs }}" className="number-emphasis" className="left-elem"/>
+	            		<Label text="{{ todayMins }}" className="number-emphasis" className="right-elem"/>
+	            	</StackLayout>
+	            	<StackLayout orientation="horizontal" horizontalAlignment="center">
+	            		<Label text="hrs" className="small-text" className="left-elem"/>
+	            		<Label text="min" className="small-text" className="right-elem"/>
+	            	</StackLayout>
+	            	<Label text="on your phone today" className="normal-text"/>
 	            </StackLayout>
 	     </sd:RadSideDrawer.mainContent>
 

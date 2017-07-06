@@ -99,7 +99,7 @@ function getTimeOnPhoneSingleDay (daysAgo) {
 
 		totalTimeOnPhone = totalTimeOnPhone + appUsage;
 	}
-	totalTimeOnPhone = (totalTimeOnPhone/60000);
+	totalTimeOnPhone = Math.round(totalTimeOnPhone/60000);
     return totalTimeOnPhone;
 }
 
