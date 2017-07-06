@@ -17,14 +17,19 @@ exports.pageLoaded = function(args) {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	console.log(timeOnPhoneToday);
 
-	var packageName = "com.facebook.katana";
-	var fbTimeWeek = usageUtil.getTimeOnAppThisWeek(packageName);
-	console.dir(fbTimeWeek);
+	var hrs = Math.floor(timeOnPhoneToday/60);
+	
+	var min = timeOnPhoneToday%60;
+
+	page.bindingContext = {
+		todayHrs: hrs,
+		todayMins: min
+	};
 
 
 
 	var timeOnPhoneWeek = usageUtil.getTimeOnPhoneThisWeek();
-	console.dir(timeOnPhoneWeek);
+	//console.dir(timeOnPhoneWeek);
 
 
 
