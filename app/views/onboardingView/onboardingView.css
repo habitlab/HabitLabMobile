@@ -1,7 +1,6 @@
 Label {
 	color: white;
 	text-align: center;
-	opacity: 1;
 	width: 90%;
 	font-size: 20%;
 }
@@ -16,13 +15,22 @@ Image {
 	margin-top: 5%;
 }
 
+.text {
+	padding-bottom: 5%;
+}
+
 .padded {
 	margin: 10%;
 }
 
 .slide {
 	vertical-align: middle;
-	padding-bottom: 30%;
+	padding-bottom: 35%;
+}
+
+.skip {
+	font-size: 17%;
+	padding-bottom: 3%;
 }
 
 .slide-indicator-inactive{
