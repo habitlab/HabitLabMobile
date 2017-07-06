@@ -1,0 +1,1 @@
+console.log("Progress NativeScript UI Free is licensed under the Telerik End User License Agreement for UI for NativeScript Free: http://www.telerik.com/purchase/license-agreement/ui-for-nativescript-free");
