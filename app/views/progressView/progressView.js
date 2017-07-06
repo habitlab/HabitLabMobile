@@ -18,8 +18,9 @@ exports.pageLoaded = function(args) {
 	console.log(timeOnPhoneToday);
 
 	var hrs = Math.floor(timeOnPhoneToday/60);
-	
 	var min = timeOnPhoneToday%60;
+	console.log(hrs);
+	console.log(min);
 
 	page.bindingContext = {
 		todayHrs: hrs,

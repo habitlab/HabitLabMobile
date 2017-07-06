@@ -1,5 +1,7 @@
 .small-text {
 	font-size: 10;
+	color: #E0696B;
+
 }
 
 .number-emphasis {
@@ -11,10 +13,17 @@ Label {
 	text-align: center;
 }
 
+.button {
+	color:"#011627";
+	font-size:"25";
+	background-color:"#FFA730";
+}
+
 
 
 .normal-text {
 	padding: 5;
+	font-size: 20;
 }
 
 .left-elem {
@@ -24,3 +33,10 @@ Label {
 .right-elem {
 	margin-left: 10;
 }
+
+#numbers {
+	font-size: 30;
+	color: #E71D36;
+}
+
+

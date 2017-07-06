@@ -12,15 +12,15 @@
 
 	    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 	            <StackLayout>
-	            	<Button text="Today's Stats" className="btn btn-primary"/>
-	            	<Label text="You have spent" className="normal-text" margin-top="30"/>
-	            	<StackLayout orientation="horizontal" horizontalAlignment="center">
+	            	<Button text="Today's Stats" className="button"/>
+	            	<Label text="You have spent" className="normal-text" margin-top="50"/>
+	            	<StackLayout orientation="horizontal" horizontalAlignment="center" id="numbers">
 	            		<Label text="{{ todayHrs }}" className="number-emphasis" className="left-elem"/>
 	            		<Label text="{{ todayMins }}" className="number-emphasis" className="right-elem"/>
 	            	</StackLayout>
-	            	<StackLayout orientation="horizontal" horizontalAlignment="center">
-	            		<Label text="hrs" className="small-text" className="left-elem"/>
-	            		<Label text="min" className="small-text" className="right-elem"/>
+	            	<StackLayout orientation="horizontal" horizontalAlignment="center" id="small">
+	            		<Label text="hrs" className="small-text" className="left-elem" color="#E71D36"/>
+	            		<Label text="min" className="small-text" className="right-elem" color="#E71D36"/>
 	            	</StackLayout>
 	            	<Label text="on your phone today" className="normal-text"/>
 	            </StackLayout>
