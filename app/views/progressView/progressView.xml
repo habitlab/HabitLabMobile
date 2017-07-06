@@ -13,23 +13,9 @@
 	    <sd:RadSideDrawer.mainContent>
 	            <StackLayout>
 	            	<Button text="Today's Stats" class="btn btn-primary"/>
-	            	<StackLayout class="p-20">
-					    <chart:RadCartesianChart class="m-t-10" height="500">
-					      <chart:RadCartesianChart.series>
-					        <chart:LineSeries
-					          items="{{ data }}"
-					          categoryProperty="key"
-					          valueProperty="value">
-					          <chart:LineSeries.horizontalAxis>
-					            <chart:CategoricalAxis />
-					          </chart:LineSeries.horizontalAxis>
-					          <chart:LineSeries.verticalAxis>
-					            <chart:LinearAxis />
-					          </chart:LineSeries.verticalAxis>
-					        </chart:LineSeries>
-					      </chart:RadCartesianChart.series>
-					    </chart:RadCartesianChart>
-					  </StackLayout>
+	            	<Label text="You have spent" class="normal-text"/>
+	            	<Label text={{todayMin}} class="number-emphasis"/>
+	            	<Label text="on your phone today" class="normal-text"/>
 	            </StackLayout>
 	     </sd:RadSideDrawer.mainContent>
 

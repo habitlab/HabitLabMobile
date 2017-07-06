@@ -13,3 +13,10 @@ Page.onboarding {
 	color: white;
 
 }
+
+.sidedrawer-header {
+	height: 56;
+	text-align: center;
+	vertical-align: center;
+}
+

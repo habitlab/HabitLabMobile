@@ -1,29 +1,14 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded" xmlns:mycomponent="shared/sidedrawer" navigatingTo="onNavigatingTo">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded" xmlns:sidedrawer="shared/sd" navigatingTo="onNavigatingTo">
 
 <ActionBar title="HabitLab" class="action-bar">
-    <ActionItem tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_btn_add" ios.position="left" />
+    <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_btn_add" ios.position="left" />
 </ActionBar>
 
     <sd:RadSideDrawer id="sideDrawer">
         <sd:RadSideDrawer.drawerContent>
-        	<StackLayout class="sidedrawer-left">  
-	<StackLayout class="sidedrawer-header">
-	  <Label text="Menu" class="sidedrawer-header-brand" />
-	</StackLayout>
-		<StackLayout class="sidedrawer-content">
-		<Label text="Progress" class="sidedrawer-list-item-text" tap="goToProgress"/>
-	     <Label text="Goals" class="sidedrawer-list-item-text" tap="goToGoals"/>
-	  	<Label text="Interventions" class="sidedrawer-list-item-text" tap="goToInterventions"/>
-	  	 <Label text="Settings" class="sidedrawer-list-item-text" tap="goToSettings"/>
-		</StackLayout>
-</StackLayout>
-
-
-          <!--   <mycomponent:sidedrawer/> -->
+   				<sidedrawer:sd/>
         </sd:RadSideDrawer.drawerContent>
 
     </sd:RadSideDrawer>
-
-    <Label text="Settings"/>
 
 </Page>
