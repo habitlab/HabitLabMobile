@@ -1,7 +1,0 @@
-<Page actionBarHidden="true" class="onboarding">
-    <StackLayout orientation="vertical" swipe="goToCongrats">
-    	<Image src= "res://icon" verticalAlignment="center" horizontalAlignemnt="center"/>
-    	<Label id="title" text= "HabitLab" />
-    	<Label id="welcome" text="Welcome! Swipe left to get started"/> 
-	</StackLayout>
-</Page>

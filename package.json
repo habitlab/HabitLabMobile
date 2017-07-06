@@ -10,7 +10,8 @@
     }
   },
   "dependencies": {
-    "nativescript-local-notifications": "^1.2.1",
+    "nativescript-effects": "^0.5.0",
+    "nativescript-slides": "^2.2.11",
     "nativescript-telerik-ui": "^3.0.1",
     "nativescript-theme-core": "~1.0.4",
     "tns-core-modules": "~3.0.0"
