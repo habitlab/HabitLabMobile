@@ -5,9 +5,9 @@
 	</StackLayout>
 		<StackLayout class="sidedrawer-content">
 		<Label text="Progress" tap="goToProgress" class="btn btn-active" />
-	     <Label text="Goals" tap="goToGoals" class="btn btn-active" />
-	  	<Label text="Interventions"  tap="goToInterventions" class="btn btn-active" />
-	  	 <Label text="Settings" tap="goToSettings" class="btn btn-active" />
+	     <Label text="Goals" tap="goToGoals"  />
+	  	<Label text="Interventions"  tap="goToInterventions"/>
+	  	 <Label text="Settings" tap="goToSettings" />
 		</StackLayout>
 </StackLayout>
 

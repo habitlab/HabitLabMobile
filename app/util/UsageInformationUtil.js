@@ -92,12 +92,12 @@ function getTimeOnPhoneSingleDay (daysAgo) {
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
 		// get package name
-		packageName = getPackageName(info);
+		var packageName = getPackageName(info);
 		//Time on one app
 		var appUsageStats = usageStatsMap.get(packageName);
-		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0,
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
 
-		totalTimeOnPhone = totalTimeOnPhone + appUsage;
+		totalTimeOnPhone += appUsage;
 	}
 	totalTimeOnPhone = Math.round(totalTimeOnPhone/60000);
     return totalTimeOnPhone;
