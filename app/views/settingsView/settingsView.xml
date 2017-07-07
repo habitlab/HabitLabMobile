@@ -11,4 +11,10 @@
 
     </sd:RadSideDrawer>
 
+    <StackLayout orientation="vertical">
+    	<Button text="Enable Service" tap="enableService" />
+    	<Button text="Disable Service" tap="disableService" />
+        <Button text="Get Running Services" tap="getRunningServices" />
+    </StackLayout>
+
 </Page>
