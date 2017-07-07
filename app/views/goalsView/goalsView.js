@@ -1,12 +1,9 @@
-var appsList = [];
-var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var frameModule = require("ui/frame");
-var view = require("ui/core/view");
+var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var drawer;
 
 exports.pageLoaded = function(args) {
-  var page = args.object;
-  drawer = page.getViewById("sideDrawer");
+  drawer = args.object.getViewById("sideDrawer");
 };
 
 exports.onManageApps = function() {

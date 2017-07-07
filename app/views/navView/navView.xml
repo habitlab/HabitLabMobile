@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded"
-  xmlns:sidedrawer="shared/sd"
-  xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
   <ActionBar title="HabitLab" class="action-bar" >
