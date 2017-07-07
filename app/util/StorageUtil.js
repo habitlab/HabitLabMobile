@@ -22,12 +22,16 @@ exports.removePackage = function(packageName) {
 
 exports.togglePackage = function(packageName) {
   var updatedList = localStorage.getItem('selectedPackages');
+  var returnVal;
   if (updatedList.includes(packageName)) {
     updatedList.splice(updatedList.indexOf(packageName), 1);
+    returnVal = false;
   } else {
     updatedList.push(packageName);
+    returnVal = true;
   }
   localStorage.setItem('selectedPackages', updatedList);
+  return returnVal;
 };
 
 exports.setUp = function() {
@@ -41,4 +45,8 @@ exports.isSetUp = function() {
 
 exports.bootstrap = function() {
   localStorage.clear();
+};
+
+exports.isPackageSelected = function(packageName) {
+  return exports.getSelectedPackages().includes(packageName);
 };

@@ -1,5 +1,8 @@
 <StackLayout orientation="vertical">
-  <Image id="img" class="app-cell-img" />
+  <AbsoluteLayout>
+    <Image id="img" class="app-cell-img"/>
+    <Image id="slctr" class="app-cell-selector" />
+  </AbsoluteLayout>
   <Label id="lbl" class="app-cell-lbl" />
-  <Label id="usg" class="app-cell-usg" />
+  <Label id="usg" class="app-cell-usg" text='no data' />
 </StackLayout>

@@ -9,9 +9,10 @@ var drawer;
 var grid;
 var list;
 
-var setOnTap = function(image, packageName) {
+var setOnTap = function(image, packageName, selector) {
   image.on(gestures.tap, function() {
-    StorageUtil.togglePackage(packageName);
+    var selected = StorageUtil.togglePackage(packageName);
+    selector.src = selected ? '~/images/selected.png' : '';
   });
 };
 
@@ -22,11 +23,22 @@ var setGridInfo = function() {
     var image = cell.getViewById("img");
     var label = cell.getViewById("lbl");
     var usage = cell.getViewById("usg");
+    var selector = cell.getViewById("slctr");
 
     label.text = list[i].label;
-    usage.text = Math.ceil(list[i].averageUsage / 60000) || 'no data';
     image.src = list[i].iconSource;
-    setOnTap(image, list[i].packageName);
+
+    selector.src = StorageUtil.isPackageSelected(list[i].packageName) ? '~/images/selected.png' : '';
+
+    var mins = Math.ceil(list[i].averageUsage / 60000);
+    if (mins || mins === 0) {
+      usage.text = mins + ' min/day';
+      if (mins >= 15) {
+        usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
+      }
+    }
+
+    setOnTap(image, list[i].packageName, selector);
   }
 
 };
@@ -36,7 +48,7 @@ exports.pageLoaded = function(args) {
   grid = args.object.getViewById('appgrid');
   
   // order by things with icon then by usage
-  list = UsageUtil.getApplicationList()
+  list = UsageUtil.getApplicationList();
   list.sort(function compare(a, b) {
     if (!a.averageUsage) {
       return 1;
