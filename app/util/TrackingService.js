@@ -25,13 +25,13 @@ Service.extend("com.habitlab.TrackingService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
 		startTimer();
-        console.log("SERVICE CREATED");
+        console.log("TRACKING SERVICE CREATED");
 		return Service.START_STICKY; 
 	}, 
 
 	onDestroy: function() {
 		this.super.onDestroy();
-		console.log("SERVICE DESTROYED");
+		console.log("TRACKING SERVICE DESTROYED");
         previousPackageName = "";
 	}, 
 
@@ -58,7 +58,7 @@ var startTimer = function() {
 			tracking();
 		}, 1000);
 	}
-}
+};
 
 /**
  * stopTimer
@@ -71,7 +71,7 @@ var startTimer = function() {
 var stopTimer = function() {
 	timer.clearInterval(timerID);
 	timerID = 0;
-}
+};
 
 
 /******* TRACKING FUNCTIONALITY *******/
@@ -132,6 +132,13 @@ var isServiceRunning = function () {
         }
     }
     return false;
-}
+};
+
+
+
 
 module.exports = {stopTimer: stopTimer, isServiceRunning: isServiceRunning};
+
+
+
+
