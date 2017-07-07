@@ -1,8 +1,8 @@
 var frameModule = require("ui/frame");
 var page;
 var onboarding = {};
-var gestures = require("ui/gestures");
-var localStorage = require( "nativescript-localstorage" );
+var gestures = require("ui/gestures").GestureTypes;
+var StorageUtil = require("~/util/StorageUtil");
 
 
 onboarding.texts = [
@@ -29,28 +29,6 @@ onboarding.visuals = [
   '~/images/onboarding_swiperight.png'
 ];
 
-// onboarding.content = [{
-//   text: texts[0],
-//   title: titles[0],
-//   visualSource: visuals[0]
-// }, {
-//   text: texts[1],
-//   title: titles[1],
-//   visualSource: visuals[1]
-// }, {
-//   text: texts[2],
-//   title: titles[2],
-//   visualSource: visuals[2]
-// }, {
-//   text: texts[3],
-//   title: titles[3],
-//   visualSource: visuals[3]
-// }, {
-//   text: texts[4],
-//   title: titles[4],
-//   visualSource: visuals[4]
-// }];
-
 exports.pageLoaded = function(args) {
   var navigated = false;
 
@@ -58,7 +36,7 @@ exports.pageLoaded = function(args) {
   page.bindingContext = onboarding;
 
   page.getViewById('slides').on('finished', function () {
-    page.getViewById('lastslide').on(gestures.GestureTypes.swipe, function (args) {
+    page.getViewById('lastslide').on(gestures.swipe, function (args) {
       if (args.direction === 2 && !navigated) {
         exports.goToNavView();
         navigated = true;
@@ -68,6 +46,11 @@ exports.pageLoaded = function(args) {
 };
 
 exports.goToNavView = function(args) {
-  localStorage.setItem('onboarded', true);
+
+  if (!StorageUtil.isSetUp()) {
+    StorageUtil.setUp();
+  }
+
+  console.log(StorageUtil.getSelectedPackages());
   frameModule.topmost().navigate("views/navView/navView");
 };

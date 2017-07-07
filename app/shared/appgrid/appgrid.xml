@@ -1,14 +1,14 @@
-<GridLayout columns="*,*,*" rows="*,*,*,*">
-  <Image id="img0" col="0" row="0" />
-  <Image id="img1" col="1" row="0" />
-  <Image id="img2" col="2" row="0" />
-  <Image id="img3" col="0" row="0" />
-  <Image id="img4" col="1" row="1" />
-  <Image id="img5" col="2" row="1" />
-  <Image id="img6" col="0" row="1" />
-  <Image id="img7" col="1" row="1" />
-  <Image id="img8" col="2" row="2" />
-  <Image id="img9" col="0" row="2" />
-  <Image id="img10" col="1" row="2" />
-  <Image id="img11" col="2" row="2" />
+<GridLayout columns="*,*,*" rows="*,*,*" id="appgrid"
+  xmlns:appgridcell="shared/appgridcell">
+  
+  <appgridcell:appgridcell id="cell0" row="0" col="0" />
+  <appgridcell:appgridcell id="cell1" row="0" col="1" />
+  <appgridcell:appgridcell id="cell2" row="0" col="2" />
+  <appgridcell:appgridcell id="cell3" row="1" col="0" />
+  <appgridcell:appgridcell id="cell4" row="1" col="1" />
+  <appgridcell:appgridcell id="cell5" row="1" col="2" />
+  <appgridcell:appgridcell id="cell6" row="2" col="0" />
+  <appgridcell:appgridcell id="cell7" row="2" col="1" />
+  <appgridcell:appgridcell id="cell8" row="2" col="2" />
+ 
 </GridLayout>

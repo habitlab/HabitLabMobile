@@ -1,0 +1,5 @@
+<StackLayout orientation="vertical">
+  <Image id="img" class="app-cell-img" />
+  <Label id="lbl" class="app-cell-lbl" />
+  <Label id="usg" class="app-cell-usg" />
+</StackLayout>
