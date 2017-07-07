@@ -10,7 +10,7 @@
 	   <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
 	</ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" drawerContentSize="180">
+  <sd:RadSideDrawer id="sideDrawer" drawerContentSize="180" DrawerLength="400">
     <sd:RadSideDrawer.drawerContent>
       <sidedrawer:sd/>
     </sd:RadSideDrawer.drawerContent>
@@ -19,7 +19,7 @@
 	    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 
 	    		<StackLayout orientation='vertical'>
-				    <Slides:SlideContainer id="slides" pageIndicators="true" height="80%">
+				    <Slides:SlideContainer id="slides" pageIndicators="true" height="100%">
 
 				      <Slides:Slide class="slide">
 						    <StackLayout>
