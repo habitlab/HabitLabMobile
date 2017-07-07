@@ -5,20 +5,16 @@ var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var drawer;
 
 exports.pageLoaded = function(args) {
-  
-  drawer = args.object.getViewById(page, "sideDrawer");
+	var page = args.object;
+  drawer = page.getViewById("sideDrawer");
 
   if (!permissionUtil.checkActionUsagePermission()) {
 		permissionUtil.launchActionUsageIntent();
 	}
 
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
-	console.log(timeOnPhoneToday);
-
 	var hrs = Math.floor(timeOnPhoneToday/60);
 	var min = timeOnPhoneToday%60;
-	console.log(hrs);
-	console.log(min);
 
 	page.bindingContext = {
 		todayHrs: hrs,
@@ -26,6 +22,7 @@ exports.pageLoaded = function(args) {
 	};
 
 	var timeOnPhoneWeek = usageUtil.getTimeOnPhoneThisWeek();
+	console.log('timeonphoneweek: ', timeOnPhoneWeek);
 
 };
 

@@ -32,7 +32,7 @@ function launchActionUsageIntent() {
 }
 
 exports.pageLoaded = function(args) {
-	drawer = args.object.getViewById(page, "sideDrawer");
+	drawer = args.object.getViewById("sideDrawer");
 	if (!checkActionUsagePermission()) {
 		launchActionUsageIntent();
 	}
@@ -54,7 +54,7 @@ exports.disableService = function () {
 }
 
 exports.toggleDrawer = function() {
-    drawer.toggleDrawerState();
+  drawer.toggleDrawerState();
 };
 
 exports.getRunningServices = function() {	
