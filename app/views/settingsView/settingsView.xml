@@ -1,7 +1,10 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded" xmlns:sidedrawer="shared/sd" navigatingTo="onNavigatingTo">
+<Page loaded="pageLoaded" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns:sidedrawer="shared/sd">
 
   <ActionBar title="HabitLab" class="action-bar">
-    <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_btn_add" ios.position="left" />
+    <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer">
@@ -21,5 +24,5 @@
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>
-  
+
 </Page>

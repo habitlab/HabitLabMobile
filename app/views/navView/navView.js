@@ -16,6 +16,11 @@ exports.goToSettings = function() {
   frameModule.topmost().navigate("views/settingsView/settingsView");
 };
 
+exports.toggleDrawer = function() {
+  console.log(drawer);
+    drawer.toggleDrawerState();
+};
+
 exports.pageLoaded = function() {
 
 };

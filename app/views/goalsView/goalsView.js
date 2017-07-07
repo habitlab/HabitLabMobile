@@ -17,5 +17,3 @@ exports.onManageApps = function() {
 exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
 };
-
-

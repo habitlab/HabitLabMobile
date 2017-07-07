@@ -1,4 +1,9 @@
-<Page xmlns:sidedrawer="shared/sd" xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded"  xmlns:dd="nativescript-drop-down" xmlns:chart="nativescript-telerik-ui/chart">
+<Page loaded="pageLoaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns:dd="nativescript-drop-down" 
+  xmlns:chart="nativescript-telerik-ui/chart">
 
 	<ActionBar title="HabitLab" class="action-bar">
 	   <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
@@ -25,10 +30,9 @@
       	</StackLayout>
       	<Label text="on your phone today" className="normal-text"/>
       </StackLayout>
-      
+
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>
 
 </Page>
-
