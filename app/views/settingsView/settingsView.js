@@ -3,7 +3,7 @@ var permissionUtil = require('~/util/PermissionUtil.js');
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var frameModule = require("ui/frame");
 var view = require("ui/core/view");
-var drawer;
+var drawer;   
 
 var Toast = require("nativescript-toast"); // install nativescript-toast plugin
 
