@@ -1,17 +1,15 @@
 .sidedrawer-list-item-text {
 	padding: 10;
+	color: #011627;
 
-}
-
-.widget .seperator.extralight-border {
-	display: none;
 }
 
 
 
 
 .sidedrawer-content {
-
+	background-color: white;
+	text-align: left;
 }
 
 .sidedrawer-header-brand {

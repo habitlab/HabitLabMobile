@@ -13,6 +13,7 @@ exports.pageLoaded = function(args) {
 	}
 
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
+	console.log(timeOnPhoneToday);
 	var hrs = Math.floor(timeOnPhoneToday/60);
 	var min = timeOnPhoneToday%60;
 
