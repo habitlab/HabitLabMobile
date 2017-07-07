@@ -4,6 +4,7 @@ const TrackingService = require("~/util/TrackingService");
 var Toast = require("nativescript-toast");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 
+
 // expose native APIs
 var Intent = android.content.Intent;
 var Settings = android.provider.Settings;
@@ -35,9 +36,7 @@ exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer");
 	if (!checkActionUsagePermission()) {
 		launchActionUsageIntent();
-	} else {
-		context.startService(mServiceIntent);
-	}
+	} 
 }
 
 exports.enableService = function() {

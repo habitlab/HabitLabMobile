@@ -21,7 +21,7 @@ var timerID;
  * of Service class to start timer that continuously runs in
  * background to perform some task.
  */
-android.app.Service.extend("com.habitlab.TrackingService", {
+Service.extend("com.habitlab.TrackingService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
 		startTimer();
@@ -96,7 +96,7 @@ var tracking = function () {
 
     var packageName = event.getPackageName();
     if (event.getEventType() === UsageEvents.Event.MOVE_TO_FOREGROUND && previousPackageName !== packageName) {
-    	console.log("HABITLAB: Active Package is =>", packageName);
+    	console.log("===> Active Package:", packageName);
     	previousPackageName = packageName;
 
     	if (packageName === "com.facebook.katana") {
