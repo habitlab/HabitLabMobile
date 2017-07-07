@@ -12,8 +12,8 @@
 
 	    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 	            <StackLayout>
-	            	<Button text="Today's Stats" className="button"/>
-	            	<Label text="You have spent" className="normal-text" margin-top="50"/>
+	            	<Button text="Today's Stats" class="button"/>
+	            	<Label text="You have spent" className="normal-text" />
 	            	<StackLayout orientation="horizontal" horizontalAlignment="center" id="numbers">
 	            		<Label text="{{ todayHrs }}" className="number-emphasis" className="left-elem"/>
 	            		<Label text="{{ todayMins }}" className="number-emphasis" className="right-elem"/>
