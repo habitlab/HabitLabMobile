@@ -2,6 +2,8 @@ var usageUtil = require('~/util/UsageInformationUtil.js');
 var permissionUtil = require('~/util/PermissionUtil.js');
 var frameModule = require("ui/frame");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
+var gestures = require("ui/gestures");
+var tabView = require("ui/tab-view")
 var drawer;
 
 exports.pageLoaded = function(args) {

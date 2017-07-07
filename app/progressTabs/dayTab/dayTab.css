@@ -1,0 +1,18 @@
+.list-number {
+	text-align: center;
+	font-size: 30;
+	color: #E0696B;
+}
+
+.list-desc {
+	text-align: center;
+	font-size: 10;
+}
+
+.list-group-item-heading {
+	font-size: 18;
+}
+
+.list-group-item-text {
+	font-size: 12;
+}

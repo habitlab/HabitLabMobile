@@ -1,0 +1,47 @@
+<StackLayout loaded="onLoad" xmlns:lv="nativescript-telerik-ui/listview">
+<!-- 	<Label text="You have spent" className="normal-text" />
+	<StackLayout orientation="horizontal" horizontalAlignment="center" id="numbers">
+		<Label text="{{ todayHrs }}" className="number-emphasis" className="left-elem"/>
+		<Label text="{{ todayMins }}" className="number-emphasis" className="right-elem"/>
+	</StackLayout>
+	<StackLayout orientation="horizontal" horizontalAlignment="center" id="small">
+		<Label text="hrs" className="small-text" className="left-elem" color="#E71D36"/>
+		<Label text="min" className="small-text" className="right-elem" color="#E71D36"/>
+	</StackLayout>
+		<Label text="on your phone today" className="normal-text"/>
+ -->
+
+<!-- 	For the horizontal button like displays  -->
+<!-- 	<lv:RadListView id="listButtons" class="list-group">
+		<lv:RadListView.listViewLayout>
+            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+        </lv:RadListView.listViewLayout>
+        <lv:RadListView.itemTemplate>
+            <StackLayout class="list-buttons">
+                <Label text="{{ value }}" class="list-number" />
+                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
+            </StackLayout>
+        </lv:RadListView.itemTemplate>
+    </lv:RadListView> -->
+
+
+<!-- 
+    For the list of goal apps and their time usage -->
+	<lv:RadListView id="listview" class="list-group" pullToRefresh="true" 
+pullToRefreshInitiated="pullToRefreshInitiated">
+		<lv:RadListView.listViewLayout>
+            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
+        </lv:RadListView.listViewLayout>
+
+        <lv:RadListView.itemTemplate>
+            <StackLayout class="list-group-item">
+                <Label text="{{ itemName }}" class="list-group-item-heading" />
+                <Label text="{{ itemDesc }}" textWrap="true" class="list-group-item-text" />
+            </StackLayout>
+        </lv:RadListView.itemTemplate>
+
+    </lv:RadListView>
+
+
+
+</StackLayout>
