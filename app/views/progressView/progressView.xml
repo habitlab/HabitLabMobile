@@ -1,36 +1,34 @@
 <Page xmlns:sidedrawer="shared/sd" xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded"  xmlns:dd="nativescript-drop-down" xmlns:chart="nativescript-telerik-ui/chart">
 
 	<ActionBar title="HabitLab" class="action-bar">
-	    <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
+	   <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
 	</ActionBar>
 
-    <sd:RadSideDrawer id="sideDrawer" drawerContentSize="180">
-        <sd:RadSideDrawer.drawerContent>
-            <sidedrawer:sd/>
-        </sd:RadSideDrawer.drawerContent>
+  <sd:RadSideDrawer id="sideDrawer" drawerContentSize="180">
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
     
 
-	    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-	            <StackLayout>
-	            	<Button text="Today's Stats" className="button"/>
-	            	<Label text="You have spent" className="normal-text" margin-top="50"/>
-	            	<StackLayout orientation="horizontal" horizontalAlignment="center" id="numbers">
-	            		<Label text="{{ todayHrs }}" className="number-emphasis" className="left-elem"/>
-	            		<Label text="{{ todayMins }}" className="number-emphasis" className="right-elem"/>
-	            	</StackLayout>
-	            	<StackLayout orientation="horizontal" horizontalAlignment="center" id="small">
-	            		<Label text="hrs" className="small-text" className="left-elem" color="#E71D36"/>
-	            		<Label text="min" className="small-text" className="right-elem" color="#E71D36"/>
-	            	</StackLayout>
-	            	<Label text="on your phone today" className="normal-text"/>
-	            </StackLayout>
-	     </sd:RadSideDrawer.mainContent>
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 
-     </sd:RadSideDrawer>
+      <StackLayout>
+      	<Button text="Today's Stats" className="button"/>
+      	<Label text="You have spent" className="normal-text" margin-top="50"/>
+      	<StackLayout orientation="horizontal" horizontalAlignment="center" id="numbers">
+      		<Label text="{{ todayHrs }}" className="number-emphasis" className="left-elem"/>
+      		<Label text="{{ todayMins }}" className="number-emphasis" className="right-elem"/>
+      	</StackLayout>
+      	<StackLayout orientation="horizontal" horizontalAlignment="center" id="small">
+      		<Label text="hrs" className="small-text" className="left-elem" color="#E71D36"/>
+      		<Label text="min" className="small-text" className="right-elem" color="#E71D36"/>
+      	</StackLayout>
+      	<Label text="on your phone today" className="normal-text"/>
+      </StackLayout>
+      
+    </sd:RadSideDrawer.mainContent>
 
-
-
-
+  </sd:RadSideDrawer>
 
 </Page>
 
