@@ -9,6 +9,10 @@
    				<sidedrawer:sd/>
         </sd:RadSideDrawer.drawerContent>
 
+        <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+       		<!-- main content goes here -->
+        </sd:RadSideDrawer.mainContent>
+
     </sd:RadSideDrawer>
 
     <StackLayout orientation="vertical">

@@ -1,4 +1,4 @@
-@import "nativescript-theme-core/css/core.light.css";
+/*@import "nativescript-theme-core/css/core.light.css";*/
 @import url('~/platform.css');
 
 Page.onboarding {
@@ -9,7 +9,7 @@ Page.onboarding {
 }
 
 .action-bar {
-	background-color: #77C2FF;
+	background-color: #2EC4B6;
 	color: white;
 
 }
