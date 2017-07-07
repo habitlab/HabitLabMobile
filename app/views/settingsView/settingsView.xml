@@ -1,24 +1,25 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:sd="nativescript-telerik-ui/sidedrawer" loaded="pageLoaded" xmlns:sidedrawer="shared/sd" navigatingTo="onNavigatingTo">
 
-<ActionBar title="HabitLab" class="action-bar">
+  <ActionBar title="HabitLab" class="action-bar">
     <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_btn_add" ios.position="left" />
-</ActionBar>
+  </ActionBar>
 
-    <sd:RadSideDrawer id="sideDrawer">
-        <sd:RadSideDrawer.drawerContent>
-   				<sidedrawer:sd/>
-        </sd:RadSideDrawer.drawerContent>
+  <sd:RadSideDrawer id="sideDrawer">
 
-        <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-       		<!-- main content goes here -->
-        </sd:RadSideDrawer.mainContent>
+    <sd:RadSideDrawer.drawerContent>
+				<sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
 
-    </sd:RadSideDrawer>
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 
-    <StackLayout orientation="vertical">
-    	<Button text="Enable Service" tap="enableService" />
-    	<Button text="Disable Service" tap="disableService" />
+      <StackLayout orientation="vertical">
+        <Button text="Enable Service" tap="enableService" />
+        <Button text="Disable Service" tap="disableService" />
         <Button text="Get Running Services" tap="getRunningServices" />
-    </StackLayout>
+      </StackLayout>
 
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+  
 </Page>
