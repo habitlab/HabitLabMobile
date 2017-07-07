@@ -1,0 +1,14 @@
+<GridLayout columns="*,*,*" rows="*,*,*,*">
+  <Image id="img0" col="0" row="0" />
+  <Image id="img1" col="1" row="0" />
+  <Image id="img2" col="2" row="0" />
+  <Image id="img3" col="0" row="0" />
+  <Image id="img4" col="1" row="1" />
+  <Image id="img5" col="2" row="1" />
+  <Image id="img6" col="0" row="1" />
+  <Image id="img7" col="1" row="1" />
+  <Image id="img8" col="2" row="2" />
+  <Image id="img9" col="0" row="2" />
+  <Image id="img10" col="1" row="2" />
+  <Image id="img11" col="2" row="2" />
+</GridLayout>
