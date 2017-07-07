@@ -1,4 +1,6 @@
 var frameModule = require("ui/frame");
+var drawerModule = require("nativescript-telerik-ui/sidedrawer");
+var drawer;
 
 exports.goToProgress = function() {
   frameModule.topmost().navigate("views/progressView/progressView");
@@ -16,6 +18,10 @@ exports.goToSettings = function() {
   frameModule.topmost().navigate("views/settingsView/settingsView");
 };
 
-exports.pageLoaded = function() {
+exports.toggleDrawer = function() {
+  drawer.toggleDrawerState();
+};
 
+exports.pageLoaded = function(args) {
+  drawer = args.object.getViewById('sideDrawer');
 };

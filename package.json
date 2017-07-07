@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "nativescript-effects": "^0.5.0",
+    "nativescript-localstorage": "^1.1.5",
     "nativescript-slides": "^2.2.11",
     "nativescript-telerik-ui": "^3.0.1",
     "nativescript-theme-core": "~1.0.4",
+    "nativescript-toast": "^1.4.5",
     "tns-core-modules": "~3.0.0"
   },
   "devDependencies": {
@@ -21,8 +23,6 @@
     "babel-types": "6.4.5",
     "babylon": "6.4.5",
     "lazy": "1.0.11",
-    "nativescript-dev-android-snapshot": "^0.*.*",
-    "nativescript-dev-typescript": "^0.5.0",
-    "typescript": "^2.4.1"
+    "nativescript-dev-android-snapshot": "^0.*.*"
   }
 }

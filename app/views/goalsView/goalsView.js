@@ -1,23 +1,16 @@
-var appsList = [];
-var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var frameModule = require("ui/frame");
-var view = require("ui/core/view");
+var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var drawer;
 
 exports.pageLoaded = function(args) {
-    var page = args.object;
-    drawer = page.getViewById("sideDrawer");
-    console.log(drawer);
+  drawer = args.object.getViewById("sideDrawer");
 };
 
-// exports.onSelectApp = function(index) {
-
-// };
+exports.onManageApps = function() {
+  frameModule.topmost().navigate("views/appsView/appsView");
+};
 
 
 exports.toggleDrawer = function() {
-	console.log(drawer);
-    drawer.toggleDrawerState();
+  drawer.toggleDrawerState();
 };
-
-
