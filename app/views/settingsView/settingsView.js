@@ -21,6 +21,7 @@ var Integer = java.lang.Integer;
 var context = application.android.context.getApplicationContext();
 var mServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var drawer;
+var page;
 
 // only here until added to onboarding
 function checkActionUsagePermission() {
@@ -35,7 +36,8 @@ function launchActionUsageIntent() {
 	application.android.foregroundActivity.startActivity(int);	
 }
 
-exports.pageLoaded = function() {
+exports.pageLoaded = function(args) {
+	page = args.object;
 	drawer = view.getViewById(page, "sideDrawer");
 	if (!checkActionUsagePermission()) {
 		launchActionUsageIntent();

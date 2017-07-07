@@ -88,16 +88,15 @@ var statsMap = [0, 0, 0, 0];
  * background.
  */
 var tracking = function () {
-	var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 100000, System.currentTimeMillis());
+	var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 3000, System.currentTimeMillis());
 
     while (events.hasNextEvent()) {
-    	events.getNextEvent(event);
+        events.getNextEvent(event);
     }
 
     var packageName = event.getPackageName();
-
-    if (event !== null && event.getEventType() === UsageEvents.Event.MOVE_TO_FOREGROUND && previousPackageName !== packageName) {
-    	console.log("Active Package:", packageName);
+    if (event.getEventType() === UsageEvents.Event.MOVE_TO_FOREGROUND && previousPackageName !== packageName) {
+    	console.log("HABITLAB: Active Package is =>", packageName);
     	previousPackageName = packageName;
 
     	if (packageName === "com.facebook.katana") {
