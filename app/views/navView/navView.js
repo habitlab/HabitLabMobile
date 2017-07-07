@@ -23,5 +23,5 @@ exports.toggleDrawer = function() {
 };
 
 exports.pageLoaded = function(args) {
-  drawer = args.object.getViewById('drawer');
+  drawer = args.object.getViewById('sideDrawer');
 };
