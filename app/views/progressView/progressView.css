@@ -1,17 +1,20 @@
+
+
+
+
 .small-text {
+	text-align: center;
 	font-size: 10;
 	color: #E0696B;
 
 }
 
 .number-emphasis {
+	text-align: center;
 	font-size: 30;
 
 }
 
-Label {
-	text-align: center;
-}
 
 .button {
 	color: #011627;
@@ -22,21 +25,49 @@ Label {
 
 
 .normal-text {
+	text-align: center;
 	padding: 5;
 	font-size: 20;
 }
 
 .left-elem {
+	text-align: center;
 	margin-right: 10;
 }
 
 .right-elem {
+	text-align: center;
 	margin-left: 10;
 }
 
 #numbers {
+	text-align: center;
 	font-size: 30;
 	color: #E71D36;
 }
 
 
+
+.slide {
+	background-color: white;
+}
+
+.slide-indicator-inactive{
+    background-color: #2EC4B6;
+    opacity : 0.4;
+    width : 8;
+    height : 8;
+    margin-left : 3;
+    margin-right : 3;
+    border-radius : 4;
+}
+ 
+.slide-indicator-active{
+    background-color: #2EC4B6;
+    opacity : 0.9;
+    width : 14;
+    height : 14;
+    margin-left : 3;
+    margin-right : 3;
+    border-radius : 7;
+}

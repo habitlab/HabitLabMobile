@@ -1,13 +1,13 @@
 <StackLayout>
 	<StackLayout class="sidedrawer-left">  
 	<StackLayout class="sidedrawer-header">
-	  <Label text="Menu" class="sidedrawer-header-brand" />
+	  <Label text="Menu" class="header" />
 	</StackLayout>
 		<StackLayout class="sidedrawer-content">
-		<Label text="Progress" tap="goToProgress" class="btn btn-active" />
-	     <Label text="Goals" tap="goToGoals"  />
-	  	<Label text="Interventions"  tap="goToInterventions"/>
-	  	 <Label text="Settings" tap="goToSettings" />
+		<Label text="Progress" tap="goToProgress" class="sideLabel" />
+	     <Label text="Goals" tap="goToGoals"  class="sideLabel" />
+	  	<Label text="Interventions"  tap="goToInterventions" class="sideLabel"/>
+	  	 <Label text="Settings" tap="goToSettings" class="sideLabel" />
 		</StackLayout>
 </StackLayout>
 

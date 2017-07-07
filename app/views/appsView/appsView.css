@@ -1,5 +1,6 @@
 .app-cell-img {
-  padding: 5%;
+  width: 80%;
+  transform: translateX(10%);
 }
 
 .app-cell-lbl {
@@ -8,9 +9,23 @@
 }
 
 .app-cell-usg {
+  text-align: center;
+  color: green;
+}
 
+.app-cell-selector {
+  transform: translate(80%, -5%);
+  width: 30%;
+}
+
+.red {
+  color: red;
+}
+
+.yellow {
+  color: orange;
 }
 
 .app-cell {
-  text-align: center;
+  align-contents: middle;
 }
