@@ -5,6 +5,8 @@ var Toast = require("nativescript-toast");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var drawer;
 
+var UsageUtil = require("~/util/UsageInformationUtil.js");
+
 // expose native APIs
 var Intent = android.content.Intent;
 var Settings = android.provider.Settings;
@@ -58,17 +60,26 @@ exports.toggleDrawer = function() {
 };
 
 exports.getRunningServices = function() {	
-	console.log("---------------------------------------------");
-	var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
-	var services = manager.getRunningServices(Integer.MAX_VALUE);
-	for (var i = 0; i < services.size(); i++) {
-		var service = services.get(i);
-		if (service.service.getClassName() === com.habitlab.TrackingService.class.getName()) {
-			console.log("=====>", service.service.getClassName());
-		} else {
-			console.log("      ", service.service.getClassName());
-		}	
+
+	var list = UsageUtil.getApplicationList();
+
+	for (var i = 0; i < list.length; i++) {
+		console.log(list[i].label, list[i].averageUsage, list[i].packageName);
 	}
+
+
+
+	// console.log("---------------------------------------------");
+	// var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
+	// var services = manager.getRunningServices(Integer.MAX_VALUE);
+	// for (var i = 0; i < services.size(); i++) {
+	// 	var service = services.get(i);
+	// 	if (service.service.getClassName() === com.habitlab.TrackingService.class.getName()) {
+	// 		console.log("=====>", service.service.getClassName());
+	// 	} else {
+	// 		console.log("      ", service.service.getClassName());
+	// 	}	
+	// }
 }
 
 
