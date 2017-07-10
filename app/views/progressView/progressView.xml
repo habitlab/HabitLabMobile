@@ -4,6 +4,7 @@
   xmlns:sd="nativescript-telerik-ui/sidedrawer" 
   xmlns:dd="nativescript-drop-down" 
   xmlns:chart="nativescript-telerik-ui/chart"
+  xmlns:lv="nativescript-telerik-ui/listview"
   xmlns:Slides="nativescript-slides"
   navigatingTo="navigatingTo">
 
@@ -28,7 +29,39 @@
 
 					<TabViewItem title="Day" xmlns:dayTab="progressTabs/dayTab" >
 					   <TabViewItem.view>
-					   		<dayTab:dayTab/>
+					   		<!-- <dayTab:dayTab/> -->
+					   		<StackLayout>
+					   			<!-- 	For the horizontal button like displays  -->
+					   				<lv:RadListView id="listButtons" class="list-group">
+					   					<lv:RadListView.listViewLayout>
+					   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+					   			        </lv:RadListView.listViewLayout>
+					   			        <lv:RadListView.itemTemplate>
+					   			            <StackLayout class="list-buttons">
+					   			                <Label text="{{ value }}" class="list-number" />
+					   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
+					   			            </StackLayout>
+					   			        </lv:RadListView.itemTemplate>
+					   			    </lv:RadListView>
+
+
+					   			<!-- 
+					   			    For the list of goal apps and their time usage -->
+					   				<lv:RadListView id="listview" class="list-group">
+					   					<lv:RadListView.listViewLayout>
+					   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
+					   			        </lv:RadListView.listViewLayout>
+
+					   			        <lv:RadListView.itemTemplate>
+					   			            <StackLayout class="list-group-item">
+					   			                <Label text="{{ itemName }}" class="list-group-item-heading" />
+					   			                <Label text="{{ itemDesc }}" textWrap="true" class="list-group-item-text" />
+					   			            </StackLayout>
+					   			        </lv:RadListView.itemTemplate>
+
+					   			    </lv:RadListView>
+
+					   		</StackLayout>
 						</TabViewItem.view>
 					</TabViewItem>
 				

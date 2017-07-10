@@ -1,65 +1,54 @@
-var Observable = require("data/observable").Observable;
-var ObservableArray = require("data/observable-array").ObservableArray;
 var usageUtil = require('~/util/UsageInformationUtil.js');
+var storageUtil = require('~/util/StorageUtil.js');
 var view = require("ui/core/view");
-var items = new ObservableArray([]);
-var pageData = new Observable();
-var label;
+var thisView;
 
 
 exports.onLoad = args =>{
-	var label = args.object;
+	thisView = args.object;
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
 	// var hrs = Math.floor(timeOnPhoneToday/60);
 	// var min = timeOnPhoneToday%60;
 
-	// label.bindingContext = {
-	// 	todayHrs: hrs,
-	// 	todayMins: min
-	// };
+	// // label.bindingContext = {
+	// // 	todayHrs: hrs,
+	// // 	todayMins: min
+	// // };
+	var goalApps = storageUtil.getSelectedPackageNames(); 
+	
 
-
-
-	label.bindingContext = pageData;
-
+    var items = [];
     items.push(
-    {
-    	itemName: "Facebook",
-    	itemDesc: "Opened 6 times"
-    },
-    {
-    	itemName: "Instagram",
-    	itemDesc: "Opened 12 times"
-    },
-    {
-    	itemName: "Youtube",
-    	itemDesc: "Opened 4 times"
-    },
-    {
-    	itemName: "Snapchat",
-    	itemDesc: "Opened 17 times"
-    }
+    	for (String packageName : goalApps) {
+		    {
+		    	itemName: usageUtil.getAppName(packageName),
+		    	itemDesc: "Opened 6 times"
+		    }
+		}
     )
-    pageData.set("items", items);
+   var listView = view.getViewById(thisView, "listview");
+	listView.items = items;
 
 
 
-	// var stats = [];
-	// stats.push(
-	// {
-	// 	value: total,
-	// 	desc: "hrs on phone"
-	// },
-	// {
-	// 	value: "61",
-	// 	desc: "unlocks"
-	// }
-	// )
-	// var listButtons = view.getViewById(label, "listButtons");
-	// listButtons.items = stats;
+	var stats = [];
+	stats.push(
+	{
+		value: total,
+		desc: "hrs on phone"
+	},
+	{
+		value: "61",
+		desc: "unlocks"
+	}
+	)
+	var listButtons = view.getViewById(thisView, "listButtons");
+	listButtons.items = stats;
 
 }
+
+
 
 
 

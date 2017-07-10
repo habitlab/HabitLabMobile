@@ -169,6 +169,27 @@ function getApplicationList() {
 	return list;
 }
 
+
+/*
+ * getAppName
+ * --------------
+ * Returns the application name of the passed-in packageName.
+ * Returns "(unknown)" if there is no packageName.
+ */
+function getAppName(packageName) {
+	var info = null;
+	try {
+		info = pm.getApplicationInfo(packageName, 0);
+	} catch (err) {
+		info = null;
+	}
+	var appName = (info != null ? pm.getApplicationLabel(info) : "(unknown)");
+	return appName;
+}
+
+
+
+
 /*
  * getPackageName
  * --------------
@@ -244,7 +265,8 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, 
 	getTimeOnPhoneThisWeek : getTimeOnPhoneThisWeek, 
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
-	getTimeOnAppThisWeek : getTimeOnAppThisWeek};
+	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
+	getAppName : getAppName};
 
 
 
