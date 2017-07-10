@@ -52,12 +52,13 @@
 					   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
 					   			        </lv:RadListView.listViewLayout>
 					   			        <lv:RadListView.itemTemplate>
-					   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *">
+					   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *">
 			   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 			   			        	            <StackLayout row="0" col="1" >
 			   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
 			   			        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
 			   			        	            </StackLayout>
+			   			        	            <Label text="{{ mins + 'mins' }}" class="list-group-item-heading" />
 					   			        	</GridLayout>
 					   			        </lv:RadListView.itemTemplate>
 
@@ -70,6 +71,13 @@
 					 <TabViewItem title="Week" xmlns:weekTab="progressTabs/weekTab">
 						 <TabViewItem.view>
 							 <weekTab:weekTab/>
+
+
+
+
+
+
+
 						  </TabViewItem.view>
 					  </TabViewItem>
 								     

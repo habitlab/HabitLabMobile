@@ -36,13 +36,16 @@ exports.populateListViewsDay = function() {
     		// Edit when get visits
     		var visits = 6;
     		var imagesrc = usageUtil.getIcon(goalApps[i]);
-    		var appObj = new app(name, visits, imagesrc);
+    		var mins = usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0);
+    		var appObj = new app(name, visits, imagesrc, mins);
     		apps.push(appObj);
     }
  
    	var listView = view.getViewById(page, "listview");
-   	   console.dir(listView);
 	listView.items = apps;
+
+
+
 
 
 	//'buttons' that show the usage daily overall phone usage 
@@ -58,17 +61,19 @@ exports.populateListViewsDay = function() {
 	}
 	)
 	var listButtons = view.getViewById(page, "listButtons");
-	console.dir(listButtons);
 	listButtons.items = stats;
-}
+
+
+};
 
 
 	//Object for an app that contains all the info for the lsit view 
-	function app (name, visits, imagesrc) {
+	function app (name, visits, imagesrc, mins) {
 		this.name = name;
 		this.visits = visits;
 		this.image = imagesrc;
-	}
+		this.mins = mins;
+	};
 
 
 exports.toggleDrawer = function() {
