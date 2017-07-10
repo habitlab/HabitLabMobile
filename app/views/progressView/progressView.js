@@ -5,6 +5,7 @@ var frameModule = require("ui/frame");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var gestures = require("ui/gestures");
 var tabView = require("ui/tab-view")
+var view = require("ui/core/view");
 var page;
 var drawer;
 
@@ -39,14 +40,13 @@ exports.populateListViews = function() {
 
     var items = [];
     items.push(
-    	// for(i = 0; i < goalApps.length; ++i) {
-    	// 	console.log(goalApps[i]);
-    	// 	console.log(usageUtil.getAppName(goalApps[i]));
+    	var i;
+    	for(i = 0; i < goalApps.length; ++i) {
 		    {
 		    	itemName: usageUtil.getAppName(goalApps[0]),
 		    	itemDesc: "Opened 6 times"
 		    }
-		// }
+		}
     )
    var listView = view.getViewById(page, "listview");
 	listView.items = items;
