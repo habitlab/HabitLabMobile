@@ -51,12 +51,14 @@
 					   					<lv:RadListView.listViewLayout>
 					   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
 					   			        </lv:RadListView.listViewLayout>
-
 					   			        <lv:RadListView.itemTemplate>
-					   			            <StackLayout class="list-group-item">
-					   			                <Label text="{{ itemName }}" class="list-group-item-heading" />
-					   			                <Label text="{{ itemDesc }}" textWrap="true" class="list-group-item-text" />
-					   			            </StackLayout>
+					   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *">
+			   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+			   			        	            <StackLayout row="0" col="1" >
+			   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
+			   			        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
+			   			        	            </StackLayout>
+					   			        	</GridLayout>
 					   			        </lv:RadListView.itemTemplate>
 
 					   			    </lv:RadListView>

@@ -6,6 +6,7 @@ var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var gestures = require("ui/gestures");
 var tabView = require("ui/tab-view")
 var view = require("ui/core/view");
+var imageSource = require("image-source");
 var page;
 var drawer;
 
@@ -16,43 +17,35 @@ exports.pageLoaded = function(args) {
   if (!permissionUtil.checkActionUsagePermission()) {
 		permissionUtil.launchActionUsageIntent();
 	}
-	exports.populateListViews();
+	exports.populateListViewsDay();
 
 
 };
 
-exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
-};
 
-
-
-exports.populateListViews = function() {
+exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
 	var goalApps = storageUtil.getSelectedPackages(); 
 	var i;
+	var apps = [];
 
+	//populates list of apps
 	for(i = 0; i < goalApps.length; ++i) {
-    		console.log(goalApps[i]);
-    		console.log(usageUtil.getAppName(goalApps[i]));
-    	}
-
-    var items = [];
-    items.push(
-    	var i;
-    	for(i = 0; i < goalApps.length; ++i) {
-		    {
-		    	itemName: usageUtil.getAppName(goalApps[0]),
-		    	itemDesc: "Opened 6 times"
-		    }
-		}
-    )
-   var listView = view.getViewById(page, "listview");
-	listView.items = items;
+    		var name = usageUtil.getAppName(goalApps[i]);
+    		// Edit when get visits
+    		var visits = 6;
+    		var imagesrc = usageUtil.getIcon(goalApps[i]);
+    		var appObj = new app(name, visits, imagesrc);
+    		apps.push(appObj);
+    }
+ 
+   	var listView = view.getViewById(page, "listview");
+   	   console.dir(listView);
+	listView.items = apps;
 
 
-
+	//'buttons' that show the usage daily overall phone usage 
 	var stats = [];
 	stats.push(
 	{
@@ -65,5 +58,19 @@ exports.populateListViews = function() {
 	}
 	)
 	var listButtons = view.getViewById(page, "listButtons");
+	console.dir(listButtons);
 	listButtons.items = stats;
 }
+
+
+	//Object for an app that contains all the info for the lsit view 
+	function app (name, visits, imagesrc) {
+		this.name = name;
+		this.visits = visits;
+		this.image = imagesrc;
+	}
+
+
+exports.toggleDrawer = function() {
+  drawer.toggleDrawerState();
+};
