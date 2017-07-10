@@ -6,7 +6,6 @@ var timer = require("timer");
 // expose native APIs
 var Context = android.content.Context;
 var System = java.lang.System;
-var Service = android.app.Service;
 var UsageEvents = android.app.usage.UsageEvents;
 var Integer = java.lang.Integer;
 
@@ -21,19 +20,17 @@ var timerID;
  * of Service class to start timer that continuously runs in
  * background to perform some task.
  */
-Service.extend("com.habitlab.TrackingService", {
+android.app.Service.extend("com.habitlab.TrackingService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
 		startTimer();
         console.log("TRACKING SERVICE CREATED");
-		return Service.START_STICKY; 
+		return android.app.Service.START_STICKY; 
 	}, 
 
-	onDestroy: function() {
-		this.super.onDestroy();
-		console.log("TRACKING SERVICE DESTROYED");
-        previousPackageName = "";
-	}, 
+    onDestroy: function() {
+        console.log("TRACKING SERVICE DESTROYED");
+    },
 
     onCreate: function() {
         // do nothing
@@ -133,9 +130,6 @@ var isServiceRunning = function () {
     }
     return false;
 };
-
-
-
 
 module.exports = {stopTimer: stopTimer, isServiceRunning: isServiceRunning};
 

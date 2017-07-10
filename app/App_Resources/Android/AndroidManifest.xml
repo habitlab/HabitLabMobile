@@ -40,8 +40,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.tns.ErrorReportActivity"/>
-		<service 
-			android:name="com.habitlab.TrackingService"
+		<service android:name="com.habitlab.TrackingService"
 			android:exported="false" >
 		</service>
 	</application>

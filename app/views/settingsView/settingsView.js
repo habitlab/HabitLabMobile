@@ -1,4 +1,3 @@
-// requires
 var application = require("application");
 const TrackingService = require("~/util/TrackingService");
 var Toast = require("nativescript-toast");
