@@ -52,5 +52,10 @@
 			android:name="com.habitlab.DateChangeService"
 			android:exported="false" >
 		</service>
+		<receiver android:name="com.habitlab.DialogRequestReceiver">
+			<intent-filter>
+		        <action android:name="my.action.string" />
+		    </intent-filter>
+		</receiver>
 	</application>
 </manifest>

@@ -69,19 +69,21 @@ exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
 };
 
-exports.getRunningServices = function() {	
 
-	// console.log("---------------------------------------------");
-	// var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
-	// var services = manager.getRunningServices(Integer.MAX_VALUE);
-	// for (var i = 0; i < services.size(); i++) {
-	// 	var service = services.get(i);
-	// 	if (service.service.getClassName() === com.habitlab.TrackingService.class.getName()) {
-	// 		console.log("=====>", service.service.getClassName());
-	// 	} else {
-	// 		console.log("      ", service.service.getClassName());
-	// 	}	
-	// }
+var utils = require("utils/utils");
+
+exports.getRunningServices = function() {	
+	console.log("---------------------------------------------");
+	var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
+	var services = manager.getRunningServices(Integer.MAX_VALUE);
+	for (var i = 0; i < services.size(); i++) {
+		var service = services.get(i);
+		if (service.service.getClassName() === com.habitlab.TrackingService.class.getName()) {
+			console.log("=====>", service.service.getClassName());
+		} else {
+			console.log("      ", service.service.getClassName());
+		}	
+	}
 }
 
 
