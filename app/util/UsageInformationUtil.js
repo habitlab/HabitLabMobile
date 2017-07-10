@@ -119,8 +119,29 @@ function getTimeOnPhoneThisWeek() {
 	for (var i = 6; i >= 0; i--) {
 		weeklyUsageStatistics.push(getTimeOnPhoneSingleDay(i));
 	}
-
 	return weeklyUsageStatistics;
+}
+
+
+
+/* getAvgTimeOnPhoneWeek
+ * ----------------------
+ * Returns the average amount of time spent on phone this week.
+ * If the week is halfway through e.g. wednesday, will return the 
+ * average time spent on phone per day for Monday and Tuesday
+ */
+
+function getAvgTimeOnPhoneWeek() {
+	var week = getTimeOnPhoneThisWeek();
+	var i;
+	var sum = 0;
+	var futureDays = 0
+	for (i = 0; i < week.length; i++) {
+		sum += week[i];
+		if (week[i] == 0) futureDays++;
+	}
+	var avg = sum/(week.length-futureDays);
+	return avg;
 }
 
 
@@ -168,6 +189,53 @@ function getApplicationList() {
 
 	return list;
 }
+
+
+/*
+ * getAppName
+ * --------------
+ * Returns the application name of the passed-in packageName.
+ * Returns "(unknown)" if there is no packageName.
+ */
+function getAppName(packageName) {
+	info = getInfo(packageName);
+	var appName = (info != null ? pm.getApplicationLabel(info) : "(unknown)");
+	return appName;
+}
+
+
+/*
+ * getInfo
+ * --------------
+ * Returns the icon source when given a packageName. 
+ * If no icon available, returns null.
+ */
+
+function getIcon(packageName) {
+	info = getInfo(packageName);
+	var iconSource = (info != null ? imageSource.fromNativeSource(info.loadIcon(pm).getBitmap()) : "~/logo.png");
+	return iconSource;
+}
+
+
+/*
+ * getInfo
+ * --------------
+ * Helper function that returns the resolveInfo when given a package name. 
+ * If no info available, returns null.
+ */
+
+function getInfo(packageName) {
+	var info = null;
+	try {
+		info = pm.getApplicationInfo(packageName, 0);
+	} catch (err) {
+		info = null;
+	}
+	return info;
+}
+
+
 
 /*
  * getPackageName
@@ -244,7 +312,9 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, 
 	getTimeOnPhoneThisWeek : getTimeOnPhoneThisWeek, 
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
-	getTimeOnAppThisWeek : getTimeOnAppThisWeek};
+	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
+	getAppName : getAppName,
+	getIcon : getIcon};
 
 
 

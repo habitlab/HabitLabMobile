@@ -1,5 +1,6 @@
 var localStorage = require( "nativescript-localstorage" );
 
+// Returns an array of the packageNames (strings)
 exports.getSelectedPackages = function() {
   return localStorage.getItem('selectedPackages');
 };
@@ -36,7 +37,8 @@ exports.togglePackage = function(packageName) {
 
 exports.setUp = function() {
   localStorage.setItem('onboarded', true);
-  localStorage.setItem('selectedPackages', ['com.facebook.katana', 'com.google.android.youtube', 'come.facebook.orca', 'com.snapchat.android', 'com.instagram.android']);
+  // localStorage.setItem('selectedPackages', ['com.facebook.katana', 'com.google.android.youtube', 'come.facebook.orca', 'com.snapchat.android', 'com.instagram.android']);
+  localStorage.setItem('selectedPackages', ['com.android.chrome']);
 };
 
 exports.isSetUp = function() {

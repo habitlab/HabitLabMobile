@@ -1,65 +1,61 @@
-var Observable = require("data/observable").Observable;
-var ObservableArray = require("data/observable-array").ObservableArray;
 var usageUtil = require('~/util/UsageInformationUtil.js');
+var storageUtil = require('~/util/StorageUtil.js');
 var view = require("ui/core/view");
-var items = new ObservableArray([]);
-var pageData = new Observable();
-var label;
+var imageSource = require("image-source");
+var thisView;
 
 
 exports.onLoad = args =>{
-	var label = args.object;
+	thisView = args.object;
+	exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
-	// var hrs = Math.floor(timeOnPhoneToday/60);
-	// var min = timeOnPhoneToday%60;
+	var goalApps = storageUtil.getSelectedPackages(); 
+	var i;
+	var apps = [];
 
-	// label.bindingContext = {
-	// 	todayHrs: hrs,
-	// 	todayMins: min
-	// };
-
-
-
-	label.bindingContext = pageData;
-
-    items.push(
-    {
-    	itemName: "Facebook",
-    	itemDesc: "Opened 6 times"
-    },
-    {
-    	itemName: "Instagram",
-    	itemDesc: "Opened 12 times"
-    },
-    {
-    	itemName: "Youtube",
-    	itemDesc: "Opened 4 times"
-    },
-    {
-    	itemName: "Snapchat",
-    	itemDesc: "Opened 17 times"
+	//populates list of apps
+	for(i = 0; i < goalApps.length; ++i) {
+    		var name = usageUtil.getAppName(goalApps[i]);
+    		// Edit when get visits
+    		var visits = 6;
+    		var imagesrc = usageUtil.getIcon(goalApps[i]);
+    		console.log(imagesrc);
+    		var appObj = new app(name, visits, imagesrc);
+    		apps.push(appObj);
     }
-    )
-    pageData.set("items", items);
+    console.dir(apps);
+   	var listView = view.getViewById(thisView, "listview");
+	listView.items = apps;
 
 
+	//'buttons' that show the usage daily overall phone usage 
+	var stats = [];
+	stats.push(
+	{
+		value: total,
+		desc: "hrs on phone"
+	},
+	{
+		value: "61",
+		desc: "unlocks"
+	}
+	)
+	var listButtons = view.getViewById(thisView, "listButtons");
+	listButtons.items = stats;
+}
 
-	// var stats = [];
-	// stats.push(
-	// {
-	// 	value: total,
-	// 	desc: "hrs on phone"
-	// },
-	// {
-	// 	value: "61",
-	// 	desc: "unlocks"
-	// }
-	// )
-	// var listButtons = view.getViewById(label, "listButtons");
-	// listButtons.items = stats;
+
+	//Object for an app that contains all the info for the lsit view 
+	function app (name, visits, imagesrc) {
+		this.name = name;
+		this.visits = visits;
+		this.image = imagesrc;
+	}
 
 }
+
+
 
 
 
