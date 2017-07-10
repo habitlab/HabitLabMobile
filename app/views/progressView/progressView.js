@@ -18,6 +18,7 @@ exports.pageLoaded = function(args) {
 		permissionUtil.launchActionUsageIntent();
 	}
 	exports.populateListViewsDay();
+	// export.populateChartDay();
 
 
 };
@@ -27,11 +28,10 @@ exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
 	var goalApps = storageUtil.getSelectedPackages(); 
-	var i;
 	var apps = [];
 
 	//populates list of apps
-	for(i = 0; i < goalApps.length; ++i) {
+	for(var i = 0; i < goalApps.length; ++i) {
     		var name = usageUtil.getAppName(goalApps[i]);
     		// Edit when get visits
     		var visits = 6;
@@ -43,10 +43,6 @@ exports.populateListViewsDay = function() {
  
    	var listView = view.getViewById(page, "listview");
 	listView.items = apps;
-
-
-
-
 
 	//'buttons' that show the usage daily overall phone usage 
 	var stats = [];
@@ -62,8 +58,6 @@ exports.populateListViewsDay = function() {
 	)
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
-
-
 };
 
 
@@ -72,8 +66,27 @@ exports.populateListViewsDay = function() {
 		this.name = name;
 		this.visits = visits;
 		this.image = imagesrc;
+		if (mins < 0) mins = 0;
 		this.mins = mins;
 	};
+
+
+exports.populateChartDay() {
+	var apps = usageUtil.getAppsToday();
+	console.dir(apps);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 exports.toggleDrawer = function() {

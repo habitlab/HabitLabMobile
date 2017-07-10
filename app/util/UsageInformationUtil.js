@@ -17,6 +17,7 @@ var pm = context.getPackageManager();
 var mainIntent = new Intent(Intent.ACTION_MAIN, null);
 mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0);
+//const DAY_MS = 86400000;
 
 
 /* getTimeOnAppThisWeek
@@ -56,7 +57,6 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
 
 	var endOfTarget = Calendar.getInstance();
 	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
-	
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
@@ -72,12 +72,7 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
  * has been active.
  */
 function getTimeOnPhoneSingleDay(daysAgo) {
-	var startOfTarget = Calendar.getInstance();
-	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-	startOfTarget.set(Calendar.MINUTE, 0);
-	startOfTarget.set(Calendar.SECOND, 0);
-	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
-
+	var startOfTarget = getStartOfDay(daysAgo);
 	var endOfTarget = Calendar.getInstance();
 	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
 	
@@ -101,6 +96,68 @@ function getTimeOnPhoneSingleDay(daysAgo) {
 	totalTimeOnPhone = Math.round(totalTimeOnPhone/60000);
     return totalTimeOnPhone;
 }
+
+
+/* getTimeOnPhoneSingleDay
+ * -----------------------
+ * Helper function, returns a calendar object of the start of a day,
+ * provided with the number of days ago 
+ */
+function getStartOfDay(daysAgo) {
+	var startOfTarget = Calendar.getInstance();
+	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+	startOfTarget.set(Calendar.MINUTE, 0);
+	startOfTarget.set(Calendar.SECOND, 0);
+	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
+	return startOfTarget;
+};
+
+/* getTimeOnPhoneSingleDay
+ * -----------------------
+ * Returns the apps used today. Speicifcally returns an array of objects, 
+ * where each object is the name of the app and the number of minutes spent on the app today.
+ */
+
+function getAppsToday() {
+	var start = startOfTarget(0);
+	var endOfTarget = Calendar.getInstance();
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+    var apps = [];
+
+    for (var i = 0; i < applications.size(); i++) {
+		var info = applications.get(i);
+		// get package name
+		var packageName = getPackageName(info);
+		//Time on one app
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage != 0) {
+			var name = info.loadLabel(pm).toString();
+			var mins = appUsage/6000;
+		}
+		var app {
+			name: name,
+			mins: mins
+		};
+		apps.push(app);
+
+	}
+	apps.sort(function compare(a,b) {
+		if(a.mins < b.mins){
+			return -1;
+		} 
+		if (a.mins > b.mins) {
+			return 1;
+		}
+		return 0;
+	}
+	return apps;
+};
+
+
+
 
 
 /* getTimeOnPhoneThisWeek
@@ -133,10 +190,9 @@ function getTimeOnPhoneThisWeek() {
 
 function getAvgTimeOnPhoneWeek() {
 	var week = getTimeOnPhoneThisWeek();
-	var i;
 	var sum = 0;
-	var futureDays = 0
-	for (i = 0; i < week.length; i++) {
+	var futureDays = 0;
+	for (var i = 0; i < week.length; i++) {
 		sum += week[i];
 		if (week[i] == 0) futureDays++;
 	}
@@ -158,11 +214,7 @@ function getAvgTimeOnPhoneWeek() {
  */
 function getApplicationList() {
  	// 4 weeks ago
- 	var startOfTarget = Calendar.getInstance();
-	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-	startOfTarget.set(Calendar.MINUTE, 0);
-	startOfTarget.set(Calendar.SECOND, 0);
-	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * 27));
+	var startOfTarget = getStartOfDay(27);
 
  	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), System.currentTimeMillis());
@@ -186,9 +238,8 @@ function getApplicationList() {
 
 		list.push(applicationObj);
 	}
-
 	return list;
-}
+};
 
 
 /*
@@ -314,7 +365,8 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
 	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
 	getAppName : getAppName,
-	getIcon : getIcon};
+	getIcon : getIcon,
+	getAppsToday : getAppsToday};
 
 
 
