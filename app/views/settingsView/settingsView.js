@@ -70,7 +70,7 @@ exports.toggleDrawer = function() {
 };
 
 exports.getRunningServices = function() {	
-	
+
 	// console.log("---------------------------------------------");
 	// var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
 	// var services = manager.getRunningServices(Integer.MAX_VALUE);

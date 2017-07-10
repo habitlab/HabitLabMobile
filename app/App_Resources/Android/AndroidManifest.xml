@@ -48,5 +48,9 @@
 			android:name="com.habitlab.UnlockService"
 			android:exported="false" >
 		</service>
+		<service 
+			android:name="com.habitlab.DateChangeService"
+			android:exported="false" >
+		</service>
 	</application>
 </manifest>
