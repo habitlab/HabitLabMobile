@@ -1,5 +1,6 @@
 var application = require("application");
 var context = application.android.context.getApplicationContext();
+var StorageUtil = require('~/util/StorageUtil');
 
 // expose native APIs
 var IntentFilter = android.content.IntentFilter;
@@ -18,8 +19,10 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
 
         if (action === Intent.ACTION_SCREEN_ON) {
             console.log("RECEIVER: Screen On!");
+            StorageUtil.glanced();
         } else if (action === Intent.ACTION_USER_PRESENT) {
             console.log("RECEIVER: Unlocked!");
+            StorageUtil.unlocked();
         }        
     }
 });
