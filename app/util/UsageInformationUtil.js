@@ -119,41 +119,41 @@ function getStartOfDay(daysAgo) {
  */
 
 function getAppsToday() {
-	var start = startOfTarget(0);
-	var endOfTarget = Calendar.getInstance();
+	// var start = startOfTarget(0);
+	// var endOfTarget = Calendar.getInstance();
 
-	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
-    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
-    var apps = [];
+	// var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+ //    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+ //    var apps = [];
 
-    for (var i = 0; i < applications.size(); i++) {
-		var info = applications.get(i);
-		// get package name
-		var packageName = getPackageName(info);
-		//Time on one app
-		var appUsageStats = usageStatsMap.get(packageName);
-		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage != 0) {
-			var name = info.loadLabel(pm).toString();
-			var mins = appUsage/6000;
-		}
-		var app {
-			name: name,
-			mins: mins
-		};
-		apps.push(app);
+ //    for (var i = 0; i < applications.size(); i++) {
+	// 	var info = applications.get(i);
+	// 	// get package name
+	// 	var packageName = getPackageName(info);
+	// 	//Time on one app
+	// 	var appUsageStats = usageStatsMap.get(packageName);
+	// 	var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+	// 	if (appUsage != 0) {
+	// 		var name = info.loadLabel(pm).toString();
+	// 		var mins = appUsage/6000;
+	// 	}
+	// 	var app {
+	// 		name: name,
+	// 		mins: mins
+	// 	};
+	// 	apps.push(app);
 
-	}
-	apps.sort(function compare(a,b) {
-		if(a.mins < b.mins){
-			return -1;
-		} 
-		if (a.mins > b.mins) {
-			return 1;
-		}
-		return 0;
-	}
-	return apps;
+	// }
+	// apps.sort(function compare(a,b) {
+	// 	if(a.mins < b.mins){
+	// 		return -1;
+	// 	} 
+	// 	if (a.mins > b.mins) {
+	// 		return 1;
+	// 	}
+	// 	return 0;
+	// }
+	// return apps;
 };
 
 
