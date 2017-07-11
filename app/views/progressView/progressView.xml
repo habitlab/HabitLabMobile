@@ -29,7 +29,7 @@
 					   <TabViewItem.view>
 					   		<!-- <dayTab:dayTab/> -->
 					   		<StackLayout>
-
+					   			<!-- <Label text="test" /> -->
 					   		<!-- 	<taskPie:TaskPie id="pie"
 					   			                   counts="{{ taskCounts }}"
 					   			                   pieSize="{{ pieSize }}"
@@ -70,7 +70,6 @@
 		   			        	            <Label row ="0" col="2" text="{{ mins + ' mins' }}" class="list-group-item-text"/>
 				   			        	</GridLayout>
 				   			        </lv:RadListView.itemTemplate>
-
 				   			    </lv:RadListView>
 
 					   		</StackLayout>
@@ -80,9 +79,19 @@
 					 <TabViewItem title="Week" xmlns:weekTab="progressTabs/weekTab">
 						 <TabViewItem.view>
 							 <!-- <weekTab:weekTab/> -->
-
-
-
+							 <Label text="test" />
+							 		<!-- <lv:RadListView id="weekButtons" class="list-group">
+				   					<lv:RadListView.listViewLayout>
+				   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+				   			        </lv:RadListView.listViewLayout>
+				   			        <lv:RadListView.itemTemplate>
+				   			            <StackLayout class="list-buttons">
+				   			                <Label text="{{ value }}" class="list-number" />
+				   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
+				   			            </StackLayout>
+				   			        </lv:RadListView.itemTemplate>
+				   			    </lv:RadListView>
+ -->
 
 
 
@@ -93,6 +102,7 @@
 					<TabViewItem title="Month" xmlns:monthTab="progressTabs/monthTab">
 						 <TabViewItem.view>
 						     <!-- <monthTab:monthTab/> -->
+						     <Label text="test" />
 				       </TabViewItem.view>
 
 					 </TabViewItem>
