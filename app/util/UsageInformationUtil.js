@@ -196,7 +196,7 @@ function getAvgTimeOnPhoneWeek() {
 		if (week[i] == 0) futureDays++;
 	}
 	var avg = sum/(week.length-futureDays);
-	return avg;
+	return Math.round(avg);
 }
 
 
@@ -365,7 +365,8 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
 	getAppName : getAppName,
 	getIcon : getIcon,
-	getAppsToday : getAppsToday};
+	getAppsToday : getAppsToday,
+	getAvgTimeOnPhoneWeek : getAvgTimeOnPhoneWeek};
 
 
 

@@ -16,7 +16,7 @@ exports.pageLoaded = function(args) {
 
 	exports.populateListViewsDay();
 	// // export.populateChartDay();
-	// exports.populateListViewsWeek();
+	exports.populateListViewsWeek();
 
 
 };
@@ -25,7 +25,7 @@ exports.pageLoaded = function(args) {
 exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
-	//var unlocks = storageUtil.getUnlocks(java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
+	var unlocks = storageUtil.getUnlocks(java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
 	var goalApps = storageUtil.getSelectedPackages(); 
 	var apps = [];
 
@@ -51,7 +51,7 @@ exports.populateListViewsDay = function() {
 		desc: "hrs on phone"
 	},
 	{
-		value: 65,
+		value: unlocks,
 		desc: "unlocks"
 	}
 	)
@@ -76,23 +76,23 @@ exports.populateListViewsDay = function() {
 // // }
 
 
-// exports.populateListViewsWeek = function() {
-// 	var timeOnPhoneWeek = usageUtil.getAvgTimeOnPhoneWeek();
-// 	var weekStats = [];
-// 	weekStats.push(
-// 	{
-// 		value: timeOnPhoneWeek,
-// 		desc: "avg time on phone/day"
-// 	},
-// 	{
-// 		value: 72,
-// 		desc: "avg unlocks/day"
-// 	}
-// 	)
-// 	var weekButtons = view.getViewById(page, "weekButtons");
-// 	weekButtons.items = weekStats;
+exports.populateListViewsWeek = function() {
+	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek()/6)/10;
+	var weekStats = [];
+	weekStats.push(
+	{
+		value: timeOnPhoneWeek,
+		desc: "avg min on phone/day"
+	},
+	{
+		value: 72,
+		desc: "avg unlocks/day"
+	}
+	)
+	var weekButtons = view.getViewById(page, "weekButtons");
+	weekButtons.items = weekStats;
 
-// }
+}
 
 
 
