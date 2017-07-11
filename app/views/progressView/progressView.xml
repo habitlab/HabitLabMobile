@@ -80,6 +80,7 @@
 						 <TabViewItem.view>
 							 <!-- <weekTab:weekTab/> -->
 							 <!-- <Label text="test" /> -->
+							 <!-- 	For the horizontal button like displays  -->
 							 		<lv:RadListView id="weekButtons" class="list-group">
 				   					<lv:RadListView.listViewLayout>
 				   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
@@ -92,7 +93,23 @@
 				   			        </lv:RadListView.itemTemplate>
 				   			    </lv:RadListView>
 
-
+				   			    <!-- 
+				   			    For the list of goal apps and their time usage -->
+				   			   <!--  <lv:RadListView id="weekList" class="list-group">
+				   					<lv:RadListView.listViewLayout>
+				   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
+				   			        </lv:RadListView.listViewLayout>
+				   			        <lv:RadListView.itemTemplate>
+				   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+		   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+		   			        	            <Label row="0" col="1" text="{{ name }}" class="list-group-item-heading"/>
+		   			        	            <StackLayout row ="0" col="2">
+			   			        	            <Label text="{{ avgMins }}" class="list-group-item-text"/>
+			   			        	            <Label text="avg mins per day" class="list-group-item-text"/>
+		   			        	        	</StackLayout>
+				   			        	</GridLayout>
+				   			        </lv:RadListView.itemTemplate>
+				   			    </lv:RadListView> -->
 
 
 

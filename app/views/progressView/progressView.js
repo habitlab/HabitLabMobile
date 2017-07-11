@@ -15,8 +15,10 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById("sideDrawer");
 
 	exports.populateListViewsDay();
-	// // export.populateChartDay();
+	//export.populateChartDay();
 	exports.populateListViewsWeek();
+	var appsToday = usageUtil.getAppsToday();
+	console.dir(appsToday);
 
 
 };
@@ -60,7 +62,7 @@ exports.populateListViewsDay = function() {
 };
 
 
-	// Object for an app that contains all the info for the lsit view 
+	// Object for an app that contains all the info for the list view 
 	function app (name, visits, imagesrc, mins) {
 		this.name = name;
 		this.visits = visits;
@@ -70,15 +72,21 @@ exports.populateListViewsDay = function() {
 	};
 
 
-// // exports.populateChartDay() {
-// // 	var apps = usageUtil.getAppsToday();
-// // 	console.dir(apps);
-// // }
+	function weekApp(name, avgMins, imagesrc) {
+		this.name = name;
+		if (avgMins < 0) avgMins = 0;
+		this.avgMins = avgMins;
+		// this.perChange = perChange;
+		this.image = imagesrc;
+	}
+
+
 
 
 exports.populateListViewsWeek = function() {
 	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek()/6)/10;
 	var weekStats = [];
+	var goalApps = storageUtil.getSelectedPackages(); 
 	weekStats.push(
 	{
 		value: timeOnPhoneWeek,
@@ -92,10 +100,26 @@ exports.populateListViewsWeek = function() {
 	var weekButtons = view.getViewById(page, "weekButtons");
 	weekButtons.items = weekStats;
 
-}
+
+	var weekApps=[];
+
+	for(var i = 0; i < goalApps.length; ++i) {
+    		var name = usageUtil.getAppName(goalApps[i]);
+    		var avgMins = usageUtil.getAvgTimeOnAppWeek(goalApps[i]);
+    		var imagesrc = usageUtil.getIcon(goalApps[i]);
+    		var appObj = new weekApp(name, avgMins, imagesrc);
+    		weekApps.push(appObj);
+    }
+    //Why isn't this working ??
+ //    var weekList = view.getViewById("weekList");
+	// weekList.items = weekApps;
+ }
 
 
-
+// exports.populateChartDay = function () {
+// 	var appsToday = usageUtil.getAppsToday();
+// 	console.dir(appsToday);
+// }
 
 
 
