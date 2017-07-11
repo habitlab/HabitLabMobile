@@ -25,10 +25,7 @@ var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.cla
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
 
 exports.pageLoaded = function(args) {
-	drawer = args.object.getViewById("sideDrawer");
-	if (!PermissionUtil.checkActionUsagePermission()) {
-		PermissionUtil.launchActionUsageIntent();
-	} 
+	drawer = args.object.getViewById("sideDrawer"); 
 }
 
 exports.enableService = function() {
