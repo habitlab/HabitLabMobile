@@ -44,7 +44,7 @@ function getTimeOnAppThisWeek(packageName) {
 
 /* getTimeOnApplicationSingleDay
  * -----------------------------
- * Returns time (in ms since epoch) that the provided application
+ * Returns time (in minutes since epoch) that the provided application
  * has been active. Returns -1 if there is no usage information
  * found.
  */
@@ -62,7 +62,7 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
 
     var stats = usageStatsMap.get(packageName);
-    return stats === null ? -1 : stats.getTotalTimeInForeground();
+    return stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000);
 }
 
 
@@ -120,30 +120,29 @@ function getStartOfDay(daysAgo) {
 
 function getAppsToday() {
 	// var start = startOfTarget(0);
-	// var endOfTarget = Calendar.getInstance();
+	// var end = Calendar.getInstance();
 
 	// var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
- //    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+ //    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
  //    var apps = [];
 
  //    for (var i = 0; i < applications.size(); i++) {
 	// 	var info = applications.get(i);
-	// 	// get package name
-	// 	var packageName = getPackageName(info);
-	// 	//Time on one app
+	// 	var packageName = getPackageName(info); 
 	// 	var appUsageStats = usageStatsMap.get(packageName);
 	// 	var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-	// 	if (appUsage != 0) {
-	// 		var name = info.loadLabel(pm).toString();
-	// 		var mins = appUsage/6000;
-	// 	}
+	// 	if (appUsage == 0) continue;
+
+	// 	var name = appUsageStats.getPackageName();
+	// 	var mins = appUsage/6000;
 	// 	var app {
-	// 		name: name,
-	// 		mins: mins
+	// 	name: name,
+	// 	mins: mins
 	// 	};
 	// 	apps.push(app);
-
+		
 	// }
+	// console.dir(apps);
 	// apps.sort(function compare(a,b) {
 	// 	if(a.mins < b.mins){
 	// 		return -1;
@@ -197,7 +196,7 @@ function getAvgTimeOnPhoneWeek() {
 		if (week[i] == 0) futureDays++;
 	}
 	var avg = sum/(week.length-futureDays);
-	return avg;
+	return Math.round(avg);
 }
 
 
@@ -366,7 +365,8 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
 	getAppName : getAppName,
 	getIcon : getIcon,
-	getAppsToday : getAppsToday};
+	getAppsToday : getAppsToday,
+	getAvgTimeOnPhoneWeek : getAvgTimeOnPhoneWeek};
 
 
 

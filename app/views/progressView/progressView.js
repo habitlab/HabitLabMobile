@@ -14,11 +14,9 @@ exports.pageLoaded = function(args) {
 	page = args.object;
   drawer = page.getViewById("sideDrawer");
 
-  if (!permissionUtil.checkActionUsagePermission()) {
-		permissionUtil.launchActionUsageIntent();
-	}
 	exports.populateListViewsDay();
-	// export.populateChartDay();
+	// // export.populateChartDay();
+	exports.populateListViewsWeek();
 
 
 };
@@ -27,6 +25,7 @@ exports.pageLoaded = function(args) {
 exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
+	var unlocks = storageUtil.getUnlocks(java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
 	var goalApps = storageUtil.getSelectedPackages(); 
 	var apps = [];
 
@@ -34,7 +33,7 @@ exports.populateListViewsDay = function() {
 	for(var i = 0; i < goalApps.length; ++i) {
     		var name = usageUtil.getAppName(goalApps[i]);
     		// Edit when get visits
-    		var visits = 6;
+    		var visits = storageUtil.getVisits(goalApps[i], java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
     		var imagesrc = usageUtil.getIcon(goalApps[i]);
     		var mins = usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0);
     		var appObj = new app(name, visits, imagesrc, mins);
@@ -52,7 +51,7 @@ exports.populateListViewsDay = function() {
 		desc: "hrs on phone"
 	},
 	{
-		value: "61",
+		value: unlocks,
 		desc: "unlocks"
 	}
 	)
@@ -61,7 +60,7 @@ exports.populateListViewsDay = function() {
 };
 
 
-	//Object for an app that contains all the info for the lsit view 
+	// Object for an app that contains all the info for the lsit view 
 	function app (name, visits, imagesrc, mins) {
 		this.name = name;
 		this.visits = visits;
@@ -71,13 +70,29 @@ exports.populateListViewsDay = function() {
 	};
 
 
-exports.populateChartDay() {
-	var apps = usageUtil.getAppsToday();
-	console.dir(apps);
+// // exports.populateChartDay() {
+// // 	var apps = usageUtil.getAppsToday();
+// // 	console.dir(apps);
+// // }
+
+
+exports.populateListViewsWeek = function() {
+	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek()/6)/10;
+	var weekStats = [];
+	weekStats.push(
+	{
+		value: timeOnPhoneWeek,
+		desc: "avg min on phone/day"
+	},
+	{
+		value: 72,
+		desc: "avg unlocks/day"
+	}
+	)
+	var weekButtons = view.getViewById(page, "weekButtons");
+	weekButtons.items = weekStats;
+
 }
-
-
-
 
 
 
