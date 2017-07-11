@@ -2,51 +2,32 @@ var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var UsageUtil = require("~/util/UsageInformationUtil");
 var StorageUtil = require("~/util/StorageUtil");
 var gestures = require("ui/gestures").GestureTypes;
-
+var builder = require('ui/builder');
+var layout = require("ui/layouts/grid-layout");
 
 const NUM_GRID_SLOTS = 9;
 var drawer;
-var grid;
 var list;
+var grid;
 
 var setOnTap = function(image, packageName, selector) {
   image.on(gestures.tap, function() {
     var selected = StorageUtil.togglePackage(packageName);
-    selector.src = selected ? '~/images/selected.png' : '';
+    selector.visibility = selected ? 'visible' : 'hidden';
   });
-};
-
-var setGridInfo = function() {
-
-  for (var i = 0; i < NUM_GRID_SLOTS && i < list.length; i++) {
-    var cell = grid.getViewById("cell" + i);
-    var image = cell.getViewById("img");
-    var label = cell.getViewById("lbl");
-    var usage = cell.getViewById("usg");
-    var selector = cell.getViewById("slctr");
-
-    label.text = list[i].label;
-    image.src = list[i].iconSource;
-
-    selector.src = StorageUtil.isPackageSelected(list[i].packageName) ? '~/images/selected.png' : '';
-
-    var mins = Math.ceil(list[i].averageUsage / 60000);
-    if (mins || mins === 0) {
-      usage.text = mins + ' min/day';
-      if (mins >= 15) {
-        usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
-      }
-    }
-
-    setOnTap(image, list[i].packageName, selector);
-  }
-
 };
 
 exports.pageLoaded = function(args) {
   drawer = args.object.getViewById('sideDrawer');
-  grid = args.object.getViewById('appgrid');
-  
+  grid = args.object.getViewById('grid');
+  createGrid();
+};
+
+exports.toggleDrawer = function() {
+  drawer.toggleDrawerState();
+};
+
+var createGrid = function() {
   // order by things with icon then by usage
   list = UsageUtil.getApplicationList();
   list.sort(function compare(a, b) {
@@ -58,10 +39,46 @@ exports.pageLoaded = function(args) {
     return parseFloat(b.averageUsage) - parseFloat(a.averageUsage);
   });
 
-  setGridInfo();
+  grid.addColumn(new layout.ItemSpec(1, layout.GridUnitType.STAR));
+  grid.addColumn(new layout.ItemSpec(1, layout.GridUnitType.STAR));
+  grid.addColumn(new layout.ItemSpec(1, layout.GridUnitType.STAR));
 
+  for (var i = 0; i < list.length; i++) {
+    if (i % 3 === 0) {
+      var row = new layout.ItemSpec(1, layout.GridUnitType.AUTO);
+      grid.addRow(row);
+    }
+    grid.addChild(createCell(list[i], Math.floor(i/3), i%3));
+  }
 };
 
-exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
+var setCellInfo = function(cell, info) {
+  var image = cell.getViewById("img");
+  var label = cell.getViewById("lbl");
+  var usage = cell.getViewById("usg");
+  var selector = cell.getViewById("slctr");
+
+  label.text = info.label;
+  image.src = info.iconSource;
+  selector.visibility = StorageUtil.isPackageSelected(info.packageName) ? 'visible' : 'hidden';
+
+  var mins = Math.ceil(info.averageUsage / 60000);
+  if (mins || mins === 0) {
+    usage.text = mins + ' min/day';
+    if (mins >= 15) {
+      usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
+    }
+  }
+  setOnTap(image, info.packageName, selector);
+};
+
+var createCell = function(info, r, c)  {
+  var cell = builder.load({
+    path: 'shared/appgridcell',
+    name: 'appgridcell'
+  });
+  setCellInfo(cell, info);
+  layout.GridLayout.setRow(cell, r);
+  layout.GridLayout.setColumn(cell, c);
+  return cell;
 };

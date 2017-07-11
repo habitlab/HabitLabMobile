@@ -1,6 +1,5 @@
 <Page loaded="pageLoaded"
   xmlns:sidedrawer="shared/sd"
-  xmlns:appgrid="shared/appgrid" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
@@ -15,7 +14,9 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <appgrid:appgrid/>
+      <ScrollView orientation="vertical">
+        <GridLayout id="grid" />
+      </ScrollView>
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>

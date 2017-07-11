@@ -6,7 +6,6 @@ var view = 'onboardingView';
 if (StorageUtil.isSetUp()) {
   view = 'navView';
 }
-
 applicationModule.start({ moduleName: "views/" + view + "/" + view});
 applicationModule.setCssFileName("app.css");
 
