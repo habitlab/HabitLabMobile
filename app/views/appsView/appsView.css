@@ -1,11 +1,12 @@
 .app-cell-img {
-  width: 80%;
-  transform: translateX(10%);
+  width: 60%;
+  left: 25%;
 }
 
 .app-cell-lbl {
   color: black;
   text-align: center;
+  font-size: 15%;
 }
 
 .app-cell-usg {
@@ -14,8 +15,8 @@
 }
 
 .app-cell-selector {
-  transform: translate(80%, -5%);
   width: 30%;
+  transform: translate(80%, -5%);
 }
 
 .red {
@@ -28,4 +29,14 @@
 
 .app-cell {
   align-contents: middle;
+}
+
+StackLayout {
+  padding-bottom: 15%;
+  padding-top: 15%;
+}
+
+ScrollView {
+  width: 80%;
+  margin: auto;
 }

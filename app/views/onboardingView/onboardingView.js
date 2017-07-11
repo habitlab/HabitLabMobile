@@ -51,6 +51,5 @@ exports.goToNavView = function(args) {
     StorageUtil.setUp();
   }
 
-  console.log(StorageUtil.getSelectedPackages());
   frameModule.topmost().navigate("views/navView/navView");
 };

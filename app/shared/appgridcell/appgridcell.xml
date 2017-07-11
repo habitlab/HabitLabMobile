@@ -1,7 +1,7 @@
 <StackLayout orientation="vertical">
   <AbsoluteLayout>
-    <Image id="img" class="app-cell-img"/>
-    <Image id="slctr" class="app-cell-selector" />
+    <Image id="img" class="app-cell-img" horizontalAlignment="center" />
+    <Image id="slctr" class="app-cell-selector" src='~/images/selected.png' />
   </AbsoluteLayout>
   <Label id="lbl" class="app-cell-lbl" />
   <Label id="usg" class="app-cell-usg" text='no data' />

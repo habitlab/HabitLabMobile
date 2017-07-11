@@ -6,10 +6,8 @@ var view = 'onboardingView';
 if (StorageUtil.isSetUp()) {
   view = 'navView';
 }
-
 applicationModule.start({ moduleName: "views/" + view + "/" + view});
 applicationModule.setCssFileName("app.css");
-
 
 /** Set up receiver for phone unlocks/glances (somewhat of an inner class) **/
 var BroadcastReceiver = android.content.BroadcastReceiver;
