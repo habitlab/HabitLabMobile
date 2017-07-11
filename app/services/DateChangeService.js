@@ -7,6 +7,13 @@ var Integer = java.lang.Integer;
 
 var context = application.android.context.getApplicationContext();
 
+/*
+ * com.habitlab.DateChangeService
+ * ------------------------------
+ * Extension of Android Service class. Overrides onStartCommand
+ * of Service class to set up receiver that is activated by a 
+ * change in date.
+ */
 android.app.Service.extend("com.habitlab.DateChangeService", {
     onStartCommand: function(intent, flags, startId) {
         this.super.onStartCommand(intent, flags, startId);
@@ -28,6 +35,13 @@ android.app.Service.extend("com.habitlab.DateChangeService", {
     }
 });
 
+
+/*
+ * setUpService
+ * ------------
+ * Registers the receiver that will activate when the date changes
+ * (i.e. 12:00 AM each day). 
+ */
 var setUpService = function () {
     application.android.registerBroadcastReceiver(android.content.Intent.ACTION_DATE_CHANGED,
         function onReceiveCallback(context, intent) {

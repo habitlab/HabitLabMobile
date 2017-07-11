@@ -1,6 +1,6 @@
 var application = require("application");
 
-const TrackingService = require("~/services/TrackingService");
+// const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
 const ServiceManager = require("~/services/ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");
@@ -17,44 +17,49 @@ var Process = android.os.Process;
 var Context = android.content.Context;
 var ActivityManager = android.app.ActivityManager;
 var Integer = java.lang.Integer;
-var drawer;
 
 // global vars
 var context = application.android.context.getApplicationContext();
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
+var page;
+var drawer;
 
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 
 }
 
-exports.enableService = function() {
+exports.toggleServices = function() {
+	if (checkServicesRunning()) {
+		disableServices();
+	} else {
+		enableServices();
+	}
+}
+
+exports.enableServices = function() {
 	if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-		Toast.makeText("Tracking Enabled").show();
 		context.startService(trackingServiceIntent);
 	}
 
 	if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-		Toast.makeText("Unlocks Enabled").show();
 		context.startService(unlockServiceIntent);
 	}
 }
 
-exports.disableService = function () {
+exports.disableServices = function () {
 	if (ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-		Toast.makeText("Tracking Disabled").show();
 		TrackingService.stopTimer();
 		context.stopService(trackingServiceIntent);
 	}
 
 	if (ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-		Toast.makeText("Unlocks Disabled").show();
 		context.stopService(unlockServiceIntent);
 	}
 }
 
 exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
+	drawer.toggleDrawerState();
 };
 
 exports.getRunningServices = function() {

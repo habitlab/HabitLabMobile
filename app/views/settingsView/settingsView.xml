@@ -16,8 +16,8 @@
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 
       <StackLayout orientation="vertical">
-        <Button text="Enable Service" tap="enableService" />
-        <Button text="Disable Service" tap="disableService" />
+        <Button text="Enable Service" tap="enableServices" />
+        <Button text="Disable Service" tap="disableServices" />
         <Button text="Get Running Services" tap="getRunningServices" />
       </StackLayout>
 

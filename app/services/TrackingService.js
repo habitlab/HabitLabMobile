@@ -1,10 +1,10 @@
 // requires
 var application = require("application");
-var Toast = require("nativescript-toast");
 var Timer = require("timer");
+const InterventionManager = require("~/interventions/InterventionManager");
 
 // utils
-var NotificationUtil = require("~/util/NotificationUtil.js");
+var StorageUtil = require("~/util/StorageUtil");
 
 // expose native APIs
 var Context = android.content.Context;
@@ -80,15 +80,15 @@ var stopTimer = function() {
  * trackUsage
  * ----------
  * Function to be run at predetermined intervals in the 
- * background.
+ * background. Plugs interventions into the device.
  */
 var trackUsage = function () {
     var packageName = getActivePackage();
-    if (packageName) {
-        console.log(packageName);
+    if (packageName && StorageUtil.isPackageSelected(packageName)) {
+        StorageUtil.visited(packageName); // log a visit
 
-        /* 1. Check blacklisted packages  *
-         * 2. Plug in Intervention        */
+        /* Plug in interventions HERE */
+        InterventionManager.visitedToast(packageName);
     }
 };
 

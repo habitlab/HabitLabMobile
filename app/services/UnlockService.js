@@ -56,6 +56,12 @@ android.app.Service.extend("com.habitlab.UnlockService", {
 });
 
 
+/*
+ * setUpreceiver
+ * -------------
+ * Registers receivers on the device to detect screen
+ * glances and screen unlocks.
+ */
 function setUpReceiver() {
     context.registerReceiver(receiver, filterOn);
     context.registerReceiver(receiver, filterUnlocked);   
