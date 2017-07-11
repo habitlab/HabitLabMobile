@@ -15,7 +15,7 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <ScrollView orientation="vertical">
-        <GridLayout id="grid" />
+        <GridLayout id="grid" columns="*,*,*" />
       </ScrollView>
     </sd:RadSideDrawer.mainContent>
 
