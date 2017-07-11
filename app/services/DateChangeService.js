@@ -36,23 +36,4 @@ var setUpService = function () {
         });
 }
 
-
-/*
- * isServiceRunning
- * ----------------
- * Checks whether TrackingService is active on the device. Called
- * from other modules. 
- */
-var isServiceRunning = function () {
-    var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
-    var services = manager.getRunningServices(Integer.MAX_VALUE);
-    for (var i = 0; i < services.size(); i++) {
-        var service = services.get(i);
-        if (service.service.getClassName() === com.habitlab.DateChangeService.class.getName()) {
-            return true;
-        }
-    }
-    return false;
-};
-
-module.exports = {isServiceRunning: isServiceRunning};
+module.exports = {};

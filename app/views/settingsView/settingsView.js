@@ -1,6 +1,9 @@
 var application = require("application");
-const TrackingService = require("~/util/TrackingService");
-const UnlockService = require("~/util/UnlockService");
+
+const TrackingService = require("~/services/TrackingService");
+const UnlockService = require("~/services/UnlockService");
+const ServiceManager = require("~/services/ServiceManager");
+
 var Toast = require("nativescript-toast");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var dialogs = require("ui/dialogs");
@@ -41,25 +44,25 @@ exports.pageLoaded = function(args) {
 }
 
 exports.enableService = function() {
-	if (!TrackingService.isServiceRunning()) {
+	if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
 		Toast.makeText("Tracking Enabled").show();
 		context.startService(trackingServiceIntent);
 	}
 
-	if (!UnlockService.isServiceRunning()) {
+	if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
 		Toast.makeText("Unlocks Enabled").show();
 		context.startService(unlockServiceIntent);
 	}
 }
 
 exports.disableService = function () {
-	if (TrackingService.isServiceRunning()) {
+	if (ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
 		Toast.makeText("Tracking Disabled").show();
 		TrackingService.stopTimer();
 		context.stopService(trackingServiceIntent);
 	}
 
-	if (UnlockService.isServiceRunning()) {
+	if (ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
 		Toast.makeText("Unlocks Disabled").show();
 		context.stopService(unlockServiceIntent);
 	}
@@ -69,21 +72,8 @@ exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
 };
 
-
-var utils = require("utils/utils");
-
-exports.getRunningServices = function() {	
-	console.log("---------------------------------------------");
-	var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
-	var services = manager.getRunningServices(Integer.MAX_VALUE);
-	for (var i = 0; i < services.size(); i++) {
-		var service = services.get(i);
-		if (service.service.getClassName() === com.habitlab.TrackingService.class.getName()) {
-			console.log("=====>", service.service.getClassName());
-		} else {
-			console.log("      ", service.service.getClassName());
-		}	
-	}
+exports.getRunningServices = function() {
+	ServiceManager.getRunningServices();
 }
 
 
