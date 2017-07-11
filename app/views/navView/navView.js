@@ -1,3 +1,6 @@
+var application = require("application");
+const PermissionUtil = require("~/util/PermissionUtil");
+
 var frameModule = require("ui/frame");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var drawer;
@@ -24,12 +27,7 @@ exports.toggleDrawer = function() {
 
 exports.pageLoaded = function(args) {
   drawer = args.object.getViewById('sideDrawer');
+  if (!PermissionUtil.checkActionUsagePermission()) {
+		PermissionUtil.launchActionUsageIntent();
+	}  
 };
-
-//var applicationModule = require("application");
-// var context = applicationModule.android.context.getApplicationContext();
-// const DateChangeService = require("~/util/DateChangeService");
-
-// var dateChangeServiceIntent = new android.content.Intent(context, com.habitlab.DateChangeService.class);
-
-// context.startService(dateChangeServiceIntent);

@@ -7,11 +7,6 @@ var AppOpsManager = android.app.AppOpsManager;
 var Process = android.os.Process;
 var Context = android.content.Context;
 
-// contexts
-var context = application.android.context.getApplicationContext();
-var foregroundActivity = application.android.foregroundActivity;
-
-
 /* checkActionUsagePermission
  * --------------------------
  * Checks the system for the permission required to 
@@ -20,6 +15,7 @@ var foregroundActivity = application.android.foregroundActivity;
  * otherwise.
  */
 function checkActionUsagePermission() {
+	var context = application.android.context.getApplicationContext();
 	var appOps = context.getSystemService(Context.APP_OPS_SERVICE);
 	var mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.getPackageName());
     return mode === AppOpsManager.MODE_ALLOWED;
@@ -34,6 +30,7 @@ function checkActionUsagePermission() {
  * allow permission.
  */
 function launchActionUsageIntent() {
+	var foregroundActivity = application.android.foregroundActivity;
 	var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
 	foregroundActivity.startActivity(int);	
 }

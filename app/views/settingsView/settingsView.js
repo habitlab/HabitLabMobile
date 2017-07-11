@@ -3,6 +3,7 @@ var application = require("application");
 const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
 const ServiceManager = require("~/services/ServiceManager");
+const PermissionUtil = require("~/util/PermissionUtil");
 
 var Toast = require("nativescript-toast");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
@@ -23,23 +24,10 @@ var context = application.android.context.getApplicationContext();
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
 
-// only here until added to onboarding
-function checkActionUsagePermission() {
-	var appOps = context.getSystemService(Context.APP_OPS_SERVICE);
-	var mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.getPackageName());
-    return mode === AppOpsManager.MODE_ALLOWED;
-}
-
-// only here until added to onboarding
-function launchActionUsageIntent() {
-	var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-	application.android.foregroundActivity.startActivity(int);	
-}
-
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer");
-	if (!checkActionUsagePermission()) {
-		launchActionUsageIntent();
+	if (!PermissionUtil.checkActionUsagePermission()) {
+		PermissionUtil.launchActionUsageIntent();
 	} 
 }
 
