@@ -1,9 +1,9 @@
-// requires
 var application = require("application");
 const TrackingService = require("~/util/TrackingService");
+const UnlockService = require("~/util/UnlockService");
 var Toast = require("nativescript-toast");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
-
+var dialogs = require("ui/dialogs");
 
 // expose native APIs
 var Intent = android.content.Intent;
@@ -17,7 +17,8 @@ var drawer;
 
 // global vars
 var context = application.android.context.getApplicationContext();
-var mServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
+var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
+var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
 
 // only here until added to onboarding
 function checkActionUsagePermission() {
@@ -41,22 +42,35 @@ exports.pageLoaded = function(args) {
 
 exports.enableService = function() {
 	if (!TrackingService.isServiceRunning()) {
-		Toast.makeText("Starting Service").show();
-		context.startService(mServiceIntent);
+		Toast.makeText("Tracking Enabled").show();
+		context.startService(trackingServiceIntent);
+	}
+
+	if (!UnlockService.isServiceRunning()) {
+		Toast.makeText("Unlocks Enabled").show();
+		context.startService(unlockServiceIntent);
 	}
 }
 
 exports.disableService = function () {
 	if (TrackingService.isServiceRunning()) {
-		Toast.makeText("Stopping Service").show();
+		Toast.makeText("Tracking Disabled").show();
 		TrackingService.stopTimer();
-		context.stopService(mServiceIntent);
+		context.stopService(trackingServiceIntent);
+	}
+
+	if (UnlockService.isServiceRunning()) {
+		Toast.makeText("Unlocks Disabled").show();
+		context.stopService(unlockServiceIntent);
 	}
 }
 
 exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
 };
+
+
+var utils = require("utils/utils");
 
 exports.getRunningServices = function() {	
 	console.log("---------------------------------------------");

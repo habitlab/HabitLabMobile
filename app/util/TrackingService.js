@@ -2,11 +2,11 @@
 var application = require("application");
 var Toast = require("nativescript-toast");
 var timer = require("timer");
+var NotificationUtil = require("~/util/NotificationUtil.js");
 
 // expose native APIs
 var Context = android.content.Context;
 var System = java.lang.System;
-var Service = android.app.Service;
 var UsageEvents = android.app.usage.UsageEvents;
 var Integer = java.lang.Integer;
 
@@ -21,19 +21,17 @@ var timerID;
  * of Service class to start timer that continuously runs in
  * background to perform some task.
  */
-Service.extend("com.habitlab.TrackingService", {
+android.app.Service.extend("com.habitlab.TrackingService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
 		startTimer();
         console.log("TRACKING SERVICE CREATED");
-		return Service.START_STICKY; 
+		return android.app.Service.START_STICKY; 
 	}, 
 
-	onDestroy: function() {
-		this.super.onDestroy();
-		console.log("TRACKING SERVICE DESTROYED");
-        previousPackageName = "";
-	}, 
+    onDestroy: function() {
+        console.log("TRACKING SERVICE DESTROYED");
+    },
 
     onCreate: function() {
         // do nothing
@@ -79,7 +77,7 @@ var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
 var event = new UsageEvents.Event();
 var previousPackageName = "";
 
-var statsMap = [0, 0, 0, 0];
+var statsMap = [0, 0, 0, 0, 0];
 
 /*
  * tracking
@@ -101,17 +99,45 @@ var tracking = function () {
 
     	if (packageName === "com.facebook.katana") {
     		statsMap[0]++;
-    		Toast.makeText("Times on Facebook: " + statsMap[0]).show();
+            if (statsMap[0] % 1 === 0) {
+                var msg = "This is your " + statsMap[0] + "th time on Facebook today";
+                NotificationUtil.sendNotification(context, "HabitLab", msg, 12345);
+            } else if (statsMap[0] % 5 === 0) {
+                Toast.makeText("Facebook Visits Today: " + statsMap[0]).show();
+            }
     	} else if (packageName === "com.snapchat.android") {
     		statsMap[1]++;
-    		Toast.makeText("Times on Snapchat: " + statsMap[1]).show();
+            if (statsMap[1] % 10 === 0) {
+                var msg = "This is your " + statsMap[1] + "th time on Snapchat today";
+                NotificationUtil.sendNotification(context, "HabitLab", msg, 12345);
+            } else if (statsMap[1] % 5 === 0) {
+                Toast.makeText("Snapchat Visits Today: " + statsMap[1]).show();
+            }
     	} else if (packageName === "com.facebook.orca") {
     		statsMap[2]++;
-    		Toast.makeText("Times on Messenger: " + statsMap[2]).show();
+            if (statsMap[2] % 10 === 0) {
+                var msg = "This is your " + statsMap[2] + "th time on Messenger today";
+                NotificationUtil.sendNotification(context, "HabitLab", msg, 12345);
+            } else if (statsMap[2] % 5 === 0) {
+                Toast.makeText("Messenger Visits Today: " + statsMap[2]).show();
+            }
     	} else if (packageName === "com.instagram.android") {
     		statsMap[3]++;
-    		Toast.makeText("Times on Instagram: " + statsMap[3]).show();
-    	}
+            if (statsMap[3] % 10 === 0) {
+                var msg = "This is your " + statsMap[3] + "th time on Instagram today";
+                NotificationUtil.sendNotification(context, "HabitLab", msg, 12345);
+            } else if (statsMap[3] % 5 === 0) {
+                Toast.makeText("Instagram Visits Today: " + statsMap[3]).show();
+            }
+    	} else if (packageName === "com.google.android.youtube") {
+            statsMap[4]++
+            if (statsMap[4] % 10 === 0) {
+                var msg = "This is your " + statsMap[4] + "th time on YouTube today";
+                NotificationUtil.sendNotification(context, "HabitLab", msg, 12345);
+            } else if (statsMap[4] % 5 === 0) {
+                Toast.makeText("YouTube Visits Today: " + statsMap[4]).show();
+            }
+        }
     }
 };
 
@@ -134,10 +160,9 @@ var isServiceRunning = function () {
     return false;
 };
 
-
-
-
 module.exports = {stopTimer: stopTimer, isServiceRunning: isServiceRunning};
+
+
 
 
 

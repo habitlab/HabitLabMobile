@@ -26,3 +26,10 @@ exports.pageLoaded = function(args) {
   drawer = args.object.getViewById('sideDrawer');
 };
 
+//var applicationModule = require("application");
+// var context = applicationModule.android.context.getApplicationContext();
+// const DateChangeService = require("~/util/DateChangeService");
+
+// var dateChangeServiceIntent = new android.content.Intent(context, com.habitlab.DateChangeService.class);
+
+// context.startService(dateChangeServiceIntent);

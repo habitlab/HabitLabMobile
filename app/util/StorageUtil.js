@@ -1,5 +1,6 @@
 var localStorage = require( "nativescript-localstorage" );
 
+// Returns an array of the packageNames (strings)
 exports.getSelectedPackages = function() {
   return localStorage.getItem('selectedPackages');
 };
@@ -62,6 +63,8 @@ exports.setUp = function() {
   preset.forEach(function (item) {
     createPackageData(item);
   });
+  
+  // localStorage.setItem('selectedPackages', ['com.android.chrome']);
 };
 
 exports.isSetUp = function() {

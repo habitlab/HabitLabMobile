@@ -2,9 +2,8 @@
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer" 
-  xmlns:dd="nativescript-drop-down" 
-  xmlns:chart="nativescript-telerik-ui/chart"
-  xmlns:Slides="nativescript-slides"
+  xmlns:taskPie="nativescript-taskpie"
+  xmlns:lv="nativescript-telerik-ui/listview"
   navigatingTo="navigatingTo">
 
 	<ActionBar title="HabitLab" class="action-bar">
@@ -28,19 +27,72 @@
 
 					<TabViewItem title="Day" xmlns:dayTab="progressTabs/dayTab" >
 					   <TabViewItem.view>
-					   		<dayTab:dayTab/>
+					   		<!-- <dayTab:dayTab/> -->
+					   		<StackLayout>
+
+					   		<!-- 	<taskPie:TaskPie id="pie"
+					   			                   counts="{{ taskCounts }}"
+					   			                   pieSize="{{ pieSize }}"
+					   			                   description="{{ daysLeft ? (daysLeft + ' days left') : null }}"
+					   			                   pieText="{{ pie.totalLeft }}" pieSubText="tasks left"
+					   			                   countChanged="{{ taskCountChanged }}" />
+
+ -->
+
+
+					   			<!-- 	For the horizontal button like displays  -->
+				   				<lv:RadListView id="listButtons" class="list-group">
+				   					<lv:RadListView.listViewLayout>
+				   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+				   			        </lv:RadListView.listViewLayout>
+				   			        <lv:RadListView.itemTemplate>
+				   			            <StackLayout class="list-buttons">
+				   			                <Label text="{{ value }}" class="list-number" />
+				   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
+				   			            </StackLayout>
+				   			        </lv:RadListView.itemTemplate>
+				   			    </lv:RadListView>
+
+
+				   			<!-- 
+				   			    For the list of goal apps and their time usage -->
+				   				<lv:RadListView id="listview" class="list-group">
+				   					<lv:RadListView.listViewLayout>
+				   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
+				   			        </lv:RadListView.listViewLayout>
+				   			        <lv:RadListView.itemTemplate>
+				   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+		   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+		   			        	            <StackLayout row="0" col="1" >
+		   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
+		   			        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
+		   			        	            </StackLayout>
+		   			        	            <Label row ="0" col="2" text="{{ mins + ' mins' }}" class="list-group-item-text"/>
+				   			        	</GridLayout>
+				   			        </lv:RadListView.itemTemplate>
+
+				   			    </lv:RadListView>
+
+					   		</StackLayout>
 						</TabViewItem.view>
 					</TabViewItem>
 				
 					 <TabViewItem title="Week" xmlns:weekTab="progressTabs/weekTab">
 						 <TabViewItem.view>
-							 <weekTab:weekTab/>
+							 <!-- <weekTab:weekTab/> -->
+
+
+
+
+
+
+
 						  </TabViewItem.view>
 					  </TabViewItem>
 								     
 					<TabViewItem title="Month" xmlns:monthTab="progressTabs/monthTab">
 						 <TabViewItem.view>
-						     <monthTab:monthTab/>
+						     <!-- <monthTab:monthTab/> -->
 				       </TabViewItem.view>
 
 					 </TabViewItem>
