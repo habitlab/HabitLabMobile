@@ -4,11 +4,7 @@ var StorageUtil = require("~/util/StorageUtil");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
-
-const NUM_GRID_SLOTS = 9;
 var drawer;
-var list;
-var grid;
 
 var setOnTap = function(image, packageName, selector) {
   image.on(gestures.tap, function() {
@@ -19,17 +15,16 @@ var setOnTap = function(image, packageName, selector) {
 
 exports.pageLoaded = function(args) {
   drawer = args.object.getViewById('sideDrawer');
-  grid = args.object.getViewById('grid');
-  createGrid();
+  createGrid(args);
 };
 
 exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
 };
 
-var createGrid = function() {
+var createGrid = function(args) {
   // order by things with icon then by usage
-  list = UsageUtil.getApplicationList();
+  var list = UsageUtil.getApplicationList();
   list.sort(function compare(a, b) {
     if (!a.averageUsage) {
       return 1;
@@ -39,10 +34,7 @@ var createGrid = function() {
     return parseFloat(b.averageUsage) - parseFloat(a.averageUsage);
   });
 
-  grid.addColumn(new layout.ItemSpec(1, layout.GridUnitType.STAR));
-  grid.addColumn(new layout.ItemSpec(1, layout.GridUnitType.STAR));
-  grid.addColumn(new layout.ItemSpec(1, layout.GridUnitType.STAR));
-
+  var grid = args.object.getViewById('grid');
   for (var i = 0; i < list.length; i++) {
     if (i % 3 === 0) {
       var row = new layout.ItemSpec(1, layout.GridUnitType.AUTO);

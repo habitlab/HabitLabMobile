@@ -1,4 +1,5 @@
 var application = require("application");
+var StorageUtil = require("~/util/StorageUtil");
 
 var Context = android.content.Context;
 var System = java.lang.System;
@@ -11,12 +12,11 @@ android.app.Service.extend("com.habitlab.DateChangeService", {
     onStartCommand: function(intent, flags, startId) {
         this.super.onStartCommand(intent, flags, startId);
         setUpService();
-        console.log("DATE CHANGED SERVICE CREATED");
         return android.app.Service.START_STICKY; 
     }, 
 
     onDestroy: function() {
-        console.log("DATE CHANGED SERVICE DESTROYED");
+        // do nothing
     },
 
     onCreate: function() {
@@ -31,8 +31,7 @@ android.app.Service.extend("com.habitlab.DateChangeService", {
 var setUpService = function () {
     application.android.registerBroadcastReceiver(android.content.Intent.ACTION_DATE_CHANGED,
         function onReceiveCallback(context, intent) {
-            console.log("Date changed");
-            // TODO: Put stuff here that needs to happen at 12:00 AM every day
+            StorageUtil.wipeTodaysData();
         });
 }
 

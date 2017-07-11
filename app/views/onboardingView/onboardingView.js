@@ -4,7 +4,6 @@ var onboarding = {};
 var gestures = require("ui/gestures").GestureTypes;
 var StorageUtil = require("~/util/StorageUtil");
 
-
 onboarding.texts = [
   'Design how you spend time on your mobile device.',
   'Build better habits with personalized interventions.',
