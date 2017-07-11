@@ -55,30 +55,12 @@ android.app.Service.extend("com.habitlab.UnlockService", {
     }
 });
 
-/*
- * isServiceRunning
- * ----------------
- * Checks whether UnlockService is active on the device. Called
- * from other modules. 
- */
-var isServiceRunning = function () {
-    var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
-    var services = manager.getRunningServices(Integer.MAX_VALUE);
-    for (var i = 0; i < services.size(); i++) {
-        var service = services.get(i);
-        if (service.service.getClassName() === com.habitlab.UnlockService.class.getName()) {
-            return true;
-        }
-    }
-    return false;
-};
-
 
 function setUpReceiver() {
     context.registerReceiver(receiver, filterOn);
     context.registerReceiver(receiver, filterUnlocked);   
 }
 
-module.exports = {isServiceRunning: isServiceRunning};
+module.exports = {};
 
 
