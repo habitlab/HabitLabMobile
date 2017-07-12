@@ -1,6 +1,6 @@
 var application = require("application");
 
-// const TrackingService = require("~/services/TrackingService");
+const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
 const ServiceManager = require("~/services/ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");

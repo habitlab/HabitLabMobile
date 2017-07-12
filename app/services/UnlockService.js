@@ -1,6 +1,7 @@
 var application = require("application");
 var context = application.android.context.getApplicationContext();
 var StorageUtil = require('~/util/StorageUtil');
+var IM = require('~/interventions/InterventionManager');
 
 // expose native APIs
 var IntentFilter = android.content.IntentFilter;
@@ -20,9 +21,11 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         if (action === Intent.ACTION_SCREEN_ON) {
             console.log("RECEIVER: Screen On!");
             StorageUtil.glanced();
+            IM.glancesNotification();
         } else if (action === Intent.ACTION_USER_PRESENT) {
             console.log("RECEIVER: Unlocked!");
             StorageUtil.unlocked();
+            IM.unlocksNotification();
         }        
     }
 });
@@ -42,6 +45,7 @@ android.app.Service.extend("com.habitlab.UnlockService", {
         this.super.onStartCommand(intent, flags, startId);
         setUpReceiver();
         console.log("UNLOCK SERVICE CREATED");
+
         return android.app.Service.START_STICKY; 
     }, 
 
@@ -67,7 +71,7 @@ android.app.Service.extend("com.habitlab.UnlockService", {
  */
 function setUpReceiver() {
     context.registerReceiver(receiver, filterOn);
-    context.registerReceiver(receiver, filterUnlocked);   
+    context.registerReceiver(receiver, filterUnlocked); 
 }
 
 module.exports = {};
