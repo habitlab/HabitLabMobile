@@ -14,7 +14,6 @@ var days = {
 
 exports.days = days;
 
-
 /* export: getSelectedPackages
  * ---------------------------
  * Returns array of package names (strings) that are currently 'blacklisted'.

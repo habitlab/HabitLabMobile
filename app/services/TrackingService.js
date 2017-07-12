@@ -10,12 +10,10 @@ var StorageUtil = require("~/util/StorageUtil");
 var Context = android.content.Context;
 var System = java.lang.System;
 var UsageEvents = android.app.usage.UsageEvents;
-var Integer = java.lang.Integer;
 
 // global vars
 var context = application.android.context.getApplicationContext();
 var timerID;
-
 
 /*
  * com.habitlab.TrackingService
