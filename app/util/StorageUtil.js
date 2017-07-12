@@ -1,4 +1,7 @@
 var localStorage = require( "nativescript-localstorage" );
+var Calendar = java.util.Calendar;
+var System = java.lang.System;
+var DAY_IN_MS = 86400000;
 
 var days = {
   TODAY: -1,
@@ -92,8 +95,14 @@ exports.setUp = function() {
   var preset = ['com.facebook.katana', 'com.google.android.youtube', 'com.facebook.orca', 
                 'com.snapchat.android', 'com.instagram.android'];
 
+  var startOfTarget = Calendar.getInstance();
+  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+  startOfTarget.set(Calendar.MINUTE, 0);
+  startOfTarget.set(Calendar.SECOND, 0);
+
   localStorage.setItem('onboarded', true);
   localStorage.setItem('selectedPackages', preset);
+  localStorage.setItem('lastDateActive', startOfTarget.getTimeInMillis());
 
   localStorage.setItem('phone', {
     goals: {'minutes': 120, 'glances': 75, 'unlocks': 50}, 
@@ -140,7 +149,7 @@ var arrangeData = function(dataArr, index) {
     return -1;
   }
 
-  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  var i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   if (index === days.TODAY) {
     return dataArr[i-1];
   } else if (index) {
@@ -171,7 +180,7 @@ exports.getVisits = function(packageName, index) {
  * Adds one to the visits for today.
  */
 exports.visited = function(packageName) {
-  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  var i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   localStorage.getItem(packageName).stats[i-1]['visits']++;
 };
 
@@ -192,7 +201,7 @@ exports.getUnlocks = function(index) {
  * Adds one to the unlocks for today.
  */
 exports.unlocked = function() {
-  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  var i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   localStorage.getItem('phone').stats[i-1]['unlocks']++;
 };
 
@@ -210,52 +219,63 @@ exports.getGlances = function(index) {
 
 /* export: glanced
  * ---------------
- * Adds one to the glances for today.
+ * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+
+  var startOfTarget = Calendar.getInstance();
+  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+  startOfTarget.set(Calendar.MINUTE, 0);
+  startOfTarget.set(Calendar.SECOND, 0);
+
+  var i = startOfTarget.get(Calendar.DAY_OF_WEEK);
+  var lastDateActive = localStorage.getItem('lastDateActive');
+  resetData((startOfTarget.getTimeInMillis() - lastDateActive ) / DAY_IN_MS, i);
+
   var phoneData = localStorage.getItem('phone').stats[i-1]['glances']++;
 };
 
-/* helper: createPackageData
- * -------------------------
- * Updates storage to include data for newly added packages.
+/* helper: resetData
+ * -----------------
+ * Runs whenever a glance happens to erase data that will now be overwritten (if there is any).
  */
-var createPackageData = function(packageName) {
-  localStorage.setItem(packageName, {
-      goals: {'minutes': 15}, 
-      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
-    });
-};
+var resetData = function(days, today) {
 
-/* helper: createPackageData
- * -------------------------
- * Updates storage to include data for newly added packages.
- */
-var createPackageData = function(packageName) {
-  localStorage.setItem(packageName, {
-      goals: {'minutes': 15}, 
-      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
-    });
-};
-
-/* helper: wipeTodaysData
- * ----------------------
- * Runs every night at midnight to make room for the new data.
- */
-exports.wipeTodaysData = function() {
-
-  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
-  localStorage.getItem('phone').stats[i-1] = {
-    glances: 0,
-    unlocks: 0
-  };
-
-  var list = localStorage.getItem('selectedPackages');
-  list.forEach(function (packageName) {
-    localStorage.getItem(packageName).stats[i-1] = {
-      visits: 0
+  for (var i = 0; i < days; i++) {
+    localStorage.getItem('phone').stats[(today+6-i)%7] = {
+      glances: 0,
+      unlocks: 0
     };
-  });
 
+    var list = localStorage.getItem('selectedPackages');
+    list.forEach(function (packageName) {
+      localStorage.getItem(packageName).stats[(today+6-i)%7] = {
+        visits: 0
+      };
+    });
+  }    
+  
+
+};
+
+/* helper: createPackageData
+ * -------------------------
+ * Updates storage to include data for newly added packages.
+ */
+var createPackageData = function(packageName) {
+  localStorage.setItem(packageName, {
+      goals: {'minutes': 15}, 
+      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
+    });
+};
+
+/* helper: createPackageData
+ * -------------------------
+ * Updates storage to include data for newly added packages.
+ */
+var createPackageData = function(packageName) {
+  localStorage.setItem(packageName, {
+      goals: {'minutes': 15}, 
+      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
+    });
 };
