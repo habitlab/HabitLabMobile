@@ -1,6 +1,6 @@
 var application = require("application");
 
-// const TrackingService = require("~/services/TrackingService");
+const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
 const ServiceManager = require("~/services/ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");
@@ -27,14 +27,6 @@ var drawer;
 
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 
-}
-
-exports.toggleServices = function() {
-	if (checkServicesRunning()) {
-		disableServices();
-	} else {
-		enableServices();
-	}
 }
 
 exports.enableServices = function() {
@@ -65,6 +57,5 @@ exports.toggleDrawer = function() {
 exports.getRunningServices = function() {
 	ServiceManager.getRunningServices();
 }
-
 
 

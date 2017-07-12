@@ -39,6 +39,7 @@ android.app.Service.extend("com.habitlab.UnlockService", {
         this.super.onStartCommand(intent, flags, startId);
         setUpReceiver();
         console.log("UNLOCK SERVICE CREATED");
+        this.startForeground(123, getNotification());
         return android.app.Service.START_STICKY; 
     }, 
 
@@ -66,6 +67,21 @@ function setUpReceiver() {
     context.registerReceiver(receiver, filterOn);
     context.registerReceiver(receiver, filterUnlocked);   
 }
+
+var NotificationCompat = android.support.v4.app.NotificationCompat
+var notificationColor = [34, 0.81, 1];
+
+var getNotification = function() {
+    var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
+    var notificationBuilder = new NotificationCompat.Builder(context);
+    var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
+    notificationBuilder.setSmallIcon(icon_id);
+    notificationBuilder.setContentTitle("HabitLab");
+    notificationBuilder.setContentText("Helping change your habits!");
+    notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
+    notificationBuilder.setVisibility(android.app.Notification.VISIBILITY_SECRET);
+    return notificationBuilder.build();
+};
 
 module.exports = {};
 

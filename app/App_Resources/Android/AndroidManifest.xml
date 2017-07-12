@@ -44,7 +44,8 @@
 		<activity android:name="com.tns.ErrorReportActivity"/>
 		<service 
 			android:name="com.habitlab.TrackingService"
-			android:exported="false" >
+			android:exported="false" 
+			android:stopWithTask="false">
 		</service>
 		<service 
 			android:name="com.habitlab.UnlockService"
@@ -63,6 +64,14 @@
 		        <action android:name="android.intent.action.BOOT_COMPLETED" />
 		        <category android:name="android.intent.category.DEFAULT" />
 		    </intent-filter>
+		</receiver>
+		<receiver
+			android:name="com.habitlab.ServiceRestarterReceiver"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="action.string.APPLICATION_KILLED" />
+			</intent-filter>
 		</receiver>
 	</application>
 </manifest>

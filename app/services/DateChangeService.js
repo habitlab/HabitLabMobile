@@ -45,7 +45,8 @@ android.app.Service.extend("com.habitlab.DateChangeService", {
 var setUpService = function () {
     application.android.registerBroadcastReceiver(android.content.Intent.ACTION_DATE_CHANGED,
         function onReceiveCallback(context, intent) {
-            StorageUtil.wipeTodaysData();
+            // console.log("WIPING DATA");
+            // StorageUtil.wipeTodaysData();
         });
 }
 
