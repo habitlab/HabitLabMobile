@@ -4,7 +4,8 @@ var Timer = require("timer");
 const InterventionManager = require("~/interventions/InterventionManager");
 
 // utils
-var StorageUtil = require("~/util/StorageUtil");
+const ServiceManager = require("./ServiceManager");
+const StorageUtil = require("~/util/StorageUtil");
 
 // expose native APIs
 var Context = android.content.Context;
@@ -25,9 +26,11 @@ var timerID;
 android.app.Service.extend("com.habitlab.TrackingService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
-		console.log("TRACKING SERVICE CREATED");
         startTimer();
-        this.startForeground(123, getNotification());
+        this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
+
+        console.log("TRACKING SERVICE CREATED");
+
 		return android.app.Service.START_STICKY; 
 	}, 
 
@@ -38,6 +41,8 @@ android.app.Service.extend("com.habitlab.TrackingService", {
 
     onTaskRemoved: function(intent) {
         // this.stopSelf();
+        // If startForeground is not called, this function will 
+        // be called when the application is killed
     },
 
     onCreate: function() {
@@ -131,24 +136,6 @@ var getActivePackage = function() {
         return null;
     }
 }
-
-
-
- 
-var NotificationCompat = android.support.v4.app.NotificationCompat
-var notificationColor = [34, 0.81, 1];
-
-var getNotification = function() {
-    var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
-    var notificationBuilder = new NotificationCompat.Builder(context);
-    var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
-    notificationBuilder.setSmallIcon(icon_id);
-    notificationBuilder.setContentTitle("HabitLab")
-    notificationBuilder.setContentText("Helping change your habits!");
-    notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
-    notificationBuilder.setVisibility(android.app.Notification.VISIBILITY_SECRET);
-    return notificationBuilder.build();
-};
 
 module.exports = {stopTimer: stopTimer};
 
