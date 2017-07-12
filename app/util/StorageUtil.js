@@ -357,7 +357,6 @@ exports.disableForAll = function(id) {
 exports.toggleForAll = function(id) {
   var enabled = localStorage.getItem('enabled')[id];
   localStorage.getItem('enabled')[id] = !enabled;
-  console.log('intervention ' + id + ' is now ' + (localStorage.getItem('enabled')[id] === true ? 'enabled' : 'disabled'));
 };
 
 /* export: enable

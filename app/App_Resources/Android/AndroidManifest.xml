@@ -52,22 +52,15 @@
 			android:exported="false" >
 		</service>
 		<receiver 
-			android:name="com.habitlab.DialogRequestReceiver"
+			android:name="com.habitlab.ServiceRestarterReceiver"
 			android:enabled="true"
 		    android:exported="false"
 			android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
 			<intent-filter>
+				<action android:name="android.intent.action.ACTION_SHUTDOWN" />
 		        <action android:name="android.intent.action.BOOT_COMPLETED" />
 		        <category android:name="android.intent.category.DEFAULT" />
 		    </intent-filter>
-		</receiver>
-		<receiver
-			android:name="com.habitlab.ServiceRestarterReceiver"
-			android:enabled="true"
-			android:exported="false">
-			<intent-filter>
-				<action android:name="action.string.APPLICATION_KILLED" />
-			</intent-filter>
 		</receiver>
 	</application>
 </manifest>

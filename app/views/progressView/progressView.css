@@ -16,7 +16,7 @@
 }
 
 .list-group-item-heading {
-	font-size: 18;
+	font-size: 15;
 }
 
 .list-group-item-text {
@@ -66,6 +66,13 @@
 	text-align: center;
 	font-size: 30;
 	color: #E71D36;
+}
+
+
+#listButtons {
+	margin-top: 15;
+	padding: 15;
+	background-color: #FFA730;
 }
 
 

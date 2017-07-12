@@ -4,7 +4,6 @@ var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 
 var drawer;
-var interventionLayout;
 var interventionList;
 var setUp;
 
@@ -30,7 +29,7 @@ var createItem = function(id)  {
 
 var setUpList = function(args) {
   setUp = true;
-  interventionLayout = args.object.getViewById("interventionLayout");
+  var interventionLayout = args.object.getViewById("interventionLayout");
   interventionList = StorageUtil.interventionDetails;
 
   for (var i = 0; i < interventionList.length; i++) {
@@ -48,4 +47,3 @@ exports.pageLoaded = function(args) {
 exports.toggleDrawer = function() {
     drawer.toggleDrawerState();
 };
-

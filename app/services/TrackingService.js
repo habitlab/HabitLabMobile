@@ -11,6 +11,11 @@ const StorageUtil = require("~/util/StorageUtil");
 var Context = android.content.Context;
 var System = java.lang.System;
 var UsageEvents = android.app.usage.UsageEvents;
+var Intent = android.content.Intent;
+var AlarmManager = android.app.AlarmManager;
+var PendingIntent = android.app.PendingIntent;
+
+const Toast = require('nativescript-toast');
 
 // global vars
 var context = application.android.context.getApplicationContext();
@@ -28,9 +33,7 @@ android.app.Service.extend("com.habitlab.TrackingService", {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-
         console.log("TRACKING SERVICE CREATED");
-
 		return android.app.Service.START_STICKY; 
 	}, 
 
@@ -40,9 +43,12 @@ android.app.Service.extend("com.habitlab.TrackingService", {
     },
 
     onTaskRemoved: function(intent) {
+        // this.super.onTaskRemoved(intent);
+        // stopTimer();
         // this.stopSelf();
-        // If startForeground is not called, this function will 
-        // be called when the application is killed
+        // var alarm = context.getSystemService(Context.ALARM_SERVICE);
+        // var serviceToRestart = PendingIntent.getService(context, 3, new Intent(context, com.habitlab.TrackingService.class), 0);
+        // alarm.set(AlarmManager.RTC, System.currentTimeMillis() + 500, serviceToRestart);
     },
 
     onCreate: function() {
@@ -64,6 +70,7 @@ android.app.Service.extend("com.habitlab.TrackingService", {
  */
 var startTimer = function() {
 	if (!timerID) {
+        console.log("Timer active");
 		timerID = Timer.setInterval(() => {
 			trackUsage();
 		}, 1000);
@@ -82,6 +89,7 @@ var startTimer = function() {
 var stopTimer = function() {
 	Timer.clearInterval(timerID);
 	timerID = 0;
+    console.log("Timer stopped");
 };
 
 
