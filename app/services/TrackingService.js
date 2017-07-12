@@ -97,7 +97,7 @@ var trackUsage = function () {
         StorageUtil.visited(packageName); // log a visit
 
         /* Plug in interventions HERE */
-        InterventionManager.visitedToast(packageName);
+        InterventionManager.popToastVisited(packageName);
     }
 };
 

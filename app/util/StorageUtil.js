@@ -95,14 +95,11 @@ exports.setUp = function() {
   var preset = ['com.facebook.katana', 'com.google.android.youtube', 'com.facebook.orca', 
                 'com.snapchat.android', 'com.instagram.android'];
 
-  var startOfTarget = Calendar.getInstance();
-  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-  startOfTarget.set(Calendar.MINUTE, 0);
-  startOfTarget.set(Calendar.SECOND, 0);
+  var today = startOfDay();
 
   localStorage.setItem('onboarded', true);
   localStorage.setItem('selectedPackages', preset);
-  localStorage.setItem('lastDateActive', startOfTarget.getTimeInMillis());
+  localStorage.setItem('lastDateActive', today.getTimeInMillis());
 
   localStorage.setItem('phone', {
     goals: {'minutes': 120, 'glances': 75, 'unlocks': 50}, 
@@ -222,14 +219,12 @@ exports.getGlances = function(index) {
  * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-  var startOfTarget = Calendar.getInstance();
-  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-  startOfTarget.set(Calendar.MINUTE, 0);
-  startOfTarget.set(Calendar.SECOND, 0);
-
-  var i = startOfTarget.get(Calendar.DAY_OF_WEEK);
   var lastDateActive = localStorage.getItem('lastDateActive');
-  resetData((startOfTarget.getTimeInMillis() - lastDateActive ) / DAY_IN_MS, i);
+  var today = startOfDay();
+  var i = today.get(Calendar.DAY_OF_WEEK);
+  var difference = Math.round((today.getTimeInMillis() - lastDateActive) / DAY_IN_MS);
+
+  resetData(difference, i);
 
   var phoneData = localStorage.getItem('phone').stats[i-1]['glances']++;
 };
@@ -239,6 +234,10 @@ exports.glanced = function() {
  * Runs whenever a glance happens to erase data that will now be overwritten (if there is any).
  */
 var resetData = function(days, today) {
+  if (days) {
+    localStorage.setItem('lastDateActive', startOfDay().getTimeInMillis());
+  }
+
   for (var i = 0; i < days; i++) {
     localStorage.getItem('phone').stats[(today+6-i)%7] = {
       glances: 0,
@@ -275,3 +274,14 @@ var createPackageData = function(packageName) {
       stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
     });
 };
+
+
+var startOfDay = function() {
+  var startOfTarget = Calendar.getInstance();
+  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+  startOfTarget.set(Calendar.MINUTE, 0);
+  startOfTarget.set(Calendar.SECOND, 0);
+  startOfTarget.set(Calendar.MILLISECOND, 0);
+  return startOfTarget;
+}
+
