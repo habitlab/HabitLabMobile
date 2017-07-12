@@ -62,6 +62,7 @@ var getForegroundNotification = function() {
     notificationBuilder.setContentText("Helping change your habits!");
     notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
     notificationBuilder.setVisibility(android.app.Notification.VISIBILITY_SECRET);
+    //notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
     return notificationBuilder.build();
 };
 

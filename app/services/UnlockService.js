@@ -11,6 +11,9 @@ var IntentFilter = android.content.IntentFilter;
 var Intent = android.content.Intent;
 var Context = android.content.Context;
 var Integer = java.lang.Integer;
+var AlarmManager = android.app.AlarmManager;
+var PendingIntent = android.app.PendingIntent;
+var System = java.lang.System;
 
 // intent filters for the BroadcastReceiver
 var filterOn = new IntentFilter(Intent.ACTION_SCREEN_ON);
@@ -22,11 +25,9 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         var action = intent.getAction();
 
         if (action === Intent.ACTION_SCREEN_ON) {
-            console.log("RECEIVER: Screen On!");
             StorageUtil.glanced();
             InterventionManager.glancesNotification();
         } else if (action === Intent.ACTION_USER_PRESENT) {
-            console.log("RECEIVER: Unlocked!");
             StorageUtil.unlocked();
             InterventionManager.unlocksNotification();
         }        
@@ -48,14 +49,20 @@ android.app.Service.extend("com.habitlab.UnlockService", {
         this.super.onStartCommand(intent, flags, startId);
         setUpReceiver();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-
         console.log("UNLOCK SERVICE CREATED");
-
         return android.app.Service.START_STICKY; 
     }, 
 
     onDestroy: function() {
         console.log("UNLOCK SERVICE DESTROYED");
+    },
+
+    onTaskRemoved: function(intent) {
+        // this.super.onTaskRemoved(intent);
+        // this.stopSelf();
+        // var alarm = context.getSystemService(Context.ALARM_SERVICE);
+        // var serviceToRestart = PendingIntent.getService(context, 3, new Intent(context, com.habitlab.UnlockService.class), 0);
+        // alarm.set(AlarmManager.RTC, System.currentTimeMillis() + 500, serviceToRestart);
     },
 
     onCreate: function() {

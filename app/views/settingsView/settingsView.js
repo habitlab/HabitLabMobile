@@ -22,7 +22,6 @@ var Integer = java.lang.Integer;
 var context = application.android.context.getApplicationContext();
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
-var page;
 var drawer;
 
 exports.pageLoaded = function(args) {
