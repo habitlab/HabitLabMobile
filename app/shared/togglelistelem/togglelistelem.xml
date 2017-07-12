@@ -1,0 +1,8 @@
+<StackLayout orientation="horizontal">
+  <Switch id="switch" />
+  <StackLayout orientation="vertical" >
+    <Label id="name" />
+    <Label id="description" />
+  </StackLayout>
+  <!-- <Button id="button" text="try" /> -->
+</StackLayout>
