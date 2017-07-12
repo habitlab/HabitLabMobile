@@ -141,6 +141,9 @@ var arrangeData = function(dataArr, index) {
   }
 
   var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+
+  console.log("Arrange:", i);
+
   if (index === days.TODAY) {
     return dataArr[i-1];
   } else if (index) {
@@ -193,6 +196,8 @@ exports.getUnlocks = function(index) {
  */
 exports.unlocked = function() {
   var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+
+  console.log("Unlocked:", i);
   localStorage.getItem('phone').stats[i-1]['unlocks']++;
 };
 
@@ -214,6 +219,9 @@ exports.getGlances = function(index) {
  */
 exports.glanced = function() {
   var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+
+  console.log("Glanced:", i);
+
   var phoneData = localStorage.getItem('phone').stats[i-1]['glances']++;
 };
 
@@ -246,6 +254,9 @@ var createPackageData = function(packageName) {
 exports.wipeTodaysData = function() {
 
   var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+
+  console.log("Wiping:", i);
+
   localStorage.getItem('phone').stats[i-1] = {
     glances: 0,
     unlocks: 0

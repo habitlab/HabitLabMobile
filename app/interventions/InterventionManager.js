@@ -4,6 +4,7 @@ const StorageUtil = require("~/util/StorageUtil");
 const Toast = require("nativescript-toast");
 
 var application = require('application');
+var context = application.android.context.getApplicationContext();
 
 var id = {
   GLANCE: 1,
@@ -19,16 +20,16 @@ var visitedToast = function(pkg) {
 
 var unlocksNotification = function() {
   var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
-  var message = 'You\'ve unlocked your phone ' + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+  var message = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
 
-  NotificationUtil.sendNotification(application.android.context.getApplicationContext(), 'Unlock Alert!', message, id.UNLOCK);
+  NotificationUtil.sendNotification(context, 'Unlock Alert!', message, id.UNLOCK);
 };
 
 var glancesNotification = function() {
   var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
-  var message = 'You\'ve glanced at your phone ' + glances + (glances === 1 ? ' time' : ' times') + ' today';
+  var message = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
 
-  NotificationUtil.sendNotification(application.android.context.getApplicationContext(), 'Glance Alert!', message, id.GLANCE);
+  NotificationUtil.sendNotification(context, 'Glance Alert!', message, id.GLANCE);
 };
 
 
