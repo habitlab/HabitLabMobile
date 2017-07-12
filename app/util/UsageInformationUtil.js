@@ -17,8 +17,7 @@ var pm = context.getPackageManager();
 var mainIntent = new Intent(Intent.ACTION_MAIN, null);
 mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0);
-const DAY_MS = 86400000;
-const MIN_MS = 60000;
+//const DAY_MS = 86400000;
 
 
 /* getTimeOnAppThisWeek
@@ -68,13 +67,13 @@ function getAvgTimeOnAppWeek(packageName) {
 function getTimeOnApplicationSingleDay(packageName, daysAgo) {
 	var startOfTarget = getStartOfDay(daysAgo);
 	var endOfTarget = Calendar.getInstance();
-	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (DAY_MS);
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
 
     var stats = usageStatsMap.get(packageName);
-    return stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/MIN_MS);
+    return stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000);
 }
 
 
@@ -86,7 +85,7 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
 function getTimeOnPhoneSingleDay(daysAgo) {
 	var startOfTarget = getStartOfDay(daysAgo);
 	var endOfTarget = Calendar.getInstance();
-	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (DAY_MS));
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
 	
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -105,7 +104,7 @@ function getTimeOnPhoneSingleDay(daysAgo) {
 
 		totalTimeOnPhone += appUsage;
 	}
-	totalTimeOnPhone = Math.round(totalTimeOnPhone/MIN_MS);
+	totalTimeOnPhone = Math.round(totalTimeOnPhone/60000);
     return totalTimeOnPhone;
 }
 
@@ -120,7 +119,7 @@ function getStartOfDay(daysAgo) {
 	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
 	startOfTarget.set(Calendar.MINUTE, 0);
 	startOfTarget.set(Calendar.SECOND, 0);
-	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (DAY_MS * daysAgo));
+	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
 	return startOfTarget;
 };
 
@@ -146,12 +145,13 @@ function getAppsToday() {
 		if (appUsage == 0) continue;
 
 		var name = info.loadLabel(pm).toString();
-		var mins = Math.round(appUsage/MIN_MS);
+		var mins = Math.round(appUsage/60000);
 		var app = new dayApp(name, mins);
 		list.push(app);
 	}
 
 	return list;
+	
 };
 
 
