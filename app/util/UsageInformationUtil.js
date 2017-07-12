@@ -83,28 +83,11 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
  * has been active.
  */
 function getTimeOnPhoneSingleDay(daysAgo) {
-	var startOfTarget = getStartOfDay(daysAgo);
-	var endOfTarget = Calendar.getInstance();
-	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
-	
-
-	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
-    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
-
-    var totalTimeOnPhone = 0;
-    //Calculate sum of all time spent on apps in a single day
-    var list = [];
-	for (var i = 0; i < applications.size(); i++) {
-		var info = applications.get(i);
-		// get package name
-		var packageName = getPackageName(info);
-		//Time on one app
-		var appUsageStats = usageStatsMap.get(packageName);
-		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-
-		totalTimeOnPhone += appUsage;
+	var totalTimeOnPhone = 0;
+	var appsDay = getAppsSingleDay(daysAgo);
+	for(var i = 0; i < appsDay.length; i++) {
+		totalTimeOnPhone += appsDay[i].mins
 	}
-	totalTimeOnPhone = Math.round(totalTimeOnPhone/60000);
     return totalTimeOnPhone;
 }
 
@@ -125,13 +108,15 @@ function getStartOfDay(daysAgo) {
 
 /* getTimeOnPhoneSingleDay
  * -----------------------
- * Returns the apps used today. Speicifcally returns an array of objects, 
+ * Returns the apps used in a single day. Speicifcally returns an array of objects, 
  * where each object is the name of the app and the number of minutes spent on the app today.
  */
 
-function getAppsToday() {
-	var start = getStartOfDay(0);
+function getAppsSingleDay(daysAgo) {
+	var start = getStartOfDay(daysAgo);
 	var end = Calendar.getInstance();
+	end.setTimeInMillis(start.getTimeInMillis() + (86400 * 1000));
+	
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
@@ -155,7 +140,7 @@ function getAppsToday() {
 };
 
 
-//Data structure for getAppsToday
+//Data structure for getAppsSingleDay
 function dayApp(name, mins) {
 	this.name = name;
 	this.mins = mins;
@@ -369,7 +354,7 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
 	getAppName : getAppName,
 	getIcon : getIcon,
-	getAppsToday : getAppsToday,
+	getAppsSingleDay : getAppsSingleDay,
 	getAvgTimeOnPhoneWeek : getAvgTimeOnPhoneWeek,
 	getAvgTimeOnAppWeek : getAvgTimeOnAppWeek};
 

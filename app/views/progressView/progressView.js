@@ -17,81 +17,84 @@ exports.pageLoaded = function(args) {
 
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
-
-	// Chart
-	var appsToday = usageUtil.getAppsToday();
-	console.dir(appsToday);
-	// var chart = view.getViewById(page, "chart");
-	// //chart.setUsePercentageValues(true);
-	// var entries = [4, 11, 2, 4, 1];
-	// chart.setData(entries);
-
 };
 
-function toArrayList(list) {
-  var output = new java.util.ArrayList()
-  for (let item of list) {
-  	output.add(item)
-  }
-  return output
-}
-
-function toListOfColors(list) {
-  var output = new java.util.ArrayList()
-  for (let item of list) {
-  	output.add(android.graphics.Color.valueOf(item))
-  }
-  return output
-}
 
 exports.creatingView = function(args) {
-
     var PieChart = com.github.mikephil.charting.charts.PieChart
     var PieEntry = com.github.mikephil.charting.data.PieEntry
     var Entry = com.github.mikephil.charting.data.Entry
     var Color = android.graphics.Color
+    var Legend = com.github.mikephil.charting.components.Legend
+    var Description = com.github.mikephil.charting.components.Description
     var PieDataSet = com.github.mikephil.charting.data.PieDataSet
     var LayoutParams = android.view.ViewGroup.LayoutParams
     var LinearLayout = android.widget.LinearLayout
+    var SpannableString = android.text.SpannableString
     var PieData = com.github.mikephil.charting.data.PieData
-    var ArrayList = java.util.ArrayList
-    var entries = new ArrayList()
-    entries.add(new PieEntry(20))
-    entries.add(new PieEntry(30))
-    //var colors = [Color.parseColor("#DCDEE0"),Color.parseColor("#466A80"),Color.parseColor("#0078CA"),Color.parseColor("#5BC2E7"),Color.parseColor("#99E4FF")]
-    //var colors = [new colorModule.Color("#DCDEE0"), new colorModule.Color("#466A80"), new colorModule.Color("#0078CA"), new colorModule.Color("#5BC2E7"), new colorModule.Color("#99E4FF")]
-    //var colors = ["#DCDEE0", "#466A80", "#0078CA", "#5BC2E7", "#99E4FF"]
-    //var color_list = new java.util.ArrayList()
-    //for (let color of colors) {
-      //color_list.add(Color.valueOf(Color.parseColor(color)))
-      //color_list.add(Color.parseColor(color))
-      //color_list.add(Color.valueOf(parseInt(Color.parseColor("#466A80"))))
-      //color_list.add(new colorModule.Color("#DCDEE0").android)
-    //}
-    /*
+    var ArrayList = java.util.ArrayList 
+    var appsToday = usageUtil.getAppsSingleDay(0);
+    var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0));
+
+	//sort appsToday
+	appsToday.sort(function compare(a, b) {
+    if (a.mins < b.mins) {
+      return 1;
+    } else if (a.mins > b.mins) {
+      return -1;
+    }
+    return 0;
+  	});
+	console.dir(appsToday);
+	console.log(total);
+
+    // add data
+    var piechart = new PieChart(args.context);
+     var entries = new ArrayList();
+     var main = 0;
+     var min = (appsToday.length < 4 ? appsToday : 4);
+     for(var i = 0; i < min; i++) {
+     	if (appsToday[i].mins > 3) {
+	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
+	     	main += appsToday[i].mins;
+     	}
+     }
+     var leftover = total - main;
+    if (leftover > 1){
+    	entries.add(new PieEntry(leftover, "Other"));
+    }
+    var dataset = new PieDataSet(entries, "");
+    dataset.setSliceSpace(0);
+    var data = new PieData(dataset);
+
+    // Customize appearence of the pie chart 
+    data.setValueTextSize(11);
+    data.setValueTextColor(Color.WHITE);
+    var desc = piechart.getDescription();
+    desc.setEnabled(Description.false);
+    piechart.setDrawSliceText(false);
+    piechart.setHoleRadius(70);
+    piechart.setTransparentCircleRadius(75);
+    var text = new SpannableString("Minutes per App")
+    piechart.setCenterText(text);
+    var legend = piechart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+
+    // Set Colors of pie chart 
     var colors = new ArrayList()
-    colors.add(Color.GRAY);
-    colors.add(Color.BLUE);
-    colors.add(Color.RED);
-    colors.add(Color.GREEN);
-    colors.add(Color.CYAN);
-    colors.add(Color.YELLOW);
-    colors.add(Color.MAGENTA);
-    */
-    var dataset = new PieDataSet(entries, "# of Calls")
-    //dataset.setColors(color_list)
-    //dataset.setColors(toListOfColors(colors))
-    dataset.setSliceSpace(3)
-    var labels = new ArrayList()
-    labels.add("January")
-    labels.add("February")
-    var piechart = new PieChart(args.context)
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0.5))
-    //var data = new PieData(labels, dataset)
-    var data = new PieData(dataset)
-    piechart.setData(data)
-    piechart.invalidate()
+    colors.add(new java.lang.Integer(Color.parseColor("#2EC4B6")));
+    colors.add(new java.lang.Integer(Color.parseColor("#E71D36")));
+    colors.add(new java.lang.Integer(Color.parseColor("#FFA730")));
+    colors.add(new java.lang.Integer(Color.parseColor("#011627")));
+    colors.add(new java.lang.Integer(Color.parseColor("#FFA730")));
+     dataset.setColors(colors)
+
+    // Initialize and set pie chart 
+    piechart.setData(data);
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 700, 0.5));
+    piechart.invalidate();
     args.view = piechart;
+
 }
 
 /*
@@ -103,6 +106,47 @@ exports.creatingView = function(args) {
     args.view = nativeView;
 }
 */
+
+
+// exports.weekView = function() {
+// 	var LineChart = com.github.mikephil.charting.charts.lineChart;
+// 	var LineDataSet = com.github.mikephil.charting.data.LineDataSet;
+// 	 var Entry = com.github.mikephil.charting.data.Entry;
+// 	 var ILineDataSet = com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+// 	 var ArrayList = java.util.ArrayList;
+// 	 var LineData = com.github.mikephil.charting.data.LineData;
+// 	 var context= app.android.context;
+	 
+// 	 //var linechart = new LineChart(args.context);
+// 	 var FBentries = new ArrayList();
+// 	 FBentries.add(new Entry(4, 0));
+// 	FBentries.add(new Entry(8, 1));
+// 	 FBentries.add(new Entry(10, 2));
+// 	  FBentries.add(new Entry(3, 3));
+// 	 FBentries.add(new Entry(5, 4));
+// 	 var FBdataset = new LineDataSet(FBentries, "Mins on Facebook");
+// 	 var IdataSet = new ArrayList();
+// 	 IdataSet.add(FBdataset);
+// 	 var labels = new ArrayList();
+//     labels.add("M");
+//     labels.add("Tu");
+//     labels.add("W");
+//     labels.add("Th");
+//     labels.add("F");
+
+//     var data = new LineData(IdataSet);
+//     var linechart = new LineChart(args.context);
+//     linechart.setData(data);
+//     //linechart.setDescription("");
+//     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 0.5));
+//     linechart.invalidate();
+//     args.view = linechart;
+// }
+
+
+
+
+
 
 exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);

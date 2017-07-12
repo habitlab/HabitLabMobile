@@ -7,7 +7,8 @@
 		<Label text="Progress" tap="goToProgress" class="sideLabel" />
 	     <Label text="Goals" tap="goToGoals"  class="sideLabel" />
 	  	<Label text="Interventions"  tap="goToInterventions" class="sideLabel"/>
-	  	 <Label text="Settings" tap="goToSettings" class="sideLabel" />
+	  	 <Label text="Settings" tap="goToSettings" class="sideLabel" id="last" />
+	  	 <Label text="HabitLab" class="sideLabel" />
 		</StackLayout>
 </StackLayout>
 

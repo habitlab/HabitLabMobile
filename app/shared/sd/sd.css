@@ -7,7 +7,7 @@
 
 .sideLabel {
     font-size: 15;
-    padding: 10;
+    padding: 20;
     color: #011627;
 }
 
@@ -15,4 +15,8 @@
 	color: #011627;
 	text-align: left;
     vertical-align: center;
+}
+
+#last {
+	margin-bottom: 200;
 }
