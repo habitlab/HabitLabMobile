@@ -1,8 +1,8 @@
 var localStorage = require( "nativescript-localstorage" );
 
 var days = {
+  TODAY: -1,
   ALL: 0,
-  TODAY: java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK),
   SUN: 1,
   MON: 2,
   TUE: 3,
@@ -130,16 +130,28 @@ exports.isPackageSelected = function(packageName) {
   return exports.getSelectedPackages().includes(packageName);
 };
 
-/* helper: rearrangeData
- * ---------------------
- * Arranges the data so it is from least recent to most recent (for graphs, etc.).
+/* helper: arrangeData
+ * -------------------
+ * Depending on the index passed in gives the user, the desired data. If it is with flag ALL, 
+ * arranges the data so it is from least recent to most recent (for graphs, etc.).
  */
-var rearrangeData = function(dataArr) {
-  var i = days.TODAY;
-  if (i === 7) {
-    return dataArr;
+var arrangeData = function(dataArr, index) {
+  if (index < -1 || index > 7) {
+    return -1;
   }
-  return dataArr.splice(i, dataArr.length).concat(dataArr.splice(0, i));
+
+  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  if (index === days.TODAY) {
+    return dataArr[i-1];
+  } else if (index) {
+    return dataArr[index-1];
+  } else {
+    if (i === 7) {
+      return dataArr;
+    }
+    return dataArr.splice(i, dataArr.length).concat(dataArr.splice(0, i));
+  }
+  
 };
 
 /* export: getVisits
@@ -151,7 +163,7 @@ exports.getVisits = function(packageName, index) {
   var packageData = localStorage.getItem(packageName).stats.map(function (item) { 
     return item['visits']; 
   });
-  return (index && index < 7) ? packageData[index-1] : rearrangeData(packageData);
+  return arrangeData(packageData, index);
 };
 
 /* export: visited
@@ -159,7 +171,8 @@ exports.getVisits = function(packageName, index) {
  * Adds one to the visits for today.
  */
 exports.visited = function(packageName) {
-  localStorage.getItem(packageName).stats[days.TODAY-1]['visits']++;
+  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  localStorage.getItem(packageName).stats[i-1]['visits']++;
 };
 
 /* export: getUnlocks
@@ -171,7 +184,7 @@ exports.getUnlocks = function(index) {
   var phoneData = localStorage.getItem('phone').stats.map(function (item) { 
     return item['unlocks']; 
   });
-  return (index && index < 7) ? phoneData[index-1] : rearrangeData(phoneData);
+  return arrangeData(phoneData, index);
 };
 
 /* export: unlocked
@@ -179,7 +192,8 @@ exports.getUnlocks = function(index) {
  * Adds one to the unlocks for today.
  */
 exports.unlocked = function() {
-  localStorage.getItem('phone').stats[days.TODAY-1]['unlocks']++;
+  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  localStorage.getItem('phone').stats[i-1]['unlocks']++;
 };
 
 /* export: getGlances
@@ -191,7 +205,7 @@ exports.getGlances = function(index) {
   var phoneData = localStorage.getItem('phone').stats.map(function (item) { 
     return item['glances']; 
   });
-  return (index && index < 7) ? phoneData[index-1] : rearrangeData(phoneData);
+  return arrangeData(phoneData, index);
 };
 
 /* export: glanced
@@ -199,7 +213,8 @@ exports.getGlances = function(index) {
  * Adds one to the glances for today.
  */
 exports.glanced = function() {
-  var phoneData = localStorage.getItem('phone').stats[days.TODAY-1]['glances']++;
+  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  var phoneData = localStorage.getItem('phone').stats[i-1]['glances']++;
 };
 
 /* helper: createPackageData
@@ -230,14 +245,15 @@ var createPackageData = function(packageName) {
  */
 exports.wipeTodaysData = function() {
 
-  localStorage.getItem('phone').stats[days.TODAY] = {
+  var i = java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK);
+  localStorage.getItem('phone').stats[i-1] = {
     glances: 0,
     unlocks: 0
   };
 
   var list = localStorage.getItem('selectedPackages');
   list.forEach(function (packageName) {
-    localStorage.getItem(packageName).stats[days.TODAY] = {
+    localStorage.getItem(packageName).stats[i-1] = {
       visits: 0
     };
   });
