@@ -19,6 +19,8 @@
         <Button text="Enable Service" tap="enableServices" />
         <Button text="Disable Service" tap="disableServices" />
         <Button text="Get Running Services" tap="getRunningServices" />
+        <Button text="Wipe Database" tap="reset" />
+
       </StackLayout>
 
     </sd:RadSideDrawer.mainContent>
