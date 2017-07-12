@@ -8,14 +8,3 @@ if (StorageUtil.isSetUp()) {
 }
 applicationModule.start({ moduleName: "views/" + view + "/" + view});
 applicationModule.setCssFileName("app.css");
-
-var context = applicationModule.android.context.getApplicationContext();
-const DateChangeService = require("~/services/DateChangeService");
-const ServiceManager = require("~/services/ServiceManager");
-
-
-var dateChangeServiceIntent = new android.content.Intent(context, com.habitlab.DateChangeService.class);
-
-if (!ServiceManager.isRunning(com.habitlab.DateChangeService.class.getName())) {
-	context.startService(dateChangeServiceIntent);
-}

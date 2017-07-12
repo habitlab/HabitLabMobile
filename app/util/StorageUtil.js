@@ -222,7 +222,6 @@ exports.getGlances = function(index) {
  * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-
   var startOfTarget = Calendar.getInstance();
   startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
   startOfTarget.set(Calendar.MINUTE, 0);
@@ -240,7 +239,6 @@ exports.glanced = function() {
  * Runs whenever a glance happens to erase data that will now be overwritten (if there is any).
  */
 var resetData = function(days, today) {
-
   for (var i = 0; i < days; i++) {
     localStorage.getItem('phone').stats[(today+6-i)%7] = {
       glances: 0,
@@ -253,9 +251,7 @@ var resetData = function(days, today) {
         visits: 0
       };
     });
-  }    
-  
-
+  }
 };
 
 /* helper: createPackageData

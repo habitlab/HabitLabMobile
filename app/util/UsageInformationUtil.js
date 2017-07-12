@@ -65,12 +65,7 @@ function getAvgTimeOnAppWeek(packageName) {
  * found.
  */
 function getTimeOnApplicationSingleDay(packageName, daysAgo) {
-	var startOfTarget = Calendar.getInstance();
-	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-	startOfTarget.set(Calendar.MINUTE, 0);
-	startOfTarget.set(Calendar.SECOND, 0);
-	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
-
+	var startOfTarget = getStartOfDay(daysAgo);
 	var endOfTarget = Calendar.getInstance();
 	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
 
@@ -156,6 +151,7 @@ function getAppsToday() {
 	}
 
 	return list;
+	
 };
 
 
