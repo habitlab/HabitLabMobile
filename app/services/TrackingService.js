@@ -70,7 +70,6 @@ android.app.Service.extend("com.habitlab.TrackingService", {
  */
 var startTimer = function() {
 	if (!timerID) {
-        console.log("Timer active");
 		timerID = Timer.setInterval(() => {
 			trackUsage();
 		}, 1000);
@@ -89,7 +88,6 @@ var startTimer = function() {
 var stopTimer = function() {
 	Timer.clearInterval(timerID);
 	timerID = 0;
-    console.log("Timer stopped");
 };
 
 

@@ -27,6 +27,13 @@ var drawer;
 
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 
+
+	if (!PermissionUtil.checkSystemOverlayPermission()) {
+		PermissionUtil.launchSystemOverlayIntent();
+	} else {
+		console.log("Good");
+	}
+
 };
 
 exports.reset = function() {
