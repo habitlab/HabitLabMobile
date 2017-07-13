@@ -1,5 +1,6 @@
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var StorageUtil = require("~/util/StorageUtil");
+var IM = require('~/interventions/InterventionManager');
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var Toast = require('nativescript-toast');
@@ -43,7 +44,7 @@ var setUpList = function() {
   interventionList = StorageUtil.interventionDetails;
 
   for (var i = 0; i < interventionList.length; i++) {
-    if (!page.getViewById('item' + i)) {
+    if (!page.getViewById('item' + i) && IM.interventions[i]) {
       interventionLayout.addChild(createItem(i));
     }
   }
