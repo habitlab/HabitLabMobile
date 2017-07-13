@@ -6,6 +6,14 @@ const Toast = require("nativescript-toast");
 var application = require('application');
 var context = application.android.context.getApplicationContext();
 
+// native APIs
+var AudioManager = android.media.AudioManager;
+var Context = android.content.Context;
+
+// global vars
+var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
+
+
 var notificationID = {
   GLANCE: 1000,
   UNLOCK: 2000,
@@ -62,6 +70,21 @@ var popToastGlanced = function() {
   }
 };
 
+
+var blockAllSoundMedia = function () {
+  audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+}
+
+
+
+var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListener({
+    onAudioFocusChange: function (change) {
+        NotificationUtil.sendNotification(context, "HabitLab", "Media Intervention");
+    }
+});
+
+
+
 module.exports = { 
   interventions: [
     popToastGlanced,
@@ -74,7 +97,8 @@ module.exports = {
     function() {},
     popToastVisited,
     sendNotificationVisited
-  ]
+  ], 
+  blockAllSoundMedia
 };
 
 

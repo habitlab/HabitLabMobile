@@ -100,17 +100,15 @@ var stopTimer = function() {
  * background. Plugs interventions into the device.
  */
 var trackUsage = function () {
-    // var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
-    // audioManager.requestAudioFocus(interface, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+    InterventionManager.blockAllSoundMedia();
+    var packageName = getActivePackage();
+    console.log(packageName);
+    if (packageName && StorageUtil.isPackageSelected(packageName)) {
+        StorageUtil.visited(packageName); // log a visit
 
-    // var packageName = getActivePackage();
-    // console.log(packageName);
-    // if (packageName && StorageUtil.isPackageSelected(packageName)) {
-    //     StorageUtil.visited(packageName); // log a visit
-
-    //     /* Plug in interventions HERE */
-    //     InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](packageName);
-    // }
+        /* Plug in interventions HERE */
+        
+    }
 };
 
 
@@ -148,38 +146,6 @@ var getActivePackage = function() {
         return null;
     }
 }
-
-
-
-
-var AudioManager = android.media.AudioManager;
-
-var interface = new android.media.AudioManager.OnAudioFocusChangeListener({
-    onAudioFocusChange: function (change) {
-        console.log("Change: ", change);
-    }
-});
-
-var readLog = function () {
-    console.log("Trying to read log");
-    try {
-      var pro = java.lang.Runtime.getRuntime().exec("logcat -d -v threadtime");
-      var bufferedReader = new java.io.BufferedReader(new java.io.InputStreamReader(pro.getInputStream()));
-
-      var log = new java.lang.StringBuilder();
-      var line = "";
-      while ((line = bufferedReader.readLine()) != null) {
-        console.log(line);
-      }
-
-      console.log(log.toString());
-    } catch (e) {
-        console.log("unable to read log");
-    }
-};
-
-
-
 
 module.exports = {stopTimer: stopTimer};
 
