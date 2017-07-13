@@ -2,8 +2,8 @@ var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var StorageUtil = require("~/util/StorageUtil");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
-var IM = require('~/interventions/InterventionManager');
 var Toast = require('nativescript-toast');
+var frame = require('ui/frame');
 
 var page;
 var drawer;
@@ -16,21 +16,23 @@ var createItem = function(id)  {
   });
 
   item.id = 'item' + id;
-  item.getViewById("name").text = interventionList[id].name;
+  
+  var label = item.getViewById("name");
+  label.text = interventionList[id].name;
+  label.on(gestures.tap, function() {
+    var options = {
+      moduleName: 'views/detailView/detailView',
+      context: {
+        id: id
+      }
+    };
+    frame.topmost().navigate(options);
+  });
 
   var sw = item.getViewById("switch");
   sw.checked = StorageUtil.isEnabledForAll(id);
   sw.on(gestures.tap, function() {
     StorageUtil.toggleForAll(id);
-  });
-
-  item.getViewById("button").on(gestures.tap, function() {
-    var packages = StorageUtil.getSelectedPackages();
-    if (StorageUtil.interventionDetails[id].target === 'phone' || packages.length !== 0) {
-      IM.interventions[id](packages[0]);
-    } else {
-      Toast.makeText('Cannot try (no apps selected).').show();
-    }
   });
 
   return item;

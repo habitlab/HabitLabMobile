@@ -1,5 +1,4 @@
-<GridLayout columns="auto,*,auto" rows="auto" >
-  <Switch id="switch" col="0" />
-  <Label id="name" col="1" />
-  <Button id="button" text="try" col="2" />
+<GridLayout columns="*,auto" rows="auto" >
+  <Label id="name" col="0" />
+  <Switch id="switch" col="1" />
 </GridLayout>

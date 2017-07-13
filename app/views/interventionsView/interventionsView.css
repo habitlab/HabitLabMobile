@@ -1,18 +1,12 @@
-.sidedrawer-list-item-text {
-	font-size: 18;
-	color: blue;
-	padding: 10;
-}
-
-
-.sidedrawer-header {
-	height: 56;
-	text-align: center;
-	vertical-align: center;
-}
-
 Label {
-  padding-left: 4%;
+  padding-top: 12%;
+  padding-bottom: 12%;
   font-size: 19%;
   vertical-align: middle;
+}
+
+GridLayout {
+  margin: 4%;
+  border-color: lightgray;
+  border-bottom-width: 1px;
 }

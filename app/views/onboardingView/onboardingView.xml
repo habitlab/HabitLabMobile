@@ -1,32 +1,32 @@
 <Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded"
   xmlns:Slides="nativescript-slides">
   <StackLayout orientation='vertical'>
-    <Slides:SlideContainer id="slides" pageIndicators="true" height="96%">
+    <Slides:SlideContainer id="slides" pageIndicators="true" height="94%">
 
       <Slides:Slide class="slide">
         <Label text="{{texts[0]}}" class='title' textWrap='true' />
       </Slides:Slide>
 
       <Slides:Slide class="slide">
-        <Label text="{{titles[1]}}" class='title' />
+        <Label text="{{titles[1]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[1]}}" />
         <Label text="{{texts[1]}}"  textWrap='true' />
       </Slides:Slide>
 
       <Slides:Slide class="slide">
-        <Label text="{{titles[2]}}" class='title' />
+        <Label text="{{titles[2]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[2]}}" />
         <Label text="{{texts[2]}}" textWrap='true' />
       </Slides:Slide>
 
       <Slides:Slide class="slide">
-        <Label text="{{titles[3]}}" class='title' />
+        <Label text="{{titles[3]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[3]}}" />
         <Label text="{{texts[3]}}" textWrap='true' />
       </Slides:Slide>
 
       <Slides:Slide id='lastslide' class="slide">
-        <Label text="{{titles[4]}}" class='title' />
+        <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[4]}}" class="squish" />
         <Label text="{{texts[4]}}" textWrap='true' />
       </Slides:Slide>

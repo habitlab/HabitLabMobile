@@ -20,6 +20,12 @@ Page.onboarding {
 	vertical-align: center;
 }
 
+.sidedrawer-list-item-text {
+  font-size: 18;
+  color: blue;
+  padding: 10;
+}
+
 .slide-indicator-inactive{
     background-color: white;
     opacity : 0.4;
