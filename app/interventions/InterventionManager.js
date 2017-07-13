@@ -71,17 +71,27 @@ var popToastGlanced = function() {
 };
 
 
-var blockAllSoundMedia = function () {
-  audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+var blockMedia = true;
+
+var setBlockMedia = function(bool) {
+  blockMedia = bool;
 }
 
-
+var blockAllSoundMedia = function () {
+  if (blockMedia) {
+    audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
+  }
+}
 
 var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListener({
     onAudioFocusChange: function (change) {
-        NotificationUtil.sendNotification(context, "HabitLab", "Media Intervention");
+      if (blockMedia && change === AudioManager.AUDIOFOCUS_LOSS) {
+        NotificationUtil.sendNotificationWithOptions(context, "Media Intervention", "Would you like to continue watching this video?", 7777);
+      }
     }
 });
+
+
 
 
 
@@ -98,7 +108,8 @@ module.exports = {
     popToastVisited,
     sendNotificationVisited
   ], 
-  blockAllSoundMedia
+  blockAllSoundMedia,
+  setBlockMedia
 };
 
 

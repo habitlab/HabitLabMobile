@@ -99,15 +99,26 @@ var stopTimer = function() {
  * Function to be run at predetermined intervals in the 
  * background. Plugs interventions into the device.
  */
+var inBlacklistedApplication = false;
 var trackUsage = function () {
-    InterventionManager.blockAllSoundMedia();
     var packageName = getActivePackage();
-    console.log(packageName);
-    if (packageName && StorageUtil.isPackageSelected(packageName)) {
-        StorageUtil.visited(packageName); // log a visit
 
-        /* Plug in interventions HERE */
-        
+    if (packageName) {
+        // new application launched
+        InterventionManager.setBlockMedia(true);
+        if (StorageUtil.isPackageSelected(packageName)) {
+            inBlacklistedApplication = true;
+            StorageUtil.visited(packageName); // log a visit
+            // put interventions here that run on app launch
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](packageName);
+        } else {
+            inBlacklistedApplication = false;
+        }
+    } else {
+        // in old application
+        if (inBlacklistedApplication) {
+            InterventionManager.blockAllSoundMedia();
+        }
     }
 };
 

@@ -52,6 +52,15 @@
 			android:exported="false" >
 		</service>
 		<receiver 
+			android:name="com.habitlab.NotificationActionReceiver"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="action.habitlab.NotificationPositive" />
+				<action android:name="action.habitlab.NotificationNegative" />
+		    </intent-filter>
+		</receiver>
+		<receiver 
 			android:name="com.habitlab.ServiceRestarterReceiver"
 			android:enabled="true"
 		    android:exported="false"

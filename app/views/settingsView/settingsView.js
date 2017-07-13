@@ -58,10 +58,38 @@ exports.toggleDrawer = function() {
 	drawer.toggleDrawerState();
 };
 
-exports.getRunningServices = function() {
 
-	java.lang.Runtime.getRuntime().exec("adb shell killall com.android.camera");
+
+var AlertDialog = android.support.v7.app.AlertDialog;
+
+
+exports.getRunningServices = function() {
+	// console.log("Got here");
+ // 	var alertDialog = new AlertDialog.Builder(application.android.context).create();
+ // 	console.log("Got here 2");
+	// alertDialog.setTitle("Alert");
+	// alertDialog.setMessage("Alert message to be shown");
+	// console.log("Got here 3");
+	// alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", dialogListener);
+	// console.log("Got here 4");
+	// alertDialog.show();
 	// ServiceManager.getRunningServices();
 };
+
+
+var dialogListener = new android.content.DialogInterface.OnClickListener({
+    onClick: function (dialog, which) {
+        dialog.dismiss();
+    }
+});
+
+
+
+
+
+
+
+
+
 
 
