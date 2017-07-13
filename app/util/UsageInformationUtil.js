@@ -167,6 +167,29 @@ function getTimeOnPhoneThisWeek() {
 	return weeklyUsageStatistics;
 }
 
+function getTimeOnPhoneThisMonth() {
+	var monthlyUsage = [];
+	for (var i = 28; i >= 0; i--) {
+		monthlyUsage.push(getTimeOnPhoneSingleDay(i));
+	}
+	return monthlyUsage;
+}
+
+
+function getAvgTimeOnPhoneMonth() {
+	var month = getTimeOnPhoneThisWeek();
+	var sum = 0;
+	var futureDays = 0;
+	for (var i = 0; i < month.length; i++) {
+		sum += month[i];
+		if (month[i] == 0) futureDays++;
+	}
+	var avg = sum/(month.length-futureDays);
+	return Math.round(avg);
+}
+
+
+
 
 
 /* getAvgTimeOnPhoneWeek
@@ -356,7 +379,9 @@ module.exports = {getApplicationList: getApplicationList,
 	getIcon : getIcon,
 	getAppsSingleDay : getAppsSingleDay,
 	getAvgTimeOnPhoneWeek : getAvgTimeOnPhoneWeek,
-	getAvgTimeOnAppWeek : getAvgTimeOnAppWeek};
+	getAvgTimeOnAppWeek : getAvgTimeOnAppWeek, 
+	getTimeOnPhoneThisMonth : getTimeOnPhoneThisMonth, 
+	getAvgTimeOnPhoneMonth : getAvgTimeOnPhoneMonth};
 
 
 
