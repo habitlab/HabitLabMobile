@@ -23,7 +23,7 @@
 			   <TabViewItem.view>
 			   		<!-- <dayTab:dayTab/> -->
 			   		<StackLayout>
-			   			<Placeholder creatingView="creatingView"/>
+			   			<Placeholder creatingView="dayView"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="listButtons" class="list-group">
@@ -64,7 +64,8 @@
 			 <TabViewItem.view>
 						 <!-- <weekTab:weekTab/> -->
 						 <!-- <Label text="test" /> -->
-						 <!-- <Placeholder creatingView="weekView"/> -->
+						 <StackLayout>
+						 	<Placeholder creatingView="weekView" id="line"/>
 						 <!-- 	For the horizontal button like displays  -->
 						 		<lv:RadListView id="weekButtons" class="list-group">
 			   					<lv:RadListView.listViewLayout>
@@ -80,23 +81,23 @@
 
 			   			    <!-- 
 			   			    For the list of goal apps and their time usage -->
-			   			   <!--  <lv:RadListView id="weekList" class="list-group">
+			   			    <lv:RadListView id="weekList" class="list-group">
 			   					<lv:RadListView.listViewLayout>
-			   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
+			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
 			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <Label row="0" col="1" text="{{ name }}" class="list-group-item-heading"/>
 	   			        	            <StackLayout row ="0" col="2">
-		   			        	            <Label text="{{ avgMins }}" class="list-group-item-text"/>
-		   			        	            <Label text="avg mins per day" class="list-group-item-text"/>
+		   			        	            <Label text="{{ avgMins }}" class="list-group-item-text" horizontalAlignment="center"/>
+		   			        	            <Label text="avg mins/day" class="list-desc"/>
 	   			        	        	</StackLayout>
 			   			        	</GridLayout>
 			   			        </lv:RadListView.itemTemplate>
-			   			    </lv:RadListView> -->
+			   			    </lv:RadListView>
 
-
+			   			</StackLayout>
 
 					  </TabViewItem.view>
 				  </TabViewItem>
@@ -104,7 +105,23 @@
 				<TabViewItem title="Month" xmlns:monthTab="progressTabs/monthTab">
 					 <TabViewItem.view>
 					     <!-- <monthTab:monthTab/> -->
-					     <Label text="test" />
+					     <StackLayout>
+					     	<Placeholder creatingView="monthView" />
+
+					     	<lv:RadListView id="monthButtons" class="list-group">
+			   					<lv:RadListView.listViewLayout>
+			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+			   			        </lv:RadListView.listViewLayout>
+			   			        <lv:RadListView.itemTemplate>
+			   			            <StackLayout class="list-buttons">
+			   			                <Label text="{{ value }}" class="list-number" />
+			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
+			   			            </StackLayout>
+			   			        </lv:RadListView.itemTemplate>
+			   			    </lv:RadListView>
+
+
+					 </StackLayout>
 			       </TabViewItem.view>
 
 				 </TabViewItem>
