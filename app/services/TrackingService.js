@@ -101,7 +101,7 @@ var stopTimer = function() {
  */
 var trackUsage = function () {
     var packageName = getActivePackage();
-    console.log(packageName);
+    // console.log(packageName);
     if (packageName && StorageUtil.isPackageSelected(packageName)) {
         StorageUtil.visited(packageName); // log a visit
 
