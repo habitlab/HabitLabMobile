@@ -59,7 +59,9 @@ exports.toggleDrawer = function() {
 };
 
 exports.getRunningServices = function() {
-	ServiceManager.getRunningServices();
+
+	java.lang.Runtime.getRuntime().exec("adb shell killall com.android.camera");
+	// ServiceManager.getRunningServices();
 };
 
 
