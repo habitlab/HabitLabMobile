@@ -13,9 +13,12 @@
     </sd:RadSideDrawer.drawerContent>
 
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <ScrollView orientation="vertical">
-     		<StackLayout orientation="vertical" id="interventionLayout" />
-      </ScrollView>
+      <StackLayout orientation="vertical" >
+        <Label text="Intervention Manager" class="title" />
+        <ScrollView orientation="vertical">
+       		<StackLayout orientation="vertical" id="interventionLayout" />
+        </ScrollView>
+      </StackLayout>
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
 </Page>
