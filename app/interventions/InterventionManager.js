@@ -39,6 +39,13 @@ var unlocksNotification = function() {
   }
 };
 
+var popToastUnlocked = function() {
+  if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_TOAST)) {
+    var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
+    Toast.makeText("Today's Unlock Count: " + unlocks).show();
+  }
+};
+
 var glancesNotification = function() {
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_NOTIFICATION)) {
     var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
@@ -48,11 +55,18 @@ var glancesNotification = function() {
   }
 };
 
+var popToastGlanced = function() {
+  if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_TOAST)) {
+    var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
+    Toast.makeText("Today's Glance Count: " + glances).show();
+  }
+};
+
 module.exports = { 
   interventions: [
-    function() {},
+    popToastGlanced,
     glancesNotification,
-    function() {},
+    popToastUnlocked,
     unlocksNotification,
     function() {},
     function() {},

@@ -103,9 +103,6 @@ var trackUsage = function () {
     // var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
     // audioManager.requestAudioFocus(interface, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
-    readLog();
-
-
     // var packageName = getActivePackage();
     // console.log(packageName);
     // if (packageName && StorageUtil.isPackageSelected(packageName)) {
