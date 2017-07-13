@@ -11,3 +11,8 @@
 	vertical-align: center;
 }
 
+Label {
+  padding-left: 4%;
+  font-size: 19%;
+  vertical-align: middle;
+}

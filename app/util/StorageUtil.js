@@ -15,14 +15,56 @@ var days = {
   SAT: 7
 };
 
-exports.days = days;
+var interventions = {
+  GLANCE_TOAST: 0,
+  GLANCE_NOTIFICATION: 1,
+  UNLOCK_TOAST: 2,
+  UNLOCK_NOTIFICATION: 3,
+  USAGE_TOAST: 4,
+  USAGE_NOTIFICATION: 5,
+  DURATION_TOAST: 6, // for length of visit to an app
+  DURATION_NOTIFICATION: 7,
+  VISIT_TOAST: 8, // for amount of time on phone today
+  VISIT_NOTIFICATION: 9
+};
 
-/* export: getSelectedPackages
- * ---------------------------
- * Returns array of package names (strings) that are currently 'blacklisted'.
- */
-exports.getSelectedPackages = function() {
-  return localStorage.getItem('selectedPackages');
+var interventionDetails = [
+  {name: "Glances Toast", description: "Sends a disappearing message with today's glance count", target: 'phone'},
+  {name: "Glances Notification", description: "Sends a notification with today's glance count", target: 'phone'},
+  {name: "Unlocks Toast", description: "Sends a disappearing message with today's unlock count", target: 'phone'},
+  {name: "Unlocks Notification", description: "Sends a notification with today's unlock count", target: 'phone' },
+  {name: "Usage Toast", description: "Sends a disappearing message with today's phone usage in minutes", target: 'phone' },
+  {name: "Usage Notification", description: "Sends a notification with today's phone usage in minutes", target: 'phone' },
+  {name: "Visit Length Toast", description: "Sends a disappearing message with visit duration on a specific app", target: 'app' },
+  {name: "Visit Length Notification", description: "Sends a notification with visit duration on a specific app" },
+  {name: "Visits Toast", description: "Sends a disappearing message with today's visit count to a specific app", target: 'app' },
+  {name: "Visits Notification", description: "Sends a notification with today's visit count to a specific app", target: 'app' }
+];
+
+exports.days = days;
+exports.interventions = interventions;
+exports.interventionDetails = interventionDetails;
+
+
+/************************************
+ *             HELPERS              *
+ ************************************/
+
+
+var PkgStat = function() {
+  return {'visits': 0};
+};
+
+var PkgGoal = function() {
+  return {'minutes': 15};
+};
+
+var PhStat = function() {
+  return {'glances': 0, 'unlocks': 0};
+};
+
+var PhGoal = function() {
+  return {'glances': 75, 'unlocks': 50, 'minutes': 120};
 };
 
 /* helper: createPackageData
@@ -31,9 +73,80 @@ exports.getSelectedPackages = function() {
  */
 var createPackageData = function(packageName) {
   localStorage.setItem(packageName, {
-      goals: {'minutes': 15}, 
-      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
+      goals: PkgGoal(), 
+      stats: [PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat()],
+      disabled: Array(interventions.length).fill(false)
     });
+};
+
+/* helper: createPhoneData
+ * -----------------------
+ * Updates storage to include data for general phone.
+ */
+var createPhoneData = function() {
+  localStorage.setItem('phone', {
+      goals: PhGoal(), 
+      stats: [PhStat(), PhStat(), PhStat(), PhStat(), PhStat(), PhStat(), PhStat()],
+      disabled: Array(interventions.length).fill(false)
+    });
+};
+
+var startOfDay = function() {
+  var startOfTarget = Calendar.getInstance();
+  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+  startOfTarget.set(Calendar.MINUTE, 0);
+  startOfTarget.set(Calendar.SECOND, 0);
+  startOfTarget.set(Calendar.MILLISECOND, 0);
+  return startOfTarget;
+};
+
+
+/************************************
+ *           SETTING UP             *
+ ************************************/
+
+
+/* export: setUp
+ * -------------
+ * Clears storage and resets everything to defaults.
+ */
+exports.setUp = function() {
+  localStorage.clear();
+  var preset = ['com.facebook.katana', 'com.google.android.youtube', 'com.facebook.orca', 
+                'com.snapchat.android', 'com.instagram.android'];
+
+  localStorage.setItem('onboarded', true);
+  localStorage.setItem('selectedPackages', preset);
+  localStorage.setItem('lastDateActive', startOfDay().getTimeInMillis());
+
+  createPhoneData();
+  preset.forEach(function (item) {
+    createPackageData(item);
+  });
+
+  localStorage.setItem('enabled', Array(interventionDetails.length).fill(true));
+};
+
+/* export: isSetUp
+ * ---------------
+ * Checks if the user has been onboarded yet.
+ */
+exports.isSetUp = function() {
+  return localStorage.getItem('onboarded');
+};
+
+
+/************************************
+ *           MANAGEMENT             *
+ ************************************/
+
+
+/* export: getSelectedPackages
+ * ---------------------------
+ * Returns array of package names (strings) that are currently 'blacklisted'.
+ */
+exports.getSelectedPackages = function() {
+  return localStorage.getItem('selectedPackages');
 };
 
 /* export: addPackage
@@ -86,55 +199,19 @@ exports.togglePackage = function(packageName) {
   return !removed;
 };
 
-/* export: setUp
- * -------------
- * Clears storage and resets everything to defaults.
- */
-exports.setUp = function() {
-  localStorage.clear();
-  var preset = ['com.facebook.katana', 'com.google.android.youtube', 'com.facebook.orca', 
-                'com.snapchat.android', 'com.instagram.android'];
-
-  var today = startOfDay();
-
-  localStorage.setItem('onboarded', true);
-  localStorage.setItem('selectedPackages', preset);
-  localStorage.setItem('lastDateActive', today.getTimeInMillis());
-
-  localStorage.setItem('phone', {
-    goals: {'minutes': 120, 'glances': 75, 'unlocks': 50}, 
-    stats: [{'unlocks': 0, 'glances': 0}, {'unlocks': 0, 'glances': 0}, {'unlocks': 0, 'glances': 0}, {'unlocks': 0, 'glances': 0}, 
-            {'unlocks': 0, 'glances': 0}, {'unlocks': 0, 'glances': 0}, {'unlocks': 0, 'glances': 0}]
-  });
-
-  preset.forEach(function (item) {
-    createPackageData(item);
-  });
-};
-
-/* export: isSetUp
- * ---------------
- * Checks if the user has been onboarded yet.
- */
-exports.isSetUp = function() {
-  return localStorage.getItem('onboarded');
-};
-
-/* export: bootstrap
- * -----------------
- * Clears storage.
- */
-exports.bootstrap = function() {
-  localStorage.clear();
-};
-
 /* export: isPackageSelected
  * -------------------------
  * Checks if the given package name is blacklisted.
  */
 exports.isPackageSelected = function(packageName) {
-  return exports.getSelectedPackages().includes(packageName);
+  return localStorage.getItem('selectedPackages').includes(packageName);
 };
+
+
+/************************************
+ *          DATA aND STATS          *
+ ************************************/
+
 
 /* helper: arrangeData
  * -------------------
@@ -253,35 +330,81 @@ var resetData = function(days, today) {
   }
 };
 
-/* helper: createPackageData
- * -------------------------
- * Updates storage to include data for newly added packages.
+/************************************
+ *           INTERVENTIONS          *
+ ************************************/
+
+/* export: enableForAll
+ * --------------------
+ * Completely enables the given intervention (by id).
  */
-var createPackageData = function(packageName) {
-  localStorage.setItem(packageName, {
-      goals: {'minutes': 15}, 
-      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
-    });
+exports.enableForAll = function(id) {
+  localStorage.getItem('enabled')[id] = true;
 };
 
-/* helper: createPackageData
- * -------------------------
- * Updates storage to include data for newly added packages.
+/* export: disableForAll
+ * ---------------------
+ * Completely disables the given intervention (by id).
  */
-var createPackageData = function(packageName) {
-  localStorage.setItem(packageName, {
-      goals: {'minutes': 15}, 
-      stats: [{'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}, {'visits': 0}]
-    });
+exports.disableForAll = function(id) {
+  localStorage.getItem('enabled')[id] = false;
 };
 
+/* export: toggleForAll
+ * --------------------
+ * Completely disables/enables the given intervention (by id).
+ */
+exports.toggleForAll = function(id) {
+  var enabled = localStorage.getItem('enabled')[id];
+  localStorage.getItem('enabled')[id] = !enabled;
+};
 
-var startOfDay = function() {
-  var startOfTarget = Calendar.getInstance();
-  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-  startOfTarget.set(Calendar.MINUTE, 0);
-  startOfTarget.set(Calendar.SECOND, 0);
-  startOfTarget.set(Calendar.MILLISECOND, 0);
-  return startOfTarget;
-}
+/* export: enable
+ * ---------------
+ * Enables the given intervention for a specific package (by id).
+ */
+exports.enable = function(id, packageName) {
+  localStorage.getItem(packageName).disabled[id] = true;
+};
 
+/* export: disable
+ * ----------------
+ * Disables the given intervention for a specific package (by id).
+ */
+exports.disable = function(id, packageName) {
+  localStorage.getItem(packageName).disabled[id] = false;
+};
+
+/* export: toggle
+ * ----------------
+ * Toggles the given intervention for a specific package (by id).
+ */
+exports.toggle = function(id, packageName) {
+  var enabled = localStorage.getItem(packageName).disabled[id];
+  localStorage.getItem(packageName).disabled[id] = !enabled;
+};
+
+/* export: isEnabledForApp
+ * -----------------------
+ * Returns whether the given intervention is enabled for package specific interventions.
+ */
+exports.isEnabledForApp = function(id, packageName) {
+  return !localStorage.getItem(packageName).disabled[id];
+};
+
+/* export: isEnabledForAll
+ * -----------------------
+ * Returns whether the given intervention is enabled generally.
+ */
+exports.isEnabledForAll = function(id) {
+  return localStorage.getItem('enabled')[id];
+};
+
+/* export: canIntervene
+ * --------------------
+ * Returns whether the given intervention is should run.
+ */
+exports.canIntervene = function(id, packageName) {
+  return localStorage.getItem('enabled')[id] && 
+        (interventionDetails[id].target === 'phone' || !localStorage.getItem(packageName).disabled[id]);
+};

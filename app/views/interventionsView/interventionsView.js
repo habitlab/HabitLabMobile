@@ -1,34 +1,50 @@
-var appsList = [];
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
-var frameModule = require("ui/frame");
-var placeholderModule = require("tns-core-modules/ui/placeholder");
-var view = require("ui/core/view");
+var StorageUtil = require("~/util/StorageUtil");
+var gestures = require("ui/gestures").GestureTypes;
+var builder = require('ui/builder');
+
+var page;
 var drawer;
-var app = require("tns-core-modules/application")
+var interventionList;
 
+var createItem = function(id)  {
+  var item = builder.load({
+    path: 'shared/togglelistelem',
+    name: 'togglelistelem'
+  });
 
+  item.id = 'item' + id;
+  item.getViewById("name").text = interventionList[id].name;
+  
+  var sw = item.getViewById("switch");
+  sw.checked = StorageUtil.isEnabledForAll(id);
+  sw.on(gestures.tap, function() {
+    StorageUtil.toggleForAll(id);
+  });
+
+  return item;
+
+  // TODO: WRITE TRYOUT CODE 
+  // var button = item.getViewById("button").tap = tryIntervention();
+};
+
+var setUpList = function() {
+  var interventionLayout = page.getViewById("interventionLayout");
+  interventionList = StorageUtil.interventionDetails;
+
+  for (var i = 0; i < interventionList.length; i++) {
+    if (!page.getViewById('item' + i)) {
+      interventionLayout.addChild(createItem(i));
+    }
+  }
+};
 
 exports.pageLoaded = function(args) {
-    var page = args.object;
-    drawer = view.getViewById(page, "sideDrawer");
+  page = args.object;
+  drawer = page.getViewById("sideDrawer");
+  setUpList();
 };
 
 exports.toggleDrawer = function() {
     drawer.toggleDrawerState();
 };
-
-
-
-
-
-
-
-/*
-exports.creatingView = function(args) {
-    var nativeView = new android.widget.TextView(args.context);
-    nativeView.setSingleLine(true);
-    nativeView.setEllipsize(android.text.TextUtils.TruncateAt.END);
-    nativeView.setText("Native");
-    args.view = nativeView;
-}
-*/

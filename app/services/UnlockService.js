@@ -26,10 +26,10 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
 
         if (action === Intent.ACTION_SCREEN_ON) {
             StorageUtil.glanced();
-            InterventionManager.glancesNotification();
+            InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION]();
         } else if (action === Intent.ACTION_USER_PRESENT) {
             StorageUtil.unlocked();
-            InterventionManager.unlocksNotification();
+            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION]();
         }        
     }
 });

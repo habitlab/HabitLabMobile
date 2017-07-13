@@ -13,41 +13,54 @@ var notificationID = {
 };
 
 var popToastVisited = function(pkg) {
-	var applicationName = UsageInformationUtil.getAppName(pkg);
-	var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
-	Toast.makeText(applicationName + " visits today: " + visits).show();
+  if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
+    var applicationName = UsageInformationUtil.getAppName(pkg);
+    var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
+    Toast.makeText(applicationName + " visits today: " + visits).show();
+  }
 };
 
 var sendNotificationVisited = function(pkg) {
-  var applicationName = UsageInformationUtil.getAppName(pkg);
-  var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
-  var title = applicationName + " Usage";
-  var msg = "You have opened " + applicationName + (visits === 1 ? " time" : " times") + " today";
-  NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
-}
+  if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_NOTIFICATION, pkg)) {
+    var applicationName = UsageInformationUtil.getAppName(pkg);
+    var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
+    var title = applicationName + " Usage";
+    var msg = "You have opened " + applicationName + (visits === 1 ? " time" : " times") + " today";
+    NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
+  }
+};
 
 var unlocksNotification = function() {
-  var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
-  var title = 'Unlock Alert!';
-  var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-  NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
+  if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_NOTIFICATION)) {
+    var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
+    var title = 'Unlock Alert!';
+    var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+    NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
+  }
 };
 
 var glancesNotification = function() {
-  var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
-  var title = 'Glance Alert!';
-  var msg = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
-  NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
+  if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_NOTIFICATION)) {
+    var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
+    var title = 'Glance Alert!';
+    var msg = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
+    NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
+  }
 };
 
-
-
-
-module.exports = {
-	popToastVisited: popToastVisited,
-  sendNotificationVisited: sendNotificationVisited,
-  glancesNotification: glancesNotification,
-  unlocksNotification: unlocksNotification
+module.exports = { 
+  interventions: [
+    function() {},
+    glancesNotification,
+    function() {},
+    unlocksNotification,
+    function() {},
+    function() {},
+    function() {},
+    function() {},
+    popToastVisited,
+    sendNotificationVisited
+  ]
 };
 
 
