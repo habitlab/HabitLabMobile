@@ -17,6 +17,7 @@
 
 .list-group-item-heading {
 	font-size: 15;
+	color: #011627
 }
 
 .list-group-item-text {
@@ -72,7 +73,7 @@
 #listButtons {
 	margin-top: 15;
 	padding: 15;
-	background-color: #FFA730;
+	background-color: #FFBD60;
 }
 
 
