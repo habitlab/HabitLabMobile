@@ -1,8 +1,5 @@
-<StackLayout orientation="horizontal">
-  <Switch id="switch" />
-  <StackLayout orientation="vertical" >
-    <Label id="name" />
-    <Label id="description" />
-  </StackLayout>
-  <!-- <Button id="button" text="try" /> -->
-</StackLayout>
+<GridLayout columns="auto,*,auto" rows="auto" >
+  <Switch id="switch" col="0" />
+  <Label id="name" col="1" />
+  <Button id="button" text="try" col="2" />
+</GridLayout>

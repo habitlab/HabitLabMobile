@@ -3,9 +3,9 @@ var StorageUtil = require("~/util/StorageUtil");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 
+var page;
 var drawer;
 var interventionList;
-var setUp;
 
 var createItem = function(id)  {
   var item = builder.load({
@@ -13,8 +13,9 @@ var createItem = function(id)  {
     name: 'togglelistelem'
   });
 
+  item.id = 'item' + id;
   item.getViewById("name").text = interventionList[id].name;
-  item.getViewById("description").text = interventionList[id].description;
+  
   var sw = item.getViewById("switch");
   sw.checked = StorageUtil.isEnabledForAll(id);
   sw.on(gestures.tap, function() {
@@ -27,21 +28,21 @@ var createItem = function(id)  {
   // var button = item.getViewById("button").tap = tryIntervention();
 };
 
-var setUpList = function(args) {
-  setUp = true;
-  var interventionLayout = args.object.getViewById("interventionLayout");
+var setUpList = function() {
+  var interventionLayout = page.getViewById("interventionLayout");
   interventionList = StorageUtil.interventionDetails;
 
   for (var i = 0; i < interventionList.length; i++) {
-    interventionLayout.addChild(createItem(i));
+    if (!page.getViewById('item' + i)) {
+      interventionLayout.addChild(createItem(i));
+    }
   }
 };
 
 exports.pageLoaded = function(args) {
-    drawer = args.object.getViewById("sideDrawer");
-    if (!setUp) {
-      setUpList(args);
-    }
+  page = args.object;
+  drawer = page.getViewById("sideDrawer");
+  setUpList();
 };
 
 exports.toggleDrawer = function() {

@@ -48,12 +48,19 @@ var glancesNotification = function() {
   }
 };
 
-
-module.exports = {
-	popToastVisited: popToastVisited,
-  sendNotificationVisited: sendNotificationVisited,
-  glancesNotification: glancesNotification,
-  unlocksNotification: unlocksNotification
+module.exports = { 
+  interventions: [
+    function() {},
+    glancesNotification,
+    function() {},
+    unlocksNotification,
+    function() {},
+    function() {},
+    function() {},
+    function() {},
+    popToastVisited,
+    sendNotificationVisited
+  ]
 };
 
 
