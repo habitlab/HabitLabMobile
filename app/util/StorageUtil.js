@@ -29,16 +29,16 @@ var interventions = {
 };
 
 var interventionDetails = [
-  {name: "Glances Toast", description: "Sends a disappearing message with today's glance count", target: 'phone'},
-  {name: "Glances Notification", description: "Sends a notification with today's glance count", target: 'phone'},
-  {name: "Unlocks Toast", description: "Sends a disappearing message with today's unlock count", target: 'phone'},
-  {name: "Unlocks Notification", description: "Sends a notification with today's unlock count", target: 'phone' },
-  {name: "Usage Toast", description: "Sends a disappearing message with today's phone usage in minutes", target: 'phone' },
-  {name: "Usage Notification", description: "Sends a notification with today's phone usage in minutes", target: 'phone' },
-  {name: "Visit Length Toast", description: "Sends a disappearing message with visit duration on a specific app", target: 'app' },
-  {name: "Visit Length Notification", description: "Sends a notification with visit duration on a specific app" },
-  {name: "Visits Toast", description: "Sends a disappearing message with today's visit count to a specific app", target: 'app' },
-  {name: "Visits Notification", description: "Sends a notification with today's visit count to a specific app", target: 'app' }
+  {name: "Glances Toast", description: "Sends a disappearing message with today's glance count", target: 'phone', level: 'easy'},
+  {name: "Glances Notification", description: "Sends a notification with today's glance count", target: 'phone', level: 'medium'},
+  {name: "Unlocks Toast", description: "Sends a disappearing message with today's unlock count", target: 'phone', level: 'easy'},
+  {name: "Unlocks Notification", description: "Sends a notification with today's unlock count", target: 'phone', level: 'medium'},
+  {name: "Usage Toast", description: "Sends a disappearing message with today's total phone usage in minutes", target: 'phone', level: 'easy'},
+  {name: "Usage Notification", description: "Sends a notification with today's total phone usage in minutes", target: 'phone', level: 'medium'},
+  {name: "Visit Length Toast", description: "Sends a disappearing message with visit duration in minutes for a specific app", target: 'app', level: 'easy'},
+  {name: "Visit Length Notification", description: "Sends a notification with visit duration in minutes for a specific app", level: 'medium'},
+  {name: "Visits Toast", description: "Sends a disappearing message with today's visit count for a specific app", target: 'app', level: 'easy'},
+  {name: "Visits Notification", description: "Sends a notification with today's visit count for a specific app", target: 'app', level: 'medium'}
 ];
 
 exports.days = days;
@@ -363,7 +363,7 @@ exports.toggleForAll = function(id) {
  * ---------------
  * Enables the given intervention for a specific package (by id).
  */
-exports.enable = function(id, packageName) {
+exports.enableForApp = function(id, packageName) {
   localStorage.getItem(packageName).disabled[id] = true;
 };
 
@@ -371,7 +371,7 @@ exports.enable = function(id, packageName) {
  * ----------------
  * Disables the given intervention for a specific package (by id).
  */
-exports.disable = function(id, packageName) {
+exports.disableForApp = function(id, packageName) {
   localStorage.getItem(packageName).disabled[id] = false;
 };
 
@@ -379,7 +379,7 @@ exports.disable = function(id, packageName) {
  * ----------------
  * Toggles the given intervention for a specific package (by id).
  */
-exports.toggle = function(id, packageName) {
+exports.toggleForApp = function(id, packageName) {
   var enabled = localStorage.getItem(packageName).disabled[id];
   localStorage.getItem(packageName).disabled[id] = !enabled;
 };

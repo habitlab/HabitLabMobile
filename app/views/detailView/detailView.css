@@ -1,0 +1,49 @@
+Label {
+  font-size: 20%;
+  padding: 4%;
+}
+
+#title {
+  font-size: 25%;
+  text-align: center;
+}
+
+#description {
+  text-align: center;
+  font-size: 17%;
+}
+
+#button {
+  margin: 3%;
+}
+
+#name {
+  margin-left: 4%;
+  padding-top: 12%;
+  padding-bottom: 12%;
+  font-size: 19%;
+  vertical-align: middle;
+}
+
+GridLayout {
+  margin: 4%;
+  border-color: lightgray;
+  border-bottom-width: 1px;
+}
+
+.easy {
+  color: green;
+}
+
+.medium {
+  color: orange;
+}
+
+.difficult {
+  color: red;
+}
+
+.level-layout {
+  flex-direction: row;
+  justify-content: center;
+}
