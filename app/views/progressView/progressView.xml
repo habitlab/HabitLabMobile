@@ -10,39 +10,33 @@
 	   <NavigationButton tap="toggleDrawer" android.systemIcon="ic_menu_moreoverflow"/>
 	</ActionBar>
 
-	
-
-
-
   <sd:RadSideDrawer id="sideDrawer" drawerContentSize="180" drawerLocation="left">
     <sd:RadSideDrawer.drawerContent>
       <sidedrawer:sd/>
     </sd:RadSideDrawer.drawerContent>
     
-
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 
-		<TabView>
-			 <TabView.items>
-				<TabViewItem title="Day" xmlns:dayTab="progressTabs/dayTab" >
-				   <TabViewItem.view>
-				   		<!-- <dayTab:dayTab/> -->
-				   		<StackLayout>
-				   			<Placeholder creatingView="creatingView"/>
+		<TabView androidSelectedTabHighlightColor="#FFA730">
+		 <TabView.items>
+			<TabViewItem title="Day" xmlns:dayTab="progressTabs/dayTab" >
+			   <TabViewItem.view>
+			   		<!-- <dayTab:dayTab/> -->
+			   		<StackLayout>
+			   			<Placeholder creatingView="creatingView"/>
 
-				   			<!-- 	For the horizontal button like displays  -->
-			   				<lv:RadListView id="listButtons" class="list-group">
-			   					<lv:RadListView.listViewLayout>
-			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
-			   			        </lv:RadListView.listViewLayout>
-			   			        <lv:RadListView.itemTemplate>
-			   			            <StackLayout class="list-buttons">
-			   			                <Label text="{{ value }}" class="list-number" />
-			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
-			   			            </StackLayout>
-			   			        </lv:RadListView.itemTemplate>
-			   			    </lv:RadListView>
-
+			   			<!-- 	For the horizontal button like displays  -->
+		   				<lv:RadListView id="listButtons" class="list-group">
+		   					<lv:RadListView.listViewLayout>
+		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+		   			        </lv:RadListView.listViewLayout>
+		   			        <lv:RadListView.itemTemplate>
+		   			            <StackLayout class="list-buttons">
+		   			                <Label text="{{ value }}" class="list-number" />
+		   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
+		   			            </StackLayout>
+		   			        </lv:RadListView.itemTemplate>
+		   			    </lv:RadListView>
 
 			   			<!-- 
 			   			    For the list of goal apps and their time usage -->
@@ -66,8 +60,8 @@
 					</TabViewItem.view>
 				</TabViewItem>
 			
-				 <TabViewItem title="Week" xmlns:weekTab="progressTabs/weekTab">
-					 <TabViewItem.view>
+		 <TabViewItem title="Week" xmlns:weekTab="progressTabs/weekTab">
+			 <TabViewItem.view>
 						 <!-- <weekTab:weekTab/> -->
 						 <!-- <Label text="test" /> -->
 						 <!-- <Placeholder creatingView="weekView"/> -->
