@@ -41,6 +41,8 @@ var glancesNotification = function() {
 };
 
 
+
+
 module.exports = {
 	popToastVisited: popToastVisited,
   sendNotificationVisited: sendNotificationVisited,
