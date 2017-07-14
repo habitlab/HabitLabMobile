@@ -31,11 +31,6 @@ exports.pageLoaded = function(args) {
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
   	goalApps = storageUtil.getSelectedPackages(); 
-
-  	var appMonth = usageUtil.getTimeOnAppMonth(goalApps[1]);
-  	console.dir(appMonth);
-
-
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
@@ -218,20 +213,27 @@ exports.monthView = function(args) {
 exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
-	var unlocks = storageUtil.getUnlocks(java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
+	var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
 	var apps = [];
 
 	//populates list of apps
 	for(var i = 0; i < goalApps.length; ++i) {
     		var name = usageUtil.getAppName(goalApps[i]);
     		// Edit when get visits
-    		var visits = storageUtil.getVisits(goalApps[i], java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
+    		var visits = storageUtil.getVisits(goalApps[i], storageUtil.days.TODAY);
     		var imagesrc = usageUtil.getIcon(goalApps[i]);
     		var mins = usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0);
     		var appObj = new dayApp(name, visits, imagesrc, mins);
     		apps.push(appObj);
     }
- 
+ 	apps.sort(function compare(a, b) {
+    if (a.mins < b.mins) {
+      return 1;
+    } else if (a.mins > b.mins) {
+      return -1;
+    }
+    return 0;
+  	});
    	var listView = view.getViewById(page, "listview");
 	listView.items = apps;
 
@@ -255,6 +257,7 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
+	console.log(usageUtil.getAvgTimeOnPhoneThisWeek());
 	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneThisWeek()/6)/10;
 	var weekStats = [];
 	weekStats.push(
@@ -279,6 +282,14 @@ exports.populateListViewsWeek = function() {
     		var appObj = new weekApp(name, avgMins, imagesrc);
     		weekApps.push(appObj);
     }
+    weekApps.sort(function compare(a, b) {
+    if (a.avgMins < b.avgMins) {
+      return 1;
+    } else if (a.avgMins > b.avgMins) {
+      return -1;
+    }
+    return 0;
+  	});
     var weekList = view.getViewById(page, "weekList");
 	weekList.items = weekApps;
  }
@@ -286,14 +297,14 @@ exports.populateListViewsWeek = function() {
 
 exports.populateListViewMonth = function () {
 	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
-	// var avgTimePhoneMonth = usageUtil.getAvgTimeOnPhoneMonth();
+	var avgTimePhoneMonth = Math.round(usageUtil.getAvgTimeOnPhoneThisMonth()/6)/10;
 	// console.dir(timePhoneMonth);
 	// console.dir(avgTimePhoneMonth);
 	var monthStats = [];
 	monthStats.push(
 	{
-		value: 120,
-		desc: "avg min on phone/day"
+		value: avgTimePhoneMonth,
+		desc: "avg hrs on phone/day"
 	},
 	{
 		value: 72,

@@ -48,7 +48,7 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
 
 
 
-/* getTimeOnAppWeek
+/* getTimeOnAppThisWeek
  * --------------------
  * Returns array of time (in minutes since epoch) that the provided 
  * application has been active over the last 7 days (including 
@@ -81,39 +81,56 @@ function getTimeOnAppThisWeek(packageName) {
  * only record data for the last week
  */
 function getAvgTimeOnAppThisWeek(packageName) {
-	var sum = 0;
-	var week = getTimeOnAppThisWeek(packageName)
-	for (var i = 0; i < week.length; i++) {
-		sum += week[i]
-	}
-	var avg = Math.round(sum/7);
-	return avg;
+	var startOfTarget = getStartOfDay(7);
+	var endOfTarget = Calendar.getInstance();
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var stats = usageStatsMap.get(packageName);
+    var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
+    var avg = (total == -1 ? -1 : Math.round(total/7));
+    return avg;
 }
 
 
 
 /* getTimeOnAppThisWeek
  * --------------------
- * Returns the total time spent on an app in a week. 
+ * Returns the total time in minutes spent on an app in a week. 
  * For a time length greater than a week ago, each 
  * day returns the total time for a week
  */
 function getTotalTimeOnAppWeek(packageName, weeksAgo) {
-	
-	if (weeksAgo == 0) {
-		var week = getTimeOnAppWeek(packageName);
-		var sum = 0;
-		for (var i = 0; i < week.length; i++) {
-			sum += week[i];
-		}
-		return Math.round(sum);
-	} else {
-		return getTimeOnApplicationSingleDay(packageName, 3+7*weeksAgo);
-	}
+	var startOfTarget = getStartOfDay(7 + weeksAgo*7);
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000)*7);
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var stats = usageStatsMap.get(packageName);
+    var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
+    return total;
+
+
+
+	// if (weeksAgo == 0) {
+	// 	var week = getTimeOnAppThisWeek(packageName);
+	// 	var sum = 0;
+	// 	for (var i = 0; i < week.length; i++) {
+	// 		sum += week[i];
+	// 	}
+	// 	return Math.round(sum);
+	// } else {
+	// 	var week = getTimeOnApplicationSingleDay(packageName, 3+7*weeksAgo);
+	// 	return week;
+
+	// }
 }
 
 
-/* getAvgTimesOnAppMonth
+/* getTimeOnAppMonth
  * -----------------------------
  * Returns an array of the total times that an app is used per week 
  * for a month.
@@ -156,7 +173,6 @@ function getAppsSingleDay(daysAgo) {
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
 		if (appUsage == 0) continue;
-
 		var name = info.loadLabel(pm).toString();
 		if (name === "HabitLabMobile") continue; 
 		var mins = Math.round(appUsage/60000);
@@ -184,36 +200,71 @@ function dayApp(name, mins) {
  * daysAgo must be less than 7
  */
 function getTimeOnPhoneSingleDay(daysAgo) {
-	var totalTimeOnPhone = 0;
-	var appsDay = getAppsSingleDay(daysAgo);
-	for(var i = 0; i < appsDay.length; i++) {
-		totalTimeOnPhone += appsDay[i].mins
+	var start = getStartOfDay(daysAgo);
+	var end = Calendar.getInstance();
+	end.setTimeInMillis(start.getTimeInMillis() + (86400 * 1000));
+	var total = 0;
+	
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
+
+    for (var i = 0; i < applications.size(); i++) {
+		var info = applications.get(i);
+		var packageName = getPackageName(info); 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage == 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
 	}
-    return totalTimeOnPhone;
+
+	return total;
+
+
+	// if (daysAgo > 7) return -1;
+	// var totalTimeOnPhone = 0;
+	// var appsDay = getAppsSingleDay(daysAgo);
+	// for(var i = 0; i < appsDay.length; i++) {
+	// 	totalTimeOnPhone += appsDay[i].mins
+	// }
+ //    return totalTimeOnPhone;
 }
 
 
 
 
 
-/* getTimeOnPhoneThisWeek
+/* getAvgTimeOnPhoneThisWeek
  * ----------------------
- * Returns array of time (in minutes since epoch) that the 
- * phone has been active over the last specified week (including 
- * today). Format:
- * 
- *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
- *  
- * Populates index with  -1 if there is no usage information 
- * found for that day.
+ * Returns the avergae time that the user spent on their phone
+ * per day, averaged over the last 7 days 
 */
 
 function getAvgTimeOnPhoneThisWeek() {
-	var sum = 0;
-	for (var i = (6); i >= 0; i--) {
-		sum += getTimeOnPhoneSingleDay(i);
+	var start = getStartOfDay(7);
+	var end = Calendar.getInstance();
+	var total = 0;
+	
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
+
+    for (var i = 0; i < applications.size(); i++) {
+		var info = applications.get(i);
+		var packageName = getPackageName(info);
+		// if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var name = info.loadLabel(pm).toString();
+		if (name === "HabitLabMobile") continue; 
+		console.log(packageName);
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage == 0) continue;
+		appUsage = appUsage/60000;
+		console.log(appUsage);
+		total += appUsage;
 	}
-	var avg = Math.round(sum/7);
+	console.log(total);
+	var avg = Math.round(total/7);
 	return avg;
 }
 
@@ -221,13 +272,42 @@ function getAvgTimeOnPhoneThisWeek() {
 
 /* getAvgTimeOnPhoneWeek
  * ----------------------
- * Returns the average amount of time spent on phone this week (in the last 7 days).
+ * Returns the total amount of time spent on phone in a specified week (last 7 days).
  * 
  */
 
-// function getTotalTimeOnPhoneWeek(weeksAgo) {
+function getTotalTimeOnPhoneWeek(weeksAgo) {
+
+	var start = getStartOfDay(7 + 7*weeksAgo);
+	var end = Calendar.getInstance();
+	end.setTimeInMillis(start.getTimeInMillis() + (86400 * 1000 * 7));
+	var total = 0;
 	
-// }
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
+
+    for (var i = 0; i < applications.size(); i++) {
+		var info = applications.get(i);
+		var packageName = getPackageName(info); 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage == 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
+	}
+
+	return total;
+
+
+	// var total = 0;
+	// for (var i = 0; i < applications.size(); i++) {
+	// 	var info = applications.get(i);
+	// 	var packageName = getPackageName(info);
+	// 	total += getTotalTimeOnAppWeek(packageName, weeksAgo);
+	// }
+	// return total;
+}
 
 
 
@@ -245,18 +325,27 @@ function getAvgTimeOnPhoneThisWeek() {
  * found for that day.
  */
 
-// function getAvgTimeOnPhoneThisMonth() {
-// 	var monthlyUsage = [];
-// 	var week3 = getTimeOnPhoneSingleDay(17)/7;
-// 	var week3 = getTimeOnPhoneSingleDay(17)/7;
-// 	var week4 = getTimeOnPhoneSingleDay(24)/7;
-// 	monthlyUsage.push(week4);
-// 	monthlyUsage.push(week3);
-// 	for (var i = 1; i >= 0; i--) {
-// 		monthlyUsage.push(getAvgTimeOnPhoneWeek(i));
-// 	}
-// 	return monthlyUsage;
-// }
+function getAvgTimeOnPhoneThisMonth() {
+	var start = getStartOfDay(28);
+	var end = Calendar.getInstance();
+	var total = 0;
+	
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
+
+    for (var i = 0; i < applications.size(); i++) {
+		var info = applications.get(i);
+		var packageName = getPackageName(info); 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage == 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
+	}
+	var avg = Math.round(total/28);
+	return avg;
+}
 
 
 
@@ -453,6 +542,8 @@ module.exports = {getApplicationList: getApplicationList,
 	getAppsSingleDay : getAppsSingleDay,
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
 	getAvgTimeOnPhoneThisWeek : getAvgTimeOnPhoneThisWeek, 
+	getTotalTimeOnPhoneWeek : getTotalTimeOnPhoneWeek,
+	getAvgTimeOnPhoneThisMonth : getAvgTimeOnPhoneThisMonth,
 	getAppName : getAppName,
 	getIcon : getIcon};
 
