@@ -1,28 +1,25 @@
-<StackLayout class="sidedrawer-left">  
-	<!-- <StackLayout class="sidedrawer-header" orientation="horizontal" >
-	  
-	</StackLayout> -->
+<StackLayout class="sidedrawer-left">
 	<Image src="~/images/icon.png" class="header-icon" />
 	<StackLayout class="sidedrawer-content">
-		<StackLayout orientation="horizontal" class="side-option progress-menu" id="first-menu-item">
+		<StackLayout orientation="horizontal" class="side-option" id="progress" tap="goToProgress" >
 			<Image class="side-icon" src="~/images/progress_icon.png" />
-			<Button text="Progress" tap="goToProgress" class="side-button progress-menu" />
+			<Label text="Progress" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option goals">
+		<StackLayout orientation="horizontal" class="side-option" id="goals" tap="goToGoals" >
 			<Image class="side-icon" src="~/images/goals_icon.png" />
-			<Button text="Goals" tap="goToGoals" class="side-button goals" />
+			<Label text="Goals" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option interventions">
+		<StackLayout orientation="horizontal" class="side-option" id="interventions" tap="goToInterventions" >
 			<Image class="side-icon" src="~/images/interventions_icon.png" />
-			<Button text="Interventions" tap="goToInterventions" class="side-button interventions"/>
+			<Label text="Interventions" class="side-label"/>
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option settings">
+		<StackLayout orientation="horizontal" class="side-option" id="settings" tap="goToSettings" >
 			<Image class="side-icon" src="~/images/settings_icon.png" />
-			<Button text="Settings" tap="goToSettings" class="side-button settings" />
+			<Label text="Settings" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option contact">
+		<StackLayout orientation="horizontal" class="side-option" id="contact" tap="goToContact" >
 			<Image class="side-icon" src="~/images/contact_icon.png" />
-			<Button text="Feedback" tap="goToContact" class="side-button contact" />
+			<Label text="Feedback" class="side-label" />
 		</StackLayout>
 	</StackLayout>
 </StackLayout>
