@@ -1,13 +1,13 @@
-var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var StorageUtil = require("~/util/StorageUtil");
 var IM = require('~/interventions/InterventionManager');
+var Toast = require('nativescript-toast');
+
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
-var Toast = require('nativescript-toast');
 var frame = require('ui/frame');
 
-var page;
 var drawer;
+var page;
 var interventionList;
 
 var createItem = function(id)  {
@@ -52,10 +52,10 @@ var setUpList = function() {
 
 exports.pageLoaded = function(args) {
   page = args.object;
-  drawer = page.getViewById("sideDrawer");
+  drawer = page.getViewById('sideDrawer');
   setUpList();
 };
 
 exports.toggleDrawer = function() {
-    drawer.toggleDrawerState();
+  drawer.toggleDrawerState();
 };

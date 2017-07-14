@@ -1,8 +1,10 @@
+var StorageUtil = require("~/util/StorageUtil");
+
 var frameModule = require("ui/frame");
+var gestures = require("ui/gestures").GestureTypes;
+
 var page;
 var onboarding = {};
-var gestures = require("ui/gestures").GestureTypes;
-var StorageUtil = require("~/util/StorageUtil");
 
 onboarding.texts = [
   'Design how you spend time on your mobile device.',
@@ -45,10 +47,8 @@ exports.pageLoaded = function(args) {
 };
 
 exports.goToNavView = function(args) {
-
   if (!StorageUtil.isSetUp()) {
     StorageUtil.setUp();
   }
-
   frameModule.topmost().navigate("views/navView/navView");
 };

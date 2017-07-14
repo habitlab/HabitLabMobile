@@ -1,8 +1,9 @@
 var StorageUtil = require('~/util/StorageUtil');
 var UsageUtil = require('~/util/UsageInformationUtil');
+var IM = require('~/interventions/InterventionManager');
+
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
-var IM = require('~/interventions/InterventionManager');
 
 var drawer;
 var page;
@@ -68,7 +69,7 @@ exports.toggleDrawer = function() {
 
 exports.pageLoaded = function(args) {
   page = args.object;
-  id = page.navigationContext.id;
   drawer = page.getViewById("sideDrawer");
+  id = page.navigationContext.id;
   setUpDetail();
 };
