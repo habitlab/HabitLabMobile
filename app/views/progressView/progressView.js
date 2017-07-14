@@ -124,22 +124,25 @@ exports.weekView = function(args) {
     var barchart = new BarChart(args.context);
     goalApps = storageUtil.getSelectedPackages(); 
     var IbarSet = new ArrayList();
-    for(var i = 0; i < goalApps.length; ++i) {
-    	var entries = new ArrayList();
-    	entries.add(new BarEntry(2, usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0)));
-    	entries.add(new BarEntry(1, usageUtil.getTimeOnApplicationSingleDay(goalApps[i],1)));
-    	entries.add(new BarEntry(0, usageUtil.getTimeOnApplicationSingleDay(goalApps[i],2)));
-    	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
-    	IbarSet.add(dataset);
+    // for(var i = 0; i < goalApps.length; ++i) {
+    // 	var entries = new ArrayList();
+    // 	var appMonth = usageUtil.getAvgTimesOnAppMonth(goalApps[i]);
+    // 	console.dir(appMonth);
+    // 	entries.add(new BarEntry(1, appMonth[0]));
+    // 	entries.add(new BarEntry(2, appMonth[1]));
+    // 	entries.add(new BarEntry(3, appMonth[2]));
+    // 	entries.add(new BarEntry(4, appMonth[3]));
+    // 	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
+    // 	IbarSet.add(dataset);
 
-    }
+    // }
 
- //    var entries = new ArrayList();
-	//  entries.add(new BarEntry(0, 5));
-	// entries.add(new BarEntry(1, 7));
-	//  entries.add(new BarEntry(2, 2));
-	//   entries.add(new BarEntry(3, 19));
-	//  entries.add(new BarEntry(4, 20));
+    var entries = new ArrayList();
+	 entries.add(new BarEntry(0, 5));
+	entries.add(new BarEntry(1, 7));
+	 entries.add(new BarEntry(2, 2));
+	  entries.add(new BarEntry(3, 19));
+	 entries.add(new BarEntry(4, 20));
 
 	//  var insta = new ArrayList();
 	//  insta.add(new BarEntry(0, 2));
@@ -148,11 +151,11 @@ exports.weekView = function(args) {
 	//   insta.add(new BarEntry(3, 11));
 	//  insta.add(new BarEntry(4, 9));
 
-	 // var dataset = new BarDataSet(entries, "Time on Phone");
+	  var dataset = new BarDataSet(entries, "Time on Phone");
 	 // var instaset = new BarDataSet(insta, "Instagram")
 
 	 
-	 // IbarSet.add(dataset);
+	 IbarSet.add(dataset);
 	 // IbarSet.add(instaset);
 	 var data = new BarData(IbarSet);
 	 barchart.setData(data);
@@ -247,12 +250,12 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
-	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek()/6)/10;
+	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek(0)/6)/10;
 	var weekStats = [];
 	weekStats.push(
 	{
 		value: timeOnPhoneWeek,
-		desc: "avg min on phone/day"
+		desc: "avg hrs on phone/day"
 	},
 	{
 		value: 72,

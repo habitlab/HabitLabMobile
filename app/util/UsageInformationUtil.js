@@ -20,7 +20,7 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
 //const DAY_MS = 86400000;
 
 
-/* getTimeOnAppThisWeek
+/* getTimeOnAppWeek
  * --------------------
  * Returns array of time (in ms since epoch) that the provided 
  * application has been active over the last 7 days (including 
@@ -29,12 +29,11 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
  *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
  *  
  * Populates index with  -1 if there is no usage information 
- * found for that day.
+ * found for that day. Used in month view.
  */
-function getTimeOnAppThisWeek(packageName) {
+function getTimeOnAppWeek(packageName, weeksAgo) {
 	var weeklyUsageStatistics = [];
-
-	for (var i = 6; i >= 0; i--) {
+	for (var i = 6 + 7*weeksAgo; i >= 7*weeksAgo; i--) {
 		weeklyUsageStatistics.push(getTimeOnApplicationSingleDay(packageName, i));
 	}
 	return weeklyUsageStatistics;
@@ -44,8 +43,8 @@ function getTimeOnAppThisWeek(packageName) {
  * --------------------
  * Returns the average time spent on an app per week
  */
-function getAvgTimeOnAppWeek(packageName) {
-	var week = getTimeOnAppThisWeek(packageName);
+function getAvgTimeOnAppWeek(packageName, weeksAgo) {
+	var week = getTimeOnAppWeek(packageName, weeksAgo);
 	var sum = 0;
 	var futureDays = 0;
 	for (var i = 0; i < week.length; i++) {
@@ -54,6 +53,22 @@ function getAvgTimeOnAppWeek(packageName) {
 	}
 	var avg = sum/(week.length-futureDays);
 	return Math.round(avg);
+}
+
+
+/* getAvgTimesOnAppMonth
+ * -----------------------------
+ * Returns an array of the average times that an app is used per week 
+ * for a month.
+ * e.g. 
+ * [3 weeks ago, 2 weeks ago, 1 week ago, 0 weeks ago]
+ */
+function getAvgTimesOnAppMonth(packageName) {
+	var appMonth = [];
+	for (var i = 3; i <= 0; i--) {
+		appMonth.push(getAvgTimeOnAppWeek(packageName, i));
+	}
+	return appMonth;
 }
 
 
@@ -130,6 +145,7 @@ function getAppsSingleDay(daysAgo) {
 		if (appUsage == 0) continue;
 
 		var name = info.loadLabel(pm).toString();
+		if (name === "HabitLabMobile") continue; 
 		var mins = Math.round(appUsage/60000);
 		var app = new dayApp(name, mins);
 		list.push(app);
@@ -148,44 +164,51 @@ function dayApp(name, mins) {
 
 
 
-/* getTimeOnPhoneThisWeek
+/* getTimeOnPhoneWeek
  * ----------------------
- * Returns array of time (in ms since epoch) that the 
- * phone has been active over the last 7 days (including 
+ * Returns array of time (in minutes since epoch) that the 
+ * phone has been active over the last specified week (including 
  * today). Format:
  * 
  *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
  *  
  * Populates index with  -1 if there is no usage information 
  * found for that day.
- */
-function getTimeOnPhoneThisWeek() {
+*/
+
+function getTimeOnPhoneWeek(weeksAgo) {
 	var weeklyUsageStatistics = [];
-	for (var i = 6; i >= 0; i--) {
+	for (var i = (6 + 7*weeksAgo); i >= 7*weeksAgo; i--) {
 		weeklyUsageStatistics.push(getTimeOnPhoneSingleDay(i));
 	}
 	return weeklyUsageStatistics;
 }
 
-function getTimeOnPhoneThisMonth() {
-	// var monthlyUsage = [];
-	// for (var i = 3; i >= 0; i--) {
-	// 	monthlyUsage.push(getAvgTimeOnPhoneWeek(i));
-	// }
-	// return monthlyUsage;
+
+
+/* getAvgTimeOnPhoneThisMonth
+ * ----------------------
+ * Returns array of average time per week (in minutes since epoch) that the 
+ * phone has been active over the last month (including 
+ * today). Format:
+ * 
+ *     [3 weeks ago, 2 weeks ago, 1 weeks ago, 0 week ago]
+ *  
+ * Populates index with  -1 if there is no usage information 
+ * found for that day.
+ */
+
+function getAvgTimeOnPhoneThisMonth() {
+	var monthlyUsage = [];
+	var week3 = getTimeOnPhoneSingleDay(17)/7;
+	var week4 = getTimeOnPhoneSingleDay(24)/7;
+	monthlyUsage.push(week4);
+	monthlyUsage.push(week3);
+	for (var i = 1; i >= 0; i--) {
+		monthlyUsage.push(getAvgTimeOnPhoneWeek(i));
+	}
+	return monthlyUsage;
 }
-
-
-function getAvgTimeOnPhoneMonth() {
-	// var month = getTimeOnPhoneThisMonth();
-	// var sum = 0
-	// for (var i = 0; i < month.length; i++) {
-	// 	sum += month[i];
-	// }
-	// var avg = sum/month.length;
-	// return Math.round(avg);
-}
-
 
 
 
@@ -197,8 +220,8 @@ function getAvgTimeOnPhoneMonth() {
  * average time spent on phone per day for Monday and Tuesday
  */
 
-function getAvgTimeOnPhoneWeek() {
-	var week = getTimeOnPhoneThisWeek();
+function getAvgTimeOnPhoneWeek(weeksAgo) {
+	var week = getTimeOnPhoneWeek(weeksAgo);
 	var sum = 0;
 	var futureDays = 0;
 	for (var i = 0; i < week.length; i++) {
@@ -370,16 +393,16 @@ function getAverageUsage(map, pkg, installTime) {
 
 module.exports = {getApplicationList: getApplicationList, 
 	getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, 
-	getTimeOnPhoneThisWeek : getTimeOnPhoneThisWeek, 
+	getTimeOnPhoneWeek : getTimeOnPhoneWeek, 
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
-	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
+	getTimeOnAppWeek : getTimeOnAppWeek,
 	getAppName : getAppName,
 	getIcon : getIcon,
 	getAppsSingleDay : getAppsSingleDay,
 	getAvgTimeOnPhoneWeek : getAvgTimeOnPhoneWeek,
 	getAvgTimeOnAppWeek : getAvgTimeOnAppWeek, 
-	getTimeOnPhoneThisMonth : getTimeOnPhoneThisMonth, 
-	getAvgTimeOnPhoneMonth : getAvgTimeOnPhoneMonth};
+	getAvgTimeOnPhoneThisMonth : getAvgTimeOnPhoneThisMonth, 
+	getAvgTimesOnAppMonth : getAvgTimesOnAppMonth};
 
 
 
