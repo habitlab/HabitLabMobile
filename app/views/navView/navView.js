@@ -1,8 +1,8 @@
 var application = require("application");
-const PermissionUtil = require("~/util/PermissionUtil");
+var PermissionUtil = require("~/util/PermissionUtil");
 
 var frameModule = require("ui/frame");
-var drawerModule = require("nativescript-telerik-ui/sidedrawer");
+
 var drawer;
 
 exports.goToProgress = function() {

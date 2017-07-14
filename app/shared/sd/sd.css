@@ -1,8 +1,6 @@
-
-
-
 .sidedrawer-header {
-    height: 56;
+  height: 20%;
+  vertical-align: middle;
 }
 
 .sideLabel {
@@ -19,4 +17,9 @@
 
 #last {
 	margin-bottom: 200;
+}
+.sidedrawer-list-item-text {
+  font-size: 18;
+  color: blue;
+  padding: 10;
 }

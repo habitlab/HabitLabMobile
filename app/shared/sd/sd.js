@@ -1,6 +1,4 @@
-
 var frameModule = require("ui/frame");
-
 
 exports.goToProgress = function() {
   frameModule.topmost().navigate("views/progressView/progressView");

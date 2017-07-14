@@ -1,6 +1,6 @@
-var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var UsageUtil = require("~/util/UsageInformationUtil");
 var StorageUtil = require("~/util/StorageUtil");
+
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
@@ -12,18 +12,6 @@ var setOnTap = function(image, packageName, selector) {
     var selected = StorageUtil.togglePackage(packageName);
     selector.visibility = selected ? 'visible' : 'hidden';
   });
-};
-
-exports.navigatingTo = function(args) {
-  createGrid(args);
-};
-
-exports.pageLoaded = function(args) {
-  drawer = args.object.getViewById('sideDrawer');
-};
-
-exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
 };
 
 var createGrid = function(args) {
@@ -77,4 +65,16 @@ var createCell = function(info, r, c)  {
   layout.GridLayout.setRow(cell, r);
   layout.GridLayout.setColumn(cell, c);
   return cell;
+};
+
+exports.navigatingTo = function(args) {
+  createGrid(args);
+};
+
+exports.pageLoaded = function(args) {
+  drawer = args.object.getViewById('sideDrawer');
+};
+
+exports.toggleDrawer = function() {
+  drawer.toggleDrawerState();
 };
