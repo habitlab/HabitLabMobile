@@ -113,20 +113,6 @@ function getTotalTimeOnAppWeek(packageName, weeksAgo) {
     var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
     return total;
 
-
-
-	// if (weeksAgo == 0) {
-	// 	var week = getTimeOnAppThisWeek(packageName);
-	// 	var sum = 0;
-	// 	for (var i = 0; i < week.length; i++) {
-	// 		sum += week[i];
-	// 	}
-	// 	return Math.round(sum);
-	// } else {
-	// 	var week = getTimeOnApplicationSingleDay(packageName, 3+7*weeksAgo);
-	// 	return week;
-
-	// }
 }
 
 
@@ -221,14 +207,6 @@ function getTimeOnPhoneSingleDay(daysAgo) {
 
 	return total;
 
-
-	// if (daysAgo > 7) return -1;
-	// var totalTimeOnPhone = 0;
-	// var appsDay = getAppsSingleDay(daysAgo);
-	// for(var i = 0; i < appsDay.length; i++) {
-	// 	totalTimeOnPhone += appsDay[i].mins
-	// }
- //    return totalTimeOnPhone;
 }
 
 
@@ -296,14 +274,6 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
 
 	return total;
 
-
-	// var total = 0;
-	// for (var i = 0; i < applications.size(); i++) {
-	// 	var info = applications.get(i);
-	// 	var packageName = getPackageName(info);
-	// 	total += getTotalTimeOnAppWeek(packageName, weeksAgo);
-	// }
-	// return total;
 }
 
 
