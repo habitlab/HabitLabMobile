@@ -1,12 +1,28 @@
-<StackLayout class="sidedrawer-left" loaded="layoutLoaded">  
-	<StackLayout class="sidedrawer-header">
-	  <Label text="Menu" class="header" />
-	</StackLayout>
+<StackLayout class="sidedrawer-left">  
+	<!-- <StackLayout class="sidedrawer-header" orientation="horizontal" >
+	  
+	</StackLayout> -->
+	<Image src="~/images/icon.png" class="header-icon" />
 	<StackLayout class="sidedrawer-content">
-		<Label text="Progress" tap="goToProgress" class="sideLabel" />
-	  <Label text="Goals" tap="goToGoals"  class="sideLabel" />
-  	<Label text="Interventions"  tap="goToInterventions" class="sideLabel"/>
-  	<Label text="Settings" tap="goToSettings" class="sideLabel" id="last" />
-  	<Label text="HabitLab" class="sideLabel" />
+		<StackLayout orientation="horizontal" class="side-option progress-menu" id="first-menu-item">
+			<Image class="side-icon" src="~/images/progress_icon.png" />
+			<Button text="Progress" tap="goToProgress" class="side-button progress-menu" />
+		</StackLayout>
+		<StackLayout orientation="horizontal" class="side-option goals">
+			<Image class="side-icon" src="~/images/goals_icon.png" />
+			<Button text="Goals" tap="goToGoals" class="side-button goals" />
+		</StackLayout>
+		<StackLayout orientation="horizontal" class="side-option interventions">
+			<Image class="side-icon" src="~/images/interventions_icon.png" />
+			<Button text="Interventions" tap="goToInterventions" class="side-button interventions"/>
+		</StackLayout>
+		<StackLayout orientation="horizontal" class="side-option settings">
+			<Image class="side-icon" src="~/images/settings_icon.png" />
+			<Button text="Settings" tap="goToSettings" class="side-button settings" />
+		</StackLayout>
+		<StackLayout orientation="horizontal" class="side-option contact">
+			<Image class="side-icon" src="~/images/contact_icon.png" />
+			<Button text="Feedback" tap="goToContact" class="side-button contact" />
+		</StackLayout>
 	</StackLayout>
 </StackLayout>

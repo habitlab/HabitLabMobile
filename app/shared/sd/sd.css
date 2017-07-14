@@ -1,25 +1,70 @@
+.sidedrawer-left {
+  height: 100%;
+  background-color: #9fc6c6;
+  color: white;
+}
+
 .sidedrawer-header {
   height: 20%;
-  vertical-align: middle;
+  background-color: #9fc6c6;
+  margin: 3%;
 }
 
-.sideLabel {
-    font-size: 15;
-    padding: 20;
-    color: #011627;
+.header-icon {
+  height: 5%;
+  margin: 2.5%;
 }
 
-.header {
-	color: #011627;
-	text-align: left;
-    vertical-align: center;
+.header-label {
+  margin-left: 5%;
+  font-size: 30%;
+  vertical-align: bottom;
 }
 
-#last {
-	margin-bottom: 200;
+#first-menu-item {
+  border-top-width: 1%;
+  color: white;
 }
-.sidedrawer-list-item-text {
-  font-size: 18;
-  color: blue;
-  padding: 10;
+
+.progress-menu {
+  background-color: #FFA730;
+}
+
+.goals {
+  background-color: #E71D36;
+}
+
+.interventions {
+  background-color: #2EC4B6;
+}
+
+.settings {
+  background-color: #72e500;
+}
+
+.contact {
+  background-color: #011627;
+}
+
+.side-icon {
+  width: 15%;
+}
+
+.side-option {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 20%;
+  border-bottom-width: 1%;
+  border-color: #011627;
+}
+
+.side-button {
+  height: 100%;
+  width: 80%;
+  margin: 0;
+  padding-left: 10%;
+  font-size: 20%;
+  text-transform: none;
+  text-align: left;
 }

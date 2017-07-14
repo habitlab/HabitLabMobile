@@ -18,3 +18,7 @@ exports.goToSettings = function() {
 exports.goToInterventions = function() {
   frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
+
+exports.goToContact = function() {
+  frameModule.topmost().navigate("views/contactView/contactView");
+}
