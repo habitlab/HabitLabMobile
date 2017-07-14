@@ -24,7 +24,10 @@ var popToastVisited = function(pkg) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
     var applicationName = UsageInformationUtil.getAppName(pkg);
     var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
-    Toast.makeText(applicationName + " visits today: " + visits).show();
+
+    if (visits % 3 === 0) {
+      Toast.makeText(applicationName + " visits today: " + visits).show();
+    }
   }
 };
 
@@ -34,7 +37,10 @@ var sendNotificationVisited = function(pkg) {
     var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
     var title = applicationName + " Usage";
     var msg = "You have opened " + applicationName + visits + (visits === 1 ? " time" : " times") + " today";
-    NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
+    
+    if (visits % 5 === 0) {
+      NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
+    }
   }
 };
 
@@ -43,7 +49,10 @@ var unlocksNotification = function() {
     var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
     var title = 'Unlock Alert!';
     var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-    NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
+    
+    if (unlocks % 2 === 0) {
+      NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
+    }
   }
 };
 
@@ -59,14 +68,18 @@ var glancesNotification = function() {
     var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
     var title = 'Glance Alert!';
     var msg = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
-    NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
+    if (glances % 2 === 0) {
+      NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
+    }
   }
 };
 
 var popToastGlanced = function() {
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_TOAST)) {
     var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
-    Toast.makeText("Today's Glance Count: " + glances).show();
+    if (glances % 2 === 1) {
+      Toast.makeText("Today's Glance Count: " + glances).show();
+    }
   }
 };
 
