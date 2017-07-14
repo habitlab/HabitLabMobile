@@ -46,9 +46,10 @@ function launchActionUsageIntent() {
  * false otherwise.
  */
 function checkSystemOverlayPermission() {
+	if (android.os.Build.VERSION.SDK_INT < 23) return true;
 	var context = application.android.context.getApplicationContext();
 	var appOps = context.getSystemService(Context.APP_OPS_SERVICE);
-	var mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW, Process.myUid(), context.getPackageName());
+	var mode = appOps.checkOpNoThrow("android:system_alert_window", Process.myUid(), context.getPackageName());
     return mode === AppOpsManager.MODE_ALLOWED;
 }
 
