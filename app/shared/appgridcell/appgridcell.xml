@@ -1,4 +1,4 @@
-<StackLayout orientation="vertical">
+<StackLayout orientation="vertical" class="grid-cell-layout">
   <AbsoluteLayout>
     <Image id="img" class="app-cell-img" horizontalAlignment="center" />
     <Image id="slctr" class="app-cell-selector" src='~/images/selected.png' />

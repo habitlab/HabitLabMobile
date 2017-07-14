@@ -1,6 +1,7 @@
 const NotificationUtil = require("~/util/NotificationUtil");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
 const StorageUtil = require("~/util/StorageUtil");
+const DialogOverlay = require("~/overlays/DialogOverlay");
 const Toast = require("nativescript-toast");
 
 var application = require('application');
@@ -9,6 +10,7 @@ var context = application.android.context.getApplicationContext();
 // native APIs
 var AudioManager = android.media.AudioManager;
 var Context = android.content.Context;
+var Intent = android.content.Intent;
 
 // global vars
 var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
@@ -96,10 +98,24 @@ var blockAllSoundMedia = function () {
   }
 }
 
+var positiveCallback = function () {
+  setBlockMedia(false);
+};
+
+var negativeCallback = function () {
+  var toHome = new Intent(Intent.ACTION_MAIN);
+  toHome.addCategory(Intent.CATEGORY_HOME);
+
+  var foregroundActivity = application.android.foregroundActivity;
+  foregroundActivity.startActivity(toHome); 
+};
+
 var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListener({
     onAudioFocusChange: function (change) {
       if (blockMedia && change === AudioManager.AUDIOFOCUS_LOSS) {
-        NotificationUtil.sendNotificationWithOptions(context, "Media Intervention", "Would you like to continue watching this video?", 7777);
+        DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
+          "Yes", "No", positiveCallback, negativeCallback);
+        // NotificationUtil.sendNotificationWithOptions(context, "Media Intervention", "Would you like to continue watching this video?", 7777);
       }
     }
 });

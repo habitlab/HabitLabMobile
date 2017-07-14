@@ -10,7 +10,7 @@
 	   <NavigationButton tap="toggleDrawer" android.systemIcon="ic_menu_moreoverflow"/>
 	</ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" drawerContentSize="180" drawerLocation="left">
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
     <sd:RadSideDrawer.drawerContent>
       <sidedrawer:sd/>
     </sd:RadSideDrawer.drawerContent>

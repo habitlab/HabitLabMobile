@@ -3,9 +3,9 @@ var application = require("application");
 const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
 const ServiceManager = require("~/services/ServiceManager");
-
 const PermissionUtil = require("~/util/PermissionUtil");
 const StorageUtil = require("~/util/StorageUtil");
+const DialogOverlay = require("~/overlays/DialogOverlay");
 
 var Toast = require("nativescript-toast");
 var dialogs = require("ui/dialogs");
@@ -54,27 +54,13 @@ exports.toggleDrawer = function() {
 	drawer.toggleDrawerState();
 };
 
-var AlertDialog = android.support.v7.app.AlertDialog;
+
+
 
 exports.getRunningServices = function() {
-	// console.log("Got here");
- // 	var alertDialog = new AlertDialog.Builder(application.android.context).create();
- // 	console.log("Got here 2");
-	// alertDialog.setTitle("Alert");
-	// alertDialog.setMessage("Alert message to be shown");
-	// console.log("Got here 3");
-	// alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK", dialogListener);
-	// console.log("Got here 4");
-	// alertDialog.show();
-	// ServiceManager.getRunningServices();
+	ServiceManager.getRunningServices();
 };
 
-
-var dialogListener = new android.content.DialogInterface.OnClickListener({
-    onClick: function (dialog, which) {
-        dialog.dismiss();
-    }
-});
 
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 

@@ -1,9 +1,3 @@
-/*Page {
-	background-color: blue;
-}*/
-
-
-
 .list-number {
 	text-align: center;
 	font-size: 30;
@@ -45,8 +39,6 @@
 	background-color: #FFA730;
 }
 
-
-
 .normal-text {
 	text-align: center;
 	padding: 5;
@@ -75,8 +67,6 @@
 	padding: 15;
 	background-color: #FFBD60;
 }
-
-
 
 .slide {
 	background-color: white;

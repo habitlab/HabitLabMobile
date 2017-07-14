@@ -20,6 +20,7 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
 //const DAY_MS = 86400000;
 
 
+<<<<<<< HEAD
 
 
 
@@ -48,38 +49,33 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
 
 
 
+=======
+>>>>>>> origin/master
 /* getTimeOnAppThisWeek
  * --------------------
- * Returns array of time (in minutes since epoch) that the provided 
+ * Returns array of time (in ms since epoch) that the provided 
  * application has been active over the last 7 days (including 
  * today). Format:
  * 
  *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
  *  
  * Populates index with  -1 if there is no usage information 
- * found for that day. Used in month view and week view. Will
- * only record data for the last week
+ * found for that day.
  */
 function getTimeOnAppThisWeek(packageName) {
 	var weeklyUsageStatistics = [];
+
 	for (var i = 6; i >= 0; i--) {
 		weeklyUsageStatistics.push(getTimeOnApplicationSingleDay(packageName, i));
 	}
 	return weeklyUsageStatistics;
 }
 
-/* getAvgTimeOnAppWeek
+/* getTimeOnAppThisWeek
  * --------------------
- * Returns array of time (in minutes since epoch) that the provided 
- * application has been active over the last 7 days (including 
- * today). Format:
- * 
- *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
- *  
- * Populates index with  -1 if there is no usage information 
- * found for that day. Used in month view and week view. Will
- * only record data for the last week
+ * Returns the average time spent on an app per week
  */
+<<<<<<< HEAD
 function getAvgTimeOnAppThisWeek(packageName) {
 	var startOfTarget = getStartOfDay(7);
 	var endOfTarget = Calendar.getInstance();
@@ -91,10 +87,23 @@ function getAvgTimeOnAppThisWeek(packageName) {
     var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
     var avg = (total == -1 ? -1 : Math.round(total/7));
     return avg;
+=======
+function getAvgTimeOnAppWeek(packageName) {
+	var week = getTimeOnAppThisWeek(packageName);
+	var sum = 0;
+	var futureDays = 0;
+	for (var i = 0; i < week.length; i++) {
+		sum += week[i];
+		if (week[i] == 0) futureDays++;
+	}
+	var avg = sum/(week.length-futureDays);
+	return Math.round(avg);
+>>>>>>> origin/master
 }
 
 
 
+<<<<<<< HEAD
 /* getTimeOnAppThisWeek
  * --------------------
  * Returns the total time in minutes spent on an app in a week. 
@@ -105,11 +114,24 @@ function getTotalTimeOnAppWeek(packageName, weeksAgo) {
 	var startOfTarget = getStartOfDay(7 + weeksAgo*7);
 	var endOfTarget = Calendar.getInstance();
 	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000)*7);
+=======
+/* getTimeOnApplicationSingleDay
+ * -----------------------------
+ * Returns time (in minutes since epoch) that the provided application
+ * has been active. Returns -1 if there is no usage information
+ * found.
+ */
+function getTimeOnApplicationSingleDay(packageName, daysAgo) {
+	var startOfTarget = getStartOfDay(daysAgo);
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000));
+>>>>>>> origin/master
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
 
     var stats = usageStatsMap.get(packageName);
+<<<<<<< HEAD
     var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
     return total;
 
@@ -122,25 +144,44 @@ function getTotalTimeOnAppWeek(packageName, weeksAgo) {
  * for a month.
  * e.g. 
  * [3 weeks ago, 2 weeks ago, 1 week ago, 0 weeks ago]
- */
-function getTimeOnAppMonth(packageName) {
-	var appMonth = [];
-	for (var i = 3; i <= 0; i--) {
-		appMonth.push(getTotalTimeOnAppWeek(packageName, i));
-	}
-	return appMonth;
+=======
+    return stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000);
 }
 
 
-
-
-// ------------------------PHONE USAGE--------------------------------------------
-
-
-
-/* getAppsSingleDay
+/* getTimeOnPhoneSingleDay
  * -----------------------
- * Returns the apps used in a single day. Specifically returns an array of objects, 
+ * Returns time (in minutes since epoch) that the phone
+ * has been active.
+>>>>>>> origin/master
+ */
+function getTimeOnPhoneSingleDay(daysAgo) {
+	var totalTimeOnPhone = 0;
+	var appsDay = getAppsSingleDay(daysAgo);
+	for(var i = 0; i < appsDay.length; i++) {
+		totalTimeOnPhone += appsDay[i].mins
+	}
+    return totalTimeOnPhone;
+}
+
+
+/* getTimeOnPhoneSingleDay
+ * -----------------------
+ * Helper function, returns a calendar object of the start of a day,
+ * provided with the number of days ago 
+ */
+function getStartOfDay(daysAgo) {
+	var startOfTarget = Calendar.getInstance();
+	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
+	startOfTarget.set(Calendar.MINUTE, 0);
+	startOfTarget.set(Calendar.SECOND, 0);
+	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
+	return startOfTarget;
+};
+
+/* getTimeOnPhoneSingleDay
+ * -----------------------
+ * Returns the apps used in a single day. Speicifcally returns an array of objects, 
  * where each object is the name of the app and the number of minutes spent on the app today.
  */
 
@@ -149,6 +190,7 @@ function getAppsSingleDay(daysAgo) {
 	var end = Calendar.getInstance();
 	end.setTimeInMillis(start.getTimeInMillis() + (86400 * 1000));
 	
+
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
     var list = [];
@@ -160,7 +202,6 @@ function getAppsSingleDay(daysAgo) {
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
 		if (appUsage == 0) continue;
 		var name = info.loadLabel(pm).toString();
-		if (name === "HabitLabMobile") continue; 
 		var mins = Math.round(appUsage/60000);
 		var app = new dayApp(name, mins);
 		list.push(app);
@@ -179,6 +220,7 @@ function dayApp(name, mins) {
 
 
 
+<<<<<<< HEAD
 /* getTimeOnPhoneSingleDay
  * -----------------------
  * Returns time (in minutes since epoch) that the phone
@@ -241,10 +283,30 @@ function getAvgTimeOnPhoneThisWeek() {
 	}
 	var avg = Math.round(total/7);
 	return avg;
+=======
+/* getTimeOnPhoneThisWeek
+ * ----------------------
+ * Returns array of time (in ms since epoch) that the 
+ * phone has been active over the last 7 days (including 
+ * today). Format:
+ * 
+ *     [7daysAgo, 6daysAgo, 5daysAgo, ..., today]
+ *  
+ * Populates index with  -1 if there is no usage information 
+ * found for that day.
+ */
+function getTimeOnPhoneThisWeek() {
+	var weeklyUsageStatistics = [];
+	for (var i = 6; i >= 0; i--) {
+		weeklyUsageStatistics.push(getTimeOnPhoneSingleDay(i));
+	}
+	return weeklyUsageStatistics;
+>>>>>>> origin/master
 }
 
 
 
+<<<<<<< HEAD
 /* getAvgTimeOnPhoneWeek
  * ----------------------
  * Returns the total amount of time spent on phone in a specified week (last 7 days).
@@ -276,22 +338,20 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
 
 }
 
+=======
+>>>>>>> origin/master
 
 
 
 
-/* getAvgTimeOnPhoneThisMonth
+/* getAvgTimeOnPhoneWeek
  * ----------------------
- * Returns array of average time per week (in minutes since epoch) that the 
- * phone has been active over the last month (including 
- * today). Format:
- * 
- *     [3 weeks ago, 2 weeks ago, 1 weeks ago, 0 week ago]
- *  
- * Populates index with  -1 if there is no usage information 
- * found for that day.
+ * Returns the average amount of time spent on phone this week.
+ * If the week is halfway through e.g. wednesday, will return the 
+ * average time spent on phone per day for Monday and Tuesday
  */
 
+<<<<<<< HEAD
 function getAvgTimeOnPhoneThisMonth() {
 	var start = getStartOfDay(28);
 	var end = Calendar.getInstance();
@@ -324,6 +384,19 @@ function getAvgTimeOnPhoneThisMonth() {
 // ------------------------GET FUNCTIONS------------------------------------------------
 
 
+=======
+function getAvgTimeOnPhoneWeek() {
+	var week = getTimeOnPhoneThisWeek();
+	var sum = 0;
+	var futureDays = 0;
+	for (var i = 0; i < week.length; i++) {
+		sum += week[i];
+		if (week[i] == 0) futureDays++;
+	}
+	var avg = sum/(week.length-futureDays);
+	return Math.round(avg);
+}
+>>>>>>> origin/master
 
 
 /* getApplicationList
@@ -483,36 +556,25 @@ function getAverageUsage(map, pkg, installTime) {
 }
 
 
-/* getTimeOnPhoneSingleDay
- * -----------------------
- * Helper function, returns a calendar object of the start of a day,
- * provided with the number of days ago 
- */
-function getStartOfDay(daysAgo) {
-	var startOfTarget = Calendar.getInstance();
-	startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-	startOfTarget.set(Calendar.MINUTE, 0);
-	startOfTarget.set(Calendar.SECOND, 0);
-	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
-	return startOfTarget;
-};
-
-
-
 
 module.exports = {getApplicationList: getApplicationList, 
 	getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, 
-	getTimeOnAppThisWeek : getTimeOnAppThisWeek, 
-	getTotalTimeOnAppWeek : getTotalTimeOnAppWeek, 
-	getAvgTimeOnAppThisWeek : getAvgTimeOnAppThisWeek,
-	getTimeOnAppMonth : getTimeOnAppMonth,
-	getAppsSingleDay : getAppsSingleDay,
+	getTimeOnPhoneThisWeek : getTimeOnPhoneThisWeek, 
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
+<<<<<<< HEAD
 	getAvgTimeOnPhoneThisWeek : getAvgTimeOnPhoneThisWeek, 
 	getTotalTimeOnPhoneWeek : getTotalTimeOnPhoneWeek,
 	getAvgTimeOnPhoneThisMonth : getAvgTimeOnPhoneThisMonth,
+=======
+	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
+>>>>>>> origin/master
 	getAppName : getAppName,
-	getIcon : getIcon};
+	getIcon : getIcon,
+	getAppsSingleDay : getAppsSingleDay,
+	getAvgTimeOnPhoneWeek : getAvgTimeOnPhoneWeek,
+	getAvgTimeOnAppWeek : getAvgTimeOnAppWeek, 
+	getAvgTimeOnPhoneMonth : function() {},
+  getTimeOnPhoneThisMonth: function() {}};
 
 
 

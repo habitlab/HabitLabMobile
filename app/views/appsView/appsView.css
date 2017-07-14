@@ -31,7 +31,7 @@
   align-contents: middle;
 }
 
-StackLayout {
+.grid-cell-layout {
   padding-bottom: 15%;
   padding-top: 15%;
 }
@@ -39,4 +39,5 @@ StackLayout {
 ScrollView {
   width: 80%;
   margin: auto;
+  height: 100%;
 }
