@@ -277,8 +277,10 @@ exports.populateListViewsWeek = function() {
 
 
 exports.populateListViewMonth = function () {
-	var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
-	var avgTimePhoneMonth = usageUtil.getAvgTimeOnPhoneMonth();
+	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
+	// var avgTimePhoneMonth = usageUtil.getAvgTimeOnPhoneMonth();
+	// console.dir(timePhoneMonth);
+	// console.dir(avgTimePhoneMonth);
 	var monthStats = [];
 	monthStats.push(
 	{
