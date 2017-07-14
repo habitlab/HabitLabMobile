@@ -3,11 +3,11 @@ var application = require("application");
 const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
 const ServiceManager = require("~/services/ServiceManager");
+
 const PermissionUtil = require("~/util/PermissionUtil");
 const StorageUtil = require("~/util/StorageUtil");
 
 var Toast = require("nativescript-toast");
-var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var dialogs = require("ui/dialogs");
 
 // expose native APIs
@@ -24,17 +24,6 @@ var context = application.android.context.getApplicationContext();
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
 var drawer;
-
-exports.pageLoaded = function(args) {
-	drawer = args.object.getViewById("sideDrawer"); 
-
-	if (!PermissionUtil.checkSystemOverlayPermission()) {
-		PermissionUtil.launchSystemOverlayIntent();
-	} else {
-		console.log("Good");
-	}
-
-};
 
 exports.reset = function() {
 	StorageUtil.setUp();
@@ -65,10 +54,7 @@ exports.toggleDrawer = function() {
 	drawer.toggleDrawerState();
 };
 
-
-
 var AlertDialog = android.support.v7.app.AlertDialog;
-
 
 exports.getRunningServices = function() {
 	// console.log("Got here");
@@ -90,13 +76,10 @@ var dialogListener = new android.content.DialogInterface.OnClickListener({
     }
 });
 
+exports.pageLoaded = function(args) {
+	drawer = args.object.getViewById("sideDrawer"); 
+	if (!PermissionUtil.checkSystemOverlayPermission()) {
+		PermissionUtil.launchSystemOverlayIntent();
+	}
 
-
-
-
-
-
-
-
-
-
+};
