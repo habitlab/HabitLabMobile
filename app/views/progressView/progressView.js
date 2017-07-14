@@ -12,12 +12,25 @@ var Placeholder = require("ui/placeholder")
 var app = require("tns-core-modules/application")
 var page;
 var context = app.android.context;
+var goalApps;
 var drawer;
+var BarChart = com.github.mikephil.charting.charts.BarChart
+var BarEntry = com.github.mikephil.charting.data.BarEntry
+var Entry = com.github.mikephil.charting.data.Entry
+var Color = android.graphics.Color
+var ArrayList = java.util.ArrayList 
+var BarDataSet = com.github.mikephil.charting.data.BarDataSet
+var BarData = com.github.mikephil.charting.data.BarData
+var IBarDataSet = com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+var LayoutParams = android.view.ViewGroup.LayoutParams
+var LinearLayout = android.widget.LinearLayout
+var Description = com.github.mikephil.charting.components.Description
+
 
 exports.pageLoaded = function(args) {
 	page = args.object;
-  drawer = page.getViewById("sideDrawer");
-
+  	drawer = page.getViewById("sideDrawer");
+  	goalApps = storageUtil.getSelectedPackages(); 
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
@@ -28,16 +41,12 @@ exports.pageLoaded = function(args) {
 exports.dayView = function(args) {
     var PieChart = com.github.mikephil.charting.charts.PieChart
     var PieEntry = com.github.mikephil.charting.data.PieEntry
-    var Entry = com.github.mikephil.charting.data.Entry
-    var Color = android.graphics.Color
     var Legend = com.github.mikephil.charting.components.Legend
-    var Description = com.github.mikephil.charting.components.Description
     var PieDataSet = com.github.mikephil.charting.data.PieDataSet
     var LayoutParams = android.view.ViewGroup.LayoutParams
     var LinearLayout = android.widget.LinearLayout
     var SpannableString = android.text.SpannableString
     var PieData = com.github.mikephil.charting.data.PieData
-    var ArrayList = java.util.ArrayList 
     var appsToday = usageUtil.getAppsSingleDay(0);
     var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0));
     console.log(args.context);
@@ -94,7 +103,7 @@ exports.dayView = function(args) {
 
     // Initialize and set pie chart 
     piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 700, 0.5));
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
     piechart.invalidate();
     args.view = piechart;
 
@@ -112,56 +121,50 @@ exports.creatingView = function(args) {
 
 //creates the line graph on the week tab
 exports.weekView = function(args) {
-	var LineChart = com.github.mikephil.charting.charts.LineChart;
-	var LineDataSet = com.github.mikephil.charting.data.LineDataSet;
-	 var Entry = com.github.mikephil.charting.data.Entry;
-	 var ILineDataSet = com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-	 var ArrayList = java.util.ArrayList;
-	 var LineData = com.github.mikephil.charting.data.LineData;
-	 var context= app.android.context;
-	 var LayoutParams = android.view.ViewGroup.LayoutParams
-    var LinearLayout = android.widget.LinearLayout
-	 
-	 console.dir(args);
-	var linechart = new LineChart(args.context);
-	 var FBentries = new ArrayList();
-	 FBentries.add(new Entry(4, 0));
-	FBentries.add(new Entry(8, 1));
-	 FBentries.add(new Entry(10, 2));
-	  FBentries.add(new Entry(3, 3));
-	 FBentries.add(new Entry(5, 4));
-	 var FBdataset = new LineDataSet(FBentries, "Mins on Facebook");
-	 var IdataSet = new ArrayList();
-	 IdataSet.add(FBdataset);
-	 var labels = new ArrayList();
-    labels.add("M");
-    labels.add("Tu");
-    labels.add("W");
-    labels.add("Th");
-    labels.add("F");
+    var barchart = new BarChart(args.context);
+    goalApps = storageUtil.getSelectedPackages(); 
+    var IbarSet = new ArrayList();
+    for(var i = 0; i < goalApps.length; ++i) {
+    	var entries = new ArrayList();
+    	entries.add(new BarEntry(2, usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0)));
+    	entries.add(new BarEntry(1, usageUtil.getTimeOnApplicationSingleDay(goalApps[i],1)));
+    	entries.add(new BarEntry(0, usageUtil.getTimeOnApplicationSingleDay(goalApps[i],2)));
+    	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
+    	IbarSet.add(dataset);
 
-    var data = new LineData(IdataSet);
-    linechart.setData(data);
-    //linechart.setDescription("");
-    linechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 700, 0.5));
-    linechart.invalidate();
-    args.view = linechart;
+    }
+
+ //    var entries = new ArrayList();
+	//  entries.add(new BarEntry(0, 5));
+	// entries.add(new BarEntry(1, 7));
+	//  entries.add(new BarEntry(2, 2));
+	//   entries.add(new BarEntry(3, 19));
+	//  entries.add(new BarEntry(4, 20));
+
+	//  var insta = new ArrayList();
+	//  insta.add(new BarEntry(0, 2));
+	// insta.add(new BarEntry(1, 6));
+	//  insta.add(new BarEntry(2, 1));
+	//   insta.add(new BarEntry(3, 11));
+	//  insta.add(new BarEntry(4, 9));
+
+	 // var dataset = new BarDataSet(entries, "Time on Phone");
+	 // var instaset = new BarDataSet(insta, "Instagram")
+
+	 
+	 // IbarSet.add(dataset);
+	 // IbarSet.add(instaset);
+	 var data = new BarData(IbarSet);
+	 barchart.setData(data);
+	 barchart.setFitBars(true);
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+	 barchart.invalidate();
+	 args.view = barchart;
 }
 
 
 
 exports.monthView = function(args) {
-	var BarChart = com.github.mikephil.charting.charts.BarChart
-    var BarEntry = com.github.mikephil.charting.data.BarEntry
-    var Entry = com.github.mikephil.charting.data.Entry
-    var Color = android.graphics.Color
-    var ArrayList = java.util.ArrayList 
-    var BarDataSet = com.github.mikephil.charting.data.BarDataSet
-    var BarData = com.github.mikephil.charting.data.BarData
-    var IBarDataSet = com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-    var LayoutParams = android.view.ViewGroup.LayoutParams
-    var LinearLayout = android.widget.LinearLayout
-
     var barchart = new BarChart(args.context);
     var entries = new ArrayList();
 	 entries.add(new BarEntry(4, 0));
@@ -175,7 +178,7 @@ exports.monthView = function(args) {
 	 var data = new BarData(IbarSet);
 	 barchart.setData(data);
 	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 700, 0.5));
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
 	 barchart.invalidate();
 	 args.view = barchart;
 
@@ -208,7 +211,6 @@ exports.populateListViewsDay = function() {
 	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
 	var total = Math.round(timeOnPhoneToday/6)/10;
 	var unlocks = storageUtil.getUnlocks(java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_WEEK));
-	var goalApps = storageUtil.getSelectedPackages(); 
 	var apps = [];
 
 	//populates list of apps
@@ -247,7 +249,6 @@ exports.populateListViewsDay = function() {
 exports.populateListViewsWeek = function() {
 	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek()/6)/10;
 	var weekStats = [];
-	var goalApps = storageUtil.getSelectedPackages(); 
 	weekStats.push(
 	{
 		value: timeOnPhoneWeek,
@@ -263,7 +264,6 @@ exports.populateListViewsWeek = function() {
 
 
 	var weekApps=[];
-
 	for(var i = 0; i < goalApps.length; ++i) {
     		var name = usageUtil.getAppName(goalApps[i]);
     		var avgMins = usageUtil.getAvgTimeOnAppWeek(goalApps[i]);
@@ -277,12 +277,11 @@ exports.populateListViewsWeek = function() {
 
 
 exports.populateListViewMonth = function () {
-	var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
-	var avgTimePhoneMonth = usageUtil.getAvgTimeOnPhoneMonth();
-	console.dir(timePhoneMonth);
-	console.log(avgTimePhoneMonth);
+	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
+	// var avgTimePhoneMonth = usageUtil.getAvgTimeOnPhoneMonth();
+	// console.dir(timePhoneMonth);
+	// console.dir(avgTimePhoneMonth);
 	var monthStats = [];
-	var goalApps = storageUtil.getSelectedPackages(); 
 	monthStats.push(
 	{
 		value: 120,
