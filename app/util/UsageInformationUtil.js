@@ -167,7 +167,24 @@ function getTimeOnPhoneThisWeek() {
 	return weeklyUsageStatistics;
 }
 
+function getTimeOnPhoneThisMonth() {
+	// var monthlyUsage = [];
+	// for (var i = 3; i >= 0; i--) {
+	// 	monthlyUsage.push(getAvgTimeOnPhoneWeek(i));
+	// }
+	// return monthlyUsage;
+}
 
+
+function getAvgTimeOnPhoneMonth() {
+	// var month = getTimeOnPhoneThisMonth();
+	// var sum = 0
+	// for (var i = 0; i < month.length; i++) {
+	// 	sum += month[i];
+	// }
+	// var avg = sum/month.length;
+	// return Math.round(avg);
+}
 
 
 
