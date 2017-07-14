@@ -4,6 +4,7 @@ var StorageUtil = require("~/util/StorageUtil");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
+
 var drawer;
 
 var setOnTap = function(image, packageName, selector) {
@@ -13,9 +14,12 @@ var setOnTap = function(image, packageName, selector) {
   });
 };
 
+exports.navigatingTo = function(args) {
+  createGrid(args);
+};
+
 exports.pageLoaded = function(args) {
   drawer = args.object.getViewById('sideDrawer');
-  createGrid(args);
 };
 
 exports.toggleDrawer = function() {
