@@ -255,15 +255,12 @@ function getAvgTimeOnPhoneThisWeek() {
 		// if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var name = info.loadLabel(pm).toString();
 		if (name === "HabitLabMobile") continue; 
-		console.log(packageName);
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
 		if (appUsage == 0) continue;
 		appUsage = appUsage/60000;
-		console.log(appUsage);
 		total += appUsage;
 	}
-	console.log(total);
 	var avg = Math.round(total/7);
 	return avg;
 }
