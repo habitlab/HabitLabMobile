@@ -31,6 +31,11 @@ exports.pageLoaded = function(args) {
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
   	goalApps = storageUtil.getSelectedPackages(); 
+
+  	var appMonth = usageUtil.getTimeOnAppMonth(goalApps[1]);
+  	console.dir(appMonth);
+
+
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
@@ -250,7 +255,7 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
-	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneWeek(0)/6)/10;
+	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneThisWeek()/6)/10;
 	var weekStats = [];
 	weekStats.push(
 	{
@@ -269,7 +274,7 @@ exports.populateListViewsWeek = function() {
 	var weekApps=[];
 	for(var i = 0; i < goalApps.length; ++i) {
     		var name = usageUtil.getAppName(goalApps[i]);
-    		var avgMins = usageUtil.getAvgTimeOnAppWeek(goalApps[i]);
+    		var avgMins = usageUtil.getAvgTimeOnAppThisWeek(goalApps[i]);
     		var imagesrc = usageUtil.getIcon(goalApps[i]);
     		var appObj = new weekApp(name, avgMins, imagesrc);
     		weekApps.push(appObj);
