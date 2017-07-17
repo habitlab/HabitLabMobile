@@ -1,6 +1,7 @@
-var localStorage = require( "nativescript-localstorage" );
+var appSettings = require("application-settings");
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
+
 var DAY_IN_MS = 86400000;
 
 var days = {
@@ -52,19 +53,19 @@ exports.interventionDetails = interventionDetails;
 
 
 var PkgStat = function() {
-  return {'visits': 0};
+  return {visits: 0};
 };
 
 var PkgGoal = function() {
-  return {'minutes': 15};
+  return {minutes: 15};
 };
 
 var PhStat = function() {
-  return {'glances': 0, 'unlocks': 0};
+  return {glances: 0, unlocks: 0};
 };
 
 var PhGoal = function() {
-  return {'glances': 75, 'unlocks': 50, 'minutes': 120};
+  return {glances: 75, unlocks: 50, minutes: 120};
 };
 
 /* helper: createPackageData
@@ -72,11 +73,11 @@ var PhGoal = function() {
  * Updates storage to include data for newly added packages.
  */
 var createPackageData = function(packageName) {
-  localStorage.setItem(packageName, {
+  appSettings.setString(packageName, JSON.stringify({
       goals: PkgGoal(), 
       stats: [PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat()],
-      disabled: Array(interventions.length).fill(false)
-    });
+      enabled: Array(interventionDetails.length).fill(true)
+    }));
 };
 
 /* helper: createPhoneData
@@ -84,11 +85,11 @@ var createPackageData = function(packageName) {
  * Updates storage to include data for general phone.
  */
 var createPhoneData = function() {
-  localStorage.setItem('phone', {
+  appSettings.setString('phone', JSON.stringify({
       goals: PhGoal(), 
       stats: [PhStat(), PhStat(), PhStat(), PhStat(), PhStat(), PhStat(), PhStat()],
-      disabled: Array(interventions.length).fill(false)
-    });
+      enabled: Array(interventionDetails.length).fill(true)
+    }));
 };
 
 var startOfDay = function() {
@@ -111,20 +112,21 @@ var startOfDay = function() {
  * Clears storage and resets everything to defaults.
  */
 exports.setUp = function() {
-  localStorage.clear();
+  appSettings.clear();
   var preset = ['com.facebook.katana', 'com.google.android.youtube', 'com.facebook.orca', 
                 'com.snapchat.android', 'com.instagram.android'];
 
-  localStorage.setItem('onboarded', true);
-  localStorage.setItem('selectedPackages', preset);
-  localStorage.setItem('lastDateActive', startOfDay().getTimeInMillis());
+  appSettings.setBoolean('onboarded', true);
+  appSettings.setString('selectedPackages', JSON.stringify(preset));
+  appSettings.setNumber('lastDateActive', startOfDay().getTimeInMillis());
 
   createPhoneData();
   preset.forEach(function (item) {
     createPackageData(item);
   });
 
-  localStorage.setItem('enabled', Array(interventionDetails.length).fill(true));
+  appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
+  
 };
 
 /* export: isSetUp
@@ -132,7 +134,7 @@ exports.setUp = function() {
  * Checks if the user has been onboarded yet.
  */
 exports.isSetUp = function() {
-  return localStorage.getItem('onboarded');
+  return appSettings.getBoolean('onboarded');
 };
 
 
@@ -146,7 +148,7 @@ exports.isSetUp = function() {
  * Returns array of package names (strings) that are currently 'blacklisted'.
  */
 exports.getSelectedPackages = function() {
-  return localStorage.getItem('selectedPackages');
+  return JSON.parse(appSettings.getString('selectedPackages'));
 };
 
 /* export: addPackage
@@ -154,11 +156,11 @@ exports.getSelectedPackages = function() {
  * Adds the specified package to storage (with default goals, no data).
  */
 exports.addPackage = function(packageName) {
-  var list = localStorage.getItem('selectedPackages');
+  var list = JSON.parse(appSettings.getString('selectedPackages'));
   if (!list.includes(packageName)) {
     list.push(packageName);
     createPackageData(packageName);
-    localStorage.setItem('selectedPackages', list);
+    appSettings.setString('selectedPackages', JSON.stringify(list));
   }
 };
 
@@ -167,11 +169,11 @@ exports.addPackage = function(packageName) {
  * Removes the specified package.
  */
 exports.removePackage = function(packageName) {
-  var list = localStorage.getItem('selectedPackages').filter(function (item) {
+  var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     return item !== packageName;
   });
-  localStorage.removeItem(packageName);
-  localStorage.set('selectedPackages', list);
+  appSettings.remove(packageName);
+  appSettings.setString('selectedPackages', JSON.stringify(list));
 };
 
 /* export: togglePackage
@@ -181,10 +183,9 @@ exports.removePackage = function(packageName) {
  */
 exports.togglePackage = function(packageName) {
   var removed = false;
-  var list = localStorage.getItem('selectedPackages');
-  list = list.filter(function (item) {
+  var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     if (item === packageName) {
-      localStorage.removeItem(packageName);
+      appSettings.remove(packageName);
       removed = true;
     }
     return item !== packageName;
@@ -195,7 +196,7 @@ exports.togglePackage = function(packageName) {
     list.push(packageName);
   }
 
-  localStorage.setItem('selectedPackages', list);
+  appSettings.setString('selectedPackages', JSON.stringify(list));
   return !removed;
 };
 
@@ -204,7 +205,7 @@ exports.togglePackage = function(packageName) {
  * Checks if the given package name is blacklisted.
  */
 exports.isPackageSelected = function(packageName) {
-  return localStorage.getItem('selectedPackages').includes(packageName);
+  return JSON.parse(appSettings.getString('selectedPackages')).includes(packageName);
 };
 
 
@@ -243,7 +244,7 @@ var arrangeData = function(dataArr, index) {
  * either a number or an array of numbers (with today as the last index).
  */
 exports.getVisits = function(packageName, index) {
-  var packageData = localStorage.getItem(packageName).stats.map(function (item) { 
+  var packageData = JSON.parse(appSettings.getString(packageName)).stats.map(function (item) { 
     return item['visits']; 
   });
   return arrangeData(packageData, index);
@@ -254,8 +255,10 @@ exports.getVisits = function(packageName, index) {
  * Adds one to the visits for today.
  */
 exports.visited = function(packageName) {
-  var i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-  localStorage.getItem(packageName).stats[i-1]['visits']++;
+  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  appInfo['stats'][today-1]['visits']++;
+  appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
 /* export: getUnlocks
@@ -264,7 +267,7 @@ exports.visited = function(packageName) {
  * either a number or an array of numbers (with today as the last index).
  */
 exports.getUnlocks = function(index) {
-  var phoneData = localStorage.getItem('phone').stats.map(function (item) { 
+  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
     return item['unlocks']; 
   });
   return arrangeData(phoneData, index);
@@ -275,8 +278,10 @@ exports.getUnlocks = function(index) {
  * Adds one to the unlocks for today.
  */
 exports.unlocked = function() {
-  var i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-  localStorage.getItem('phone').stats[i-1]['unlocks']++;
+  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  phoneInfo['stats'][today-1]['unlocks']++;
+  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* export: getGlances
@@ -285,7 +290,7 @@ exports.unlocked = function() {
  * either a number or an array of numbers (with today as the last index).
  */
 exports.getGlances = function(index) {
-  var phoneData = localStorage.getItem('phone').stats.map(function (item) { 
+  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
     return item['glances']; 
   });
   return arrangeData(phoneData, index);
@@ -296,14 +301,15 @@ exports.getGlances = function(index) {
  * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-  var lastDateActive = localStorage.getItem('lastDateActive');
-  var today = startOfDay();
-  var i = today.get(Calendar.DAY_OF_WEEK);
-  var difference = Math.round((today.getTimeInMillis() - lastDateActive) / DAY_IN_MS);
+  var lastDateActive = appSettings.getNumber('lastDateActive');
+  var start = startOfDay();
+  var today = start.get(Calendar.DAY_OF_WEEK);
+  var difference = Math.round((start.getTimeInMillis() - lastDateActive) / DAY_IN_MS);
+  resetData(difference, today);
 
-  resetData(difference, i);
-
-  var phoneData = localStorage.getItem('phone').stats[i-1]['glances']++;
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  phoneInfo['stats'][today-1]['glances']++;
+  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* helper: resetData
@@ -311,23 +317,31 @@ exports.glanced = function() {
  * Runs whenever a glance happens to erase data that will now be overwritten (if there is any).
  */
 var resetData = function(days, today) {
-  if (days) {
-    localStorage.setItem('lastDateActive', startOfDay().getTimeInMillis());
+  if (!days) {
+    return;
   }
 
-  for (var i = 0; i < days; i++) {
-    localStorage.getItem('phone').stats[(today+6-i)%7] = {
+  appSettings.setNumber('lastDateActive', startOfDay().getTimeInMillis());
+
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  for (var i = 0; i < days && i < 7; i++) {
+    phoneInfo.stats[(today + 6 - i) % 7] = {
       glances: 0,
       unlocks: 0
     };
+  }
+  appSettings.setString('phone', JSON.stringify(phoneInfo));
 
-    var list = localStorage.getItem('selectedPackages');
-    list.forEach(function (packageName) {
-      localStorage.getItem(packageName).stats[(today+6-i)%7] = {
+  var list = JSON.parse(appSettings.getString('selectedPackages'));
+  list.forEach(function (packageName) {
+    var appInfo = JSON.parse(appSettings.getString(packageName));
+    for (var i = 0; i < days && i < 7; i++) {
+      appInfo['stats'][(today + 6 - i) % 7] = {
         visits: 0
       };
-    });
-  }
+    }
+    appSettings.setString(packageName, JSON.stringify(appInfo));
+  });
 };
 
 /************************************
@@ -339,7 +353,9 @@ var resetData = function(days, today) {
  * Completely enables the given intervention (by id).
  */
 exports.enableForAll = function(id) {
-  localStorage.getItem('enabled')[id] = true;
+  var enabled = JSON.parse(appSettings.getString('enabled'));
+  enabled[id] = true;
+  appSettings.setString('enabled', enabled);
 };
 
 /* export: disableForAll
@@ -347,7 +363,9 @@ exports.enableForAll = function(id) {
  * Completely disables the given intervention (by id).
  */
 exports.disableForAll = function(id) {
-  localStorage.getItem('enabled')[id] = false;
+  var enabled = JSON.parse(appSettings.getString('enabled'));
+  enabled[id] = false;
+  appSettings.setString('enabled', enabled);
 };
 
 /* export: toggleForAll
@@ -355,8 +373,9 @@ exports.disableForAll = function(id) {
  * Completely disables/enables the given intervention (by id).
  */
 exports.toggleForAll = function(id) {
-  var enabled = localStorage.getItem('enabled')[id];
-  localStorage.getItem('enabled')[id] = !enabled;
+  var enabled = JSON.parse(appSettings.getString('enabled'));
+  enabled[id] = !enabled[id];
+  appSettings.setString('enabled', enabled);
 };
 
 /* export: enable
@@ -364,7 +383,9 @@ exports.toggleForAll = function(id) {
  * Enables the given intervention for a specific package (by id).
  */
 exports.enableForApp = function(id, packageName) {
-  localStorage.getItem(packageName).disabled[id] = true;
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  appInfo.enabled[id] = true;
+  appSettings.setString(packageName, appInfo);
 };
 
 /* export: disable
@@ -372,7 +393,9 @@ exports.enableForApp = function(id, packageName) {
  * Disables the given intervention for a specific package (by id).
  */
 exports.disableForApp = function(id, packageName) {
-  localStorage.getItem(packageName).disabled[id] = false;
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  appInfo.enabled[id] = false;
+  appSettings.setString(packageName, appInfo);
 };
 
 /* export: toggle
@@ -380,8 +403,9 @@ exports.disableForApp = function(id, packageName) {
  * Toggles the given intervention for a specific package (by id).
  */
 exports.toggleForApp = function(id, packageName) {
-  var enabled = localStorage.getItem(packageName).disabled[id];
-  localStorage.getItem(packageName).disabled[id] = !enabled;
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  appInfo.enabled[id] = !appInfo.enabled[id];
+  appSettings.setString(packageName, appInfo);
 };
 
 /* export: isEnabledForApp
@@ -389,7 +413,7 @@ exports.toggleForApp = function(id, packageName) {
  * Returns whether the given intervention is enabled for package specific interventions.
  */
 exports.isEnabledForApp = function(id, packageName) {
-  return !localStorage.getItem(packageName).disabled[id];
+  return JSON.parse(appSettings.getString(packageName)).enabled[id];
 };
 
 /* export: isEnabledForAll
@@ -397,7 +421,7 @@ exports.isEnabledForApp = function(id, packageName) {
  * Returns whether the given intervention is enabled generally.
  */
 exports.isEnabledForAll = function(id) {
-  return localStorage.getItem('enabled')[id];
+  return JSON.parse(appSettings.getString('enabled'))[id];
 };
 
 /* export: canIntervene
@@ -405,6 +429,6 @@ exports.isEnabledForAll = function(id) {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  return localStorage.getItem('enabled')[id] && 
-        (interventionDetails[id].target === 'phone' || !localStorage.getItem(packageName).disabled[id]);
+  return JSON.parse(appSettings.getString('enabled'))[id] && 
+        (interventionDetails[id].target === 'phone' || JSON.parse(appSettings.getString(packageName)).enabled[id]);
 };
