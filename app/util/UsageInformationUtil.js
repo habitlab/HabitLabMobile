@@ -157,6 +157,7 @@ function getAppsSingleDay(daysAgo) {
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
 		if (appUsage == 0) continue;
 		var name = info.loadLabel(pm).toString();
+		if (name === "HabitLabMobile") continue;
 		var mins = Math.round(appUsage/60000);
 		var app = new dayApp(name, mins);
 		list.push(app);

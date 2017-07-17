@@ -25,7 +25,12 @@ var IBarDataSet = com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 var LayoutParams = android.view.ViewGroup.LayoutParams
 var LinearLayout = android.widget.LinearLayout
 var Description = com.github.mikephil.charting.components.Description
-var ColorTemplate = com.github.mikephil.charting.utils.ColorTemplate;
+var Calendar = java.util.Calendar;
+var SimpleDateFormat = java.text.SimpleDateFormat;
+var Locale = java.util.Locale
+var GregorianCalendar = java.util.GregorianCalendar
+var IAxisValueFormatter = com.github.mikephil.charting.formatter.IAxisValueFormatter
+var XAxis = com.github.mikephil.charting.components.XAxis
 
 
 exports.pageLoaded = function(args) {
@@ -126,7 +131,7 @@ function toJavaFloatArray(arr) {
 }
 
 function toJavaStringArray(arr) {
-    var output = Array.create('String', arr.length)
+    var output = Array.create(java.lang.String, arr.length)
     for (let i = 0; i < arr.length; ++i) {
         output[i] = arr[i]
     }
@@ -144,6 +149,22 @@ function getAppNames() {
 }
 
 
+//returns [today, yesterday, day before...]
+function getDayLabels() {
+    var weekDay =[];
+    var format = new SimpleDateFormat("E", Locale.US);
+    var today = Calendar.getInstance();
+
+    for (var i = 0; i < 7; i++) {
+        var end = Calendar.getInstance();
+        end.setTimeInMillis(today.getTimeInMillis() - (6-i)*(86400 * 1000));
+        var day = format.format(end.getTime());
+        weekDay.push(day);
+    }
+    return weekDay;
+}
+
+
 
 //creates the line graph on the week tab
 exports.weekView = function(args) {
@@ -153,50 +174,42 @@ exports.weekView = function(args) {
     var IbarSet = new ArrayList();
     //array of BarEntries
     var entries = new ArrayList();
-    for (var day = 7; day >=0; day--) {
+    for (var day = 6; day >=0; day--) {
    		//array of values for each week
    		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
    			var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
+            if (totalTimeDay < 0) totalTimeDay = 0;
    			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
    		//now have an array of values for a week
-   		entries.add(new BarEntry(7-day, toJavaFloatArray(appValues)));
+   		entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
    }
-  	var dataset = new BarDataSet(entries, "Total Time On Target Apps Per Day");
-    var appNames = getAppNames();
-    dataset.setStackLabels();
+  	var dataset = new BarDataSet(entries, "");
+    dataset.setStackLabels(getAppNames());
   	dataset.setColors(getColors());
   	IbarSet.add(dataset);
+	var data = new BarData(IbarSet);
+    barchart.setData(data);
 
+    //set axis labels
+    var xLabels = getDayLabels();
+     let axisformatter = new IAxisValueFormatter({
+        getFormattedValue: function(value, axis) {
+            return xLabels[value]
+        },
+        getDecimalDigits: function() {
+            return 0
+        }
+     })
+     var xAxis = barchart.getXAxis()
+     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+     xAxis.setGranularity(1)
+     xAxis.setValueFormatter(axisformatter)
+     var desc = barchart.getDescription();
+    desc.setEnabled(Description.false);
 
-    // for(var i = 0; i < goalApps.length; i++) {
-    // 	var entries = new ArrayList();
-    // 	var appWeek = usageUtil.getTimeOnAppThisWeek(goalApps[i]);
-    // 	//console.dir(appWeek);
-    // 	entries.add(new BarEntry(1, appWeek[6]));
-    // 	entries.add(new BarEntry(2, appWeek[5]));
-    // 	entries.add(new BarEntry(3, appWeek[4]));
-    // 	entries.add(new BarEntry(4, appWeek[3]));
-    // 	entries.add(new BarEntry(5, appWeek[2]));
-    // 	entries.add(new BarEntry(6, appWeek[1]));
-    // 	entries.add(new BarEntry(7, appWeek[0]));
-    // 	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
-    // 	 dataset.setColors(getColors());
-    // 	//  var labels = new ArrayList();
-    // 	// labels.add("M");
-    // 	// labels.add("Tu");
-    // 	// labels.add("W");
-    // 	// labels.add("Th");
-    // 	// labels.add("F");
-    // 	// labels.add("S");
-    // 	// labels.add("S");
-    // 	// dataset.setStackLabels(labels);
-    // 	IbarSet.add(dataset);
-
-    // }
-	 var data = new BarData(IbarSet);
-	 barchart.setData(data);
+     barchart.animateY(3000);
 	 barchart.setFitBars(true);
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
 	 barchart.invalidate();
@@ -218,27 +231,19 @@ exports.monthView = function(args) {
    		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
    			var totalTimeWeekApp = usageUtil.getTotalTimeOnAppWeek(goalApps[ga], week);
+            if (totalTimeWeekApp < 0) totalTimeWeekApp = 0;
    			appValues.push(new java.lang.Integer(totalTimeWeekApp));
    		}
    		//now have an array of values for a week
    		entries.add(new BarEntry(4-week, toJavaFloatArray(appValues)));
    }
-  	var dataset = new BarDataSet(entries, "Total Time On Target Apps Per Week");
+  	var dataset = new BarDataSet(entries, "");
+    dataset.setStackLabels(getAppNames());
   	dataset.setColors(getColors());
   	IbarSet.add(dataset);
-
-
- //    var entries = new ArrayList();
-	//  entries.add(new BarEntry(4, 0));
-	// entries.add(new BarEntry(8, 1));
-	//  entries.add(new BarEntry(10, 2));
-	//   entries.add(new BarEntry(3, 3));
-	//  entries.add(new BarEntry(5, 4));
-	 // var dataset = new BarDataSet(entries, "Time on Phone");
-	
-	 // IbarSet.add(dataset);
 	var data = new BarData(IbarSet);
 	 barchart.setData(data);
+     barchart.animateY(3000)
 	 barchart.setFitBars(true);
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
 	 barchart.invalidate();
