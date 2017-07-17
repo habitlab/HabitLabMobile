@@ -92,14 +92,6 @@ exports.dayView = function(args) {
     piechart.setCenterText(text);
     var legend = piechart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-
-    // Set Colors of pie chart 
-    // var colors = new ArrayList()
-    // colors.add(new java.lang.Integer(Color.parseColor("#E71D36")));
-    // colors.add(new java.lang.Integer(Color.parseColor("#FFA730")));
-    // colors.add(new java.lang.Integer(Color.parseColor("#2EC4B6")));
-    // colors.add(new java.lang.Integer(Color.parseColor("#011627")));
-    // colors.add(new java.lang.Integer(Color.parseColor("#FFA730")));
      dataset.setColors(getColors());
 
     // Initialize and set pie chart 
@@ -125,6 +117,31 @@ getColors = function() {
 
 
 
+function toJavaFloatArray(arr) {
+    var output = Array.create('float', arr.length)
+    for (let i = 0; i < arr.length; ++i) {
+        output[i] = arr[i]
+    }
+    return output
+}
+
+function toJavaStringArray(arr) {
+    var output = Array.create('String', arr.length)
+    for (let i = 0; i < arr.length; ++i) {
+        output[i] = arr[i]
+    }
+    return output
+}
+
+
+
+function getAppNames() {
+    var names = Array.create(java.lang.String, goalApps.length);
+    for (let i = 0; i < goalApps.length; ++i) {
+        names[i] = usageUtil.getAppName(goalApps[i]);
+    }
+    return names;
+}
 
 
 
@@ -136,20 +153,21 @@ exports.weekView = function(args) {
     var IbarSet = new ArrayList();
     //array of BarEntries
     var entries = new ArrayList();
-   for (var week = 3; week >=0; week--) {
+    for (var day = 7; day >=0; day--) {
    		//array of values for each week
-   		var appValues = new ArrayList();
+   		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
-   			var totalTimeWeekApp = usageUtil.getTotalTimeOnAppWeek(goalApps[ga], week);
-   			appValues.add(totalTimeWeekApp);
+   			var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
+   			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
    		//now have an array of values for a week
-   		entries.add(new BarEntry(week, appValues));
+   		entries.add(new BarEntry(7-day, toJavaFloatArray(appValues)));
    }
-  	var dataset = new BarDataSet(entries, "Total Time On Target Apps Per Week");
+  	var dataset = new BarDataSet(entries, "Total Time On Target Apps Per Day");
+    var appNames = getAppNames();
+    dataset.setStackLabels();
   	dataset.setColors(getColors());
   	IbarSet.add(dataset);
-
 
 
     // for(var i = 0; i < goalApps.length; i++) {
@@ -190,19 +208,26 @@ exports.weekView = function(args) {
 exports.monthView = function(args) {
     var barchart = new BarChart(args.context);
      var IbarSet = new ArrayList();
-     for(var i = 0; i < goalApps.length; i++) {
-    	var entries = new ArrayList();
-    	var appWeek = usageUtil.getTimeOnAppMonth(goalApps[i]);
-    	console.dir(appWeek);
-    	entries.add(new BarEntry(1, appWeek[3]));
-    	entries.add(new BarEntry(2, appWeek[2]));
-    	entries.add(new BarEntry(3, appWeek[1]));
-    	entries.add(new BarEntry(4, appWeek[0]));
-    	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
-    	dataset.setColors(getColors());
-    	IbarSet.add(dataset);
+      goalApps = storageUtil.getSelectedPackages(); 
+    //array of datasets
+    var IbarSet = new ArrayList();
+    //array of BarEntries
+    var entries = new ArrayList();
+   for (var week = 3; week >=0; week--) {
+   		//array of values for each week
+   		var appValues = [];
+   		for (var ga = 0; ga < goalApps.length; ga++) {
+   			var totalTimeWeekApp = usageUtil.getTotalTimeOnAppWeek(goalApps[ga], week);
+   			appValues.push(new java.lang.Integer(totalTimeWeekApp));
+   		}
+   		//now have an array of values for a week
+   		entries.add(new BarEntry(4-week, toJavaFloatArray(appValues)));
+   }
+  	var dataset = new BarDataSet(entries, "Total Time On Target Apps Per Week");
+  	dataset.setColors(getColors());
+  	IbarSet.add(dataset);
 
-    }
+
  //    var entries = new ArrayList();
 	//  entries.add(new BarEntry(4, 0));
 	// entries.add(new BarEntry(8, 1));
@@ -212,7 +237,7 @@ exports.monthView = function(args) {
 	 // var dataset = new BarDataSet(entries, "Time on Phone");
 	
 	 // IbarSet.add(dataset);
-	 var data = new BarData(IbarSet);
+	var data = new BarData(IbarSet);
 	 barchart.setData(data);
 	 barchart.setFitBars(true);
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
