@@ -477,6 +477,7 @@ function getAverageUsage(map, pkg, installTime) {
 module.exports = {getApplicationList: getApplicationList, 
 	getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, 
 	getAvgTimeOnAppThisWeek : getAvgTimeOnAppThisWeek,
+	getTotalTimeOnAppWeek : getTotalTimeOnAppWeek,
 	getTimeOnPhoneSingleDay : getTimeOnPhoneSingleDay, 
 
 	getAvgTimeOnPhoneThisWeek : getAvgTimeOnPhoneThisWeek, 

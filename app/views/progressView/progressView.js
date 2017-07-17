@@ -104,7 +104,7 @@ exports.dayView = function(args) {
 
     // Initialize and set pie chart 
     piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1100, 0.5));
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
     piechart.invalidate();
     args.view = piechart;
 
@@ -132,56 +132,55 @@ getColors = function() {
 exports.weekView = function(args) {
     var barchart = new BarChart(args.context);
     goalApps = storageUtil.getSelectedPackages(); 
+    //array of datasets
     var IbarSet = new ArrayList();
-
-   
-   // var goalIndex = [];
-   // for(var i = 0; i < goalApps.length; i++) {
-   // 		goalIndex[i] = usageUtil.getTimeOnAppThisWeek(goalApps[i]);
-   // }
-   // var index = 0;
-   // var entries = [];
-   // for (var i = 0; i < goalIndex.length; i++) {
-   // 		var values = new ArrayList();
-   // 		values.add(goalIndex[i][0]);
-   // 		var entry = new BarEntry(index, values);
-   // 		entries.add(entry);
-   // 		var dataset = new BarDataSet(entries,  usageUtil.getAppName(goalApps[i]));
-   // 		dataset.setColors(getColors());
-   // 		index += 1;
-   // }
+    //array of BarEntries
+    var entries = new ArrayList();
+   for (var week = 3; week >=0; week--) {
+   		//array of values for each week
+   		var appValues = new ArrayList();
+   		for (var ga = 0; ga < goalApps.length; ga++) {
+   			var totalTimeWeekApp = usageUtil.getTotalTimeOnAppWeek(goalApps[ga], week);
+   			appValues.add(totalTimeWeekApp);
+   		}
+   		//now have an array of values for a week
+   		entries.add(new BarEntry(week, appValues));
+   }
+  	var dataset = new BarDataSet(entries, "Total Time On Target Apps Per Week");
+  	dataset.setColors(getColors());
+  	IbarSet.add(dataset);
 
 
 
-    for(var i = 0; i < goalApps.length; i++) {
-    	var entries = new ArrayList();
-    	var appWeek = usageUtil.getTimeOnAppThisWeek(goalApps[i]);
-    	//console.dir(appWeek);
-    	entries.add(new BarEntry(1, appWeek[6]));
-    	entries.add(new BarEntry(2, appWeek[5]));
-    	entries.add(new BarEntry(3, appWeek[4]));
-    	entries.add(new BarEntry(4, appWeek[3]));
-    	entries.add(new BarEntry(5, appWeek[2]));
-    	entries.add(new BarEntry(6, appWeek[1]));
-    	entries.add(new BarEntry(7, appWeek[0]));
-    	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
-    	 dataset.setColors(getColors());
-    	//  var labels = new ArrayList();
-    	// labels.add("M");
-    	// labels.add("Tu");
-    	// labels.add("W");
-    	// labels.add("Th");
-    	// labels.add("F");
-    	// labels.add("S");
-    	// labels.add("S");
-    	// dataset.setStackLabels(labels);
-    	IbarSet.add(dataset);
+    // for(var i = 0; i < goalApps.length; i++) {
+    // 	var entries = new ArrayList();
+    // 	var appWeek = usageUtil.getTimeOnAppThisWeek(goalApps[i]);
+    // 	//console.dir(appWeek);
+    // 	entries.add(new BarEntry(1, appWeek[6]));
+    // 	entries.add(new BarEntry(2, appWeek[5]));
+    // 	entries.add(new BarEntry(3, appWeek[4]));
+    // 	entries.add(new BarEntry(4, appWeek[3]));
+    // 	entries.add(new BarEntry(5, appWeek[2]));
+    // 	entries.add(new BarEntry(6, appWeek[1]));
+    // 	entries.add(new BarEntry(7, appWeek[0]));
+    // 	var dataset = new BarDataSet(entries, usageUtil.getAppName(goalApps[i]));
+    // 	 dataset.setColors(getColors());
+    // 	//  var labels = new ArrayList();
+    // 	// labels.add("M");
+    // 	// labels.add("Tu");
+    // 	// labels.add("W");
+    // 	// labels.add("Th");
+    // 	// labels.add("F");
+    // 	// labels.add("S");
+    // 	// labels.add("S");
+    // 	// dataset.setStackLabels(labels);
+    // 	IbarSet.add(dataset);
 
-    }
+    // }
 	 var data = new BarData(IbarSet);
 	 barchart.setData(data);
 	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1100, 0.5));
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
 	 barchart.invalidate();
 	 args.view = barchart;
 }
@@ -216,7 +215,7 @@ exports.monthView = function(args) {
 	 var data = new BarData(IbarSet);
 	 barchart.setData(data);
 	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1100, 0.5));
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
 	 barchart.invalidate();
 	 args.view = barchart;
 
