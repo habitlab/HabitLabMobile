@@ -42,7 +42,9 @@ var setUpDetail = function() {
   page.getViewById("button").on(gestures.tap, function() {
     var packages = StorageUtil.getSelectedPackages();
     if (StorageUtil.interventionDetails[id].target === 'phone' || packages.length !== 0) {
+      StorageUtil.forceIntervene();
       IM.interventions[id](packages[0]);
+      StorageUtil.unforceIntervene();
     } else {
       Toast.makeText('Unable to try - no apps selected.').show();
     }

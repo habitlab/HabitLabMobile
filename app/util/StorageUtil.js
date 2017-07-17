@@ -3,6 +3,7 @@ var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
 var DAY_IN_MS = 86400000;
+var force = false;
 
 var days = {
   TODAY: -1,
@@ -429,6 +430,14 @@ exports.isEnabledForAll = function(id) {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  return JSON.parse(appSettings.getString('enabled'))[id] && 
-        (interventionDetails[id].target === 'phone' || JSON.parse(appSettings.getString(packageName)).enabled[id]);
+  return force || (JSON.parse(appSettings.getString('enabled'))[id] && 
+        (interventionDetails[id].target === 'phone' || JSON.parse(appSettings.getString(packageName)).enabled[id]));
+};
+
+exports.forceIntervene = function() {
+  force = true;
+};
+
+exports.unforceIntervene = function() {
+  force = false;
 };

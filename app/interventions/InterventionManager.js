@@ -38,7 +38,7 @@ var sendNotificationVisited = function(pkg) {
     var applicationName = UsageInformationUtil.getAppName(pkg);
     var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
     var title = applicationName + " Usage";
-    var msg = "You have opened " + applicationName + visits + (visits === 1 ? " time" : " times") + " today";
+    var msg = "You have opened " + applicationName + visits + (visits === 1 ? " time " : " times ") + " today";
     
     if (visits % 5 === 0) {
       NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
