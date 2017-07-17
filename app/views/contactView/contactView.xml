@@ -15,10 +15,14 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation="vertical" >
-        <Label text="CONTACT HABITLAB" />
-        <Button text="Take Our Survey" tap="goToSurvey" />
-        <Button text="Email Us" tap="composeEmail" />
-        <Button text="Take Me to the Chrome Extension" tap="goToChromeExtension" />
+        <Image src="~/images/logo_bubbles_blue.png" class="contact-image" />
+        <Label text="Help us improve" class="contact-header no-top-margin" />
+        <Button text="Take Our Survey" tap="goToSurvey" class="contact-button"/>
+        <Button text="Email Us" tap="composeEmail" class="contact-button"/>
+
+        <Label text="Learn more about HabitLab" class="contact-header" />
+        <Button text="Visit the Chrome extension" tap="goToChromeExtension" class="contact-button"/>
+        <Button text="Visit the GitHub Wiki" tap="goToGitHubWiki" class="contact-button"/>
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 

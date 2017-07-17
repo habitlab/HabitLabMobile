@@ -30,3 +30,7 @@ exports.composeEmail = function() {
 exports.goToChromeExtension = function() {
   util.openUrl('https://habitlab.stanford.edu');
 };
+
+exports.goToGitHubWiki = function() {
+  util.openUrl('https://github.com/habitlab/habitlab/wiki');
+};
