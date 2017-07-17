@@ -23,6 +23,14 @@ var applications = pm.queryIntentActivities(mainIntent, 0);
 
 // ------------------------APP USAGE--------------------------------------------
 
+/* refreshApplicationList
+ * ----------------------
+ * Repopulates applications global variable with an updated list of
+ * installed applications (in the event a new application is installed).
+ */
+function refreshApplicationList() {
+	applications = pm.queryIntentActivities(mainIntent, 0);
+}
 
 
 /* getTimeOnApplicationSingleDay
@@ -488,7 +496,9 @@ module.exports = {getApplicationList: getApplicationList,
 	getTimeOnAppMonth : getTimeOnAppMonth,
 	getAppName : getAppName,
 	getIcon : getIcon,
-	getAppsSingleDay : getAppsSingleDay};
+	getAppsSingleDay : getAppsSingleDay,
+
+	refreshApplicationList: refreshApplicationList};
 
 
 
