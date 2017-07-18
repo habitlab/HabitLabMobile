@@ -68,6 +68,12 @@
 	background-color: #FFBD60;
 }
 
+#weekButtons {
+	margin-top: 15;
+	padding: 15;
+	background-color: #DAECF3;
+}
+
 .slide {
 	background-color: white;
 }

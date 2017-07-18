@@ -74,6 +74,7 @@ exports.dayView = function(args) {
      var min = (appsToday.length < 4 ? appsToday : 4);
      for(var i = 0; i < min; i++) {
      	//if (appsToday[i].mins > 3) {
+            if (appsToday[i].mins === 0) continue;
 	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
 	     	main += appsToday[i].mins;
      	//}
@@ -109,65 +110,9 @@ exports.dayView = function(args) {
 }
 
 
-getColors = function() {
-	var colors = new ArrayList();
- 	colors.add(new java.lang.Integer(Color.parseColor("#E71D36")));
-    colors.add(new java.lang.Integer(Color.parseColor("#FFA730")));
-     colors.add(new java.lang.Integer(Color.parseColor("#A0E4DD")));
-    colors.add(new java.lang.Integer(Color.parseColor("#F18391")));
-    colors.add(new java.lang.Integer(Color.parseColor("#747F89")));
-    colors.add(new java.lang.Integer(Color.parseColor("#DAECF3")));
-    colors.add(new java.lang.Integer(Color.parseColor("#2EC4B6")));  
-	return colors;
-}
 
 
-
-function toJavaFloatArray(arr) {
-    var output = Array.create('float', arr.length)
-    for (let i = 0; i < arr.length; ++i) {
-        output[i] = arr[i]
-    }
-    return output
-}
-
-function toJavaStringArray(arr) {
-    var output = Array.create(java.lang.String, arr.length)
-    for (let i = 0; i < arr.length; ++i) {
-        output[i] = arr[i]
-    }
-    return output
-}
-
-
-
-function getAppNames() {
-    var names = Array.create(java.lang.String, goalApps.length);
-    for (let i = 0; i < goalApps.length; ++i) {
-        names[i] = usageUtil.getAppName(goalApps[i]);
-    }
-    return names;
-}
-
-
-//returns [today, yesterday, day before...]
-function getDayLabels() {
-    var weekDay =[];
-    var format = new SimpleDateFormat("E", Locale.US);
-    var today = Calendar.getInstance();
-
-    for (var i = 0; i < 7; i++) {
-        var end = Calendar.getInstance();
-        end.setTimeInMillis(today.getTimeInMillis() - (6-i)*(86400 * 1000));
-        var day = format.format(end.getTime());
-        weekDay.push(day);
-    }
-    return weekDay;
-}
-
-
-
-//creates the line graph on the week tab
+//creates the bar graph on the week tab
 exports.weekView = function(args) {
     var barchart = new BarChart(args.context);
     goalApps = storageUtil.getSelectedPackages(); 
@@ -180,7 +125,7 @@ exports.weekView = function(args) {
    		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
    			var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
-            if (totalTimeDay < 0) totalTimeDay = 0;
+            if (totalTimeDay === 0) totalTimeDay = 0;
    			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
    		//now have an array of values for a week
@@ -188,9 +133,10 @@ exports.weekView = function(args) {
    }
   	var dataset = new BarDataSet(entries, "");
     dataset.setStackLabels(getAppNames());
-  	dataset.setColors(getColors());
+  	dataset.setColors(getColors(goalApps.length));
   	IbarSet.add(dataset);
 	var data = new BarData(IbarSet);
+    data.setValueTextColor(Color.WHITE);
     barchart.setData(data);
 
     //set axis labels
@@ -203,16 +149,21 @@ exports.weekView = function(args) {
             return 0
         }
      })
+
      var xAxis = barchart.getXAxis()
      var yAxis = barchart.getAxisLeft()
+     yAxis.setAxisMinimum(0)
      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
      xAxis.setGranularity(1)
      xAxis.setDrawGridLines(false);
-      barchart.getAxisLeft().setDrawGridLines(false);
+      barchart.getAxisRight().setEnabled(false);
      xAxis.setValueFormatter(axisformatter)
      var desc = barchart.getDescription();
     desc.setEnabled(Description.false);
     yAxis.setStartAtZero(true);
+    barchart.setDrawValueAboveBar(false);
+    var legend = barchart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
      barchart.animateY(3000);
 	 barchart.setFitBars(true);
@@ -225,8 +176,8 @@ exports.weekView = function(args) {
 
 exports.monthView = function(args) {
     var barchart = new BarChart(args.context);
-     var IbarSet = new ArrayList();
-      goalApps = storageUtil.getSelectedPackages(); 
+    var IbarSet = new ArrayList();
+    goalApps = storageUtil.getSelectedPackages(); 
     //array of datasets
     var IbarSet = new ArrayList();
     //array of BarEntries
@@ -244,31 +195,39 @@ exports.monthView = function(args) {
    }
   	var dataset = new BarDataSet(entries, "");
     dataset.setStackLabels(getAppNames());
-  	dataset.setColors(getColors());
+  	dataset.setColors(getColors(goalApps.length));
   	IbarSet.add(dataset);
 	var data = new BarData(IbarSet);
+    data.setValueTextColor(Color.WHITE);
+    barchart.setData(data);
 
-    // var xLabels = ['3 weeks ago', "2 weeks ago", "1 week ago", "This week"];
-    //  let axisformatter = new IAxisValueFormatter({
-    //     getFormattedValue: function(value, axis) {
-    //         return xLabels[value]
-    //     },
-    //     getDecimalDigits: function() {
-    //         return 0
-    //     }
-    //  })
+    var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
+     let axisformatter = new IAxisValueFormatter({
+        getFormattedValue: function(value, axis) {
+            return xLabels[value]
+        },
+        getDecimalDigits: function() {
+            return 0
+        }
+     })
+
      var xAxis = barchart.getXAxis()
      var yAxis = barchart.getAxisLeft()
+     yAxis.setAxisMinimum(0)
      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
      xAxis.setGranularity(1)
-     // xAxis.setValueFormatter(axisformatter)
-     yAxis.setStartAtZero(true);
-
-    var desc = barchart.getDescription();
+     xAxis.setDrawGridLines(false);
+      barchart.getAxisRight().setEnabled(false);
+     xAxis.setValueFormatter(axisformatter)
+     var desc = barchart.getDescription();
     desc.setEnabled(Description.false);
+    yAxis.setStartAtZero(true);
+    barchart.setDrawValueAboveBar(false);
+    var legend = barchart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
-	 barchart.setData(data);
-     barchart.animateY(3000)
+	 
+     barchart.animateY(3000);
 	 barchart.setFitBars(true);
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
 	 barchart.invalidate();
@@ -280,23 +239,6 @@ exports.monthView = function(args) {
 
 
 
-	// Object for an app that contains all the info for the list view 
-	function dayApp (name, visits, imagesrc, mins) {
-		this.name = name;
-		this.visits = visits;
-		this.image = imagesrc;
-		if (mins < 0) mins = 0;
-		this.mins = mins;
-	};
-
-
-	function weekApp(name, avgMins, imagesrc) {
-		this.name = name;
-		if (avgMins < 0) avgMins = 0;
-		this.avgMins = avgMins;
-		// this.perChange = perChange;
-		this.image = imagesrc;
-	}
 
 
 exports.populateListViewsDay = function() {
@@ -308,7 +250,6 @@ exports.populateListViewsDay = function() {
 	//populates list of apps
 	for(var i = 0; i < goalApps.length; ++i) {
     		var name = usageUtil.getAppName(goalApps[i]);
-    		// Edit when get visits
     		var visits = storageUtil.getVisits(goalApps[i], storageUtil.days.TODAY);
     		var imagesrc = usageUtil.getIcon(goalApps[i]);
     		var mins = Math.round(usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0));
@@ -407,7 +348,98 @@ exports.populateListViewMonth = function () {
 
 
 
+    // Object for an app that contains all the info for the list view 
+    function dayApp (name, visits, imagesrc, mins) {
+        this.name = name;
+        this.visits = visits;
+        this.image = imagesrc;
+        if (mins < 0) mins = 0;
+        this.mins = mins;
+    };
 
+
+    function weekApp(name, avgMins, imagesrc) {
+        this.name = name;
+        if (avgMins < 0) avgMins = 0;
+        this.avgMins = avgMins;
+        // this.perChange = perChange;
+        this.image = imagesrc;
+    }
+
+
+getColors = function(stacksize) {
+    var colors = [];
+    //Deep yellow
+    colors.push(new java.lang.Integer(Color.parseColor("#FFA730")));
+    //Red
+    colors.push(new java.lang.Integer(Color.parseColor("#E71D36")));
+     //Turquoise
+    colors.push(new java.lang.Integer(Color.parseColor("#2EC4B6"))); 
+    //Light blue
+     colors.push(new java.lang.Integer(Color.parseColor("#A0E4DD")));     
+     //Pink
+    colors.push(new java.lang.Integer(Color.parseColor("#F18391")));
+    //Grey
+    colors.push(new java.lang.Integer(Color.parseColor("#747F89")));
+     //Light blue 
+     colors.push(new java.lang.Integer(Color.parseColor("#DAECF3")));
+    
+
+    var sublist = colors.slice(0,stacksize);
+    return toJavaIntArray(sublist);
+}
+
+
+
+function toJavaFloatArray(arr) {
+    var output = Array.create('float', arr.length)
+    for (let i = 0; i < arr.length; ++i) {
+        output[i] = arr[i]
+    }
+    return output
+}
+
+function toJavaIntArray(arr) {
+    var output = Array.create('int', arr.length)
+    for (let i = 0; i < arr.length; ++i) {
+        output[i] = arr[i]
+    }
+    return output
+}
+
+function toJavaStringArray(arr) {
+    var output = Array.create(java.lang.String, arr.length)
+    for (let i = 0; i < arr.length; ++i) {
+        output[i] = arr[i]
+    }
+    return output
+}
+
+
+
+function getAppNames() {
+    var names = Array.create(java.lang.String, goalApps.length);
+    for (let i = 0; i < goalApps.length; ++i) {
+        names[i] = usageUtil.getAppName(goalApps[i]);
+    }
+    return names;
+}
+
+
+//returns [today, yesterday, day before...]
+function getDayLabels() {
+    var weekDay =[];
+    var format = new SimpleDateFormat("E", Locale.US);
+    var today = Calendar.getInstance();
+
+    for (var i = 0; i < 7; i++) {
+        var end = Calendar.getInstance();
+        end.setTimeInMillis(today.getTimeInMillis() - (6-i)*(86400 * 1000));
+        var day = format.format(end.getTime());
+        weekDay.push(day);
+    }
+    return weekDay;
+}
 
 
 

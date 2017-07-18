@@ -88,7 +88,7 @@ function getAvgTimeOnAppThisWeek(packageName) {
 
     var stats = usageStatsMap.get(packageName);
     var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
-    var avg = (total == -1 ? -1 : Math.round(total/7));
+    var avg = (total === -1 ? -1 : Math.round(total/7));
     return avg;
 }
 
@@ -169,7 +169,7 @@ function getAppsSingleDay(daysAgo) {
 		var packageName = goalApps[i]; 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		// if (appUsage === 0) continue;
 		var name = getAppName(packageName);
 		if (name === "HabitLabMobile") continue;
 		var mins = Math.round(appUsage/60000);
@@ -213,7 +213,7 @@ function getTimeOnPhoneSingleDay(daysAgo) {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -239,7 +239,7 @@ function getTimeOnTargetAppsSingleDay(daysAgo) {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -272,7 +272,7 @@ function getAvgTimeOnPhoneThisWeek() {
 		if (name === "HabitLabMobile") continue; 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -303,7 +303,7 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -337,7 +337,7 @@ function getAvgTimeOnPhoneThisMonth() {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
