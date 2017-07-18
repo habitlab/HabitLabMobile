@@ -59,10 +59,10 @@ var getForegroundNotification = function() {
     var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
     notificationBuilder.setSmallIcon(icon_id);
     notificationBuilder.setContentTitle("HabitLab")
-    notificationBuilder.setContentText("Helping change your habits!");
+    notificationBuilder.setContentText("");
     notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
     notificationBuilder.setVisibility(android.app.Notification.VISIBILITY_SECRET);
-    //notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
+    notificationBuilder.setPriority(NotificationCompat.PRIORITY_MIN);
     return notificationBuilder.build();
 };
 
