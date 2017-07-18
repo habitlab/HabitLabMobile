@@ -1,5 +1,0 @@
-<GridLayout columns="auto,*,auto" rows="auto" >
-  <Image id="icon" col="0" />
-  <Label id="name" col="1" />
-  <Switch id="switch" col="2" />
-</GridLayout>

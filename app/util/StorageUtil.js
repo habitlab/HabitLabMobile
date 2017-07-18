@@ -356,7 +356,7 @@ var resetData = function(days, today) {
 exports.enableForAll = function(id) {
   var enabled = JSON.parse(appSettings.getString('enabled'));
   enabled[id] = true;
-  appSettings.setString('enabled', enabled);
+  appSettings.setString('enabled', JSON.stringify(enabled));
 };
 
 /* export: disableForAll
@@ -366,7 +366,7 @@ exports.enableForAll = function(id) {
 exports.disableForAll = function(id) {
   var enabled = JSON.parse(appSettings.getString('enabled'));
   enabled[id] = false;
-  appSettings.setString('enabled', enabled);
+  appSettings.setString('enabled', JSON.stringify(enabled));
 };
 
 /* export: toggleForAll
@@ -376,7 +376,7 @@ exports.disableForAll = function(id) {
 exports.toggleForAll = function(id) {
   var enabled = JSON.parse(appSettings.getString('enabled'));
   enabled[id] = !enabled[id];
-  appSettings.setString('enabled', enabled);
+  appSettings.setString('enabled', JSON.stringify(enabled));
 };
 
 /* export: enable
@@ -386,7 +386,7 @@ exports.toggleForAll = function(id) {
 exports.enableForApp = function(id, packageName) {
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo.enabled[id] = true;
-  appSettings.setString(packageName, appInfo);
+  appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
 /* export: disable
@@ -396,7 +396,7 @@ exports.enableForApp = function(id, packageName) {
 exports.disableForApp = function(id, packageName) {
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo.enabled[id] = false;
-  appSettings.setString(packageName, appInfo);
+  appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
 /* export: toggle
@@ -406,7 +406,7 @@ exports.disableForApp = function(id, packageName) {
 exports.toggleForApp = function(id, packageName) {
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo.enabled[id] = !appInfo.enabled[id];
-  appSettings.setString(packageName, appInfo);
+  appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
 /* export: isEnabledForApp
@@ -434,10 +434,100 @@ exports.canIntervene = function(id, packageName) {
         (interventionDetails[id].target === 'phone' || JSON.parse(appSettings.getString(packageName)).enabled[id]));
 };
 
+/* export: forceIntervene
+ * ----------------------
+ * Forces interventions called after this (stored in JS so doesn't persist).
+ */
 exports.forceIntervene = function() {
   force = true;
 };
 
+/* export: unforceIntervene
+ * ------------------------
+ * Unforces interventions called after this (stored in JS so doesn't persist).
+ */
 exports.unforceIntervene = function() {
   force = false;
+};
+
+/*****************************
+ *           GOALS           *
+ *****************************/
+
+/* export: chagneAppGoal
+ * ---------------------
+ * Used to update the goals for specific apps. Give the package name, the new goal amount
+ * (e.g. 20 if the new goal is 20 minutes), and the type of goal that is being set (can be 
+ * only minutes for now).
+ */
+exports.changeAppGoal = function(packageName, newGoal, type) {
+  if (PkgGoal()[type] === undefined) {
+    return;
+  }
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  appInfo.goals[type] = newGoal;
+  appSettings.setString(packageName, JSON.stringify(appInfo));
+};
+
+/* export: changePhoneGoal
+ * -----------------------
+ * Used to update the goals for phone usage. Give the new goal amount
+ * (e.g. 20 if the new goal is 20 minutes), and the type of goal that is being set (can be 
+ * only minutes, glances, or unlocks for now).
+ */
+exports.changePhoneGoal = function(newGoal, type) {
+  if (PhGoal()[type] === undefined) {
+    return;
+  }
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  appInfo.goals[type] = newGoal;
+  appSettings.setString(packageName, JSON.stringify(appInfo));
+};
+
+/* export: getPhoneGoals
+ * -----------------------
+ * Returns all the types and values of goals for the phone.
+ */
+exports.getPhoneGoals = function() {
+  return JSON.parse(appSettings.getString('phone')).goals;
+};
+
+/* export: getAppGoals
+ * -------------------
+ * Returns all the types and values of goals for the specific app.
+ */
+exports.getAppGoals = function(packageName) {
+  return JSON.parse(appSettings.getString(packageName)).goals;
+};
+
+/* export: getGlanceGoal
+ * ---------------------
+ * Returns the glance goal.
+ */
+exports.getGlanceGoal = function() {
+  return JSON.parse(appSettings.getString('phone')).goals.glances;
+};
+
+/* export: getUnlockGoal
+ * ---------------------
+ * Returns the unlock goal.
+ */
+exports.getUnlockGoal = function() {
+  return JSON.parse(appSettings.getString('phone')).goals.unlocks;
+};
+
+/* export: getUsageGoal
+ * --------------------
+ * Returns the usage goal.
+ */
+exports.getUsageGoal = function() {
+  return JSON.parse(appSettings.getString('phone')).goals.minutes;
+};
+
+/* export: getMinutesGoal
+ * ----------------------
+ * Returns the minutes goal for the specific app.
+ */
+exports.getMinutesGoal = function(packageName) {
+  return JSON.parse(appSettings.getString(packageName)).goals.minutes;
 };
