@@ -116,6 +116,36 @@ function getTotalTimeOnAppWeek(packageName, weeksAgo) {
 }
 
 
+//Returns the amount of time spent on all target apps (weeksAgo)
+function getTimeOnTargetAppsWeek(weeksAgo) {
+	var startOfTarget = getStartOfDay(7 + weeksAgo*7);
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000)*7);
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var goalApps = storageUtil.getSelectedPackages();
+	var goalApps = storageUtil.getSelectedPackages();
+
+    for (var i = 0; i < goalApps.length; i++) {
+		var packageName = goalApps[i]; 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage === 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
+	}
+
+	return total;
+}
+
+
+
+
+
+
  // getTimeOnAppMonth
  // * -----------------------------
  // * Returns an array of the total times that an app is used per week 
@@ -283,7 +313,7 @@ function getAvgTimeOnPhoneThisWeek() {
 
 /* getTotalTimeOnPhoneWeek
  * ----------------------
- * Returns the total amount of time spent on phone in a specified week (last 7 days).
+ * Returns the total amount of time (minutes) spent on phone in a specified week (last 7 days).
  * 
  */
 
@@ -529,6 +559,7 @@ module.exports = {getApplicationList: getApplicationList,
 	getAppName : getAppName,
 	getIcon : getIcon,
 	getAppsSingleDay : getAppsSingleDay,
+	getTimeOnTargetAppsWeek : getTimeOnTargetAppsWeek,
 
 	refreshApplicationList: refreshApplicationList};
 

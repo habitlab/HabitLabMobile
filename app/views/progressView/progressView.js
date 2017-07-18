@@ -71,7 +71,18 @@ exports.dayView = function(args) {
     var piechart = new PieChart(args.context);
      var entries = new ArrayList();
      var main = 0;
-     var min = (appsToday.length < 4 ? appsToday : 4);
+     var min;
+     var extra;
+     if (appsToday.length <= 4) {
+        min = appsToday
+        flag = true;
+     } else if (appsToday.length === 5) {
+        flag = false;
+        min = 5
+     } else if (appsToday.length > 5) {
+        min = 4;
+        flag = true
+     }
      for(var i = 0; i < min; i++) {
      	//if (appsToday[i].mins > 3) {
             if (appsToday[i].mins === 0) continue;
@@ -79,9 +90,11 @@ exports.dayView = function(args) {
 	     	main += appsToday[i].mins;
      	//}
      }
-     var leftover = total - main;
-    if (leftover > 1){
-    	entries.add(new PieEntry(leftover, "Other"));
+    if (flag) {
+         var leftover = total - main;
+        if (leftover > 1){
+        	entries.add(new PieEntry(leftover, "Other"));
+        }
     }
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
@@ -242,8 +255,10 @@ exports.monthView = function(args) {
 
 
 exports.populateListViewsDay = function() {
-	var timeOnPhoneToday = usageUtil.getTimeOnPhoneSingleDay(0);
-	var total = Math.round(timeOnPhoneToday/6)/10;
+	var timeOnTargetToday = usageUtil.getTimeOnTargetAppsSingleDay(0);
+	var totalTarget = Math.round(timeOnTargetToday/6)/10;
+    var total = usageUtil.getTimeOnPhoneSingleDay(0);
+    var perc = Math.round((timeOnTargetToday/total)*100)
 	var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
 	var apps = [];
 
@@ -271,13 +286,17 @@ exports.populateListViewsDay = function() {
 	var stats = [];
 	stats.push(
 	{
-		value: total,
-		desc: "hrs on phone"
+		value: totalTarget,
+		desc: "hrs on target apps"
 	},
 	{
 		value: unlocks,
 		desc: "unlocks"
-	}
+	},
+    {
+        value: perc,
+        desc: "% phone time on target apps"
+    }
 	)
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
@@ -287,18 +306,31 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
-	console.log(usageUtil.getAvgTimeOnPhoneThisWeek());
-	var timeOnPhoneWeek = Math.round(usageUtil.getAvgTimeOnPhoneThisWeek()/6)/10;
+	var timeOnPhoneWeek = Math.round(usageUtil.getTotalTimeOnPhoneWeek()/6)/10;
+    var timeOnTargetAppsWeek = Math.round(usageUtil.getTimeOnTargetAppsWeek(0)/6)/10;
+    var perc = Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek);
+
+    var unlocks = storageUtil.getUnlocks();
+    var total = 0;
+    for (var i = 0; i < unlocks.length; i++) {
+        total += unlocks[i]
+    }
+    var avgUnlocks = Math.round(total/unlocks.length);
+
 	var weekStats = [];
 	weekStats.push(
 	{
-		value: timeOnPhoneWeek,
-		desc: "avg hrs on phone/day"
+		value: timeOnTargetAppsWeek,
+		desc: "time on target apps this week"
 	},
 	{
-		value: 72,
-		desc: "avg unlocks/day"
-	}
+		value: total,
+		desc: "total unlocks this week"
+	},
+    {
+        value: 50,
+        desc: "% phone time on target apps"
+    }
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
 	weekButtons.items = weekStats;
@@ -328,8 +360,8 @@ exports.populateListViewsWeek = function() {
 exports.populateListViewMonth = function () {
 	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
 	var avgTimePhoneMonth = Math.round(usageUtil.getAvgTimeOnPhoneThisMonth()/6)/10;
-	// console.dir(timePhoneMonth);
-	// console.dir(avgTimePhoneMonth);
+    var 
+
 	var monthStats = [];
 	monthStats.push(
 	{
@@ -339,7 +371,11 @@ exports.populateListViewMonth = function () {
 	{
 		value: 72,
 		desc: "avg unlocks/day"
-	}
+	},
+    {
+        value: 18,
+        desc: "% phone time on target apps"
+    }
 	)
 	var monthButtons = view.getViewById(page, "monthButtons");
 	monthButtons.items = monthStats;

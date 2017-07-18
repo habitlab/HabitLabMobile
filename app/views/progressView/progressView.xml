@@ -28,7 +28,7 @@
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="listButtons" class="list-group">
 		   					<lv:RadListView.listViewLayout>
-		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="2"/>
+		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 		   			        </lv:RadListView.listViewLayout>
 		   			        <lv:RadListView.itemTemplate>
 		   			            <StackLayout class="list-buttons">
