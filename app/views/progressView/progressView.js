@@ -31,6 +31,15 @@ var Locale = java.util.Locale
 var GregorianCalendar = java.util.GregorianCalendar
 var IAxisValueFormatter = com.github.mikephil.charting.formatter.IAxisValueFormatter
 var XAxis = com.github.mikephil.charting.components.XAxis
+var YAxis = com.github.mikephil.charting.components.YAxis
+var PieChart = com.github.mikephil.charting.charts.PieChart
+var PieEntry = com.github.mikephil.charting.data.PieEntry
+var Legend = com.github.mikephil.charting.components.Legend
+var PieDataSet = com.github.mikephil.charting.data.PieDataSet
+var LayoutParams = android.view.ViewGroup.LayoutParams
+var LinearLayout = android.widget.LinearLayout
+var SpannableString = android.text.SpannableString
+var PieData = com.github.mikephil.charting.data.PieData
 
 
 exports.pageLoaded = function(args) {
@@ -45,17 +54,11 @@ exports.pageLoaded = function(args) {
 
 //Creates the pie chart on the day tab
 exports.dayView = function(args) {
-    var PieChart = com.github.mikephil.charting.charts.PieChart
-    var PieEntry = com.github.mikephil.charting.data.PieEntry
-    var Legend = com.github.mikephil.charting.components.Legend
-    var PieDataSet = com.github.mikephil.charting.data.PieDataSet
-    var LayoutParams = android.view.ViewGroup.LayoutParams
-    var LinearLayout = android.widget.LinearLayout
-    var SpannableString = android.text.SpannableString
-    var PieData = com.github.mikephil.charting.data.PieData
     var appsToday = usageUtil.getAppsSingleDay(0);
-    var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0));
-    console.log(args.context);
+    var total = Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0));
+    console.log(total);
+    console.dir(appsToday);
+
 	//sort appsToday
 	appsToday.sort(function compare(a, b) {
     if (a.mins < b.mins) {
@@ -93,7 +96,7 @@ exports.dayView = function(args) {
     piechart.setDrawSliceText(false);
     piechart.setHoleRadius(70);
     piechart.setTransparentCircleRadius(75);
-    var text = new SpannableString("Minutes per App")
+    var text = new SpannableString("Minutes on Target Apps Today")
     piechart.setCenterText(text);
     var legend = piechart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
@@ -203,11 +206,13 @@ exports.weekView = function(args) {
         }
      })
      var xAxis = barchart.getXAxis()
+     var yAxis = barchart.getAxisLeft()
      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
      xAxis.setGranularity(1)
      xAxis.setValueFormatter(axisformatter)
      var desc = barchart.getDescription();
     desc.setEnabled(Description.false);
+    yAxis.setStartAtZero(true);
 
      barchart.animateY(3000);
 	 barchart.setFitBars(true);
@@ -242,6 +247,26 @@ exports.monthView = function(args) {
   	dataset.setColors(getColors());
   	IbarSet.add(dataset);
 	var data = new BarData(IbarSet);
+
+    // var xLabels = ['3 weeks ago', "2 weeks ago", "1 week ago", "This week"];
+    //  let axisformatter = new IAxisValueFormatter({
+    //     getFormattedValue: function(value, axis) {
+    //         return xLabels[value]
+    //     },
+    //     getDecimalDigits: function() {
+    //         return 0
+    //     }
+    //  })
+     var xAxis = barchart.getXAxis()
+     var yAxis = barchart.getAxisLeft()
+     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+     xAxis.setGranularity(1)
+     // xAxis.setValueFormatter(axisformatter)
+     yAxis.setStartAtZero(true);
+
+    var desc = barchart.getDescription();
+    desc.setEnabled(Description.false);
+
 	 barchart.setData(data);
      barchart.animateY(3000)
 	 barchart.setFitBars(true);
