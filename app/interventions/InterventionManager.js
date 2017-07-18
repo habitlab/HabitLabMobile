@@ -195,9 +195,6 @@ var popToastVisitLength = function (pkg, visitStart) {
 var sendNotificationVisitLength = function (pkg, visitStart) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
-    console.log(visitStart);
-    console.log("SentNotif:" + sentNotification);
-
     if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotification) {
       var applicationName = UsageInformationUtil.getAppName(pkg);
       var title = applicationName + " Visit Length";

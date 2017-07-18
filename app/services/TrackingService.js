@@ -107,7 +107,6 @@ var trackUsage = function () {
     if (screenOff) return;
     var newPackage = getActivePackage();
     if (newPackage) {
-        console.log("new package:", newPackage);
         if (StorageUtil.isPackageSelected(newPackage)) {
             visit = true;
             visitStart = System.currentTimeMillis(); // log visit start time

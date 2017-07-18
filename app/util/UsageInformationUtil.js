@@ -492,6 +492,7 @@ function getAverageUsage(map, pkg, installTime) {
     	} else {
     		days = 28;
     	} 
+
     	return stats.getTotalTimeInForeground() / days;
     } else {
     	return null;
