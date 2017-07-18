@@ -56,8 +56,6 @@ exports.pageLoaded = function(args) {
 exports.dayView = function(args) {
     var appsToday = usageUtil.getAppsSingleDay(0);
     var total = Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0));
-    console.log(total);
-    console.dir(appsToday);
 
 	//sort appsToday
 	appsToday.sort(function compare(a, b) {
@@ -75,10 +73,10 @@ exports.dayView = function(args) {
      var main = 0;
      var min = (appsToday.length < 4 ? appsToday : 4);
      for(var i = 0; i < min; i++) {
-     	if (appsToday[i].mins > 3) {
+     	//if (appsToday[i].mins > 3) {
 	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
 	     	main += appsToday[i].mins;
-     	}
+     	//}
      }
      var leftover = total - main;
     if (leftover > 1){
@@ -209,6 +207,8 @@ exports.weekView = function(args) {
      var yAxis = barchart.getAxisLeft()
      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
      xAxis.setGranularity(1)
+     xAxis.setDrawGridLines(false);
+      barchart.getAxisLeft().setDrawGridLines(false);
      xAxis.setValueFormatter(axisformatter)
      var desc = barchart.getDescription();
     desc.setEnabled(Description.false);
