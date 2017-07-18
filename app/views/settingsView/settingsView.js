@@ -2,6 +2,7 @@ var application = require("application");
 
 const TrackingService = require("~/services/TrackingService");
 const UnlockService = require("~/services/UnlockService");
+const DummyService = require("~/services/DummyService");
 const ServiceManager = require("~/services/ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");
 const StorageUtil = require("~/util/StorageUtil");
@@ -23,6 +24,7 @@ var Integer = java.lang.Integer;
 var context = application.android.context.getApplicationContext();
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
+var dummyServiceIntent = new Intent(context, com.habitlab.DummyService.class);
 var drawer;
 
 exports.reset = function() {
@@ -30,24 +32,40 @@ exports.reset = function() {
 };
 
 exports.enableServices = function() {
-	if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-		context.startService(trackingServiceIntent);
-	}
 
-	if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-		context.startService(unlockServiceIntent);
-	}
+	var util = require("~/util/UsageInformationUtil");
+
+	var map = util.getApplicationList();
+
+	var facebook = map.get("com.facebook.katana")
+	var messenger = map.get("com.facebook.orca");
+
+	console.log("Facebook:", facebook.getTotalTimeInForeground());
+	console.log("Messenger:", messenger.getTotalTimeInForeground());
+
+
+	// if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+	// 	context.startService(trackingServiceIntent);
+	// }
+
+	// if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+	// 	context.startService(unlockServiceIntent);
+	// }
+
+	// if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+	// 	context.startService(dummyServiceIntent);
+	// }
 };
 
 exports.disableServices = function () {
-	if (ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-		TrackingService.stopTimer();
-		context.stopService(trackingServiceIntent);
-	}
+	// if (ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+	// 	TrackingService.stopTimer();
+	// 	context.stopService(trackingServiceIntent);
+	// }
 
-	if (ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-		context.stopService(unlockServiceIntent);
-	}
+	// if (ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+	// 	context.stopService(unlockServiceIntent);
+	// }
 };
 
 exports.toggleDrawer = function() {
@@ -58,14 +76,18 @@ exports.toggleDrawer = function() {
 
 
 exports.getRunningServices = function() {
+	// var intent = new Intent("android.settings.APP_NOTIFICATION_SETTINGS");
+	// intent.putExtra("app_package", context.getPackageName());
+	// intent.putExtra("app_uid", context.getApplicationInfo().uid);
+
+	// var foregroundActivity = application.android.foregroundActivity;
+	// foregroundActivity.startActivity(intent);
+
+
 	ServiceManager.getRunningServices();
 };
 
 
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 
-	if (!PermissionUtil.checkSystemOverlayPermission()) {
-		PermissionUtil.launchSystemOverlayIntent();
-	}
-
 };

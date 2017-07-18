@@ -27,9 +27,11 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         if (action === Intent.ACTION_SCREEN_ON) {
             StorageUtil.glanced();
             InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION]();
+            InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST]();
         } else if (action === Intent.ACTION_USER_PRESENT) {
             StorageUtil.unlocked();
             InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION]();
+            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST]();
         }        
     }
 });
@@ -86,20 +88,6 @@ function setUpReceiver() {
     context.registerReceiver(receiver, filterUnlocked); 
 }
 
-var NotificationCompat = android.support.v4.app.NotificationCompat
-var notificationColor = [34, 0.81, 1];
-
-var getNotification = function() {
-    var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
-    var notificationBuilder = new NotificationCompat.Builder(context);
-    var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
-    notificationBuilder.setSmallIcon(icon_id);
-    notificationBuilder.setContentTitle("HabitLab");
-    notificationBuilder.setContentText("Helping change your habits!");
-    notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
-    notificationBuilder.setVisibility(android.app.Notification.VISIBILITY_SECRET);
-    return notificationBuilder.build();
-};
 
 module.exports = {};
 

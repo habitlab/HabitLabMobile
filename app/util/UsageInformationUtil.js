@@ -1,5 +1,6 @@
 var application = require("application");
 var imageSource = require("image-source");
+var storageUtil = require('~/util/StorageUtil.js');
 
 // expose native APIs 
 var Intent = android.content.Intent;
@@ -147,7 +148,12 @@ function getStartOfDay(daysAgo) {
 	return startOfTarget;
 };
 
- // 
+
+ // getAppsSingleDay
+ // * -----------------------
+ // * Get the target apps used today, and returns a list 
+ // of their number of times used.
+ 
 function getAppsSingleDay(daysAgo) {
 	var start = getStartOfDay(daysAgo);
 	var end = Calendar.getInstance();
@@ -157,20 +163,22 @@ function getAppsSingleDay(daysAgo) {
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
     var list = [];
+    var goalApps = storageUtil.getSelectedPackages();
 
-    for (var i = 0; i < applications.size(); i++) {
-		var info = applications.get(i);
-		var packageName = getPackageName(info); 
+    for (var i = 0; i < goalApps.length; i++) {
+		var packageName = goalApps[i]; 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
 		if (appUsage == 0) continue;
-		var name = info.loadLabel(pm).toString();
+		var name = getAppName(packageName);
+		if (name === "HabitLabMobile") continue;
 		var mins = Math.round(appUsage/60000);
 		var app = new dayApp(name, mins);
 		list.push(app);
 	}
 
 	return list;
+
 	
 };
 
@@ -214,6 +222,30 @@ function getTimeOnPhoneSingleDay(daysAgo) {
 
 }
 
+
+
+function getTimeOnTargetAppsSingleDay(daysAgo) {
+		var start = getStartOfDay(daysAgo);
+	var end = Calendar.getInstance();
+	end.setTimeInMillis(start.getTimeInMillis() + (86400 * 1000));
+	var total = 0;
+	
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
+	var goalApps = storageUtil.getSelectedPackages();
+
+    for (var i = 0; i < goalApps.length; i++) {
+		var packageName = goalApps[i]; 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage == 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
+	}
+
+	return total;
+}
 
 
 
@@ -491,7 +523,7 @@ module.exports = {getApplicationList: getApplicationList,
 	getAvgTimeOnPhoneThisWeek : getAvgTimeOnPhoneThisWeek, 
 	getTotalTimeOnPhoneWeek : getTotalTimeOnPhoneWeek,
 	getAvgTimeOnPhoneThisMonth : getAvgTimeOnPhoneThisMonth,
-
+	getTimeOnTargetAppsSingleDay : getTimeOnTargetAppsSingleDay,
 	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
 	getTimeOnAppMonth : getTimeOnAppMonth,
 	getAppName : getAppName,

@@ -98,24 +98,36 @@ var stopTimer = function() {
  * background. Plugs interventions into the device.
  */
 var inBlacklistedApplication = false;
+var currentPackage = "";
 var trackUsage = function () {
     var packageName = getActivePackage();
-
     if (packageName) {
         // new application launched
-        InterventionManager.setBlockMedia(true);
         if (StorageUtil.isPackageSelected(packageName)) {
+            // logging information
+            StorageUtil.visited(packageName); 
+            InterventionManager.logOpenTime(); // to check for visit length
+            currentPackage = packageName;
             inBlacklistedApplication = true;
-            StorageUtil.visited(packageName); // log a visit
+
             // put interventions here that run on app launch
+            InterventionManager.allowVideoBlocking(true);    
             InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](packageName);
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](packageName);
         } else {
+            InterventionManager.allowVideoBlocking(false);
             inBlacklistedApplication = false;
         }
     } else {
-        // in old application
+        // application running (post-launch)
         if (inBlacklistedApplication) {
-            InterventionManager.blockAllSoundMedia();
+            // put interventions here that run during the lifespan of an application
+            InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentPackage);
+            InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentPackage);
+            
+            if (currentPackage === "com.facebook.katana" || currentPackage === "com.google.android.youtube") {
+                InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER]();
+            }
         }
     }
 };
