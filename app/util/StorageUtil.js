@@ -26,7 +26,8 @@ var interventions = {
   DURATION_TOAST: 6, // for length of visit to an app
   DURATION_NOTIFICATION: 7,
   VISIT_TOAST: 8, // for amount of time on phone today
-  VISIT_NOTIFICATION: 9
+  VISIT_NOTIFICATION: 9,
+  VIDEO_BLOCKER: 10
 };
 
 var interventionDetails = [
@@ -39,7 +40,8 @@ var interventionDetails = [
   {name: "Visit Length Toast", description: "Sends a disappearing message with visit duration in minutes for a specific app", target: 'app', level: 'easy'},
   {name: "Visit Length Notification", description: "Sends a notification with visit duration in minutes for a specific app", level: 'medium'},
   {name: "Visits Toast", description: "Sends a disappearing message with today's visit count for a specific app", target: 'app', level: 'easy'},
-  {name: "Visits Notification", description: "Sends a notification with today's visit count for a specific app", target: 'app', level: 'medium'}
+  {name: "Visits Notification", description: "Sends a notification with today's visit count for a specific app", target: 'app', level: 'medium'},
+  {name: "Video Pause", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium'}
 ];
 
 exports.days = days;
