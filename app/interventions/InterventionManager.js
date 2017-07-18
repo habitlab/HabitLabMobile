@@ -26,8 +26,8 @@ var notificationID = {
 /*************************************
  *     VISIT COUNT INTERVENTIONS     *
  *************************************/
-var VISITED_TOAST_INTERVAL = 5;
-var VISITED_NOTIF_INTERVAL = 15;
+var VISITED_TOAST_INTERVAL = 10;
+var VISITED_NOTIF_INTERVAL = 20;
 
 
 /**
@@ -74,7 +74,7 @@ var sendNotificationVisited = function(pkg) {
  *************************************/
 var UNLOCKS_TOAST_INTERVAL = 10;
 var GLANCES_TOAST_INTERVAL = 20;
-var UNLOCKS_NOTIF_INTERVAL = 25;
+var UNLOCKS_NOTIF_INTERVAL = 20;
 var GLANCES_NOTIF_INTERVAL = 30;
 
 
@@ -149,11 +149,10 @@ var popToastGlanced = function() {
 /**************************************
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
-var DURATION_TOAST_INTERVAL = 300000; // in ms
-var DURATION_NOTIF_INTERVAL = 600000; // in ms
+var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
+var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 
 // logging vars
-var openTime = 0;
 var sentToast = false;
 var sentNotification = false;
 
@@ -164,10 +163,9 @@ var sentNotification = false;
  * Takes note of the time a given application is opened and 
  * resets necessary logging variables.
  */
-var logOpenTime = function() {
-  openTime = System.currentTimeMillis();
+var logVisitStart = function() {
   sentToast = false;
-  sendNotification = false;
+  sentNotification = false;
 };
 
 
@@ -177,10 +175,10 @@ var logOpenTime = function() {
  * Displays a toast after DURATION_TOAST_INTERVAL ms on the 
  * specified package.
  */
-var popToastVisitLength = function (pkg) {
+var popToastVisitLength = function (pkg, visitStart) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_TOAST, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - openTime) > DURATION_TOAST_INTERVAL && !sentToast) {
+    if ((now - visitStart) > DURATION_TOAST_INTERVAL && !sentToast) {
       var applicationName = UsageInformationUtil.getAppName(pkg);
       Toast.makeText("You've been on " + applicationName + " for 5 minutes").show();
       sentToast = true;
@@ -194,10 +192,13 @@ var popToastVisitLength = function (pkg) {
  * Displays a notification after DURATION_TOAST_INTERVAL ms 
  * on the specified package.
  */
-var sendNotificationVisitLength = function (pkg) {
+var sendNotificationVisitLength = function (pkg, visitStart) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - openTime) > DURATION_NOTIF_INTERVAL && !sentNotification) {
+    console.log(visitStart);
+    console.log("SentNotif:" + sentNotification);
+
+    if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotification) {
       var applicationName = UsageInformationUtil.getAppName(pkg);
       var title = applicationName + " Visit Length";
       var msg = "You've been using " + applicationName + " for 10 minutes";
@@ -286,7 +287,7 @@ module.exports = {
     blockVideo
   ], 
   allowVideoBlocking,
-  logOpenTime
+  logVisitStart
 };
 
 

@@ -5,6 +5,7 @@ var context = application.android.context.getApplicationContext();
 const ServiceManager = require("./ServiceManager");
 const StorageUtil = require('~/util/StorageUtil');
 const InterventionManager = require('~/interventions/InterventionManager');
+const TrackingService = require("./TrackingService");
 
 // expose native APIs
 var IntentFilter = android.content.IntentFilter;
@@ -17,6 +18,7 @@ var System = java.lang.System;
 
 // intent filters for the BroadcastReceiver
 var filterOn = new IntentFilter(Intent.ACTION_SCREEN_ON);
+var filterOff = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 var filterUnlocked = new IntentFilter(Intent.ACTION_USER_PRESENT);
 
 // extend BroadcastReceiver class to track screen on/off/unlock
@@ -27,12 +29,15 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         if (action === Intent.ACTION_SCREEN_ON) {
             StorageUtil.glanced();
             InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION]();
-            InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST]();
+            // InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST]();
         } else if (action === Intent.ACTION_USER_PRESENT) {
+            TrackingService.alertScreenOn();
             StorageUtil.unlocked();
             InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION]();
-            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST]();
-        }        
+            // InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST]();
+        } else if (action === Intent.ACTION_SCREEN_OFF) {
+            TrackingService.alertScreenOff();
+        }  
     }
 });
 
@@ -85,6 +90,7 @@ android.app.Service.extend("com.habitlab.UnlockService", {
  */
 function setUpReceiver() {
     context.registerReceiver(receiver, filterOn);
+    context.registerReceiver(receiver, filterOff);
     context.registerReceiver(receiver, filterUnlocked); 
 }
 

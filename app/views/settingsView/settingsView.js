@@ -32,18 +32,6 @@ exports.reset = function() {
 };
 
 exports.enableServices = function() {
-
-	var util = require("~/util/UsageInformationUtil");
-
-	var map = util.getApplicationList();
-
-	var facebook = map.get("com.facebook.katana")
-	var messenger = map.get("com.facebook.orca");
-
-	console.log("Facebook:", facebook.getTotalTimeInForeground());
-	console.log("Messenger:", messenger.getTotalTimeInForeground());
-
-
 	// if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
 	// 	context.startService(trackingServiceIntent);
 	// }
