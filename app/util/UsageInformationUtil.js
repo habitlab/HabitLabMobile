@@ -126,7 +126,7 @@ function getTimeOnTargetAppsWeek(weeksAgo) {
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
 
     var goalApps = storageUtil.getSelectedPackages();
-	var goalApps = storageUtil.getSelectedPackages();
+	var total = 0;
 
     for (var i = 0; i < goalApps.length; i++) {
 		var packageName = goalApps[i]; 

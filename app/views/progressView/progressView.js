@@ -306,9 +306,10 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
-	var timeOnPhoneWeek = Math.round(usageUtil.getTotalTimeOnPhoneWeek()/6)/10;
+
+	var timeOnPhoneWeek = Math.round(usageUtil.getTotalTimeOnPhoneWeek(0)/6)/10;
     var timeOnTargetAppsWeek = Math.round(usageUtil.getTimeOnTargetAppsWeek(0)/6)/10;
-    var perc = Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek);
+    var perc = Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek)*100;
 
     var unlocks = storageUtil.getUnlocks();
     var total = 0;
@@ -321,14 +322,14 @@ exports.populateListViewsWeek = function() {
 	weekStats.push(
 	{
 		value: timeOnTargetAppsWeek,
-		desc: "time on target apps this week"
+		desc: "hrs on target apps this week"
 	},
 	{
 		value: total,
 		desc: "total unlocks this week"
 	},
     {
-        value: 50,
+        value: perc,
         desc: "% phone time on target apps"
     }
 	)
@@ -360,7 +361,7 @@ exports.populateListViewsWeek = function() {
 exports.populateListViewMonth = function () {
 	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
 	var avgTimePhoneMonth = Math.round(usageUtil.getAvgTimeOnPhoneThisMonth()/6)/10;
-    var 
+ 
 
 	var monthStats = [];
 	monthStats.push(
