@@ -74,6 +74,12 @@
 	background-color: #DAECF3;
 }
 
+#monthButtons {
+	margin-top: 15;
+	padding: 15;
+	background-color: #F7BBC3;
+}
+
 .slide {
 	background-color: white;
 }
