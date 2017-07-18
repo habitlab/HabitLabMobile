@@ -1,0 +1,25 @@
+.contact-button {
+  width: auto;
+  text-transform: none;
+  width: 70%;
+  font-size: 17%;
+}
+
+.contact-header {
+  font-size: 25%;
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 2%;
+  color: #FFA730;
+}
+
+.contact-image {
+  padding: 3%;
+  padding-bottom: 6%;
+  width: 10%;
+  margin: 4%;
+}
+
+.no-top-margin {
+  margin-top: 0;
+}

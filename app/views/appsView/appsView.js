@@ -15,6 +15,10 @@ var setOnTap = function(image, packageName, selector) {
 };
 
 var createGrid = function(args) {
+
+  // get the most updated version of the list
+  UsageUtil.refreshApplicationList();
+
   // order by things with icon then by usage
   var list = UsageUtil.getApplicationList();
   list.sort(function compare(a, b) {
