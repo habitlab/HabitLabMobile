@@ -40,6 +40,11 @@ var LayoutParams = android.view.ViewGroup.LayoutParams
 var LinearLayout = android.widget.LinearLayout
 var SpannableString = android.text.SpannableString
 var PieData = com.github.mikephil.charting.data.PieData
+var Easing = com.github.mikephil.charting.animation.Easing;
+var ForegroundColorSpan = android.text.style.ForegroundColorSpan;
+var StyleSpan = android.text.style.StyleSpan;
+var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
+var Typeface = android.graphics.Typeface;
 
 
 exports.pageLoaded = function(args) {
@@ -69,10 +74,10 @@ exports.dayView = function(args) {
 
     // add data
     var piechart = new PieChart(args.context);
-     var entries = new ArrayList();
-     var main = 0;
-     var min;
-     var extra;
+    var entries = new ArrayList();
+    var main = 0;
+    var min;
+    var extra;
      if (appsToday.length <= 4) {
         min = appsToday
         flag = true;
@@ -84,11 +89,9 @@ exports.dayView = function(args) {
         flag = true
      }
      for(var i = 0; i < min; i++) {
-     	//if (appsToday[i].mins > 3) {
             if (appsToday[i].mins === 0) continue;
 	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
 	     	main += appsToday[i].mins;
-     	//}
      }
     if (flag) {
          var leftover = total - main;
@@ -104,19 +107,19 @@ exports.dayView = function(args) {
     data.setValueTextSize(11);
     data.setValueTextColor(Color.WHITE);
     var desc = piechart.getDescription();
+    piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     desc.setEnabled(Description.false);
     piechart.setDrawSliceText(false);
     piechart.setHoleRadius(70);
     piechart.setTransparentCircleRadius(75);
-    var text = new SpannableString("Minutes on Target Apps Today")
-    piechart.setCenterText(text);
+    piechart.setCenterText(getSpannableString());
     var legend = piechart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-     dataset.setColors(getColors());
+    dataset.setColors(getColors());
 
     // Initialize and set pie chart 
     piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800,0.42));
     piechart.invalidate();
     args.view = piechart;
 
@@ -138,6 +141,8 @@ exports.weekView = function(args) {
    		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
    			var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
+            // console.warn(totalTimeDay);
+            // console.warn(usageUtil.getAppName(goalApps[ga]))
             if (totalTimeDay === 0) totalTimeDay = 0;
    			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
@@ -163,15 +168,15 @@ exports.weekView = function(args) {
         }
      })
 
-     var xAxis = barchart.getXAxis()
-     var yAxis = barchart.getAxisLeft()
-     yAxis.setAxisMinimum(0)
-     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-     xAxis.setGranularity(1)
-     xAxis.setDrawGridLines(false);
-      barchart.getAxisRight().setEnabled(false);
-     xAxis.setValueFormatter(axisformatter)
-     var desc = barchart.getDescription();
+    var xAxis = barchart.getXAxis()
+    var yAxis = barchart.getAxisLeft()
+    yAxis.setAxisMinimum(0)
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setGranularity(1)
+    xAxis.setDrawGridLines(false);
+    barchart.getAxisRight().setEnabled(false);
+    xAxis.setValueFormatter(axisformatter)
+    var desc = barchart.getDescription();
     desc.setEnabled(Description.false);
     yAxis.setStartAtZero(true);
     barchart.setDrawValueAboveBar(false);
@@ -224,27 +229,25 @@ exports.monthView = function(args) {
         }
      })
 
-     var xAxis = barchart.getXAxis()
-     var yAxis = barchart.getAxisLeft()
-     yAxis.setAxisMinimum(0)
-     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-     xAxis.setGranularity(1)
-     xAxis.setDrawGridLines(false);
-      barchart.getAxisRight().setEnabled(false);
-     xAxis.setValueFormatter(axisformatter)
-     var desc = barchart.getDescription();
+    var xAxis = barchart.getXAxis()
+    var yAxis = barchart.getAxisLeft()
+    yAxis.setAxisMinimum(0)
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setGranularity(1)
+    xAxis.setDrawGridLines(false);
+    barchart.getAxisRight().setEnabled(false);
+    xAxis.setValueFormatter(axisformatter)
+    var desc = barchart.getDescription();
     desc.setEnabled(Description.false);
     yAxis.setStartAtZero(true);
     barchart.setDrawValueAboveBar(false);
     var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-
-	 
-     barchart.animateY(3000);
-	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
-	 barchart.invalidate();
-	 args.view = barchart;
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
+    barchart.animateY(3000);
+    barchart.setFitBars(true);
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+    barchart.invalidate();
+    args.view = barchart;
 
 }
 
@@ -257,8 +260,8 @@ exports.monthView = function(args) {
 exports.populateListViewsDay = function() {
 	var timeOnTargetToday = usageUtil.getTimeOnTargetAppsSingleDay(0);
 	var totalTarget = Math.round(timeOnTargetToday/6)/10;
-    var total = usageUtil.getTimeOnPhoneSingleDay(0);
-    var perc = Math.round((timeOnTargetToday/total)*100)
+    var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0)/6)/10;
+    var perc = Math.round((totalTarget/total)*100)
 	var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
 	var apps = [];
 
@@ -286,16 +289,16 @@ exports.populateListViewsDay = function() {
 	var stats = [];
 	stats.push(
 	{
-		value: totalTarget,
-		desc: "hrs on target apps"
+		value: total,
+		desc: "hrs on phone"
 	},
 	{
 		value: unlocks,
 		desc: "unlocks"
 	},
     {
-        value: perc,
-        desc: "% phone time on target apps"
+        value: perc + "%",
+        desc: "phone time on target apps"
     }
 	)
 	var listButtons = view.getViewById(page, "listButtons");
@@ -306,7 +309,6 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
-
 	var timeOnPhoneWeek = Math.round(usageUtil.getTotalTimeOnPhoneWeek(0)/6)/10;
     var timeOnTargetAppsWeek = Math.round(usageUtil.getTimeOnTargetAppsWeek(0)/6)/10;
     var perc = Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek)*100;
@@ -329,7 +331,7 @@ exports.populateListViewsWeek = function() {
 		desc: "total unlocks this week"
 	},
     {
-        value: perc,
+        value: perc + "%",
         desc: "% phone time on target apps"
     }
 	)
@@ -359,7 +361,6 @@ exports.populateListViewsWeek = function() {
 
 
 exports.populateListViewMonth = function () {
-	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
 	var totalTimePhoneMonth = Math.round(usageUtil.getTotalTimeOnPhoneThisMonth()/6)/10;
     var totalTarget = Math.round(usageUtil.getTotalTimeOnTargetAppsThisMonth()/6)/10;
     var perc = Math.round(totalTarget/totalTimePhoneMonth)*100;
@@ -375,7 +376,7 @@ exports.populateListViewMonth = function () {
 		desc: "avg unlocks/day"
 	},
     {
-        value: perc,
+        value: perc + "%",
         desc: "% phone time on target apps"
     }
 	)
@@ -421,8 +422,6 @@ getColors = function(stacksize) {
     colors.push(new java.lang.Integer(Color.parseColor("#747F89")));
      //Light blue 
      colors.push(new java.lang.Integer(Color.parseColor("#DAECF3")));
-    
-
     var sublist = colors.slice(0,stacksize);
     return toJavaIntArray(sublist);
 }
@@ -479,6 +478,21 @@ function getDayLabels() {
     return weekDay;
 }
 
+
+//Returns the spannable string for the center of the pie chart
+function getSpannableString() {
+    var total = java.lang.String.valueOf((Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0))));
+    var myString = new SpannableString("Total: \n" + total + " \n mins" );
+    myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
+    myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);
+    myString.setSpan(new RelativeSizeSpan(2.0), 6,8,0);
+    myString.setSpan(new ForegroundColorSpan(Color.RED), 6,8,0);
+    myString.setSpan( new RelativeSizeSpan(0.9), myString.length()-5, myString.length(), 0);
+    myString.setSpan(new ForegroundColorSpan(Color.GRAY), myString.length()-5, myString.length(), 0);
+    myString.setSpan(new StyleSpan(Typeface.ITALIC), myString.length()-5, myString.length(), 0);
+    return myString;
+
+}
 
 
 exports.toggleDrawer = function() {
