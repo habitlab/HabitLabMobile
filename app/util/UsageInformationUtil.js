@@ -336,6 +336,8 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
 		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
+		console.log(packageName)
+		console.log(total)
 	}
 
 	return total;
@@ -353,7 +355,7 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
  */
 
 
-function getAvgTimeOnPhoneThisMonth() {
+function getTotalTimeOnPhoneThisMonth() {
 	var start = getStartOfDay(28);
 	var end = Calendar.getInstance();
 	var total = 0;
@@ -371,11 +373,33 @@ function getAvgTimeOnPhoneThisMonth() {
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
-	var avg = Math.round(total/28);
-	return avg;
+
+	return total;
 }
 
+//Returns the total minutes spent on selected apps this month
+function getTotalTimeOnTargetAppsThisMonth() {
+	var start = getStartOfDay(28);
+	var end = Calendar.getInstance();
+	var total = 0;
+	
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(start.getTimeInMillis(), end.getTimeInMillis());
+	var goalApps = storageUtil.getSelectedPackages();
 
+    for (var i = 0; i < goalApps.length; i++) {
+		var packageName = goalApps[i]; 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage === 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
+	}
+
+
+	return total;
+}
 
 
 
@@ -564,7 +588,7 @@ module.exports = {
 
 	getAvgTimeOnPhoneThisWeek : getAvgTimeOnPhoneThisWeek, 
 	getTotalTimeOnPhoneWeek : getTotalTimeOnPhoneWeek,
-	getAvgTimeOnPhoneThisMonth : getAvgTimeOnPhoneThisMonth,
+	getTotalTimeOnPhoneThisMonth : getTotalTimeOnPhoneThisMonth,
 	getTimeOnTargetAppsSingleDay : getTimeOnTargetAppsSingleDay,
 	getTimeOnAppThisWeek : getTimeOnAppThisWeek,
 	getTimeOnAppMonth : getTimeOnAppMonth,
@@ -574,6 +598,7 @@ module.exports = {
   getBasicInfo: getBasicInfo,
 	getTimeOnTargetAppsWeek : getTimeOnTargetAppsWeek,
 	refreshApplicationList: refreshApplicationList
+	getTotalTimeOnTargetAppsThisMonth : getTotalTimeOnTargetAppsThisMonth,
 };
 
 

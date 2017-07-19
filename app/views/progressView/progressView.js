@@ -360,13 +360,14 @@ exports.populateListViewsWeek = function() {
 
 exports.populateListViewMonth = function () {
 	// var timePhoneMonth = usageUtil.getTimeOnPhoneThisMonth();
-	var avgTimePhoneMonth = Math.round(usageUtil.getAvgTimeOnPhoneThisMonth()/6)/10;
- 
+	var totalTimePhoneMonth = Math.round(usageUtil.getTotalTimeOnPhoneThisMonth()/6)/10;
+    var totalTarget = Math.round(usageUtil.getTotalTimeOnTargetAppsThisMonth()/6)/10;
+    var perc = Math.round(totalTarget/totalTimePhoneMonth)*100;
 
 	var monthStats = [];
 	monthStats.push(
 	{
-		value: avgTimePhoneMonth,
+		value: totalTarget,
 		desc: "avg hrs on phone/day"
 	},
 	{
@@ -374,7 +375,7 @@ exports.populateListViewMonth = function () {
 		desc: "avg unlocks/day"
 	},
     {
-        value: 18,
+        value: perc,
         desc: "% phone time on target apps"
     }
 	)
