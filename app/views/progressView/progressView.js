@@ -45,6 +45,8 @@ var ForegroundColorSpan = android.text.style.ForegroundColorSpan;
 var StyleSpan = android.text.style.StyleSpan;
 var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
 var Typeface = android.graphics.Typeface;
+var Resources = android.content.res.Resources;
+var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 
 exports.pageLoaded = function(args) {
@@ -119,7 +121,7 @@ exports.dayView = function(args) {
 
     // Initialize and set pie chart 
     piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800,0.42));
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
     piechart.invalidate();
     args.view = piechart;
 
@@ -185,7 +187,7 @@ exports.weekView = function(args) {
 
      barchart.animateY(3000);
 	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
 	 barchart.invalidate();
 	 args.view = barchart;
 }
@@ -245,7 +247,7 @@ exports.monthView = function(args) {
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
     barchart.animateY(3000);
     barchart.setFitBars(true);
-    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
     barchart.invalidate();
     args.view = barchart;
 
