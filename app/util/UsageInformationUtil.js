@@ -597,7 +597,7 @@ module.exports = {
 	getAppsSingleDay : getAppsSingleDay,
   getBasicInfo: getBasicInfo,
 	getTimeOnTargetAppsWeek : getTimeOnTargetAppsWeek,
-	refreshApplicationList: refreshApplicationList
+	refreshApplicationList: refreshApplicationList,
 	getTotalTimeOnTargetAppsThisMonth : getTotalTimeOnTargetAppsThisMonth,
 };
 
