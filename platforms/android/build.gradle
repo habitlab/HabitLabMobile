@@ -201,6 +201,7 @@ repositories {
     flatDir {
     	dirs 'libs/aar'
 	}
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -211,6 +212,7 @@ dependencies {
 	
     compile "com.android.support:support-v4:$supportVer"
     compile "com.android.support:appcompat-v7:$supportVer"
+    compile "com.github.PhilJay:MPAndroidChart:v3.0.2"
 	debugCompile "com.android.support:design:$supportVer"
 
     // take all jars within the libs dir
