@@ -88,7 +88,7 @@ function getAvgTimeOnAppThisWeek(packageName) {
 
     var stats = usageStatsMap.get(packageName);
     var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
-    var avg = (total == -1 ? -1 : Math.round(total/7));
+    var avg = (total === -1 ? -1 : Math.round(total/7));
     return avg;
 }
 
@@ -114,6 +114,36 @@ function getTotalTimeOnAppWeek(packageName, weeksAgo) {
     return total;
 
 }
+
+
+//Returns the amount of time spent on all target apps (weeksAgo)
+function getTimeOnTargetAppsWeek(weeksAgo) {
+	var startOfTarget = getStartOfDay(7 + weeksAgo*7);
+	var endOfTarget = Calendar.getInstance();
+	endOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() + (86400 * 1000)*7);
+
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var goalApps = storageUtil.getSelectedPackages();
+	var total = 0;
+
+    for (var i = 0; i < goalApps.length; i++) {
+		var packageName = goalApps[i]; 
+		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
+		var appUsageStats = usageStatsMap.get(packageName);
+		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
+		if (appUsage === 0) continue;
+		appUsage = appUsage/60000;
+		total += appUsage;
+	}
+
+	return total;
+}
+
+
+
+
 
 
  // getTimeOnAppMonth
@@ -169,7 +199,7 @@ function getAppsSingleDay(daysAgo) {
 		var packageName = goalApps[i]; 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		// if (appUsage === 0) continue;
 		var name = getAppName(packageName);
 		if (name === "HabitLabMobile") continue;
 		var mins = Math.round(appUsage/60000);
@@ -213,7 +243,7 @@ function getTimeOnPhoneSingleDay(daysAgo) {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -239,7 +269,7 @@ function getTimeOnTargetAppsSingleDay(daysAgo) {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -272,7 +302,7 @@ function getAvgTimeOnPhoneThisWeek() {
 		if (name === "HabitLabMobile") continue; 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -283,7 +313,7 @@ function getAvgTimeOnPhoneThisWeek() {
 
 /* getTotalTimeOnPhoneWeek
  * ----------------------
- * Returns the total amount of time spent on phone in a specified week (last 7 days).
+ * Returns the total amount of time (minutes) spent on phone in a specified week (last 7 days).
  * 
  */
 
@@ -303,7 +333,7 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -337,7 +367,7 @@ function getAvgTimeOnPhoneThisMonth() {
 		if (packageName === "org.nativescript.HabitLabMobile") {continue;} 
 		var appUsageStats = usageStatsMap.get(packageName);
 		var	appUsage = appUsageStats ? appUsageStats.getTotalTimeInForeground() : 0;
-		if (appUsage == 0) continue;
+		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
@@ -530,6 +560,7 @@ module.exports = {getApplicationList: getApplicationList,
 	getAppName : getAppName,
 	getIcon : getIcon,
 	getAppsSingleDay : getAppsSingleDay,
+	getTimeOnTargetAppsWeek : getTimeOnTargetAppsWeek,
 
 	refreshApplicationList: refreshApplicationList};
 
