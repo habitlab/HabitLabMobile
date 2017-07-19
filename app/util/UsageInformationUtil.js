@@ -423,6 +423,16 @@ function getIcon(packageName) {
 	return iconSource;
 }
 
+function getBasicInfo(packageName) {
+  var appinfo = getInfo(packageName);
+  var appName = (appinfo != null ? pm.getApplicationLabel(appinfo) : "(unknown)");
+  var iconSource = (appinfo != null ? imageSource.fromNativeSource(appinfo.loadIcon(pm).getBitmap()) : "~/logo.png");
+  return {
+    name: appName,
+    icon: iconSource 
+  };
+}
+
 
 /*
  * getInfo
@@ -514,7 +524,8 @@ function getAverageUsage(map, pkg, installTime) {
 
 
 
-module.exports = {getApplicationList: getApplicationList, 
+module.exports = {
+  getApplicationList: getApplicationList, 
 	getTimeOnApplicationSingleDay: getTimeOnApplicationSingleDay, 
 	getAvgTimeOnAppThisWeek : getAvgTimeOnAppThisWeek,
 	getTotalTimeOnAppWeek : getTotalTimeOnAppWeek,
@@ -529,8 +540,10 @@ module.exports = {getApplicationList: getApplicationList,
 	getAppName : getAppName,
 	getIcon : getIcon,
 	getAppsSingleDay : getAppsSingleDay,
+  getBasicInfo: getBasicInfo,
 
-	refreshApplicationList: refreshApplicationList};
+	refreshApplicationList: refreshApplicationList
+};
 
 
 

@@ -11,10 +11,9 @@ Page.onboarding {
 .action-bar {
 	background-color: #2EC4B6;
 	color: white;
-
 }
 
-.slide-indicator-inactive{
+.slide-indicator-inactive {
     background-color: white;
     opacity : 0.4;
     width : 8;
@@ -24,7 +23,7 @@ Page.onboarding {
     border-radius : 4;
 }
  
-.slide-indicator-active{
+.slide-indicator-active {
     background-color: white;
     opacity : 0.9;
     width : 14;

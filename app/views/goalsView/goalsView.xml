@@ -1,7 +1,8 @@
 <Page loaded="pageLoaded"
   xmlns:sidedrawer="shared/sd"
   xmlns="http://schemas.nativescript.org/tns.xsd"
-  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
+  xmlns:accordion="nativescript-accordion">
 
   <ActionBar title="HabitLab" class="action-bar">
    	<NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
@@ -15,7 +16,17 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation='vertical'>
-   		  <Button text="manage apps" tap="onManageApps" />
+
+        <Label text="Phone Goals" class="section-title" />
+        <StackLayout orientation="vertical" id="phoneGoals" />
+
+        <Label text="App Goals" class="section-title" />
+        <ScrollView orientation="vertical">
+          <StackLayout orientation="vertical" id="appGoals" />
+        </ScrollView>
+
+        <Button text="manage apps" tap="onManageApps" />
+
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 

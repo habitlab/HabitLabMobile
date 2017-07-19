@@ -478,12 +478,12 @@ exports.changeAppGoal = function(packageName, newGoal, type) {
  * only minutes, glances, or unlocks for now).
  */
 exports.changePhoneGoal = function(newGoal, type) {
-  if (PhGoal()[type] === undefined) {
+  if (!PhGoal()[type]) {
     return;
   }
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  appInfo.goals[type] = newGoal;
-  appSettings.setString(packageName, JSON.stringify(appInfo));
+  phoneInfo.goals[type] = newGoal;
+  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* export: getPhoneGoals
