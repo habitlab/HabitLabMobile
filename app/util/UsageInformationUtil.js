@@ -598,7 +598,11 @@ module.exports = {
   getBasicInfo: getBasicInfo,
 	getTimeOnTargetAppsWeek : getTimeOnTargetAppsWeek,
 	refreshApplicationList: refreshApplicationList,
+<<<<<<< HEAD
 	getTotalTimeOnTargetAppsThisMonth : getTotalTimeOnTargetAppsThisMonth,
+=======
+	getTotalTimeOnTargetAppsThisMonth : getTotalTimeOnTargetAppsThisMonth
+>>>>>>> origin/master
 };
 
 

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+rm -rf node_modules
+rm -rf platforms
+rm package-lock.json
+tns build android
+git checkout platforms/android/build.gradle
+tns build android
