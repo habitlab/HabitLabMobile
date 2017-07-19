@@ -66,12 +66,15 @@ function getTimeOnApplicationSingleDay(packageName, daysAgo) {
  * found for that day.
  */
 function getTimeOnAppThisWeek(packageName) {
-	var weeklyUsageStatistics = [];
+	var startOfTarget = getStartOfDay(7);
+	var endOfTarget = Calendar.getInstance();
 
-	for (var i = 6; i >= 0; i--) {
-		weeklyUsageStatistics.push(getTimeOnApplicationSingleDay(packageName, i));
-	}
-	return weeklyUsageStatistics;
+	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
+    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), endOfTarget.getTimeInMillis());
+
+    var stats = usageStatsMap.get(packageName);
+    var total= (stats === null ? -1 : Math.round(stats.getTotalTimeInForeground()/60000))
+    return Math.round(total);
 }
 
 /* getTimeOnAppThisWeek
@@ -137,7 +140,6 @@ function getTimeOnTargetAppsWeek(weeksAgo) {
 		appUsage = appUsage/60000;
 		total += appUsage;
 	}
-
 	return total;
 }
 
@@ -598,7 +600,7 @@ module.exports = {
   getBasicInfo: getBasicInfo,
 	getTimeOnTargetAppsWeek : getTimeOnTargetAppsWeek,
 	refreshApplicationList: refreshApplicationList,
-	getTotalTimeOnTargetAppsThisMonth : getTotalTimeOnTargetAppsThisMonth
+	getTotalTimeOnTargetAppsThisMonth : getTotalTimeOnTargetAppsThisMonth,
 };
 
 
