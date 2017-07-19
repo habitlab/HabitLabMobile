@@ -40,6 +40,11 @@ var LayoutParams = android.view.ViewGroup.LayoutParams
 var LinearLayout = android.widget.LinearLayout
 var SpannableString = android.text.SpannableString
 var PieData = com.github.mikephil.charting.data.PieData
+var Easing = com.github.mikephil.charting.animation.Easing;
+var ForegroundColorSpan = android.text.style.ForegroundColorSpan;
+var StyleSpan = android.text.style.StyleSpan;
+var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
+var Typeface = android.graphics.Typeface;
 
 
 exports.pageLoaded = function(args) {
@@ -104,19 +109,26 @@ exports.dayView = function(args) {
     data.setValueTextSize(11);
     data.setValueTextColor(Color.WHITE);
     var desc = piechart.getDescription();
+     piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     desc.setEnabled(Description.false);
     piechart.setDrawSliceText(false);
     piechart.setHoleRadius(70);
     piechart.setTransparentCircleRadius(75);
-    var text = new SpannableString("Minutes on Target Apps Today")
-    piechart.setCenterText(text);
+    var text = new SpannableString("Total: " + total + " mins")
+
+    //chnage color of text based on whether they have met their goal?
+    //getUsageGoal
+
+
+
+    piechart.setCenterText(getSpannableString());
     var legend = piechart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
      dataset.setColors(getColors());
 
     // Initialize and set pie chart 
     piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800,0.42));
     piechart.invalidate();
     args.view = piechart;
 
@@ -138,6 +150,8 @@ exports.weekView = function(args) {
    		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
    			var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
+            // console.warn(totalTimeDay);
+            // console.warn(usageUtil.getAppName(goalApps[ga]))
             if (totalTimeDay === 0) totalTimeDay = 0;
    			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
@@ -257,8 +271,8 @@ exports.monthView = function(args) {
 exports.populateListViewsDay = function() {
 	var timeOnTargetToday = usageUtil.getTimeOnTargetAppsSingleDay(0);
 	var totalTarget = Math.round(timeOnTargetToday/6)/10;
-    var total = usageUtil.getTimeOnPhoneSingleDay(0);
-    var perc = Math.round((timeOnTargetToday/total)*100)
+    var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0)/6)/10;
+    var perc = Math.round((totalTarget/total)*100)
 	var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
 	var apps = [];
 
@@ -286,16 +300,16 @@ exports.populateListViewsDay = function() {
 	var stats = [];
 	stats.push(
 	{
-		value: totalTarget,
-		desc: "hrs on target apps"
+		value: total,
+		desc: "hrs on phone"
 	},
 	{
 		value: unlocks,
 		desc: "unlocks"
 	},
     {
-        value: perc,
-        desc: "% phone time on target apps"
+        value: perc + "%",
+        desc: "phone time on target apps"
     }
 	)
 	var listButtons = view.getViewById(page, "listButtons");
@@ -306,7 +320,6 @@ exports.populateListViewsDay = function() {
 
 
 exports.populateListViewsWeek = function() {
-
 	var timeOnPhoneWeek = Math.round(usageUtil.getTotalTimeOnPhoneWeek(0)/6)/10;
     var timeOnTargetAppsWeek = Math.round(usageUtil.getTimeOnTargetAppsWeek(0)/6)/10;
     var perc = Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek)*100;
@@ -329,7 +342,7 @@ exports.populateListViewsWeek = function() {
 		desc: "total unlocks this week"
 	},
     {
-        value: perc,
+        value: perc + "%",
         desc: "% phone time on target apps"
     }
 	)
@@ -375,7 +388,7 @@ exports.populateListViewMonth = function () {
 		desc: "avg unlocks/day"
 	},
     {
-        value: perc,
+        value: perc + "%",
         desc: "% phone time on target apps"
     }
 	)
@@ -479,6 +492,20 @@ function getDayLabels() {
     return weekDay;
 }
 
+
+
+function getSpannableString() {
+    var total = Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0));
+    var myString = new SpannableString("Total: \n" + total.toString() + " \n mins" );
+    myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
+    myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);
+    myString.setSpan(new RelativeSizeSpan(2.0), 7,8,0);
+    myString.setSpan( new RelativeSizeSpan(0.9), myString.length()-5, myString.length(), 0);
+    myString.setSpan(new ForegroundColorSpan(Color.GRAY), myString.length()-5, myString.length(), 0);
+    myString.setSpan(new StyleSpan(Typeface.ITALIC), myString.length()-5, myString.length(), 0);
+    return myString;
+
+}
 
 
 exports.toggleDrawer = function() {
