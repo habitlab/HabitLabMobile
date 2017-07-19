@@ -97,37 +97,44 @@ var stopTimer = function() {
  * Function to be run at predetermined intervals in the 
  * background. Plugs interventions into the device.
  */
-var inBlacklistedApplication = false;
-var currentPackage = "";
+const MIN_VISIT_DURATION = 2500; // in ms
+var currentActivePackage = "";
+var inBlacklistedApplication;
+var screenOff = false;
+var visitStart;
+var visit;
 var trackUsage = function () {
-    var packageName = getActivePackage();
-    if (packageName) {
-        // new application launched
-        if (StorageUtil.isPackageSelected(packageName)) {
-            // logging information
-            StorageUtil.visited(packageName); 
-            InterventionManager.logOpenTime(); // to check for visit length
-            currentPackage = packageName;
-            inBlacklistedApplication = true;
-
-            // put interventions here that run on app launch
-            InterventionManager.allowVideoBlocking(true);    
-            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](packageName);
-            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](packageName);
+    if (screenOff) return;
+    var newPackage = getActivePackage();
+    if (newPackage) {
+        if (StorageUtil.isPackageSelected(newPackage)) {
+            visit = true;
+            visitStart = System.currentTimeMillis(); // log visit start time
+            currentActivePackage = newPackage;
+            InterventionManager.logVisitStart();
         } else {
-            InterventionManager.allowVideoBlocking(false);
+            // reset logging information
+            visit = false;
+            visitStart = 0;
             inBlacklistedApplication = false;
+            InterventionManager.allowVideoBlocking(false);
         }
-    } else {
-        // application running (post-launch)
-        if (inBlacklistedApplication) {
-            // put interventions here that run during the lifespan of an application
-            InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentPackage);
-            InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentPackage);
-            
-            if (currentPackage === "com.facebook.katana" || currentPackage === "com.google.android.youtube") {
-                InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER]();
-            }
+    } else if (visit) {
+        if (System.currentTimeMillis() - visitStart > MIN_VISIT_DURATION) {
+            visit = false;
+            inBlacklistedApplication = true; 
+            StorageUtil.visited(currentActivePackage); // log a visit
+            InterventionManager.allowVideoBlocking(true);
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](currentActivePackage);
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](currentActivePackage);
+        } 
+    } else if (inBlacklistedApplication) {
+        // been in a blacklisted application for more than 5 seconds
+        InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentActivePackage, visitStart);
+        InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentActivePackage, visitStart);
+
+        if (currentActivePackage === "com.facebook.katana" || currentActivePackage === "com.google.android.youtube") {
+            InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER]();
         }
     }
 };
@@ -168,7 +175,37 @@ var getActivePackage = function() {
     }
 }
 
-module.exports = {stopTimer: stopTimer};
+
+
+/**
+ * alertScreenOff
+ * --------------
+ * Alert the TrackingService that the screen has shut off (to
+ * clear any tracking information that is active-package 
+ * sensitive)
+ */
+ var alertScreenOff = function () {
+    previousPackageName = "";
+    screenOff = true;
+ }
+
+
+/**
+ * alertScreenOn
+ * -------------
+ * Alert the TrackingService that the screen has bee turned
+ * on (to restart tracking information that is package 
+ * sensitive)
+ */
+ var alertScreenOn = function () {
+    screenOff = false;
+ }
+
+module.exports = {
+    stopTimer,
+    alertScreenOff,
+    alertScreenOn
+};
 
 
 
