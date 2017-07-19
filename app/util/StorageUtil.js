@@ -56,7 +56,7 @@ exports.interventionDetails = interventionDetails;
 
 
 var PkgStat = function() {
-  return {visits: 0};
+  return {visits: 0, time: 0};
 };
 
 var PkgGoal = function() {
@@ -64,7 +64,7 @@ var PkgGoal = function() {
 };
 
 var PhStat = function() {
-  return {glances: 0, unlocks: 0};
+  return {glances: 0, unlocks: 0, totalTime: 0, time: 0};
 };
 
 var PhGoal = function() {
@@ -213,7 +213,7 @@ exports.isPackageSelected = function(packageName) {
 
 
 /************************************
- *          DATA aND STATS          *
+ *          DATA AND STATS          *
  ************************************/
 
 
@@ -313,6 +313,65 @@ exports.glanced = function() {
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
   phoneInfo['stats'][today-1]['glances']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
+};
+
+/* export: updateAppTime
+ * ---------------------
+ * Called when an app has been visited to update the time spent on that app for the 
+ * day (time is in milliseconds).
+ */
+exports.updateAppTime = function(packageName, time) {
+  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+  var appInfo = appSettings.getString('packageName');
+  var phoneInfo = appSettings.getString('phone');
+  appInfo['stats'][today-1]['time'] += time;
+  phoneInfo['stats'][today-1]['time'] += time;
+  appSettings.setString(packageName, appInfo);
+  appSettings.setString('phone', phoneInfo);
+};
+
+/* export: getAppTime
+ * ------------------
+ * Returns time on the app so far today (in ms).
+ */
+exports.getAppTime = function(packageName, index) {
+  var packageData = JSON.parse(appSettings.getString(packageName)).stats.map(function (item) { 
+    return item['time']; 
+  });
+  return arrangeData(packageData, index);
+};
+
+/* export: getTargetTime
+ * ---------------------
+ * Returns total time on target apps so far today (in ms).
+ */
+exports.getTargetTime = function(index) {
+  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
+    return item['time']; 
+  });
+  return arrangeData(phoneData, index);
+};
+
+/* export: updateTotalTime
+ * -----------------------
+ * Called when the phone has been used. Updates the total time for the day (time is in milliseconds).
+ */
+exports.updateTotalTime = function(time) {  
+  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+  var phoneInfo = appSettings.getString('phone');
+  phoneInfo['stats'][today-1]['time'] += time;
+  appSettings.setString('phone', phoneInfo);
+};
+
+/* export: getTotalTime
+ * --------------------
+ * Returns total time on phone so far today (in ms).
+ */
+exports.getTotalTime = function(index) {
+  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
+    return item['totalTime']; 
+  });
+  return arrangeData(phoneData, index);
 };
 
 /* helper: resetData
