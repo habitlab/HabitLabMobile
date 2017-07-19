@@ -74,7 +74,7 @@ var sendNotificationVisited = function(pkg) {
  *************************************/
 var UNLOCKS_TOAST_INTERVAL = 10;
 var GLANCES_TOAST_INTERVAL = 20;
-var UNLOCKS_NOTIF_INTERVAL = 20;
+var UNLOCKS_NOTIF_INTERVAL = 25;
 var GLANCES_NOTIF_INTERVAL = 30;
 
 

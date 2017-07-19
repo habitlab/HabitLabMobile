@@ -1,3 +1,4 @@
+var application = require("application");
 var StorageUtil = require("~/util/StorageUtil");
 
 var frameModule = require("ui/frame");
@@ -48,7 +49,25 @@ exports.pageLoaded = function(args) {
 
 exports.goToNavView = function(args) {
   if (!StorageUtil.isSetUp()) {
-    StorageUtil.setUp();
+   
+
+    console.warn("Setting Up Alarm");
+    const DAY = 86400 * 1000;
+    var context = application.android.context;
+    var alarm = context.getSystemService(android.content.Context.ALARM_SERVICE);
+    var intent = new android.content.Intent(context, com.habitlab.AlarmReceiver.class);
+    var pi = android.app.PendingIntent.getBroadcast(context, 0, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT);
+
+    var midnight = java.util.Calendar.getInstance();
+    midnight.set(java.util.Calendar.HOUR_OF_DAY, 0);
+    midnight.set(java.util.Calendar.MINUTE, 0);
+    midnight.set(java.util.Calendar.SECOND, 0);
+    midnight.setTimeInMillis(midnight.getTimeInMillis() + DAY);
+
+    alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);
+
+     StorageUtil.setUp();
+
   }
   frameModule.topmost().navigate("views/navView/navView");
 };

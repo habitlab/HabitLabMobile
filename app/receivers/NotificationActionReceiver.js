@@ -6,11 +6,12 @@ const Intent = android.content.Intent;
 const InterventionManager = require("~/interventions/InterventionManager");
 
 android.content.BroadcastReceiver.extend("com.habitlab.NotificationActionReceiver", {
-	onReceive: function(context, intent) {
+	onReceive: function(context, intent) {	
 		var action = intent.getAction();
 		var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		if (action === "action.habitlab.NotificationPositive") {
+			console.warn("HELLO");
 			InterventionManager.setBlockMedia(false);
 			notificationManager.cancel(7777);
 		} else if (action === "action.habitlab.NotificationNegative") {
@@ -21,6 +22,5 @@ android.content.BroadcastReceiver.extend("com.habitlab.NotificationActionReceive
 	        var foregroundActivity = application.android.foregroundActivity;
 			foregroundActivity.startActivity(toHome);	
 		}
-
 	}
 });

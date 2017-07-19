@@ -28,10 +28,10 @@ exports.toggleDrawer = function() {
 exports.pageLoaded = function(args) {
   drawer = args.object.getViewById('sideDrawer');
   if (!PermissionUtil.checkActionUsagePermission()) {
-	PermissionUtil.launchActionUsageIntent();
+    PermissionUtil.launchActionUsageIntent();
   } else if (!PermissionUtil.checkSystemOverlayPermission()) {
-	PermissionUtil.launchSystemOverlayIntent();
-  }
+    PermissionUtil.launchSystemOverlayIntent();
+  } 
 };
 
 

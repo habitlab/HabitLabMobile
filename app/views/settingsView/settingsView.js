@@ -19,6 +19,7 @@ var Process = android.os.Process;
 var Context = android.content.Context;
 var ActivityManager = android.app.ActivityManager;
 var Integer = java.lang.Integer;
+var System = java.lang.System;
 
 // global vars
 var context = application.android.context.getApplicationContext();
@@ -33,29 +34,18 @@ exports.reset = function() {
 
 exports.enableServices = function() {
 	DialogOverlay.showPosNegDialogOverlay(context, "Hello", "Yes", "No", null, null);
-	// if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-	// 	context.startService(trackingServiceIntent);
-	// }
-
-	// if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-	// 	context.startService(unlockServiceIntent);
-	// }
-
-	// if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-	// 	context.startService(dummyServiceIntent);
-	// }
 };
 
 exports.disableServices = function () {
-	console.log("");
-	console.log("----------------------------");
+	console.warn("");
+	console.warn("----------------------------");
 
 	var Calendar = java.util.Calendar;
 	var UsageStatsManager = android.app.usage.UsageStatsManager;
 	var Context = android.content.Context;
 
 	var start = Calendar.getInstance();
-	start.set(Calendar.HOUR_OF_DAY, 0);
+	start.set(Calendar.HOUR_OF_DAY, 8);
 	start.set(Calendar.MINUTE, 0);
 	start.set(Calendar.SECOND, 1);
 	start.setTimeInMillis(start.getTimeInMillis());
@@ -67,20 +57,20 @@ exports.disableServices = function () {
 	end.set(Calendar.SECOND, 59);
 	end.setTimeInMillis(end.getTimeInMillis());
 
-	console.log("START:", (start.get(Calendar.MONTH) + 1) + "/" 
+	console.warn("START:", (start.get(Calendar.MONTH) + 1) + "/" 
 		+ start.get(Calendar.DATE) + "/" 
 		+ start.get(Calendar.YEAR) + " " 
 		+ start.get(Calendar.HOUR_OF_DAY) + ":" 
 		+ start.get(Calendar.MINUTE) + ":"
 		+ start.get(Calendar.SECOND));
 
-	console.log("END:", (end.get(Calendar.MONTH) + 1) + "/" 
+	console.warn("END:", (end.get(Calendar.MONTH) + 1) + "/" 
 		+ end.get(Calendar.DATE) + "/" 
 		+ end.get(Calendar.YEAR) + " " 
 		+ end.get(Calendar.HOUR_OF_DAY) + ":" 
 		+ end.get(Calendar.MINUTE) + ":"
 		+ end.get(Calendar.SECOND));
-	console.log("----------------------------");
+	console.warn("----------------------------");
 
 
 	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
@@ -96,54 +86,24 @@ exports.disableServices = function () {
 			var lastTimeStamp = Calendar.getInstance();
 			lastTimeStamp.setTimeInMillis(stat.getLastTimeStamp());
 
-			console.log("       FIRST:", (firstTimeStamp.get(Calendar.MONTH) + 1) + "/" 
+			console.warn("       FIRST:", (firstTimeStamp.get(Calendar.MONTH) + 1) + "/" 
 				+ firstTimeStamp.get(Calendar.DATE) + "/" 
 				+ firstTimeStamp.get(Calendar.YEAR) + " " 
 				+ firstTimeStamp.get(Calendar.HOUR_OF_DAY) + ":" 
 				+ firstTimeStamp.get(Calendar.MINUTE) + ":"
 				+ firstTimeStamp.get(Calendar.SECOND));
 
-			console.log("       LAST:", (lastTimeStamp.get(Calendar.MONTH) + 1) + "/" 
+			console.warn("       LAST:", (lastTimeStamp.get(Calendar.MONTH) + 1) + "/" 
 				+ lastTimeStamp.get(Calendar.DATE) + "/" 
 				+ lastTimeStamp.get(Calendar.YEAR) + " " 
 				+ lastTimeStamp.get(Calendar.HOUR_OF_DAY) + ":" 
 				+ lastTimeStamp.get(Calendar.MINUTE) + ":"
 				+ lastTimeStamp.get(Calendar.SECOND));
 
-			console.log("       TIME:", stat.getTotalTimeInForeground());
-			console.log("------------------");
+			console.warn("       TIME:", stat.getTotalTimeInForeground());
+			console.warn("------------------");
 		}
 	}
-
-
-	// var statsMap = map.get("com.facebook.katana");
-
-
-	// var firstTimeStamp = Calendar.getInstance();
-	// firstTimeStamp.setTimeInMillis(statsMap.getFirstTimeStamp());
-
-	// var lastTimeStamp = Calendar.getInstance();
-	// lastTimeStamp.setTimeInMillis(statsMap.getLastTimeStamp());
-
-	// console.log("FIRST:", (firstTimeStamp.get(Calendar.MONTH) + 1) + "/" 
-	// 	+ firstTimeStamp.get(Calendar.DATE) + "/" 
-	// 	+ firstTimeStamp.get(Calendar.YEAR) + " " 
-	// 	+ firstTimeStamp.get(Calendar.HOUR_OF_DAY) + ":" 
-	// 	+ firstTimeStamp.get(Calendar.MINUTE) + ":"
-	// 	+ firstTimeStamp.get(Calendar.SECOND));
-
-	// console.log("LAST:", (lastTimeStamp.get(Calendar.MONTH) + 1) + "/" 
-	// 	+ lastTimeStamp.get(Calendar.DATE) + "/" 
-	// 	+ lastTimeStamp.get(Calendar.YEAR) + " " 
-	// 	+ lastTimeStamp.get(Calendar.HOUR_OF_DAY) + ":" 
-	// 	+ lastTimeStamp.get(Calendar.MINUTE) + ":"
-	// 	+ lastTimeStamp.get(Calendar.SECOND));
-
-
-
-	// console.log("Facebook Usage:", statsMap.getTotalTimeInForeground());
-	// console.log("");
-	
 };
 
 exports.toggleDrawer = function() {
