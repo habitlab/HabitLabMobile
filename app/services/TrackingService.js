@@ -107,6 +107,7 @@ var trackUsage = function () {
     if (screenOff) return;
     var newPackage = getActivePackage();
     if (newPackage) {
+        console.warn(newPackage);
         if (visitStart) {
             var timeSpent = System.currentTimeMillis() - visitStart;
             console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
@@ -161,7 +162,7 @@ var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
 var event = new UsageEvents.Event();
 var previousPackageName = "";
 var getActivePackage = function() {
-    var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 1000, System.currentTimeMillis());
+    var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 3000, System.currentTimeMillis());
     
     // exit immediately if there are no events
     if (!events.hasNextEvent()) return null;
@@ -232,7 +233,7 @@ var getActivePackage = function() {
         console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
 
         // TODO: log ms spent on app
-        
+
         visitStart = 0;
         visit = false;
     }

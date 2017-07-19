@@ -7,6 +7,7 @@ const ServiceManager = require("~/services/ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");
 const StorageUtil = require("~/util/StorageUtil");
 const DialogOverlay = require("~/overlays/DialogOverlay");
+const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 
 var Toast = require("nativescript-toast");
 var dialogs = require("ui/dialogs");
@@ -33,7 +34,9 @@ exports.reset = function() {
 };
 
 exports.enableServices = function() {
-	DialogOverlay.showPosNegDialogOverlay(context, "Hello", "Yes", "No", null, null);
+	// DialogOverlay.showPosNegDialogOverlay(context, "Hello", "Yes", "No", null, null);
+	// FullScreenOverlay.showPosNegDialogOverlay(context, "You can put quite a long text message here, can't you? I wonder how long of a message is too long... The quick brown fox jumped over the lazy dog. Well, if you can see this far, then this text view must be large enough...", "yes", "no", null, null);
+	FullScreenOverlay.showPosNegDialogOverlay(context, "Are you sure you'd like to visit Facebook? You've been here 17 times today", "yes", "no", null, null);
 };
 
 exports.disableServices = function () {

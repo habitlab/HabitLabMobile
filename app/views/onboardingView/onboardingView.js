@@ -49,9 +49,8 @@ exports.pageLoaded = function(args) {
 
 exports.goToNavView = function(args) {
   if (!StorageUtil.isSetUp()) {
-   
+    StorageUtil.setUp();
 
-    console.warn("Setting Up Alarm");
     const DAY = 86400 * 1000;
     var context = application.android.context;
     var alarm = context.getSystemService(android.content.Context.ALARM_SERVICE);
@@ -64,10 +63,8 @@ exports.goToNavView = function(args) {
     midnight.set(java.util.Calendar.SECOND, 0);
     midnight.setTimeInMillis(midnight.getTimeInMillis() + DAY);
 
-    alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);
-
-     StorageUtil.setUp();
-
+    alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);    
   }
+  
   frameModule.topmost().navigate("views/navView/navView");
 };
