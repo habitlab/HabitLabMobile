@@ -80,6 +80,8 @@ exports.toggleDrawer = function() {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  id = page.navigationContext.id;
+  if (page.navigationContext) {
+    id = page.navigationContext.id;
+  }
   setUpDetail();
 };
