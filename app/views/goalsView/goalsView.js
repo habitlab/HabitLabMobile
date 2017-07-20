@@ -10,34 +10,55 @@ var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
 var drawer;
 var page;
 
+var getGoal = function(txt, add) {
+  var num = txt.replace(/[^0-9]/g, '') || 0;
+
+  var newNum = parseInt(num) - 5
+  if (add) {
+    newNum += 10;
+  }
+  
+  if (newNum > 1440) {
+    newNum = 1440;
+  } else if (newNum < 0) {
+    newNum = 0
+  }
+  return newNum;
+};
+
 var createPhoneGoal = function(goal, value) {
-  var np = builder.load({
-    path: 'shared/numberpicker',
-    name: 'numberpicker',
+  var item = builder.load({
+    path: 'shared/goalelem',
+    name: 'goalelem',
     page: page
   });
 
+  item.getViewById('icon').visibility = 'collapsed';
+  item.getViewById('name').visibility = 'collapsed';
+
+  var np = item.getViewById('np');
   np.id = 'phone'+ goal;
 
-  np.getViewById('label').text = goal;
+  var label = item.getViewById('label');
+  label.text = goal;
+  label.className = "goal-label-nowidth";
+
   var number = np.getViewById('number');
   number.text = value;
 
   np.getViewById('plus').on(gestures.tap, function() {
-    var num = number.text.replace(/[^0-9]/g, '') || 0;
-    var newNum = parseInt(num) + 5;
+    var newNum = getGoal(number.text, true);
     number.text = newNum;
     StorageUtil.changePhoneGoal(newNum, goal);
   });
 
   np.getViewById('minus').on(gestures.tap, function() {
-    var num = number.text.replace(/[^0-9]/g, '') || 0;
-    var newNum = parseInt(num) - 5;
+    var newNum = getGoal(number.text, false);
     number.text = newNum;
     StorageUtil.changePhoneGoal(newNum, goal);
   });
 
-  return np;
+  return item;
 }; 
 
 var setUpPhoneGoals = function() {
@@ -50,41 +71,39 @@ var setUpPhoneGoals = function() {
 };
 
 var createAppGoal = function(pkg) {
-  var stack = new StackLayout();
-  stack.orientation = 'vertical';
-
-  var flex = new FlexLayout();
-  flex.flexDirection = 'row'
-
-  var np = builder.load({
-    path: 'shared/numberpicker',
-    name: 'numberpicker',
+  var item = builder.load({
+    path: 'shared/goalelem',
+    name: 'goalelem',
     page: page
   });
 
+  var basicInfo = UsageUtil.getBasicInfo(pkg);
+
+  item.getViewById('name').text = basicInfo.name;
+  item.getViewById('icon').src = basicInfo.icon;
+
+  var np = item.getViewById('np');
   np.id = pkg;
 
   var goal = StorageUtil.getMinutesGoal(pkg);
 
-  np.getViewById('label').text = 'minutes';
+  item.getViewById('label').text = 'mins';
   var number = np.getViewById('number');
   number.text = goal;
 
   np.getViewById('plus').on(gestures.tap, function() {
-    var num = number.text.replace(/[^0-9]/g, '') || 0;
-    var newNum = parseInt(num) + 5;
+    var newNum = getGoal(number.text, true);
     number.text = newNum;
-    StorageUtil.changeAppGoal(pkg, newNum, goal);
+    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
   });
 
   np.getViewById('minus').on(gestures.tap, function() {
-    var num = number.text.replace(/[^0-9]/g, '') || 0;
-    var newNum = parseInt(num) - 5;
+    var newNum = getGoal(number.text, false);
     number.text = newNum;
-    StorageUtil.changeAppGoal(pkg, newNum, goal);
+    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
   });
 
-  return np;
+  return item;
 };
 
 var setUpAppGoals = function() {
