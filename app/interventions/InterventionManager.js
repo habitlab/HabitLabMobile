@@ -26,8 +26,8 @@ var notificationID = {
 /*************************************
  *     VISIT COUNT INTERVENTIONS     *
  *************************************/
-var VISITED_TOAST_INTERVAL = 1;
-var VISITED_NOTIF_INTERVAL = 1;
+var VISITED_TOAST_INTERVAL = 5;
+var VISITED_NOTIF_INTERVAL = 15;
 
 
 /**
