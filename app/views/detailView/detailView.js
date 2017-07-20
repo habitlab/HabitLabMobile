@@ -34,20 +34,14 @@ var setUpDetail = function() {
   desc.text = StorageUtil.interventionDetails[id].description;
   desc.textWrap = true;
 
-  var level = StorageUtil.interventionDetails[id].level
+  var level = StorageUtil.interventionDetails[id].level;
   var levelLabel = page.getViewById('level');
   levelLabel.text = level;
   levelLabel.className = level;
 
   page.getViewById("button").on(gestures.tap, function() {
     var packages = StorageUtil.getSelectedPackages();
-    if (StorageUtil.interventionDetails[id].target === 'phone' || packages.length !== 0) {
-      StorageUtil.forceIntervene();
-      IM.interventions[id](packages[0]);
-      StorageUtil.unforceIntervene();
-    } else {
-      Toast.makeText('Unable to try - no apps selected.').show();
-    }
+    IM.interventions[id]();
   });
 
   if (StorageUtil.interventionDetails[id].target === 'phone') {
@@ -56,6 +50,14 @@ var setUpDetail = function() {
 
   var layout = page.getViewById('list');
   var pkgs = StorageUtil.getSelectedPackages();
+
+  var apps = StorageUtil.interventionDetails[id].apps;
+  console.log('apps', apps);
+  if (apps) {
+    pkgs = pkgs.filter(function (item) {
+      return apps.includes(item);
+    });
+  }
 
   pkgs.forEach(function (pkg) {
     if (!layout.getViewById(pkg)) {
@@ -72,6 +74,8 @@ exports.toggleDrawer = function() {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  id = page.navigationContext.id;
+  if (page.navigationContext) {
+    id = page.navigationContext.id;
+  }
   setUpDetail();
 };

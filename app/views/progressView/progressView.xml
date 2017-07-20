@@ -7,7 +7,7 @@
   navigatingTo="navigatingTo">
 
 	<ActionBar title="HabitLab" class="action-bar">
-	   <NavigationButton tap="toggleDrawer" android.systemIcon="ic_menu_moreoverflow"/>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">

@@ -33,13 +33,13 @@ android.app.Service.extend("com.habitlab.TrackingService", {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-        console.log("TRACKING SERVICE CREATED");
+        console.warn("TRACKING SERVICE CREATED");
 		return android.app.Service.START_STICKY; 
 	}, 
 
     onDestroy: function() {
         // do nothing
-        console.log("TRACKING SERVICE DESTROYED");
+        console.warn("TRACKING SERVICE DESTROYED");
     },
 
     onTaskRemoved: function(intent) {
@@ -107,15 +107,13 @@ var trackUsage = function () {
     if (screenOff) return;
     var newPackage = getActivePackage();
     if (newPackage) {
-        console.warn(newPackage);
-        if (visitStart) {
+        // if you were in a blacklisted application, update time spent there
+        if (inBlacklistedApplication) {
             var timeSpent = System.currentTimeMillis() - visitStart;
-            console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
-
-            // TODO: log ms spent on app
-
+            StorageUtil.updateAppTime(currentActivePackage, timeSpent);
         }
 
+        // if the new package is blacklisted, take note of visit start
         if (StorageUtil.isPackageSelected(newPackage)) {
             visit = true;
             visitStart = System.currentTimeMillis(); // log visit start time
@@ -127,6 +125,7 @@ var trackUsage = function () {
             visitStart = 0;
             inBlacklistedApplication = false;
             InterventionManager.allowVideoBlocking(false);
+            currentActivePackage = "";
         }
     } else if (visit) {
         if (System.currentTimeMillis() - visitStart > MIN_VISIT_DURATION) {
@@ -138,7 +137,7 @@ var trackUsage = function () {
             InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](currentActivePackage);
         } 
     } else if (inBlacklistedApplication) {
-        // been in a blacklisted application for more than 5 seconds
+        // been in a blacklisted application for more than 2 seconds
         InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentActivePackage, visitStart);
         InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentActivePackage, visitStart);
         // InterventionManager.interventions[11](currentActivePackage, visitStart);
@@ -197,12 +196,13 @@ var getActivePackage = function() {
     screenOff = true;
     if (visitStart) {
         var timeSpent = System.currentTimeMillis() - visitStart;
-        console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
+        StorageUtil.updateAppTime(currentActivePackage, timeSpent);
 
-        // TODO: log ms spent on app
-
+        // reset logging information
         visitStart = 0;
         visit = false;
+        currentActivePackage = "";
+        inBlacklistedApplication = false;
     }
  }
 
@@ -231,12 +231,13 @@ var getActivePackage = function() {
     screenOff = true;
     if (visitStart) {
         var timeSpent = System.currentTimeMillis() - visitStart;
-        console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
+        StorageUtil.updateAppTime(currentActivePackage, timeSpent);
 
-        // TODO: log ms spent on app
-
+        // reset logging information
         visitStart = 0;
         visit = false;
+        currentActivePackage = "";
+        inBlacklistedApplication = false;
     }
  }
 

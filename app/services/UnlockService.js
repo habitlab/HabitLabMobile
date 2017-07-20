@@ -20,6 +20,9 @@ var System = java.lang.System;
 var filterOn = new IntentFilter(Intent.ACTION_SCREEN_ON);
 var filterOff = new IntentFilter(Intent.ACTION_SCREEN_OFF);
 var filterUnlocked = new IntentFilter(Intent.ACTION_USER_PRESENT);
+    
+// variable to store time spent on phone
+var timePhoneTurnedOn = System.currentTimeMillis();
 
 // extend BroadcastReceiver class to track screen on/off/unlock
 var UnlockReceiver = android.content.BroadcastReceiver.extend({
@@ -27,6 +30,7 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         var action = intent.getAction();
 
         if (action === Intent.ACTION_SCREEN_ON) {
+            timePhoneTurnedOn = System.currentTimeMillis();
             StorageUtil.glanced();
             InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION]();
             // InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST]();
@@ -37,6 +41,9 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
             // InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST]();
         } else if (action === Intent.ACTION_SCREEN_OFF) {
             TrackingService.alertScreenOff();
+
+            var timeSpentOnPhone = System.currentTimeMillis() - timePhoneTurnedOn;
+            StorageUtil.updateTotalTime(timeSpentOnPhone);
         }  
     }
 });
@@ -56,12 +63,12 @@ android.app.Service.extend("com.habitlab.UnlockService", {
         this.super.onStartCommand(intent, flags, startId);
         setUpReceiver();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-        console.log("UNLOCK SERVICE CREATED");
+        console.warn("UNLOCK SERVICE CREATED");
         return android.app.Service.START_STICKY; 
     }, 
 
     onDestroy: function() {
-        console.log("UNLOCK SERVICE DESTROYED");
+        console.warn("UNLOCK SERVICE DESTROYED");
     },
 
     onTaskRemoved: function(intent) {

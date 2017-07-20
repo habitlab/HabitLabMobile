@@ -1,24 +1,23 @@
 var UsageUtil = require("~/util/UsageInformationUtil");
 var StorageUtil = require("~/util/StorageUtil");
 
+var frame = require('ui/frame');
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
 
 var drawer;
+var pkgs;
+var toToggle;
 
 var setOnTap = function(image, packageName, selector) {
   image.on(gestures.tap, function() {
-    var selected = StorageUtil.togglePackage(packageName);
-    selector.visibility = selected ? 'visible' : 'hidden';
+    selector.visibility = selector.visibility === 'visible' ? 'hidden' : 'visible';
+    toToggle[packageName] = toToggle[packageName] === undefined ? true : !toToggle[packageName];
   });
 };
 
 var createGrid = function(args) {
-
-  // get the most updated version of the list
-  UsageUtil.refreshApplicationList();
-
   // order by things with icon then by usage
   var list = UsageUtil.getApplicationList();
   list.sort(function compare(a, b) {
@@ -33,8 +32,7 @@ var createGrid = function(args) {
   var grid = args.object.getViewById('grid');
   for (var i = 0; i < list.length; i++) {
     if (i % 3 === 0) {
-      var row = new layout.ItemSpec(1, layout.GridUnitType.AUTO);
-      grid.addRow(row);
+      grid.addRow(new layout.ItemSpec(1, layout.GridUnitType.AUTO));
     }
     grid.addChild(createCell(list[i], Math.floor(i/3), i%3));
   }
@@ -48,7 +46,7 @@ var setCellInfo = function(cell, info) {
 
   label.text = info.label;
   image.src = info.iconSource;
-  selector.visibility = StorageUtil.isPackageSelected(info.packageName) ? 'visible' : 'hidden';
+  selector.visibility = pkgs.includes(info.packageName) ? 'visible' : 'hidden';
 
   var mins = Math.ceil(info.averageUsage / 60000);
   if (mins || mins === 0) {
@@ -71,14 +69,30 @@ var createCell = function(info, r, c)  {
   return cell;
 };
 
-exports.navigatingTo = function(args) {
-  createGrid(args);
-};
-
 exports.pageLoaded = function(args) {
+  toToggle = {};
   drawer = args.object.getViewById('sideDrawer');
+  pkgs = StorageUtil.getSelectedPackages();
+  createGrid(args);
 };
 
 exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
+};
+
+exports.onDone = function() {
+  var wasChanged = false;
+  Object.keys(toToggle).forEach(function(key) {
+    if (toToggle[key]) {
+      StorageUtil.togglePackage(key);
+      wasChanged = true;
+    }
+  });
+  var options = {
+    moduleName: 'views/goalsView/goalsView',
+    context: {
+      updated: wasChanged
+    }
+  };
+  frame.topmost().navigate(options);
 };

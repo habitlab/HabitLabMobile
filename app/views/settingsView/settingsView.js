@@ -40,73 +40,18 @@ exports.enableServices = function() {
 };
 
 exports.disableServices = function () {
-	console.warn("");
-	console.warn("----------------------------");
+	var list = StorageUtil.getSelectedPackages();
 
-	var Calendar = java.util.Calendar;
-	var UsageStatsManager = android.app.usage.UsageStatsManager;
-	var Context = android.content.Context;
+	for (var i = 0; i < list.length; i++) {
+		var pkg = list[i];
+		var time = StorageUtil.getAppTime(pkg, StorageUtil.days.TODAY);
 
-	var start = Calendar.getInstance();
-	start.set(Calendar.HOUR_OF_DAY, 8);
-	start.set(Calendar.MINUTE, 0);
-	start.set(Calendar.SECOND, 1);
-	start.setTimeInMillis(start.getTimeInMillis());
-
-	var end = Calendar.getInstance();
-	end.setTimeInMillis(start.getTimeInMillis());
-	end.set(Calendar.HOUR_OF_DAY, 23);
-	end.set(Calendar.MINUTE, 59);
-	end.set(Calendar.SECOND, 59);
-	end.setTimeInMillis(end.getTimeInMillis());
-
-	console.warn("START:", (start.get(Calendar.MONTH) + 1) + "/" 
-		+ start.get(Calendar.DATE) + "/" 
-		+ start.get(Calendar.YEAR) + " " 
-		+ start.get(Calendar.HOUR_OF_DAY) + ":" 
-		+ start.get(Calendar.MINUTE) + ":"
-		+ start.get(Calendar.SECOND));
-
-	console.warn("END:", (end.get(Calendar.MONTH) + 1) + "/" 
-		+ end.get(Calendar.DATE) + "/" 
-		+ end.get(Calendar.YEAR) + " " 
-		+ end.get(Calendar.HOUR_OF_DAY) + ":" 
-		+ end.get(Calendar.MINUTE) + ":"
-		+ end.get(Calendar.SECOND));
-	console.warn("----------------------------");
-
-
-	var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
-	var list = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, start.getTimeInMillis(), end.getTimeInMillis());
-	
-	for (var i = 0; i < list.size(); i++) {
-		var stat = list.get(i);
-		// console.log(stat.getPackageName());
-		if (stat.getPackageName() === "com.facebook.katana") {
-			var firstTimeStamp = Calendar.getInstance();
-			firstTimeStamp.setTimeInMillis(stat.getFirstTimeStamp());
-
-			var lastTimeStamp = Calendar.getInstance();
-			lastTimeStamp.setTimeInMillis(stat.getLastTimeStamp());
-
-			console.warn("       FIRST:", (firstTimeStamp.get(Calendar.MONTH) + 1) + "/" 
-				+ firstTimeStamp.get(Calendar.DATE) + "/" 
-				+ firstTimeStamp.get(Calendar.YEAR) + " " 
-				+ firstTimeStamp.get(Calendar.HOUR_OF_DAY) + ":" 
-				+ firstTimeStamp.get(Calendar.MINUTE) + ":"
-				+ firstTimeStamp.get(Calendar.SECOND));
-
-			console.warn("       LAST:", (lastTimeStamp.get(Calendar.MONTH) + 1) + "/" 
-				+ lastTimeStamp.get(Calendar.DATE) + "/" 
-				+ lastTimeStamp.get(Calendar.YEAR) + " " 
-				+ lastTimeStamp.get(Calendar.HOUR_OF_DAY) + ":" 
-				+ lastTimeStamp.get(Calendar.MINUTE) + ":"
-				+ lastTimeStamp.get(Calendar.SECOND));
-
-			console.warn("       TIME:", stat.getTotalTimeInForeground());
-			console.warn("------------------");
-		}
+		console.warn("Package: " + pkg, "| Time Spent: " + time);
 	}
+
+
+	var time = StorageUtil.getTotalTime(StorageUtil.days.TODAY);
+	console.warn(time);
 };
 
 exports.toggleDrawer = function() {

@@ -36,7 +36,7 @@
   padding-top: 15%;
 }
 
-ScrollView {
+.app-list-scroll {
   width: 80%;
   margin: auto;
   height: 100%;
