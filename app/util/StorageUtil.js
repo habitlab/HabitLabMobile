@@ -359,7 +359,7 @@ exports.getTargetTime = function(index) {
 exports.updateTotalTime = function(time) {  
   var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][today-1]['time'] += time;
+  phoneInfo['stats'][today-1]['totalTime'] += time;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 

@@ -5,9 +5,13 @@
 }
 
 .sidedrawer-header {
-  height: 20%;
+  height: 25%;
   background-color: #9fc6c6;
   margin: 3%;
+}
+
+.sidedrawer-content {
+  height: 55%;
 }
 
 .header-icon {

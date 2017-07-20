@@ -1,24 +1,26 @@
 <StackLayout class="sidedrawer-left">
-	<Image src="~/images/icon.png" class="header-icon" />
+	<StackLayout orientation="vertical" class="sidedrawer-header">
+		<Image src="~/images/icon.png" class="header-icon" />
+	</StackLayout>
 	<StackLayout class="sidedrawer-content">
 		<StackLayout orientation="horizontal" class="side-option" id="progress" tap="goToProgress" >
-			<Image class="side-icon" src="~/images/progress_icon.png" />
+			<Image class="side-icon" src="res://ic_progress" />
 			<Label text="Progress" class="side-label" />
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="goals" tap="goToGoals" >
-			<Image class="side-icon" src="~/images/goals_icon.png" />
+			<Image class="side-icon" src="res://ic_goals" />
 			<Label text="Goals" class="side-label" />
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="interventions" tap="goToInterventions" >
-			<Image class="side-icon" src="~/images/interventions_icon.png" />
+			<Image class="side-icon" src="res://ic_interventions" />
 			<Label text="Interventions" class="side-label"/>
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="settings" tap="goToSettings" >
-			<Image class="side-icon" src="~/images/settings_icon.png" />
+			<Image class="side-icon" src="res://ic_settings" />
 			<Label text="Settings" class="side-label" />
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="contact" tap="goToContact" >
-			<Image class="side-icon" src="~/images/contact_icon.png" />
+			<Image class="side-icon" src="res://ic_feedback" />
 			<Label text="Feedback" class="side-label" />
 		</StackLayout>
 	</StackLayout>
