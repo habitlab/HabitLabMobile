@@ -30,6 +30,9 @@ DIM_BACKGROUND.setColor(Color.BLACK);
 var ICON_FILL = new Paint();
 ICON_FILL.setColor(Color.HSVToColor(iconBkgd));
 
+var ICON_BACK_FILL = new Paint();
+ICON_BACK_FILL.setColor(Color.WHITE);
+
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -54,13 +57,15 @@ var DialogView = android.view.View.extend({
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
 		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, DIALOG_FILL);
 
-		// add icon
+		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
 		var iconRight = iconLeft + 2 * ICON_RADIUS;
-		var iconTop = (SCREEN_HEIGHT - DIALOG_HEIGHT) / 2 - 1.2 * ICON_RADIUS;
+		var iconTop = (SCREEN_HEIGHT - DIALOG_HEIGHT) / 2 - 1 * ICON_RADIUS;
 		var iconBottom = iconTop + 2 * ICON_RADIUS;
+		canvas.drawOval(iconLeft - 10, iconTop - 10, iconRight + 10, iconBottom + 10, ICON_BACK_FILL);
 		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
+		// add icon
 		var icon_id = appCtx.getResources().getIdentifier("logo_bubbles", "drawable", appCtx.getPackageName());
 		var bitmap = appCtx.getResources().getDrawable(icon_id).getBitmap();
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
@@ -95,7 +100,7 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     var textView = new TextView(context);
     textView.setText(msg);
-    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 12);
     textView.setTextColor(Color.BLACK);
     textView.setHorizontallyScrolling(false);
     textView.setGravity(Gravity.CENTER);

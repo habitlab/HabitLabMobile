@@ -2,7 +2,7 @@
 
 rm -rf node_modules
 rm -rf platforms
-rm package-lock.json
+cp package-lock.json.bak package-lock.json
 tns build android
-git checkout platforms/android/build.gradle
+cp build.gradle platforms/android
 tns build android

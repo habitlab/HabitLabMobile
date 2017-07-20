@@ -97,7 +97,7 @@ var stopTimer = function() {
  * Function to be run at predetermined intervals in the 
  * background. Plugs interventions into the device.
  */
-const MIN_VISIT_DURATION = 2500; // in ms
+const MIN_VISIT_DURATION = 2000; // in ms
 var currentActivePackage = "";
 var inBlacklistedApplication;
 var screenOff = false;
@@ -107,6 +107,15 @@ var trackUsage = function () {
     if (screenOff) return;
     var newPackage = getActivePackage();
     if (newPackage) {
+        console.warn(newPackage);
+        if (visitStart) {
+            var timeSpent = System.currentTimeMillis() - visitStart;
+            console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
+
+            // TODO: log ms spent on app
+
+        }
+
         if (StorageUtil.isPackageSelected(newPackage)) {
             visit = true;
             visitStart = System.currentTimeMillis(); // log visit start time
@@ -154,13 +163,11 @@ var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
 var event = new UsageEvents.Event();
 var previousPackageName = "";
 var getActivePackage = function() {
-    var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 2000, System.currentTimeMillis());
+    var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 3000, System.currentTimeMillis());
     
     // exit immediately if there are no events
-    if (!events.hasNextEvent()) {
-        return null;
-    }
-
+    if (!events.hasNextEvent()) return null;
+    
     // iterate to the next event
     while (events.hasNextEvent()) {
         events.getNextEvent(event);
@@ -188,6 +195,15 @@ var getActivePackage = function() {
  var alertScreenOff = function () {
     previousPackageName = "";
     screenOff = true;
+    if (visitStart) {
+        var timeSpent = System.currentTimeMillis() - visitStart;
+        console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
+
+        // TODO: log ms spent on app
+
+        visitStart = 0;
+        visit = false;
+    }
  }
 
 
@@ -201,6 +217,29 @@ var getActivePackage = function() {
  var alertScreenOn = function () {
     screenOff = false;
  }
+
+
+ /**
+ * alertShutdown
+ * -------------
+ * Alert the TrackingService that the screen has bee turned
+ * on (to restart tracking information that is package 
+ * sensitive)
+ */
+ var alertShutdown = function () {
+    previousPackageName = "";
+    screenOff = true;
+    if (visitStart) {
+        var timeSpent = System.currentTimeMillis() - visitStart;
+        console.warn("Time spent on " + currentActivePackage + ":", timeSpent);
+
+        // TODO: log ms spent on app
+
+        visitStart = 0;
+        visit = false;
+    }
+ }
+
 
 module.exports = {
     stopTimer,

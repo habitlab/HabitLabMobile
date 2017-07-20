@@ -66,6 +66,14 @@
 		    </intent-filter>
 		</receiver>
 		<receiver 
+			android:name="com.habitlab.AlarmReceiver"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action android:name="action.habitlab.AlarmNotice" />
+		    </intent-filter>
+		</receiver>
+		<receiver 
 			android:name="com.habitlab.ServiceRestarterReceiver"
 			android:enabled="true"
 		    android:exported="false"

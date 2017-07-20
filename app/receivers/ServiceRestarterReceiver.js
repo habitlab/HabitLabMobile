@@ -1,5 +1,5 @@
 const NotificationUtil = require("~/util/NotificationUtil");
-// const TrackingService = require("~/services/TrackingService");
+const TrackingService = require("~/services/TrackingService");
 
 var Intent = android.content.Intent;
 
