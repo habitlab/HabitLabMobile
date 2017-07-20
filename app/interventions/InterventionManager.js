@@ -276,19 +276,19 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 
 
 
-//Shows a header and footer overlap that hides the bottom and top actionbars of an app
-var showHeaderFooter = function(pkg, visitStart) {
- if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
-    var now = System.currentTimeMillis();
-    if ((now - visitStart) > HARD_NOTIF_INTERVAL) {
-      var applicationName = UsageInformationUtil.getAppName(pkg);
-      var title = applicationName + " Visit Length";
-      var msg = "You've been using " + applicationName + " for 30 minutes";
-      TopAndTailOverlay.showHeaderFooterDisplay(context);
-      console.warn("header and footer activated");
-    }
-  }
-}
+// //Shows a header and footer overlap that hides the bottom and top actionbars of an app
+// var showHeaderFooter = function(pkg, visitStart) {
+//  if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
+//     var now = System.currentTimeMillis();
+//     if ((now - visitStart) > HARD_NOTIF_INTERVAL) {
+//       var applicationName = UsageInformationUtil.getAppName(pkg);
+//       var title = applicationName + " Visit Length";
+//       var msg = "You've been using " + applicationName + " for 30 minutes";
+//       TopAndTailOverlay.showHeaderFooterDisplay(context);
+//       console.warn("header and footer activated");
+//     }
+//   }
+// }
 
 
 
@@ -313,7 +313,7 @@ module.exports = {
     popToastVisited,
     sendNotificationVisited,
     blockVideo,
-    showHeaderFooter
+    // showHeaderFooter
   ], 
   allowVideoBlocking,
   logVisitStart

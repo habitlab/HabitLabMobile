@@ -1,4 +1,4 @@
-<Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded"
+<Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
   xmlns:Slides="nativescript-slides"  xmlns:VideoPlayer="nativescript-videoplayer">
   <StackLayout orientation='vertical'>
     <Slides:SlideContainer id="slides" pageIndicators="true" height="94%">
@@ -25,21 +25,21 @@
         <Label text="{{texts[3]}}" textWrap='true' />
       </Slides:Slide>
 
-      <Slides:Slide class="slide">
+      <Slides:Slide id="slide-usage" class="slide" touch="getUsagePermission">
         <StackLayout>
-          <Label text="{{texts[4]}}" textWrap='true' class='title'/>
+          <Label text="{{texts[4]}}" textWrap='true' class="header"/>
           <VideoPlayer:Video id="firstVideo"
-            controls="true" 
+            controls="false" 
             loop="true" autoplay="true" height="400" 
             src="~/videos/UsageExample.mp4" />
         </StackLayout>
       </Slides:Slide>
 
-      <Slides:Slide class="slide">
+      <Slides:Slide class="slide" touch="getDrawPermission">
         <StackLayout>
-            <Label text="{{texts[5]}}" textWrap='true' class='title'/>
+            <Label text="{{texts[5]}}" textWrap='true' class="header"/>
             <VideoPlayer:Video id="firstVideo"
-                controls="true" 
+                controls="false" 
                 loop="true" autoplay="true" height="400" 
                 src="~/videos/DrawOverExample.mp4" />
         </StackLayout>
