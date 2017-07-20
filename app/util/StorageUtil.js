@@ -322,12 +322,12 @@ exports.glanced = function() {
  */
 exports.updateAppTime = function(packageName, time) {
   var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-  var appInfo = appSettings.getString('packageName');
-  var phoneInfo = appSettings.getString('phone');
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
   appInfo['stats'][today-1]['time'] += time;
   phoneInfo['stats'][today-1]['time'] += time;
-  appSettings.setString(packageName, appInfo);
-  appSettings.setString('phone', phoneInfo);
+  appSettings.setString(packageName, JSON.stringify(appInfo));
+  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* export: getAppTime
@@ -358,9 +358,9 @@ exports.getTargetTime = function(index) {
  */
 exports.updateTotalTime = function(time) {  
   var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-  var phoneInfo = appSettings.getString('phone');
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
   phoneInfo['stats'][today-1]['time'] += time;
-  appSettings.setString('phone', phoneInfo);
+  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* export: getTotalTime
