@@ -10,6 +10,13 @@ Image {
 	margin: 5%;
 }
 
+TextField {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
 .squish {
 	width: 60%;
 	height: auto;
@@ -38,4 +45,19 @@ Image {
 	vertical-align: top;
 	padding: 30%;
 	font-size: 23%;
+}
+
+.firstSlide {
+	vertical-align: top;
+	padding-top: 20%;
+}
+
+#icon {
+	height: 15%;
+	margin: 5%;
+}
+
+#welcome {
+	margin-top: 20%
+	font-size: 25%;
 }

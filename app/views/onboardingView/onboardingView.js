@@ -1,6 +1,7 @@
 var application = require("application");
 var StorageUtil = require("~/util/StorageUtil");
 var PermissionUtil = require("~/util/PermissionUtil");
+var TextField = require("tns-core-modules/ui/text-field");
 
 var frameModule = require("ui/frame");
 var gestures = require("ui/gestures").GestureTypes;
@@ -9,7 +10,7 @@ var page;
 var onboarding = {};
 
 onboarding.texts = [
-  'Design how you spend time on your mobile device.',
+  'Welcome to HabitLab',
   'Build better habits with personalized interventions.',
   'Choose the apps you want to spend less time on.',
   'See how your habits improve over time.',
@@ -20,7 +21,8 @@ onboarding.texts = [
   ];
 
 onboarding.titles = [
-  'HabitLab',
+  'Hi',
+  // 'HabitLab',
   'Stop Wasting Time',
   'Set Your Goals',
   'Track Your Progress',
@@ -56,7 +58,7 @@ exports.pageLoaded = function(args) {
 
 
 exports.getUsagePermission = function() {
-  console.warn(PermissionUtil.checkActionUsagePermission())
+  // console.warn(PermissionUtil.checkActionUsagePermission())
    if (!PermissionUtil.checkActionUsagePermission()) {
     PermissionUtil.launchActionUsageIntent();
    }
@@ -64,7 +66,7 @@ exports.getUsagePermission = function() {
 
 
 exports.getDrawPermission = function() {
-  console.warn(PermissionUtil.checkSystemOverlayPermission())
+  // console.warn(PermissionUtil.checkSystemOverlayPermission())
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
   }

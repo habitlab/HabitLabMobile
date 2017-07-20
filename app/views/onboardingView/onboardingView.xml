@@ -3,8 +3,13 @@
   <StackLayout orientation='vertical'>
     <Slides:SlideContainer id="slides" pageIndicators="true" height="94%">
 
-      <Slides:Slide class="slide">
-        <Label text="{{texts[0]}}" class='title' textWrap='true' />
+      <Slides:Slide class="firstSlide">
+        <StackLayout>
+        <Label text="{{titles[0]}}" class='title' textWrap='true'  id="hi"/>
+        <TextField hint="name" autocorrect="false" autocapitalization="none"/>
+        <Image src="{{visuals[0]}}" id="icon" />
+        <Label text="{{texts[0]}}" textWrap='true' id="welcome" />
+      </StackLayout>
       </Slides:Slide>
 
       <Slides:Slide class="slide">
