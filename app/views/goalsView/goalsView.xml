@@ -21,7 +21,7 @@
         <StackLayout orientation="vertical" id="phoneGoals" />
 
         <Label text="App Goals" class="section-title" />
-        <ScrollView orientation="vertical">
+        <ScrollView orientation="vertical" class="goal-scroll">
           <StackLayout orientation="vertical" id="appGoals" />
         </ScrollView>
 
