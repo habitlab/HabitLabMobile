@@ -4,7 +4,8 @@
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
   <ActionBar title="HabitLab" class="action-bar">
-    <NavigationButton tap="toggleDrawer" ios.systemIcon="4" android.systemIcon="ic_menu_moreoverflow" ios.position="left" />
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem tap="onDone" text="done" />
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
@@ -14,7 +15,7 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <ScrollView orientation="vertical">
+      <ScrollView orientation="vertical" class="app-list-scroll" >
         <GridLayout id="grid" columns="*,*,*" />
       </ScrollView>
     </sd:RadSideDrawer.mainContent>

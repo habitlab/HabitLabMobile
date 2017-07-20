@@ -5,5 +5,6 @@
 	<color name="ns_accent">#E71D36</color>
     <color name="ns_blue">#2EC4B6</color>
     <color name="ns_yellow">#FFA730</color>
+    <color name="ns_white">#FFFFFF</color>
 
 </resources>

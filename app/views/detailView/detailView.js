@@ -34,7 +34,7 @@ var setUpDetail = function() {
   desc.text = StorageUtil.interventionDetails[id].description;
   desc.textWrap = true;
 
-  var level = StorageUtil.interventionDetails[id].level
+  var level = StorageUtil.interventionDetails[id].level;
   var levelLabel = page.getViewById('level');
   levelLabel.text = level;
   levelLabel.className = level;
@@ -56,6 +56,14 @@ var setUpDetail = function() {
 
   var layout = page.getViewById('list');
   var pkgs = StorageUtil.getSelectedPackages();
+
+  var apps = StorageUtil.interventionDetails[id].apps;
+  console.log('apps', apps);
+  if (apps) {
+    pkgs = pkgs.filter(function (item) {
+      return apps.includes(item);
+    });
+  }
 
   pkgs.forEach(function (pkg) {
     if (!layout.getViewById(pkg)) {

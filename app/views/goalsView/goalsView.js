@@ -122,7 +122,7 @@ exports.onManageApps = function() {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (page.id !== 'loaded') {
+  if (page.id !== 'loaded' || args.navigationContext.updated) {
     page.id = 'loaded';
     setUpPhoneGoals();
     setUpAppGoals();
