@@ -80,7 +80,7 @@ var DialogView = android.view.View.extend({
 function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallback) {
 	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-	// add view
+	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);

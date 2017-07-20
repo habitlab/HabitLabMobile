@@ -132,6 +132,7 @@ var trackUsage = function () {
         // been in a blacklisted application for more than 5 seconds
         InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentActivePackage, visitStart);
         InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentActivePackage, visitStart);
+        // InterventionManager.interventions[11](currentActivePackage, visitStart);
 
         if (currentActivePackage === "com.facebook.katana" || currentActivePackage === "com.google.android.youtube") {
             InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER]();

@@ -11,7 +11,10 @@ onboarding.texts = [
   'Build better habits with personalized interventions.',
   'Choose the apps you want to spend less time on.',
   'See how your habits improve over time.',
+  'To get started, allow HabitLab to access your app data',
+  'Allow HabitLab to work over other apps',
   'Swipe to get started.\n'
+
   ];
 
 onboarding.titles = [
