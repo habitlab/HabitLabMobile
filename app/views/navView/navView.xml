@@ -14,10 +14,10 @@
 
     <sd:RadSideDrawer.mainContent>
       <StackLayout orientation="vertical">
-        <Button text="Progress" tap="goToProgress" class="button-progress" />
-        <Button text="Goals" tap="goToGoals" class="button-goals" />
-        <Button text="Interventions" tap="goToInterventions" class="button-interventions" />
-        <Button text="Settings" tap="goToSettings" class="button-settings" />
+        <Button text="Progress" tap="goToProgress" class="nav-button button-progress" />
+        <Button text="Goals" tap="goToGoals" class="nav-button button-goals" />
+        <Button text="Interventions" tap="goToInterventions" class="nav-button button-interventions" />
+        <Button text="Settings" tap="goToSettings" class="nav-button button-settings" />
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 

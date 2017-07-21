@@ -2,7 +2,6 @@
 
 rm -rf node_modules
 rm -rf platforms
-cp package-lock.json.bak package-lock.json
 tns build android
 cp build.gradle platforms/android
 tns build android

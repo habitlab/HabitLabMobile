@@ -14,7 +14,7 @@
 
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
       <StackLayout orientation="vertical" >
-        <Label text="Intervention Manager" class="title" />
+        <Label text="Nudge Manager" class="intervention-label title"/>
         <ScrollView orientation="vertical">
        		<StackLayout orientation="vertical" id="interventionLayout" />
         </ScrollView>

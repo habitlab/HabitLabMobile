@@ -14,11 +14,11 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation="vertical" id="detail" >
-        <Label id="title" />
-        <Label id="description" />
+        <Label id="title" class="detail-label" />
+        <Label id="description" class="detail-label" />
         <FlexboxLayout orientation="horizontal" class="level-layout">
-          <Label text="level: "/>
-          <Label id="level"/>
+          <Label text="level: " class="detail-label" />
+          <Label id="level" class="detail-label" />
         </FlexboxLayout>
         <Button id='button' text="try" />
         <ScrollView orientation="vertical">

@@ -45,8 +45,7 @@
 		<activity android:name="com.tns.ErrorReportActivity"/>
 		<service 
 			android:name="com.habitlab.TrackingService"
-			android:exported="false" 
-			android:stopWithTask="false">
+			android:exported="false">
 		</service>
 		<service 
 			android:name="com.habitlab.UnlockService"
@@ -82,6 +81,16 @@
 				<action android:name="android.intent.action.ACTION_SHUTDOWN" />
 		        <action android:name="android.intent.action.BOOT_COMPLETED" />
 		        <category android:name="android.intent.category.DEFAULT" />
+		    </intent-filter>
+		</receiver>
+		<receiver 
+			android:name="com.habitlab.NewPackageReceiver"
+			android:enabled="true"
+		    android:exported="false">
+			<intent-filter>
+				<action android:name="android.intent.action.PACKAGE_REMOVED" />
+		        <action android:name="android.intent.action.PACKAGE_ADDED" />
+		        <data android:scheme="package" />
 		    </intent-filter>
 		</receiver>
 	</application>

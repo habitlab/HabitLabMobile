@@ -3,6 +3,7 @@
   <StackLayout orientation='vertical'>
     <Slides:SlideContainer id="slides" pageIndicators="true" height="94%" disablePan="true">
 
+
       <Slides:Slide class="firstSlide" swipe="checkNameNextSlide">
         <StackLayout>
         <Image src="{{visuals[0]}}" id="icon" />
@@ -28,11 +29,12 @@
         <Label text="{{titles[3]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[3]}}" />
         <Label text="{{texts[3]}}" textWrap='true' />
+
       </Slides:Slide>
 
       <Slides:Slide id="slide-usage" class="slide"  swipe="getUsagePermission">
         <StackLayout>
-          <Label text="{{texts[4]}}" textWrap='true' class="header"/>
+          <Label text="{{texts[4]}}" textWrap='true' class="onboarding-label header"/>
           <VideoPlayer:Video id="firstVideo"
             controls="false" 
             loop="true" autoplay="true" height="400" 
@@ -42,7 +44,7 @@
 
       <Slides:Slide class="slide"  swipe="getDrawPermission">
         <StackLayout>
-            <Label text="{{texts[5]}}" textWrap='true' class="header"/>
+            <Label text="{{texts[5]}}" textWrap='true' class="onboarding-label header"/>
             <VideoPlayer:Video id="firstVideo"
                 controls="false" 
                 loop="true" autoplay="true" height="400" 
@@ -50,14 +52,16 @@
         </StackLayout>
       </Slides:Slide>
 
+
       <Slides:Slide id='lastslide' class="slide" swipe="goToNavView">
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[4]}}" class="squish" />
         <Label text="{{texts[6]}}" textWrap='true' />
+
       </Slides:Slide>
 
     </Slides:SlideContainer>
-    <Label text='skip' tap='goToNavView' class='skip' />
+    <Label text='skip' tap='goToNavView' class='onboarding-label skip' />
   </StackLayout>
 
 </Page>

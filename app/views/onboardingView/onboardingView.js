@@ -108,7 +108,6 @@ exports.getDrawPermission = function(args) {
    } else {
     exports.goToNextSlide(args);
    }
-
 }
 
 

@@ -17,9 +17,11 @@ var createItem = function(id)  {
   });
 
   item.id = 'item' + id;
+  item.className = 'intervention-grid';
   
   var label = item.getViewById("name");
   label.text = interventionList[id].name;
+  label.className = 'intervention-label';
   label.on(gestures.tap, function() {
     var options = {
       moduleName: 'views/detailView/detailView',

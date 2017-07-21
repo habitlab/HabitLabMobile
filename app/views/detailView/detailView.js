@@ -16,7 +16,12 @@ var createItem = function(pkg)  {
   });
 
   item.id = pkg;
-  item.getViewById("name").text = UsageUtil.getAppName(pkg);
+  item.className = 'detail-grid';
+
+  var label = item.getViewById("name");
+  label.text = UsageUtil.getAppName(pkg);
+  label.className = "detail-label";
+  
   item.getViewById("icon").src = UsageUtil.getIcon(pkg);
   
   var sw = item.getViewById("switch");
@@ -52,7 +57,6 @@ var setUpDetail = function() {
   var pkgs = StorageUtil.getSelectedPackages();
 
   var apps = StorageUtil.interventionDetails[id].apps;
-  console.log('apps', apps);
   if (apps) {
     pkgs = pkgs.filter(function (item) {
       return apps.includes(item);
