@@ -71,14 +71,6 @@ android.app.Service.extend("com.habitlab.UnlockService", {
         console.warn("UNLOCK SERVICE DESTROYED");
     },
 
-    onTaskRemoved: function(intent) {
-        // this.super.onTaskRemoved(intent);
-        // this.stopSelf();
-        // var alarm = context.getSystemService(Context.ALARM_SERVICE);
-        // var serviceToRestart = PendingIntent.getService(context, 3, new Intent(context, com.habitlab.UnlockService.class), 0);
-        // alarm.set(AlarmManager.RTC, System.currentTimeMillis() + 500, serviceToRestart);
-    },
-
     onCreate: function() {
         // do nothing
     },
