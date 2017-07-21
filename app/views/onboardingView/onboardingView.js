@@ -77,7 +77,6 @@ exports.goToNextSlide = function(args) {
 exports.checkNameNextSlide = function(args) {
   var textfield = page.getViewById("name");
   name = textfield.text;
-  console.warn(name);
   if (name === "") {
       dialogs.alert("Please enter your name!").then(function() {
        console.warn("Dialog closed!");
@@ -112,9 +111,6 @@ exports.getDrawPermission = function(args) {
 
 
 
-exports.navigatingTo = function() {
-  console.warn("navigating")
-}
 
 
 
