@@ -2,10 +2,11 @@
 @import url('~/platform.css');
 
 Page.onboarding {
-  background-image: url("res://background")
-  background-repeat: no-repeat;
+  /*background-image: url("res://background")*/
+  background-color: #67D4C9;
+ /* background-repeat: no-repeat;
   background-position: top;
-  background-size: cover;
+  background-size: cover;*/
 }
 
 .action-bar {

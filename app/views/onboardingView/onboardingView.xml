@@ -1,5 +1,5 @@
-<Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded"
-  xmlns:Slides="nativescript-slides">
+<Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
+  xmlns:Slides="nativescript-slides"  xmlns:VideoPlayer="nativescript-videoplayer">
   <StackLayout orientation='vertical'>
     <Slides:SlideContainer id="slides" pageIndicators="true" height="94%">
 
@@ -25,10 +25,30 @@
         <Label text="{{texts[3]}}" textWrap='true' />
       </Slides:Slide>
 
+      <Slides:Slide id="slide-usage" class="slide" touch="getUsagePermission">
+        <StackLayout>
+          <Label text="{{texts[4]}}" textWrap='true' class="header"/>
+          <VideoPlayer:Video id="firstVideo"
+            controls="false" 
+            loop="true" autoplay="true" height="400" 
+            src="~/videos/UsageExample.mp4" />
+        </StackLayout>
+      </Slides:Slide>
+
+      <Slides:Slide class="slide" touch="getDrawPermission">
+        <StackLayout>
+            <Label text="{{texts[5]}}" textWrap='true' class="header"/>
+            <VideoPlayer:Video id="firstVideo"
+                controls="false" 
+                loop="true" autoplay="true" height="400" 
+                src="~/videos/DrawOverExample.mp4" />
+        </StackLayout>
+      </Slides:Slide>
+
       <Slides:Slide id='lastslide' class="slide">
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[4]}}" class="squish" />
-        <Label text="{{texts[4]}}" textWrap='true' />
+        <Label text="{{texts[6]}}" textWrap='true' />
       </Slides:Slide>
 
     </Slides:SlideContainer>

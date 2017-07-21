@@ -45,6 +45,8 @@ var ForegroundColorSpan = android.text.style.ForegroundColorSpan;
 var StyleSpan = android.text.style.StyleSpan;
 var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
 var Typeface = android.graphics.Typeface;
+var Resources = android.content.res.Resources;
+var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 
 exports.pageLoaded = function(args) {
@@ -59,7 +61,7 @@ exports.pageLoaded = function(args) {
 
 //Creates the pie chart on the day tab
 exports.dayView = function(args) {
-    var appsToday = usageUtil.getAppsSingleDay(0);
+    var appsToday = usageUtil.getAppsSingleDay(0);//gets the target apps used today
     var total = Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0));
 
 	//sort appsToday
@@ -119,7 +121,7 @@ exports.dayView = function(args) {
 
     // Initialize and set pie chart 
     piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800,0.42));
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
     piechart.invalidate();
     args.view = piechart;
 
@@ -185,7 +187,7 @@ exports.weekView = function(args) {
 
      barchart.animateY(3000);
 	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
 	 barchart.invalidate();
 	 args.view = barchart;
 }
@@ -245,7 +247,7 @@ exports.monthView = function(args) {
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
     barchart.animateY(3000);
     barchart.setFitBars(true);
-    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 800, 0.5));
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
     barchart.invalidate();
     args.view = barchart;
 
@@ -261,7 +263,7 @@ exports.populateListViewsDay = function() {
 	var timeOnTargetToday = usageUtil.getTimeOnTargetAppsSingleDay(0);
 	var totalTarget = Math.round(timeOnTargetToday/6)/10;
     var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0)/6)/10;
-    var perc = Math.round((totalTarget/total)*100)
+    var perc = (total === 0 ? 0 : Math.round(totalTarget/total)*100); 
 	var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
 	var apps = [];
 
@@ -311,7 +313,7 @@ exports.populateListViewsDay = function() {
 exports.populateListViewsWeek = function() {
 	var timeOnPhoneWeek = Math.round(usageUtil.getTotalTimeOnPhoneWeek(0)/6)/10;
     var timeOnTargetAppsWeek = Math.round(usageUtil.getTimeOnTargetAppsWeek(0)/6)/10;
-    var perc = Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek)*100;
+    var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek)*100); 
 
     var unlocks = storageUtil.getUnlocks();
     var total = 0;
@@ -363,7 +365,7 @@ exports.populateListViewsWeek = function() {
 exports.populateListViewMonth = function () {
 	var totalTimePhoneMonth = Math.round(usageUtil.getTotalTimeOnPhoneThisMonth()/6)/10;
     var totalTarget = Math.round(usageUtil.getTotalTimeOnTargetAppsThisMonth()/6)/10;
-    var perc = Math.round(totalTarget/totalTimePhoneMonth)*100;
+        var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth)*100); 
 
 	var monthStats = [];
 	monthStats.push(
@@ -481,7 +483,14 @@ function getDayLabels() {
 
 //Returns the spannable string for the center of the pie chart
 function getSpannableString() {
-    var total = java.lang.String.valueOf((Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0))));
+    var total = (Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0)));
+    if (total === 0) {
+        var myString = new SpannableString("You have not spent any time on your target apps today!\n Keep up the good work!" );
+        myString.setSpan(new RelativeSizeSpan(1.2), 0, myString.length(), 0);
+        myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, myString.length(), 0);
+        myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);
+        return myString;
+    }
     var myString = new SpannableString("Total: \n" + total + " \n mins" );
     myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);

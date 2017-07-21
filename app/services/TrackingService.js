@@ -46,9 +46,6 @@ android.app.Service.extend("com.habitlab.TrackingService", {
         // this.super.onTaskRemoved(intent);
         // stopTimer();
         // this.stopSelf();
-        // var alarm = context.getSystemService(Context.ALARM_SERVICE);
-        // var serviceToRestart = PendingIntent.getService(context, 3, new Intent(context, com.habitlab.TrackingService.class), 0);
-        // alarm.set(AlarmManager.RTC, System.currentTimeMillis() + 500, serviceToRestart);
     },
 
     onCreate: function() {
@@ -133,16 +130,16 @@ var trackUsage = function () {
             inBlacklistedApplication = true; 
             StorageUtil.visited(currentActivePackage); // log a visit
             InterventionManager.allowVideoBlocking(true);
-            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](currentActivePackage);
-            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](currentActivePackage);
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](true, currentActivePackage);
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](true, currentActivePackage);
         } 
-    } else if (inBlacklistedApplication) {
+    } else if (inBlacklistedApplication && visitStart) {
         // been in a blacklisted application for more than 2 seconds
-        InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentActivePackage, visitStart);
-        InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentActivePackage, visitStart);
+        InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](true, currentActivePackage, visitStart);
+        InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](true, currentActivePackage, visitStart);
 
         if (currentActivePackage === "com.facebook.katana" || currentActivePackage === "com.google.android.youtube") {
-            InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER]();
+            InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true);
         }
     }
 };
@@ -167,15 +164,23 @@ var getActivePackage = function() {
     if (!events.hasNextEvent()) return null;
     
     // iterate to the next event
+    var foregroundEvent;
     while (events.hasNextEvent()) {
         events.getNextEvent(event);
+        if (event.getEventType() === UsageEvents.Event.MOVE_TO_FOREGROUND) {
+            foregroundEvent = event;
+        }
     }
 
     // pull the package name from the event, if applicable
-    var packageName = event.getPackageName();
-    if (event.getEventType() === UsageEvents.Event.MOVE_TO_FOREGROUND && previousPackageName !== packageName) {
-        previousPackageName = packageName;
-        return packageName;
+    if (foregroundEvent) {
+        var packageName = foregroundEvent.getPackageName();
+        if (previousPackageName !== packageName) {
+            previousPackageName = packageName;
+            return packageName;
+        } else {
+            return null;
+        }
     } else {
         return null;
     }

@@ -11,6 +11,5 @@ android.content.BroadcastReceiver.extend("com.habitlab.AlarmReceiver", {
 		console.warn("HERE");
 		NotificationUtil.sendNotification(context, "HabitLab", "Daily Midnight Notification", 98765);
 		// TODO: Whatever needs to be done at midnight
-
 	}
 });
