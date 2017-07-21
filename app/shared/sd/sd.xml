@@ -1,7 +1,6 @@
 <StackLayout class="sidedrawer-left" loaded="onLoaded" >
-	<GridLayout rows="*,auto" columns="auto,*" class="sidedrawer-header" backgroundImage="~/images/flipped_background.png">
-		<Image src="~/images/logo_bubbles.png" class="sd-icon" row="1"/>
-		<Label text="HabitLab" class="sd-title" row="1" col="1" id="menu-title-label"/>
+	<GridLayout rows="*,auto" columns="auto" class="sidedrawer-header" backgroundImage="~/images/flipped_background.png">
+		<Image src="res://ic_inline_logo_text" class="sd-icon" row="1"/>
 	</GridLayout>
 	<StackLayout class="sidedrawer-content">
 		<StackLayout orientation="horizontal" class="side-option" tap="goToProgress" id="progress-option" >
