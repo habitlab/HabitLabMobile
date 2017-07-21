@@ -1,26 +1,24 @@
-<StackLayout class="sidedrawer-left">
-	<StackLayout orientation="vertical" class="sidedrawer-header">
-		<Image src="~/images/icon.png" class="header-icon" />
-	</StackLayout>
+<StackLayout class="sidedrawer-left" loaded="onLoaded" >
+	<StackLayout orientation="vertical" class="sidedrawer-header" backgroundImage="~/images/flipped_background.png"/>
 	<StackLayout class="sidedrawer-content">
-		<StackLayout orientation="horizontal" class="side-option" id="progress" tap="goToProgress" >
-			<Image class="side-icon" src="res://ic_progress" />
+		<StackLayout orientation="horizontal" class="side-option" tap="goToProgress" id="progress-option" >
+			<Image class="side-icon" src="res://ic_progress" id="progress" />
 			<Label text="Progress" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="goals" tap="goToGoals" >
-			<Image class="side-icon" src="res://ic_goals" />
+		<StackLayout orientation="horizontal" class="side-option" tap="goToGoals" id="goals-option" >
+			<Image class="side-icon" src="res://ic_goals" id="goals" />
 			<Label text="Goals" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="interventions" tap="goToInterventions" >
-			<Image class="side-icon" src="res://ic_interventions" />
-			<Label text="Interventions" class="side-label"/>
+		<StackLayout orientation="horizontal" class="side-option" tap="goToNudges" id="nudges-option" >
+			<Image class="side-icon" src="res://ic_nudges" id="nudges" />
+			<Label text="Nudges" class="side-label"/>
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="settings" tap="goToSettings" >
-			<Image class="side-icon" src="res://ic_settings" />
+		<StackLayout orientation="horizontal" class="side-option" tap="goToSettings" id="settings-option" >
+			<Image class="side-icon" src="res://ic_settings" id="settings" />
 			<Label text="Settings" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="contact" tap="goToContact" >
-			<Image class="side-icon" src="res://ic_feedback" />
+		<StackLayout orientation="horizontal" class="side-option" tap="goToFeedback" id="feedback-option" >
+			<Image class="side-icon" src="res://ic_feedback" id="feedback" />
 			<Label text="Feedback" class="side-label" />
 		</StackLayout>
 	</StackLayout>

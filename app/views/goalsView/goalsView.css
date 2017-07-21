@@ -2,6 +2,8 @@
   font-size: 23%;
   text-align: center;
   color: #FFA730;
+  margin-top: 3%;
+  margin-bottom: 2%;
 }
 
 .manage-icon {
@@ -24,8 +26,4 @@
 .goal-scroll {
   padding-right: 6%;
   padding-left: 6%;
-}
-
-.hamburger-icon {
-  width: 5%;
 }
