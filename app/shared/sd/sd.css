@@ -1,42 +1,30 @@
 .sidedrawer-left {
   height: 100%;
+  width: 100%;
   background-color: #FFFFFF;
   color: black;
 }
 
 .sidedrawer-header {
   height: 30%;
-  background-color: #9fc6c6;
   background-size: 100% 100%;
   border-bottom-width: 4%;
   border-color: #D3D3D3;
 }
 
 .sd-icon {
-  height: 30%;
-  margin: 5%;
+  height: 20%;
+  margin: 4%;
   margin-left: 0;
 }
 
 .sd-title {
   font-size: 25%;
   color: white;
-  vertical-align: bottom;
 }
 
 .sidedrawer-content {
   height: 70%;
-}
-
-.header-icon {
-  height: 5%;
-  margin: 2.5%;
-}
-
-.header-label {
-  margin-left: 5%;
-  font-size: 30%;
-  vertical-align: bottom;
 }
 
 #progress {

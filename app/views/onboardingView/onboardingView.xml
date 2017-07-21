@@ -4,30 +4,30 @@
     <Slides:SlideContainer id="slides" pageIndicators="true" height="94%">
 
       <Slides:Slide class="slide">
-        <Label text="{{texts[0]}}" class='title' textWrap='true' />
+        <Label text="{{texts[0]}}" class='title onboarding-label' textWrap='true' />
       </Slides:Slide>
 
       <Slides:Slide class="slide">
-        <Label text="{{titles[1]}}" class='title' textWrap='true'/>
-        <Image src="{{visuals[1]}}" />
-        <Label text="{{texts[1]}}"  textWrap='true' />
+        <Label text="{{titles[1]}}" class='onboarding-label title' textWrap='true'/>
+        <Image src="{{visuals[1]}}" class="onboarding-image" />
+        <Label text="{{texts[1]}}"  textWrap='true' class="onboarding-label"/>
       </Slides:Slide>
 
       <Slides:Slide class="slide">
-        <Label text="{{titles[2]}}" class='title' textWrap='true'/>
-        <Image src="{{visuals[2]}}" />
-        <Label text="{{texts[2]}}" textWrap='true' />
+        <Label text="{{titles[2]}}" class='onboarding-label title' textWrap='true'/>
+        <Image src="{{visuals[2]}}" class="onboarding-image" />
+        <Label text="{{texts[2]}}" textWrap='true' class="onboarding-label" />
       </Slides:Slide>
 
       <Slides:Slide class="slide">
-        <Label text="{{titles[3]}}" class='title' textWrap='true'/>
-        <Image src="{{visuals[3]}}" />
-        <Label text="{{texts[3]}}" textWrap='true' />
+        <Label text="{{titles[3]}}" class='onboarding-label title' textWrap='true'/>
+        <Image src="{{visuals[3]}}" class="onboarding-image" />
+        <Label text="{{texts[3]}}" textWrap='true' class="onboarding-label"/>
       </Slides:Slide>
 
       <Slides:Slide id="slide-usage" class="slide" touch="getUsagePermission">
         <StackLayout>
-          <Label text="{{texts[4]}}" textWrap='true' class="header"/>
+          <Label text="{{texts[4]}}" textWrap='true' class="onboarding-label header"/>
           <VideoPlayer:Video id="firstVideo"
             controls="false" 
             loop="true" autoplay="true" height="400" 
@@ -37,7 +37,7 @@
 
       <Slides:Slide class="slide" touch="getDrawPermission">
         <StackLayout>
-            <Label text="{{texts[5]}}" textWrap='true' class="header"/>
+            <Label text="{{texts[5]}}" textWrap='true' class="onboarding-label header"/>
             <VideoPlayer:Video id="firstVideo"
                 controls="false" 
                 loop="true" autoplay="true" height="400" 
@@ -46,13 +46,13 @@
       </Slides:Slide>
 
       <Slides:Slide id='lastslide' class="slide">
-        <Label text="{{titles[4]}}" class='title' textWrap='true'/>
-        <Image src="{{visuals[4]}}" class="squish" />
-        <Label text="{{texts[6]}}" textWrap='true' />
+        <Label text="{{titles[4]}}" class='onboarding-label title' textWrap='true'/>
+        <Image src="{{visuals[4]}}" class="onboarding-image squish" />
+        <Label text="{{texts[6]}}" textWrap='true' class="onboarding-label" />
       </Slides:Slide>
 
     </Slides:SlideContainer>
-    <Label text='skip' tap='goToNavView' class='skip' />
+    <Label text='skip' tap='goToNavView' class='onboarding-label skip' />
   </StackLayout>
 
 </Page>

@@ -1,11 +1,11 @@
-Label {
+.intervention-label {
   padding-top: 12%;
   padding-bottom: 12%;
   font-size: 18%;
   vertical-align: middle;
 }
 
-GridLayout {
+.intervention-grid {
   margin: 4%;
   border-color: lightgray;
   border-bottom-width: 1px;

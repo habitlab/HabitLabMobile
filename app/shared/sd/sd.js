@@ -5,43 +5,49 @@ var options = ['progress-option', 'goals-option', 'settings-option', 'nudges-opt
 
 exports.onLoaded = function(args) {
   menu = args.object;
+  menu.getViewById('menu-title-label').android.setGravity(80);
+  resetSelected();
 };
 
-var clearSelected = function() {
+var resetSelected = function() {
   options.forEach(function (item) {
-    menu.getViewById(item).className = "side-option";
+    if (item !== selected) {
+      menu.getViewById(item).className = "side-option";
+    } else {
+      menu.getViewById(item).className = "side-option selected-option";
+    }
   });
 };
 
 exports.goToProgress = function() {
-  clearSelected();
-  menu.getViewById('progress-option').className = "side-option selected-option";
+  selected = 'progress-option';
+  resetSelected();
   frameModule.topmost().navigate("views/progressView/progressView");
 };
 
 
 exports.goToGoals = function() {
-  clearSelected();
-  menu.getViewById('goals-option').className = "side-option selected-option";
+  selected = 'goals-option';
+  resetSelected();
   frameModule.topmost().navigate("views/goalsView/goalsView");
 };
 
 
 exports.goToSettings = function() {
-  clearSelected();
-  menu.getViewById('settings-option').className = "side-option selected-option";
+  selected = 'settings-option';
+  resetSelected();
   frameModule.topmost().navigate("views/settingsView/settingsView");
 };
 
 
 exports.goToNudges = function() {
-  clearSelected();
-  menu.getViewById('nudges-option').className = "side-option selected-option";
+  selected = 'nudges-option';
+  resetSelected();
   frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
 exports.goToFeedback = function() {
-  clearSelected();
-  menu.getViewById('feedback-option').className = "side-option selected-option";
+  selected = 'feedback-option';
+  resetSelected();
   frameModule.topmost().navigate("views/feedbackView/feedbackView");
 }

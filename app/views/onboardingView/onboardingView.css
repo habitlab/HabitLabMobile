@@ -1,11 +1,11 @@
-Label {
+.onboarding-label {
 	color: white;
 	text-align: center;
 	width: 90%;
 	font-size: 20%;
 }
 
-Image {
+.onboarding-image {
 	height: 50%;
 	margin: 5%;
 }

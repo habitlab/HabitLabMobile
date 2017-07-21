@@ -1,4 +1,4 @@
-Label {
+.detail-label {
   font-size: 20%;
   padding: 4%;
 }
@@ -28,7 +28,7 @@ Label {
   vertical-align: middle;
 }
 
-GridLayout {
+.detail-grid {
   margin: 4%;
   border-color: lightgray;
   border-bottom-width: 1px;
