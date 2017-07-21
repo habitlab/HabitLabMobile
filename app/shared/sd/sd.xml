@@ -1,5 +1,8 @@
 <StackLayout class="sidedrawer-left" loaded="onLoaded" >
-	<StackLayout orientation="vertical" class="sidedrawer-header" backgroundImage="~/images/flipped_background.png"/>
+	<GridLayout rows="*,auto" columns="auto,*" class="sidedrawer-header" backgroundImage="~/images/flipped_background.png">
+		<Image src="~/images/logo_bubbles.png" class="sd-icon" row="1"/>
+		<Label text="HabitLab" class="sd-title" row="1" col="1" />
+	</GridLayout>
 	<StackLayout class="sidedrawer-content">
 		<StackLayout orientation="horizontal" class="side-option" tap="goToProgress" id="progress-option" >
 			<Image class="side-icon" src="res://ic_progress" id="progress" />

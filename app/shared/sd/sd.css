@@ -7,6 +7,21 @@
 .sidedrawer-header {
   height: 30%;
   background-color: #9fc6c6;
+  background-size: 100% 100%;
+  border-bottom-width: 4%;
+  border-color: #D3D3D3;
+}
+
+.sd-icon {
+  height: 30%;
+  margin: 5%;
+  margin-left: 0;
+}
+
+.sd-title {
+  font-size: 25%;
+  color: white;
+  vertical-align: bottom;
 }
 
 .sidedrawer-content {
