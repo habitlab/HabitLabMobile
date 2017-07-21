@@ -1,5 +1,7 @@
 #welcome {
-	padding-top: 10%
+	padding-top: 4%
+	font-size:10%;
+	font-style: italic;
 }
 
 Label {
@@ -56,13 +58,22 @@ TextField {
 	padding-top: 20%;
 }
 
-#icon {
-	height: 15%;
+
+#icon{
+	height: 10%;
 	margin: 5%;
+    animation-name: opacity;
+    animation-duration: 3;
+}
+@keyframes opacity {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 #name {
-	border-bottom-color: white;
-	border-color: white;
+	border-bottom-color: #FFFFFF;
+	border-color: #FFFFFF;
+	text-align: center;
+	font-size: 25%
 }
 
