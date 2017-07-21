@@ -5,7 +5,6 @@ var options = ['progress-option', 'goals-option', 'settings-option', 'nudges-opt
 
 exports.onLoaded = function(args) {
   menu = args.object;
-  menu.getViewById('menu-title-label').android.setGravity(80);
   resetSelected();
 };
 

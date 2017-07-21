@@ -116,8 +116,8 @@ var startOfDay = function() {
  */
 exports.setUp = function() {
   appSettings.clear();
-  var preset = ['com.facebook.katana', 'com.google.android.youtube', 'com.facebook.orca', 
-                'com.snapchat.android', 'com.instagram.android'];
+  var preset = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
+                "com.snapchat.android", "com.instagram.android"];
 
   appSettings.setBoolean('onboarded', true);
   appSettings.setString('selectedPackages', JSON.stringify(preset));

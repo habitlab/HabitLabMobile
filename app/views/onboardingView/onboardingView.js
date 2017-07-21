@@ -1,28 +1,35 @@
 var application = require("application");
 var StorageUtil = require("~/util/StorageUtil");
 var PermissionUtil = require("~/util/PermissionUtil");
+var TextField = require("tns-core-modules/ui/text-field");
+var view = require("ui/core/view");
+var colorModule = require("tns-core-modules/color")
+var Color = android.graphics.Color;
+var dialogs = require("ui/dialogs");
 
 var frameModule = require("ui/frame");
 var gestures = require("ui/gestures").GestureTypes;
 
 var page;
+var name;
+var container;
 var onboarding = {};
 
 onboarding.texts = [
-  'Design how you spend time on your mobile device.',
-  'Build better habits with personalized interventions.',
+  'Design your time online',
   'Choose the apps you want to spend less time on.',
+  'Build better habits with personalized interventions.',
   'See how your habits improve over time.',
   'To get started, allow HabitLab to access your app data',
   'Allow HabitLab to work over other apps',
-  'Swipe to get started.\n'
+  'Swipe to pick your apps.\n'
 
   ];
 
 onboarding.titles = [
-  'HabitLab',
-  'Stop Wasting Time',
+  'Welcome to HabitLab',
   'Set Your Goals',
+  'Stop Wasting Time',
   'Track Your Progress',
   'Let\'s Do It!'
   ];
@@ -42,8 +49,8 @@ exports.pageLoaded = function(args) {
 
   page = args.object;
   page.bindingContext = onboarding;
-  
-
+  container = page.getViewById("slides")
+ 
   page.getViewById('slides').on('finished', function () {
     page.getViewById('lastslide').on(gestures.swipe, function (args) {
       if (args.direction === 2 && !navigated) {
@@ -55,27 +62,55 @@ exports.pageLoaded = function(args) {
 };
 
 
-exports.getUsagePermission = function() {
-  // console.warn(PermissionUtil.checkActionUsagePermission())
-  //  if (!PermissionUtil.checkActionUsagePermission()) {
-  //   PermissionUtil.launchActionUsageIntent();
-  //  }
+exports.goToNextSlide = function(args) {
+  console.warn("swiping");
+  if (args.direction === 2) {
+    container.nextSlide();
+  } 
+  if (args.direction === 1) {
+    container.previousSlide();
+  }
+  
 }
 
 
-exports.getDrawPermission = function() {
-  // console.warn(PermissionUtil.checkSystemOverlayPermission())
-  // if(!PermissionUtil.checkSystemOverlayPermission()) {
-  //   PermissionUtil.launchSystemOverlayIntent();
-  // }
+exports.checkNameNextSlide = function(args) {
+  var textfield = page.getViewById("name");
+  name = textfield.text;
+  if (name === "") {
+      dialogs.alert("Please enter your name!").then(function() {
+       console.warn("Dialog closed!");
+      });
+  } else {
+    console.warn("proceeding")
+    exports.goToNextSlide(args);
+  }
+  
+  
+}
 
+
+exports.getUsagePermission = function(args) {
+   console.warn(!PermissionUtil.checkActionUsagePermission())
+   if (!PermissionUtil.checkActionUsagePermission()) {
+    PermissionUtil.launchActionUsageIntent();
+ } else {
+    exports.goToNextSlide(args);
+ }
+}
+
+
+exports.getDrawPermission = function(args) {
+   console.warn(PermissionUtil.checkSystemOverlayPermission())
+   if(!PermissionUtil.checkSystemOverlayPermission()) {
+    PermissionUtil.launchSystemOverlayIntent();
+   } else {
+    exports.goToNextSlide(args);
+   }
 }
 
 
 
-exports.navigatingTo = function() {
-  console.warn("navigating")
-}
 
 const ServiceManager = require("~/services/ServiceManager");
 const Intent = android.content.Intent;

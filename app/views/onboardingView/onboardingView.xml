@@ -1,31 +1,38 @@
 <Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
   xmlns:Slides="nativescript-slides"  xmlns:VideoPlayer="nativescript-videoplayer">
   <StackLayout orientation='vertical'>
-    <Slides:SlideContainer id="slides" pageIndicators="true" height="94%">
+    <Slides:SlideContainer id="slides" pageIndicators="true" height="94%" disablePan="true">
 
-      <Slides:Slide class="slide">
-        <Label text="{{texts[0]}}" class='title onboarding-label' textWrap='true' />
+
+      <Slides:Slide class="firstSlide" swipe="checkNameNextSlide">
+        <StackLayout>
+        <Image src="{{visuals[0]}}" id="icon" />
+        <Label text="{{titles[0]}}" class='title' textWrap='true'  id="hi"/>
+        <TextField hint="Enter your name" text="{{ name }}" autocorrect="false" autocapitalization="none" style="color:white" id="name" />
+        <Label text="{{texts[0]}}" textWrap='true' id="welcome" />
+      </StackLayout>
       </Slides:Slide>
 
-      <Slides:Slide class="slide">
-        <Label text="{{titles[1]}}" class='onboarding-label title' textWrap='true'/>
-        <Image src="{{visuals[1]}}" class="onboarding-image" />
-        <Label text="{{texts[1]}}"  textWrap='true' class="onboarding-label"/>
+      <Slides:Slide class="slide" swipe="goToNextSlide">
+        <Label text="{{titles[1]}}" class='title' textWrap='true'/>
+        <Image src="{{visuals[1]}}" />
+        <Label text="{{texts[1]}}"  textWrap='true' />
       </Slides:Slide>
 
-      <Slides:Slide class="slide">
-        <Label text="{{titles[2]}}" class='onboarding-label title' textWrap='true'/>
-        <Image src="{{visuals[2]}}" class="onboarding-image" />
-        <Label text="{{texts[2]}}" textWrap='true' class="onboarding-label" />
+      <Slides:Slide class="slide" swipe="goToNextSlide">
+        <Label text="{{titles[2]}}" class='title' textWrap='true'/>
+        <Image src="{{visuals[2]}}" />
+        <Label text="{{texts[2]}}" textWrap='true' />
       </Slides:Slide>
 
-      <Slides:Slide class="slide">
-        <Label text="{{titles[3]}}" class='onboarding-label title' textWrap='true'/>
-        <Image src="{{visuals[3]}}" class="onboarding-image" />
-        <Label text="{{texts[3]}}" textWrap='true' class="onboarding-label"/>
+      <Slides:Slide class="slide" swipe="goToNextSlide">
+        <Label text="{{titles[3]}}" class='title' textWrap='true'/>
+        <Image src="{{visuals[3]}}" />
+        <Label text="{{texts[3]}}" textWrap='true' />
+
       </Slides:Slide>
 
-      <Slides:Slide id="slide-usage" class="slide" touch="getUsagePermission">
+      <Slides:Slide id="slide-usage" class="slide"  swipe="getUsagePermission">
         <StackLayout>
           <Label text="{{texts[4]}}" textWrap='true' class="onboarding-label header"/>
           <VideoPlayer:Video id="firstVideo"
@@ -35,7 +42,7 @@
         </StackLayout>
       </Slides:Slide>
 
-      <Slides:Slide class="slide" touch="getDrawPermission">
+      <Slides:Slide class="slide"  swipe="getDrawPermission">
         <StackLayout>
             <Label text="{{texts[5]}}" textWrap='true' class="onboarding-label header"/>
             <VideoPlayer:Video id="firstVideo"
@@ -45,10 +52,12 @@
         </StackLayout>
       </Slides:Slide>
 
-      <Slides:Slide id='lastslide' class="slide">
-        <Label text="{{titles[4]}}" class='onboarding-label title' textWrap='true'/>
-        <Image src="{{visuals[4]}}" class="onboarding-image squish" />
-        <Label text="{{texts[6]}}" textWrap='true' class="onboarding-label" />
+
+      <Slides:Slide id='lastslide' class="slide" swipe="goToNavView">
+        <Label text="{{titles[4]}}" class='title' textWrap='true'/>
+        <Image src="{{visuals[4]}}" class="squish" />
+        <Label text="{{texts[6]}}" textWrap='true' />
+
       </Slides:Slide>
 
     </Slides:SlideContainer>

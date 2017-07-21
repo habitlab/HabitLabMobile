@@ -183,7 +183,13 @@ var popToastGlanced = function(real) {
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
+
+
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
+// var HARD_NOTIF_INTERVAL = 1800000; //30 minutes (in ms)
+var HARD_NOTIF_INTERVAL = 1000
+
+
 
 // logging vars
 var sentToast = false;
