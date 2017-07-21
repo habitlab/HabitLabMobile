@@ -45,8 +45,7 @@
 		<activity android:name="com.tns.ErrorReportActivity"/>
 		<service 
 			android:name="com.habitlab.TrackingService"
-			android:exported="false" 
-			android:stopWithTask="false">
+			android:exported="false">
 		</service>
 		<service 
 			android:name="com.habitlab.UnlockService"

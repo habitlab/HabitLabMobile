@@ -183,17 +183,7 @@ var popToastGlanced = function(real) {
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
-<<<<<<< HEAD
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
-=======
-<<<<<<< HEAD
-var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
-// var HARD_NOTIF_INTERVAL = 1800000; //30 minutes (in ms)
-var HARD_NOTIF_INTERVAL = 1000
-=======
-var DURATION_NOTIF_INTERVAL = 600000; // 15 minutes (in ms)
->>>>>>> origin/master
->>>>>>> 04e6e032c32d18921ac0bea3cae3e53bb92f4561
 
 // logging vars
 var sentToast = false;
@@ -367,7 +357,7 @@ module.exports = {
     sendNotificationVisitLength,
     popToastVisited,
     sendNotificationVisited,
-    blockVideo,
+    blockVideo
     // showHeaderFooter
   ], 
   allowVideoBlocking,

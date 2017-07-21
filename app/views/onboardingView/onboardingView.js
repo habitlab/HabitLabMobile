@@ -56,18 +56,18 @@ exports.pageLoaded = function(args) {
 
 
 exports.getUsagePermission = function() {
-  console.warn(PermissionUtil.checkActionUsagePermission())
-   if (!PermissionUtil.checkActionUsagePermission()) {
-    PermissionUtil.launchActionUsageIntent();
-   }
+  // console.warn(PermissionUtil.checkActionUsagePermission())
+  //  if (!PermissionUtil.checkActionUsagePermission()) {
+  //   PermissionUtil.launchActionUsageIntent();
+  //  }
 }
 
 
 exports.getDrawPermission = function() {
-  console.warn(PermissionUtil.checkSystemOverlayPermission())
-  if(!PermissionUtil.checkSystemOverlayPermission()) {
-    PermissionUtil.launchSystemOverlayIntent();
-  }
+  // console.warn(PermissionUtil.checkSystemOverlayPermission())
+  // if(!PermissionUtil.checkSystemOverlayPermission()) {
+  //   PermissionUtil.launchSystemOverlayIntent();
+  // }
 
 }
 

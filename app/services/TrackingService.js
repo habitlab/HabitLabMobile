@@ -135,14 +135,8 @@ var trackUsage = function () {
         } 
     } else if (inBlacklistedApplication && visitStart) {
         // been in a blacklisted application for more than 2 seconds
-<<<<<<< HEAD
         InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](true, currentActivePackage, visitStart);
         InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](true, currentActivePackage, visitStart);
-=======
-        InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](currentActivePackage, visitStart);
-        InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](currentActivePackage, visitStart);
-        // InterventionManager.interventions[11](currentActivePackage, visitStart);
->>>>>>> 04e6e032c32d18921ac0bea3cae3e53bb92f4561
 
         if (currentActivePackage === "com.facebook.katana" || currentActivePackage === "com.google.android.youtube") {
             InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true);
