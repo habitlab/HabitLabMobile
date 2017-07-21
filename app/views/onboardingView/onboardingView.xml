@@ -6,9 +6,9 @@
       <Slides:Slide class="firstSlide">
         <StackLayout>
         <Label text="{{titles[0]}}" class='title' textWrap='true'  id="hi"/>
-        <TextField hint="name" autocorrect="false" autocapitalization="none"/>
+        <TextField hint="Enter your name" autocorrect="false" autocapitalization="none" color="#FFFFFF" id="name"/>
         <Image src="{{visuals[0]}}" id="icon" />
-        <Label text="{{texts[0]}}" textWrap='true' id="welcome" />
+        <Label text="{{texts[0]}}" textWrap='true' id="welcome" class="title"/>
       </StackLayout>
       </Slides:Slide>
 
