@@ -2,6 +2,7 @@ const NotificationUtil = require("~/util/NotificationUtil");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
 const StorageUtil = require("~/util/StorageUtil");
 const DialogOverlay = require("~/overlays/DialogOverlay");
+const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
 
 var application = require('application');
@@ -12,6 +13,7 @@ var AudioManager = android.media.AudioManager;
 var Context = android.content.Context;
 var Intent = android.content.Intent;
 var System = java.lang.System;
+// var AccessibilityService = android.accessibilityservice.AccessibilityService;
 
 // global vars
 var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
@@ -181,7 +183,17 @@ var popToastGlanced = function(real) {
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
+<<<<<<< HEAD
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
+=======
+<<<<<<< HEAD
+var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
+// var HARD_NOTIF_INTERVAL = 1800000; //30 minutes (in ms)
+var HARD_NOTIF_INTERVAL = 1000
+=======
+var DURATION_NOTIF_INTERVAL = 600000; // 15 minutes (in ms)
+>>>>>>> origin/master
+>>>>>>> 04e6e032c32d18921ac0bea3cae3e53bb92f4561
 
 // logging vars
 var sentToast = false;
@@ -310,9 +322,36 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
       if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
         DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
           "Yes", "No", positiveCallback, negativeCallback);
+        console.warn("activated")
       }
     }
 });
+
+
+
+
+
+// //Shows a header and footer overlap that hides the bottom and top actionbars of an app
+// var showHeaderFooter = function(pkg, visitStart) {
+//  if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
+//     var now = System.currentTimeMillis();
+//     if ((now - visitStart) > HARD_NOTIF_INTERVAL) {
+//       var applicationName = UsageInformationUtil.getAppName(pkg);
+//       var title = applicationName + " Visit Length";
+//       var msg = "You've been using " + applicationName + " for 30 minutes";
+//       TopAndTailOverlay.showHeaderFooterDisplay(context);
+//       console.warn("header and footer activated");
+//     }
+//   }
+// }
+
+
+
+
+
+
+
+
 
 
 
@@ -328,7 +367,8 @@ module.exports = {
     sendNotificationVisitLength,
     popToastVisited,
     sendNotificationVisited,
-    blockVideo
+    blockVideo,
+    // showHeaderFooter
   ], 
   allowVideoBlocking,
   logVisitStart

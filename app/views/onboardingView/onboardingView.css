@@ -33,3 +33,9 @@ Image {
 #slides {
 	transform: translateY(40%);
 }
+
+.header {
+	vertical-align: top;
+	padding: 30%;
+	font-size: 23%;
+}

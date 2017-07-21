@@ -90,7 +90,6 @@ exports.onDone = function() {
   });
   var options = {
     moduleName: 'views/goalsView/goalsView',
-    backstackVisible: false,
     context: {
       updated: wasChanged
     }
