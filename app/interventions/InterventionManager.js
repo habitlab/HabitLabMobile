@@ -36,7 +36,13 @@ var VISITED_NOTIF_INTERVAL = 15;
  * Displays a toast after VISITED_TOAST_INTERVAL visits to the 
  * specified package.
  */
-var popToastVisited = function(pkg) {
+var popToastVisited = function(real, pkg) {
+  if (!real) {
+    Toast.makeText("Facebook visits today: 7").show();
+    return;
+  }
+
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
     var applicationName = UsageInformationUtil.getAppName(pkg);
     var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
@@ -54,7 +60,12 @@ var popToastVisited = function(pkg) {
  * Displays a notification after VISITED_NOTIF_INTERVAL visits to the 
  * specified package.
  */
-var sendNotificationVisited = function(pkg) {
+var sendNotificationVisited = function(real, pkg) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "Facebook Usage", "You have opened Facebook 7 times today", notificationID.VISIT);
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_NOTIFICATION, pkg)) {
     var applicationName = UsageInformationUtil.getAppName(pkg);
     var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
@@ -75,7 +86,7 @@ var sendNotificationVisited = function(pkg) {
 var UNLOCKS_TOAST_INTERVAL = 10;
 var GLANCES_TOAST_INTERVAL = 20;
 var UNLOCKS_NOTIF_INTERVAL = 25;
-var GLANCES_NOTIF_INTERVAL = 30;
+var GLANCES_NOTIF_INTERVAL = 35;
 
 
 /**
@@ -83,10 +94,15 @@ var GLANCES_NOTIF_INTERVAL = 30;
  * -----------------------
  * Displays a notification after UNLOCKS_NOTIF_INTERVAL device unlocks.
  */
-var sendUnlocksNotification = function() {
+var sendUnlocksNotification = function(real) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "Unlock Alert", "You've unlocked your phone 7 times today", notificationID.VISIT);
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_NOTIFICATION)) {
     var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
-    var title = 'Unlock Alert!';
+    var title = 'Unlock Alert';
     var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
     
     if (unlocks % UNLOCKS_NOTIF_INTERVAL === 0) {
@@ -101,7 +117,12 @@ var sendUnlocksNotification = function() {
  * ----------------
  * Displays a toast after UNLOCKS_TOAST_INTERVAL device unlocks.
  */
-var popToastUnlocked = function() {
+var popToastUnlocked = function(real) {
+  if (!real) {
+    Toast.makeText("Today's Unlock Count: 7").show();
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_TOAST)) {
     var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
 
@@ -117,10 +138,15 @@ var popToastUnlocked = function() {
  * -----------------------
  * Displays a notification after GLANCES_NOTIF_INTERVAL device glances.
  */
-var sendNotificationGlances = function() {
+var sendNotificationGlances = function(real) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "Glance Alert", "You've glanced at your phone 7 times today", notificationID.VISIT);
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_NOTIFICATION)) {
     var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
-    var title = 'Glance Alert!';
+    var title = 'Glance Alert';
     var msg = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
 
     if (glances % GLANCES_NOTIF_INTERVAL === 0) {
@@ -135,7 +161,12 @@ var sendNotificationGlances = function() {
  * ---------------
  * Displays a toast after GLANCES_TOAST_INTERVAL device glances.
  */
-var popToastGlanced = function() {
+var popToastGlanced = function(real) {
+  if (!real) {
+    Toast.makeText("Today's Glance Count: 7").show();
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_TOAST)) {
     var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
 
@@ -150,7 +181,7 @@ var popToastGlanced = function() {
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
-var DURATION_NOTIF_INTERVAL = 600000; // 15 minutes (in ms)
+var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 
 // logging vars
 var sentToast = false;
@@ -175,7 +206,12 @@ var logVisitStart = function() {
  * Displays a toast after DURATION_TOAST_INTERVAL ms on the 
  * specified package.
  */
-var popToastVisitLength = function (pkg, visitStart) {
+var popToastVisitLength = function (real, pkg, visitStart) {
+  if (!real) {
+    Toast.makeText("You've been on Facebook for 5 minutes").show();
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_TOAST, pkg)) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_TOAST_INTERVAL && !sentToast) {
@@ -192,7 +228,12 @@ var popToastVisitLength = function (pkg, visitStart) {
  * Displays a notification after DURATION_TOAST_INTERVAL ms 
  * on the specified package.
  */
-var sendNotificationVisitLength = function (pkg, visitStart) {
+var sendNotificationVisitLength = function (real, pkg, visitStart) {
+  if (!real) {
+    NotificationUtil.sentNotification(context, "Facebook Visit Length", "You've been using Facebook for 10 minutes", notificationID.GLANCE);
+    return;
+  }
+
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotification) {
@@ -229,7 +270,13 @@ var allowVideoBlocking = function(bool) {
  * Blocks all videos from the current package by constantly 
  * requesting audio focus.
  */
-var blockVideo = function () {
+var blockVideo = function (real) {
+  if (!real) {
+    DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
+          "Yes", "No", null, null);
+    return;
+  }
+
   if (shouldBlockVideo) {
     audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
   }

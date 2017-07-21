@@ -32,13 +32,13 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         if (action === Intent.ACTION_SCREEN_ON) {
             timePhoneTurnedOn = System.currentTimeMillis();
             StorageUtil.glanced();
-            InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION]();
-            // InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST]();
+            InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION](true);
+            // InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST](true);
         } else if (action === Intent.ACTION_USER_PRESENT) {
             TrackingService.alertScreenOn();
             StorageUtil.unlocked();
-            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION]();
-            // InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST]();
+            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION](true);
+            // InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST](true);
         } else if (action === Intent.ACTION_SCREEN_OFF) {
             TrackingService.alertScreenOff();
 
