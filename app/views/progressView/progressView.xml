@@ -6,7 +6,7 @@
   xmlns:lv="nativescript-telerik-ui/listview"
   navigatingTo="navigatingTo">
 
-	<ActionBar title="HabitLab" class="action-bar">
+	<ActionBar title="Progress" class="action-bar">
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 

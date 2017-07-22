@@ -9,6 +9,7 @@ var dialogs = require("ui/dialogs");
 
 var frameModule = require("ui/frame");
 var gestures = require("ui/gestures").GestureTypes;
+var gesture = require("ui/gestures");
 
 var page;
 var name;
@@ -16,18 +17,18 @@ var container;
 var onboarding = {};
 
 onboarding.texts = [
-  'Design your time online',
+  'Design your time on your phone',
   'Choose the apps you want to spend less time on.',
   'Build better habits with personalized interventions.',
   'See how your habits improve over time.',
   'To get started, allow HabitLab to access your app data',
-  'Allow HabitLab to work over other apps',
+  'Just one left! Allow HabitLab to work over other apps',
   'Swipe to pick your apps.\n'
 
   ];
 
 onboarding.titles = [
-  'Welcome to HabitLab',
+  'Welcome to HabitLab,',
   'Set Your Goals',
   'Stop Wasting Time',
   'Track Your Progress',
@@ -61,6 +62,11 @@ exports.pageLoaded = function(args) {
   }); 
 };
 
+exports.hideCursor = function(args) {
+  var textField = args.object;
+  console.warn("hude");
+}
+
 
 exports.goToNextSlide = function(args) {
   console.warn("swiping");
@@ -90,6 +96,23 @@ exports.checkNameNextSlide = function(args) {
 }
 
 
+exports.giveUsagePermission = function(args) {
+  if (!PermissionUtil.checkActionUsagePermission()) {
+    PermissionUtil.launchActionUsageIntent();
+ } else {
+    alert("You've already authorized HabitLab. Swipe to continue!")
+ }
+}
+
+exports.giveDrawPermission = function(args) {
+  if(!PermissionUtil.checkSystemOverlayPermission()) {
+    PermissionUtil.launchSystemOverlayIntent();
+   }  else {
+    alert("You've already authorized HabitLab. Swipe to continue!")
+ }
+}
+
+
 exports.getUsagePermission = function(args) {
    console.warn(!PermissionUtil.checkActionUsagePermission())
    if (!PermissionUtil.checkActionUsagePermission()) {
@@ -112,33 +135,12 @@ exports.getDrawPermission = function(args) {
 
 
 
-const ServiceManager = require("~/services/ServiceManager");
-const Intent = android.content.Intent;
 
-var context = applicationModule.android.context;
-var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
-var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
-var dummyServiceIntent = new Intent(context, com.habitlab.DummyService.class);
 
-exports.goToNavView = function(args) {
+exports.goToGoalView = function(args) {
   if (!StorageUtil.isSetUp()) {
     StorageUtil.setUp();
 
-    /** SERVICE STARTER **/
-    if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-      context.startService(trackingServiceIntent);
-    }
-
-    if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-      context.startService(unlockServiceIntent);
-    }
-
-    if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-      context.startService(dummyServiceIntent);
-    }
-
-
-    /** SET UP ALARM **/
     const DAY = 86400 * 1000;
     var context = application.android.context;
     var alarm = context.getSystemService(android.content.Context.ALARM_SERVICE);
@@ -153,6 +155,12 @@ exports.goToNavView = function(args) {
 
     alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);    
   }
+  if (args.direction === 2) {
+    console.warn("Go to goals")
+    frameModule.topmost().navigate("views/appsView/appsView");
+  } 
+  if (args.direction === 1) {
+    container.previousSlide();
+  }
   
-  frameModule.topmost().navigate("views/navView/navView");
 };
