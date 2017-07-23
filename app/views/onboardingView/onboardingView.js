@@ -133,8 +133,9 @@ exports.getDrawPermission = function(args) {
    }
 }
 
-
-
+exports.goToSkip = function(args) {
+  frameModule.topmost().navigate("views/progressView/progressView");
+}
 
 const ServiceManager = require("~/services/ServiceManager");
 var context = application.android.context;
