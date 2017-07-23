@@ -70,20 +70,20 @@
 
 
 #listButtons {
-	margin-top: 15;
-	padding: 15;
+	margin-top: 3%;
+	padding: 10%;
 	background-color: #FFBD60;
 }
 
 #weekButtons {
-	margin-top: 15;
-	padding: 15;
+	margin-top: 3%;
+	padding: 10%;
 	background-color: #DAECF3;
 }
 
 #monthButtons {
-	margin-top: 15;
-	padding: 15;
+	margin-top: 3%;
+	padding: 10%;
 	background-color: #F7BBC3;
 }
 
