@@ -39,11 +39,20 @@
 .app-list-scroll {
   width: 100%;
   margin: auto;
-  height: 93%;
+  height: 85%;
 }
 
 
 #button {
-  background-color: #FF9F1C;
+  background-color: #69BD68;
   color: white;
+}
+
+#title {
+  font-size: 20%;
+  text-align: center;
+  padding: 10%;
+  background-color: #F7BBC3;
+  color: #747F89;
+
 }

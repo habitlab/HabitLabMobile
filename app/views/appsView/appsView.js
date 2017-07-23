@@ -1,12 +1,11 @@
 var UsageUtil = require("~/util/UsageInformationUtil");
 var StorageUtil = require("~/util/StorageUtil");
+var fancyAlert = require("nativescript-fancyalert");
 
 var frame = require('ui/frame');
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
-var fancyAlert = require("nativescript-fancyalert");
-
 
 var drawer;
 var pkgs;
@@ -84,6 +83,13 @@ exports.toggleDrawer = function() {
 
 exports.onDone = function() {
   var wasChanged = false;
+
+  //notification on done (first time only)
+  if (!StorageUtil.isSetUp()) {
+    fancyAlert.TNSFancyAlert.showSuccess("Nice!", "How long do you want to spend on these apps?", "Set Goals");
+  }
+
+
   Object.keys(toToggle).forEach(function(key) {
     if (toToggle[key]) {
       StorageUtil.togglePackage(key);
