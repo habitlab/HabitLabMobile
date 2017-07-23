@@ -5,6 +5,8 @@ var frame = require('ui/frame');
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
+var fancyAlert = require("nativescript-fancyalert");
+
 
 var drawer;
 var pkgs;

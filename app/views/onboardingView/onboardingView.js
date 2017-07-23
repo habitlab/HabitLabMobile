@@ -101,7 +101,7 @@ exports.giveUsagePermission = function(args) {
   if (!PermissionUtil.checkActionUsagePermission()) {
     PermissionUtil.launchActionUsageIntent();
  } else {
-    alert("You've already authorized HabitLab. Swipe to continue!")
+    fancyAlert.TNSFancyAlert.showInfo("Good job!", "You've already authorized HabitLab. Swipe to continue", "Sweet!");
  }
 }
 
@@ -109,7 +109,7 @@ exports.giveDrawPermission = function(args) {
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
    }  else {
-    alert("You've already authorized HabitLab. Swipe to continue!")
+    fancyAlert.TNSFancyAlert.showInfo("Good job!", "You've already authorized HabitLab. Swipe to continue", "Sweet!");
  }
 }
 

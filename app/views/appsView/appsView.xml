@@ -5,7 +5,7 @@
 
   <ActionBar title="Goals" class="action-bar">
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
-    <ActionItem tap="onDone" text="done" />
+    <!-- <ActionItem tap="onDone" text="done" /> -->
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
@@ -15,9 +15,12 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <ScrollView orientation="vertical" class="app-list-scroll" >
-        <GridLayout id="grid" columns="*,*,*" />
-      </ScrollView>
+      <StackLayout>
+        <ScrollView orientation="vertical" class="app-list-scroll" >
+          <GridLayout id="grid" columns="*,*,*" />
+        </ScrollView>
+        <Button text="done" id="button" tap="onDone"/>
+      </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>
