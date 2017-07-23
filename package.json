@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "nativescript-effects": "^0.5.0",
+    "nativescript-fancyalert": "^1.1.2",
     "nativescript-localstorage": "^1.1.5",
     "nativescript-slides": "^2.2.11",
     "nativescript-telerik-ui": "^3.0.1",

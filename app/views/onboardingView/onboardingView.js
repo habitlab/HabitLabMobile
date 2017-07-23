@@ -6,6 +6,7 @@ var view = require("ui/core/view");
 var colorModule = require("tns-core-modules/color")
 var Color = android.graphics.Color;
 var dialogs = require("ui/dialogs");
+var fancyAlert = require("nativescript-fancyalert");
 
 var frameModule = require("ui/frame");
 var gestures = require("ui/gestures").GestureTypes;
@@ -62,6 +63,8 @@ exports.pageLoaded = function(args) {
   }); 
 };
 
+
+//hide cursor when the return button on the keyboardi s pressed 
 exports.hideCursor = function(args) {
   var textField = args.object;
   console.warn("hude");
@@ -84,9 +87,7 @@ exports.checkNameNextSlide = function(args) {
   var textfield = page.getViewById("name");
   name = textfield.text;
   if (name === "") {
-      dialogs.alert("Please enter your name!").then(function() {
-       console.warn("Dialog closed!");
-      });
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "Dismiss");
   } else {
     console.warn("proceeding")
     exports.goToNextSlide(args);
