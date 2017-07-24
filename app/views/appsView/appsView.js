@@ -71,6 +71,7 @@ var createCell = function(info, r, c)  {
 };
 
 exports.pageLoaded = function(args) {
+  StorageUtil.getProgressViewInfo();
   toToggle = {};
   drawer = args.object.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();

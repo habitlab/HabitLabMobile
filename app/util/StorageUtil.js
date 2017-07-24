@@ -5,18 +5,6 @@ var System = java.lang.System;
 var DAY_IN_MS = 86400000;
 var force = false;
 
-var days = {
-  TODAY: -1,
-  ALL: 0,
-  SUN: 1,
-  MON: 2,
-  TUE: 3,
-  WED: 4,
-  THU: 5,
-  FRI: 6,
-  SAT: 7
-};
-
 var interventions = {
   GLANCE_TOAST: 0,
   GLANCE_NOTIFICATION: 1,
@@ -45,7 +33,6 @@ var interventionDetails = [
   {name: "Video Pause", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']}
 ];
 
-exports.days = days;
 exports.interventions = interventions;
 exports.interventionDetails = interventionDetails;
 
@@ -54,6 +41,17 @@ exports.interventionDetails = interventionDetails;
  *             HELPERS              *
  ************************************/
 
+var daysSinceEpoch = function(ms) {
+  if (ms) {
+    return Math.floor(ms / DAY_IN_MS);
+  } else {
+    return Math.floor(java.lang.System.currentTimeMillis() / DAY_IN_MS);
+  }
+};
+
+var index = function(ms) {
+  return daysSinceEpoch(ms) % 28;
+};
 
 var PkgStat = function() {
   return {visits: 0, time: 0};
@@ -78,7 +76,7 @@ var PhGoal = function() {
 var createPackageData = function(packageName) {
   appSettings.setString(packageName, JSON.stringify({
       goals: PkgGoal(), 
-      stats: [PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat(), PkgStat()],
+      stats: Array(28).fill(PkgStat()),
       enabled: Array(interventionDetails.length).fill(true)
     }));
 };
@@ -90,7 +88,7 @@ var createPackageData = function(packageName) {
 var createPhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
       goals: PhGoal(), 
-      stats: [PhStat(), PhStat(), PhStat(), PhStat(), PhStat(), PhStat(), PhStat()],
+      stats: Array(28).fill(PhStat()),
       enabled: Array(interventionDetails.length).fill(true)
     }));
 };
@@ -101,7 +99,7 @@ var startOfDay = function() {
   startOfTarget.set(Calendar.MINUTE, 0);
   startOfTarget.set(Calendar.SECOND, 0);
   startOfTarget.set(Calendar.MILLISECOND, 0);
-  return startOfTarget;
+  return startOfTarget.getTimeInMillis();
 };
 
 
@@ -121,7 +119,7 @@ exports.setUp = function() {
 
   appSettings.setBoolean('onboarded', true);
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setNumber('lastDateActive', startOfDay().getTimeInMillis());
+  appSettings.setNumber('lastDateActive', startOfDay());
 
   createPhoneData();
   preset.forEach(function (item) {
@@ -222,35 +220,17 @@ exports.isPackageSelected = function(packageName) {
  * Depending on the index passed in gives the user, the desired data. If it is with flag ALL, 
  * arranges the data so it is from least recent to most recent (for graphs, etc.).
  */
-var arrangeData = function(dataArr, index) {
-  if (index < -1 || index > 7) {
-    return -1;
-  }
-
-  var i = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-  if (index === days.TODAY) {
-    return dataArr[i-1];
-  } else if (index) {
-    return dataArr[index-1];
-  } else {
-    if (i === 7) {
-      return dataArr;
-    }
-    return dataArr.splice(i, dataArr.length).concat(dataArr.splice(0, i));
-  }
-  
+var arrangeData = function(dataArr) {
+  var i = index();
+  return dataArr.splice(i+1, dataArr.length).concat(dataArr.splice(0, i+1));
 };
 
 /* export: getVisits
  * -----------------
- * Gets number of visits to the specified packageName on the given day. Returns as
- * either a number or an array of numbers (with today as the last index).
+ * Gets number of visits to the specified packageName.
  */
-exports.getVisits = function(packageName, index) {
-  var packageData = JSON.parse(appSettings.getString(packageName)).stats.map(function (item) { 
-    return item['visits']; 
-  });
-  return arrangeData(packageData, index);
+exports.getVisits = function(packageName) {
+  return JSON.parse(appSettings.getString(packageName)).stats[index()]['visits']; 
 };
 
 /* export: visited
@@ -258,9 +238,8 @@ exports.getVisits = function(packageName, index) {
  * Adds one to the visits for today.
  */
 exports.visited = function(packageName) {
-  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   var appInfo = JSON.parse(appSettings.getString(packageName));
-  appInfo['stats'][today-1]['visits']++;
+  appInfo['stats'][index()]['visits']++;
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
@@ -269,11 +248,8 @@ exports.visited = function(packageName) {
  * Gets number of unlocks on the given day. Returns as
  * either a number or an array of numbers (with today as the last index).
  */
-exports.getUnlocks = function(index) {
-  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
-    return item['unlocks']; 
-  });
-  return arrangeData(phoneData, index);
+exports.getUnlocks = function() {
+  return JSON.parse(appSettings.getString('phone')).stats[index()]['unlocks']; 
 };
 
 /* export: unlocked
@@ -281,9 +257,8 @@ exports.getUnlocks = function(index) {
  * Adds one to the unlocks for today.
  */
 exports.unlocked = function() {
-  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][today-1]['unlocks']++;
+  phoneInfo['stats'][index()]['unlocks']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -292,11 +267,8 @@ exports.unlocked = function() {
  * Gets number of glances on the given day. Returns as
  * either a number or an array of numbers (with today as the last index).
  */
-exports.getGlances = function(index) {
-  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
-    return item['glances']; 
-  });
-  return arrangeData(phoneData, index);
+exports.getGlances = function() {
+  return JSON.parse(appSettings.getString('phone')).stats[index()]['glances']; 
 };
 
 /* export: glanced
@@ -304,14 +276,8 @@ exports.getGlances = function(index) {
  * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-  var lastDateActive = appSettings.getNumber('lastDateActive');
-  var start = startOfDay();
-  var today = start.get(Calendar.DAY_OF_WEEK);
-  var difference = Math.round((start.getTimeInMillis() - lastDateActive) / DAY_IN_MS);
-  resetData(difference, today);
-
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][today-1]['glances']++;
+  phoneInfo['stats'][index()]['glances']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -321,11 +287,11 @@ exports.glanced = function() {
  * day (time is in milliseconds).
  */
 exports.updateAppTime = function(packageName, time) {
-  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+  var i = index();
   var appInfo = JSON.parse(appSettings.getString(packageName));
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  appInfo['stats'][today-1]['time'] += time;
-  phoneInfo['stats'][today-1]['time'] += time;
+  appInfo['stats'][i]['time'] += time;
+  phoneInfo['stats'][i]['time'] += time;
   appSettings.setString(packageName, JSON.stringify(appInfo));
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
@@ -334,22 +300,16 @@ exports.updateAppTime = function(packageName, time) {
  * ------------------
  * Returns time on the app so far today (in ms).
  */
-exports.getAppTime = function(packageName, index) {
-  var packageData = JSON.parse(appSettings.getString(packageName)).stats.map(function (item) { 
-    return item['time']; 
-  });
-  return arrangeData(packageData, index);
+exports.getAppTime = function(packageName) {
+  return JSON.parse(appSettings.getString(packageName)).stats[index()]['time'];
 };
 
 /* export: getTargetTime
  * ---------------------
  * Returns total time on target apps so far today (in ms).
  */
-exports.getTargetTime = function(index) {
-  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
-    return item['time']; 
-  });
-  return arrangeData(phoneData, index);
+exports.getTargetTime = function() {
+  return JSON.parse(appSettings.getString('phone')).stats[index()]['time'];
 };
 
 /* export: updateTotalTime
@@ -357,9 +317,8 @@ exports.getTargetTime = function(index) {
  * Called when the phone has been used. Updates the total time for the day (time is in milliseconds).
  */
 exports.updateTotalTime = function(time) {  
-  var today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][today-1]['totalTime'] += time;
+  phoneInfo['stats'][index()]['totalTime'] += time;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -367,41 +326,22 @@ exports.updateTotalTime = function(time) {
  * --------------------
  * Returns total time on phone so far today (in ms).
  */
-exports.getTotalTime = function(index) {
-  var phoneData = JSON.parse(appSettings.getString('phone')).stats.map(function (item) { 
-    return item['totalTime']; 
-  });
-  return arrangeData(phoneData, index);
+exports.getTotalTime = function() {
+  return JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime'];
 };
 
-/* helper: resetData
- * -----------------
- * Runs whenever a glance happens to erase data that will now be overwritten (if there is any).
- */
-var resetData = function(days, today) {
-  if (!days) {
-    return;
-  }
-
-  appSettings.setNumber('lastDateActive', startOfDay().getTimeInMillis());
+exports.midnightReset = function() {
+  var today = index();
+  appSettings.setNumber('lastDateActive', startOfDay());
 
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  for (var i = 0; i < days && i < 7; i++) {
-    phoneInfo.stats[(today + 6 - i) % 7] = {
-      glances: 0,
-      unlocks: 0
-    };
-  }
+  phoneInfo.stats[today] = PhStat();
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 
   var list = JSON.parse(appSettings.getString('selectedPackages'));
   list.forEach(function (packageName) {
     var appInfo = JSON.parse(appSettings.getString(packageName));
-    for (var i = 0; i < days && i < 7; i++) {
-      appInfo['stats'][(today + 6 - i) % 7] = {
-        visits: 0
-      };
-    }
+    appInfo['stats'][today] = PkgStat();
     appSettings.setString(packageName, JSON.stringify(appInfo));
   });
 };
@@ -591,4 +531,20 @@ exports.getUsageGoal = function() {
  */
 exports.getMinutesGoal = function(packageName) {
   return JSON.parse(appSettings.getString(packageName)).goals.minutes;
+};
+
+exports.getProgressViewInfo = function() {
+  var retObj = {}
+  retObj.phoneStats = arrangeData(JSON.parse(appSettings.getString('phone')).stats);
+  
+  var list = JSON.parse(appSettings.getString('selectedPackages'));
+  retObj.appStats = [];
+  list.forEach(function (item) {
+    var appStat = arrangeData(JSON.parse(appSettings.getString(item)).stats);
+    appStat.packageName = item;
+    retObj.appStats.push(appStat);
+  });
+
+  console.dir(retObj.phoneStats);
+  return retObj;
 };

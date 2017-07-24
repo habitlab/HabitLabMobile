@@ -43,7 +43,7 @@ var setUpDetail = function() {
   var level = StorageUtil.interventionDetails[id].level;
   var levelLabel = page.getViewById('level');
   levelLabel.text = level;
-  levelLabel.className = level;
+  levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {
     var packages = StorageUtil.getSelectedPackages();
