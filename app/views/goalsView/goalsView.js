@@ -6,7 +6,6 @@ var gestures = require('ui/gestures').GestureTypes;
 var Grid = require("ui/layouts/grid-layout").GridLayout;
 var StackLayout = require("ui/layouts/stack-layout").StackLayout;
 var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
-var fancyAlert = require("nativescript-fancyalert");
 
 var drawer;
 var page;
