@@ -64,7 +64,7 @@ exports.pageLoaded = function(args) {
 };
 
 
-//hide cursor when the return button on the keyboardi s pressed 
+//hide cursor when the return button on the keyboard is pressed 
 exports.hideCursor = function(args) {
   var textField = args.object;
   console.warn("hude");
@@ -89,11 +89,25 @@ exports.checkNameNextSlide = function(args) {
   if (name === "") {
       fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "Dismiss");
   } else {
-    console.warn("proceeding")
     exports.goToNextSlide(args);
   }
-  
-  
+}
+
+
+exports.checkUsagePermission = function(args) {
+  if (!PermissionUtil.checkActionUsagePermission()) {
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please permit usage access to continue", "Dismiss");
+  } else {
+    exports.goToNextSlide(args);
+  }
+}
+
+exports.checkDrawPermission = function(args) {
+  if (!PermissionUtil.checkActionUsagePermission()) {
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please give permission to continue", "Dismiss");
+  } else {
+    exports.goToNextSlide(args);
+  }
 }
 
 
@@ -109,7 +123,7 @@ exports.giveDrawPermission = function(args) {
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
    }  else {
-    fancyAlert.TNSFancyAlert.showInfo("Look at you", "You've already authorized HabitLab. Swipe to continue!", "Sweet!");
+    fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab. Swipe to continue!", "Sweet!");
  }
 }
 
@@ -134,7 +148,8 @@ exports.getDrawPermission = function(args) {
 }
 
 exports.goToSkip = function(args) {
-  frameModule.topmost().navigate("views/progressView/progressView");
+  container.goToSlide(4);
+  //frameModule.topmost().navigate("views/progressView/progressView");
 }
 
 const ServiceManager = require("~/services/ServiceManager");

@@ -32,23 +32,23 @@
 
       </Slides:Slide>
 
-      <Slides:Slide id="slide-usage" class="slide"  swipe="getUsagePermission">
+      <Slides:Slide id="slide-usage" class="slide"  swipe="checkUsagePermission">
         <StackLayout>
           <Label text="{{texts[4]}}" textWrap='true' class="onboarding-label header"/>
-          <VideoPlayer:Video id="firstVideo"
+          <VideoPlayer:Video class="firstVideo"
             controls="false" 
-            loop="true" autoplay="true" height="400" 
+            loop="true" autoplay="true"
             src="~/videos/UsageExample.mp4" />
           <Button text="Give Usage Permission" tap="giveUsagePermission"/>
         </StackLayout>
       </Slides:Slide>
 
-      <Slides:Slide class="slide"  swipe="getDrawPermission">
+      <Slides:Slide class="slide"  swipe="checkDrawPermission">
         <StackLayout>
             <Label text="{{texts[5]}}" textWrap='true' class="onboarding-label header"/>
-            <VideoPlayer:Video id="firstVideo"
+            <VideoPlayer:Video class="firstVideo"
                 controls="false" 
-                loop="true" autoplay="true" height="400" 
+                loop="true" autoplay="true" 
                 src="~/videos/DrawOverExample.mp4" />
               <Button text="Give Overlay Permission" tap="giveDrawPermission"/>
         </StackLayout>
