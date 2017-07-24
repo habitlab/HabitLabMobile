@@ -36,8 +36,6 @@ var PieChart = com.github.mikephil.charting.charts.PieChart
 var PieEntry = com.github.mikephil.charting.data.PieEntry
 var Legend = com.github.mikephil.charting.components.Legend
 var PieDataSet = com.github.mikephil.charting.data.PieDataSet
-var LayoutParams = android.view.ViewGroup.LayoutParams
-var LinearLayout = android.widget.LinearLayout
 var SpannableString = android.text.SpannableString
 var PieData = com.github.mikephil.charting.data.PieData
 var Easing = com.github.mikephil.charting.animation.Easing;
@@ -543,11 +541,22 @@ function getSpannableString() {
         myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);
         return myString;
     }
+    //Total
     var myString = new SpannableString("Total:\n" + total + "\nmins" );
     myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);
+
+    //#mins
     myString.setSpan(new RelativeSizeSpan(2.0), 6,myString.length()-5,0);
-    myString.setSpan(new ForegroundColorSpan(Color.RED), 6,myString.length()-5,0);
+    if (total <= storageUtil.getPhoneGoals()) {
+        myString.setSpan(new ForegroundColorSpan(Color.GREEN), 6,myString.length()-5,0);
+    } else {
+        myString.setSpan(new ForegroundColorSpan(Color.RED), 6,myString.length()-5,0);
+    }
+    
+
+
+    //mins
     myString.setSpan( new RelativeSizeSpan(0.9), myString.length()-5, myString.length(), 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), myString.length()-5, myString.length(), 0);
     myString.setSpan(new StyleSpan(Typeface.ITALIC), myString.length()-5, myString.length(), 0);

@@ -2,6 +2,7 @@ var frameModule = require("ui/frame");
 var menu;
 var selected;
 var options = ['progress-option', 'goals-option', 'settings-option', 'nudges-option', 'feedback-option'];
+// var fancyAlert = require("nativescript-fancyalert");
 
 exports.onLoaded = function(args) {
   menu = args.object;
@@ -21,6 +22,7 @@ var resetSelected = function() {
 exports.goToProgress = function() {
   selected = 'progress-option';
   resetSelected();
+  // fancyAlert.TNSFancyAlert.showWaiting("Loading...", "Refreshing your daily stats");
   frameModule.topmost().navigate("views/progressView/progressView");
 };
 
