@@ -221,8 +221,8 @@ exports.isPackageSelected = function(packageName) {
  * arranges the data so it is from least recent to most recent (for graphs, etc.).
  */
 var arrangeData = function(dataArr) {
-  var i = index;
-  return dataArr.splice(i, dataArr.length).concat(dataArr.splice(0, i));
+  var i = index();
+  return dataArr.splice(i+1, dataArr.length).concat(dataArr.splice(0, i+1));
 };
 
 /* export: getVisits
@@ -258,7 +258,7 @@ exports.getUnlocks = function() {
  */
 exports.unlocked = function() {
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()-1]['unlocks']++;
+  phoneInfo['stats'][index()]['unlocks']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -277,7 +277,7 @@ exports.getGlances = function() {
  */
 exports.glanced = function() {
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()-1]['glances']++;
+  phoneInfo['stats'][index()]['glances']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -290,8 +290,8 @@ exports.updateAppTime = function(packageName, time) {
   var i = index();
   var appInfo = JSON.parse(appSettings.getString(packageName));
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  appInfo['stats'][i-1]['time'] += time;
-  phoneInfo['stats'][i-1]['time'] += time;
+  appInfo['stats'][i]['time'] += time;
+  phoneInfo['stats'][i]['time'] += time;
   appSettings.setString(packageName, JSON.stringify(appInfo));
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
@@ -300,7 +300,7 @@ exports.updateAppTime = function(packageName, time) {
  * ------------------
  * Returns time on the app so far today (in ms).
  */
-exports.getAppTime = function(packageName, index) {
+exports.getAppTime = function(packageName) {
   return JSON.parse(appSettings.getString(packageName)).stats[index()]['time'];
 };
 
@@ -308,7 +308,7 @@ exports.getAppTime = function(packageName, index) {
  * ---------------------
  * Returns total time on target apps so far today (in ms).
  */
-exports.getTargetTime = function(index) {
+exports.getTargetTime = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['time'];
 };
 
@@ -318,7 +318,7 @@ exports.getTargetTime = function(index) {
  */
 exports.updateTotalTime = function(time) {  
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()-1]['totalTime'] += time;
+  phoneInfo['stats'][index()]['totalTime'] += time;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -326,45 +326,8 @@ exports.updateTotalTime = function(time) {
  * --------------------
  * Returns total time on phone so far today (in ms).
  */
-exports.getTotalTime = function(index) {
+exports.getTotalTime = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime'];
-};
-
-/* helper: resetData
- * -----------------
- * Runs whenever a glance happens to erase data that will now be overwritten (if there is any).
- */
-var resetData = function(days, today) {
-  var lastDateActive = appSettings.getNumber('lastDateActive');
-  var start = startOfDay();
-  var today = index();
-  var days = Math.round((start - lastDateActive) / DAY_IN_MS);
-
-  if (!days) {
-    return;
-  }
-
-  appSettings.setNumber('lastDateActive', start);
-
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  for (var i = 0; i < days && i < 28; i++) {
-    phoneInfo.stats[(today + 27 - i) % 28] = {
-      glances: 0,
-      unlocks: 0
-    };
-  }
-  appSettings.setString('phone', JSON.stringify(phoneInfo));
-
-  var list = JSON.parse(appSettings.getString('selectedPackages'));
-  list.forEach(function (packageName) {
-    var appInfo = JSON.parse(appSettings.getString(packageName));
-    for (var i = 0; i < days && i < 28; i++) {
-      appInfo['stats'][(today + 27 - i) % 28] = {
-        visits: 0
-      };
-    }
-    appSettings.setString(packageName, JSON.stringify(appInfo));
-  });
 };
 
 exports.midnightReset = function() {
@@ -571,13 +534,17 @@ exports.getMinutesGoal = function(packageName) {
 };
 
 exports.getProgressViewInfo = function() {
-  var stats = JSON.parse(appSettings.getString('phone')).stats;
-  var list = appSettings.getSelectedPackages();
-  stats.apps = [];
-  stats.apps.forEach(function (item) {
-    stats.apps.push(JSON.parse(appSettings.getString(item)).stats);
+  var retObj = {}
+  retObj.phoneStats = arrangeData(JSON.parse(appSettings.getString('phone')).stats);
+  
+  var list = JSON.parse(appSettings.getString('selectedPackages'));
+  retObj.appStats = [];
+  list.forEach(function (item) {
+    var appStat = arrangeData(JSON.parse(appSettings.getString(item)).stats);
+    appStat.packageName = item;
+    retObj.appStats.push(appStat);
   });
 
-  return stats;
-
+  console.dir(retObj.phoneStats);
+  return retObj;
 };

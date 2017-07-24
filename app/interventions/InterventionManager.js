@@ -47,7 +47,7 @@ var popToastVisited = function(real, pkg) {
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
     var applicationName = UsageInformationUtil.getAppName(pkg);
-    var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
+    var visits = StorageUtil.getVisits(pkg);
 
     if (visits % VISITED_TOAST_INTERVAL === 0 && visits % VISITED_NOTIF_INTERVAL !== 0) {
       Toast.makeText(applicationName + " visits today: " + visits).show();
@@ -70,7 +70,7 @@ var sendNotificationVisited = function(real, pkg) {
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_NOTIFICATION, pkg)) {
     var applicationName = UsageInformationUtil.getAppName(pkg);
-    var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
+    var visits = StorageUtil.getVisits(pkg);
     var title = applicationName + " Usage";
     var msg = "You have opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
     
@@ -103,7 +103,7 @@ var sendUnlocksNotification = function(real) {
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_NOTIFICATION)) {
-    var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
+    var unlocks = StorageUtil.getUnlocks();
     var title = 'Unlock Alert';
     var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
     
@@ -126,7 +126,7 @@ var popToastUnlocked = function(real) {
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_TOAST)) {
-    var unlocks = StorageUtil.getUnlocks(StorageUtil.days.TODAY);
+    var unlocks = StorageUtil.getUnlocks();
 
     if (unlocks % UNLOCKS_TOAST_INTERVAL === 0) {
       Toast.makeText("Today's Unlock Count: " + unlocks).show();
@@ -147,7 +147,7 @@ var sendNotificationGlances = function(real) {
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_NOTIFICATION)) {
-    var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
+    var glances = StorageUtil.getGlances();
     var title = 'Glance Alert';
     var msg = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
 
@@ -170,7 +170,7 @@ var popToastGlanced = function(real) {
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_TOAST)) {
-    var glances = StorageUtil.getGlances(StorageUtil.days.TODAY);
+    var glances = StorageUtil.getGlances();
 
     if (glances % GLANCES_TOAST_INTERVAL === 0) {
       Toast.makeText("Today's Glance Count: " + glances).show();
