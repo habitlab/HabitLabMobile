@@ -545,6 +545,6 @@ exports.getProgressViewInfo = function() {
     retObj.appStats.push(appStat);
   });
 
-  console.dir(retObj.phoneStats);
+  // console.dir(retObj.phoneStats);
   return retObj;
 };

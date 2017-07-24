@@ -45,67 +45,62 @@ var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
 var Typeface = android.graphics.Typeface;
 var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
+var progressInfo = storageUtil.getProgressViewInfo();
+var TODAY = 27;
+
 
 
 exports.pageLoaded = function(args) {
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
-  	goalApps = storageUtil.getSelectedPackages(); 
 	exports.populateListViewsDay();
-	exports.populateListViewsWeek();
-	exports.populateListViewMonth();
+	// exports.populateListViewsWeek();
+	// exports.populateListViewMonth();
 };
+
+
+
 
 
 //Creates the pie chart on the day tab
 exports.dayView = function(args) {
-    // var appsToday = usageUtil.getAppsSingleDay(0);//gets the target apps used today
-    // var total = Math.round(usageUtil.getTimeOnTargetAppsSingleDay(0));
+    var appsToday = getAppsToday();//gets the target apps used today
+    var total = Math.round(progressInfo.phoneStats[TODAY].totalTime);
 
-	//sort appsToday
-	// appsToday.sort(function compare(a, b) {
- //    if (a.mins < b.mins) {
- //      return 1;
- //    } else if (a.mins > b.mins) {
- //      return -1;
- //    }
- //    return 0;
- //  	});
-
-    // add data
+    // // add data
     var piechart = new PieChart(args.context);
     var entries = new ArrayList();
     var main = 0;
     var min;
     var extra;
-    //  if (appsToday.length <= 4) {
-    //     min = appsToday
-    //     flag = true;
-    //  } else if (appsToday.length === 5) {
-    //     flag = false;
-    //     min = 5
-    //  } else if (appsToday.length > 5) {
-    //     min = 4;
-    //     flag = true
-    //  }
-    //  for(var i = 0; i < min; i++) {
-    //         if (appsToday[i].mins === 0) continue;
-	   //   	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
-	   //   	main += appsToday[i].mins;
-    //  }
-    // if (flag) {
-    //      var leftover = total - main;
-    //     if (leftover > 1){
-    //     	entries.add(new PieEntry(leftover, "Other"));
-    //     }
-    // }
+     if (appsToday.length <= 4) {
+        min = appsToday
+        flag = false;
+     } else if (appsToday.length === 5) {
+        flag = false;
+        min = 5
+     } else if (appsToday.length > 5) {
+        min = 4;
+        flag = true
+     }
+     for(var i = 0; i < min; i++) {
+            if (appsToday[i].mins === 0) continue;
+	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
+	     	main += appsToday[i].mins;
+     }
+    if (flag) {
+         var leftover = total - main;
+        if (leftover > 1){
+        	entries.add(new PieEntry(leftover, "Other"));
+        }
+    }
 
     //For demo:
-    entries.add(new PieEntry(23, "Facebook"))
-    entries.add(new PieEntry(41, "Instagram"))
-    entries.add(new PieEntry(11, "Snapchat"))
-    entries.add(new PieEntry(7, "Messenger"))
-    entries.add(new PieEntry(18, "YouTube"))
+    // entries.add(new PieEntry(23, "Facebook"))
+    // entries.add(new PieEntry(41, "Instagram"))
+    // entries.add(new PieEntry(11, "Snapchat"))
+    // entries.add(new PieEntry(7, "Messenger"))
+    // entries.add(new PieEntry(18, "YouTube"))
 
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
@@ -131,7 +126,7 @@ exports.dayView = function(args) {
     piechart.invalidate();
     args.view = piechart;
 
-}
+};
 
 
 
@@ -196,7 +191,7 @@ exports.weekView = function(args) {
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
 	 barchart.invalidate();
 	 args.view = barchart;
-}
+};
 
 
 
@@ -257,7 +252,7 @@ exports.monthView = function(args) {
     barchart.invalidate();
     args.view = barchart;
 
-}
+};
 
 
 
@@ -265,96 +260,85 @@ exports.monthView = function(args) {
 
 
 
-exports.populateListViewsDay = function() {
-	// var timeOnTargetToday = usageUtil.getTimeOnTargetAppsSingleDay(0);
-	// var totalTarget = Math.round(timeOnTargetToday/6)/10;
- //    var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0)/6)/10;
- //    var perc = (total === 0 ? 0 : Math.round(totalTarget/total)*100); 
-	// var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
- //    var glances = storageUtil.getGlances(storageUtil.days.TODAY);
-	// var apps = [];
+exports.populateListViewsDay = function() {   
+     var unlocks = progressInfo.phoneStats[TODAY].unlocks
+     var glances = progressInfo.phoneStats[TODAY].glances
+     var total = progressInfo.phoneStats[TODAY].totalTime/60000
+     var targetTime = progressInfo.phoneStats[TODAY].time/60000
+     var perc =  Math.round(targetTime/total)*100;
 
-	//populates list of apps
-	// for(var i = 0; i < goalApps.length; ++i) {
- //    		var name = usageUtil.getAppName(goalApps[i]);
- //    		var visits = storageUtil.getVisits(goalApps[i], storageUtil.days.TODAY);
- //    		var imagesrc = usageUtil.getIcon(goalApps[i]);
- //    		var mins = Math.round(usageUtil.getTimeOnApplicationSingleDay(goalApps[i],0));
- //    		var appObj = new dayApp(name, visits, imagesrc, mins);
- //    		apps.push(appObj);
- //    }
- // 	apps.sort(function compare(a, b) {
- //    if (a.mins < b.mins) {
- //      return 1;
- //    } else if (a.mins > b.mins) {
- //      return -1;
- //    }
- //    return 0;
- //  	});
- //    var listView = view.getViewById(page, "listview");
- //    listView.items = apps;
+     console.warn(unlocks);
+     console.warn(glances)
+     console.warn(total)
+     console.warn(totalTarget)
+
+    var apps = exports.getAppsToday();
+
+
+    // var listView = view.getViewById(page, "listview");
+    // listView.items = apps;
 
     //For demo:
-    var list = []
-    list.push ({
-        name: "Instagram",
-        image: usageUtil.getIcon("com.instagram.android"),
-        visits: 11,
-        mins: 41
-    },
-    {
-        name: "Facebook",
-        image: usageUtil.getIcon("com.facebook.katana"),
-        visits: 4,
-        mins: 23
-    },
-    {
-        name: "YouTube",
-        image: usageUtil.getIcon("com.google.android.youtube"),
-        visits: 2,
-        mins: 18
-    },
-    {
-        name: "Snapchat",
-        image: usageUtil.getIcon("com.snapchat.android"),
-        visits: 15,
-        mins: 11
-    }
-    )
+    // var list = []
+    // list.push ({
+    //     name: "Instagram",
+    //     image: usageUtil.getIcon("com.instagram.android"),
+    //     visits: 11,
+    //     mins: 41
+    // },
+    // {
+    //     name: "Facebook",
+    //     image: usageUtil.getIcon("com.facebook.katana"),
+    //     visits: 4,
+    //     mins: 23
+    // },
+    // {
+    //     name: "YouTube",
+    //     image: usageUtil.getIcon("com.google.android.youtube"),
+    //     visits: 2,
+    //     mins: 18
+    // },
+    // {
+    //     name: "Snapchat",
+    //     image: usageUtil.getIcon("com.snapchat.android"),
+    //     visits: 15,
+    //     mins: 11
+    // }
+    // )
     var listView = view.getViewById(page, "listview");
-    listView.items = list;
+    listView.items = apps;
 
 	//'buttons' that show the usage daily overall phone usage 
 	var stats = [];
-	// stats.push(
-	// {
-	// 	value: glances,
-	// 	desc: "glances"
-	// },
-	// {
-	// 	value: unlocks,
-	// 	desc: "unlocks"
-	// },
- //    {
- //        value: perc + "%",
- //        desc: "phone time on watchlist apps"
- //    }
-	// )
-    //For demo"
-    stats.push(
+	stats.push(
+	{
+		value: glances,
+		desc: "glances"
+	},
+	{
+		value: total,
+		desc: "time on phone"
+	},
     {
-        value: 91,
-        desc: "glances"
-    },
-    {
-        value: 72,
-        desc: "unlocks"
-    },
-    {
-        value: 77 + "%",
-        desc: "of phone time on watchlist"
+        value: perc + "%",
+        desc: "phone time on watchlist apps"
     }
-    )
+	)
+    //For demo"
+    // stats.push(
+    // {
+    //     value: 91,
+    //     desc: "glances"
+    // },
+    // {
+    //     value: 72,
+    //     desc: "unlocks"
+    // },
+    // {
+    //     value: 77 + "%",
+    //     desc: "of phone time on watchlist"
+    // }
+    // )
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
 };
@@ -437,19 +421,51 @@ exports.populateListViewMonth = function () {
 	)
 	var monthButtons = view.getViewById(page, "monthButtons");
 	monthButtons.items = monthStats;
-}
+};
 
 
+exports.getAppsToday = function() {
+    console.dir(progressInfo);
+    var list = [];
+    for (i = 0; i < progressInfo.appStats.length; i++) {
+        var mins = Math.round(progressInfo.appStats[i][TODAY].time/60000);
+        var visits = progressInfo.appStats[i][TODAY].visits;
+        var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        var icon = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+        // var app = new dayApp(name, visits, icon, mins);
+        // list.push(app);
+        console.warn(mins)
+        console.warn(visits)
+        console.warn(name)
+        list.push({
+            name: name,
+            visits: visits,
+            image: icon,
+            mins: mins
+        })
+    }
+    // sort appsToday
+    list.sort(function compare(a, b) {
+    if (a.mins < b.mins) {
+      return 1;
+    } else if (a.mins > b.mins) {
+      return -1;
+    }
+    return 0;
+    })
+    return list;
+};
 
+   
 
     // Object for an app that contains all the info for the list view 
-    function dayApp (name, visits, imagesrc, mins) {
-        this.name = name;
-        this.visits = visits;
-        this.image = imagesrc;
-        if (mins < 0) mins = 0;
-        this.mins = mins;
-    };
+    // dayApp = function(name, visits, imagesrc, mins) {
+    //     this.name = name;
+    //     this.visits = visits;
+    //     this.image = imagesrc;
+    //     if (mins < 0) mins = 0;
+    //     this.mins = mins;
+    // }
 
 
     function weekApp(name, avgMins, imagesrc) {
@@ -557,9 +573,7 @@ function getSpannableString() {
     } else {
         myString.setSpan(new ForegroundColorSpan(Color.RED), 6,myString.length()-5,0);
     }
-    
-
-
+  
     //mins
     myString.setSpan( new RelativeSizeSpan(0.9), myString.length()-5, myString.length(), 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), myString.length()-5, myString.length(), 0);
