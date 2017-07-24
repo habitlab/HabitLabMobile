@@ -69,7 +69,7 @@ var DialogView = android.view.View.extend({
 
 
 
-function showPosNegDialogOverlay(context, title, msg, pos, neg, posCallback, negCallback) {
+function showOverlay(context, title, msg, pos, neg, posCallback, negCallback) {
 	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
 	// add view
@@ -153,7 +153,7 @@ function showPosNegDialogOverlay(context, title, msg, pos, neg, posCallback, neg
 }
 
 module.exports = {
-	showPosNegDialogOverlay
+	showOverlay
 };
 
 
