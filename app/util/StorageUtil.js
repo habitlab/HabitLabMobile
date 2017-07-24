@@ -243,6 +243,18 @@ exports.visited = function(packageName) {
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
+/* export: decrementVisits
+ * -----------------------
+ * Minuses one to the visits for today.
+ */
+exports.decrementVisits = function(packageName) {
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  if (appInfo['stats'][index()]['visits']) {
+    appInfo['stats'][index()]['visits']--;
+  }
+  appSettings.setString(packageName, JSON.stringify(appInfo));
+};
+
 /* export: getUnlocks
  * ------------------
  * Gets number of unlocks on the given day. Returns as
