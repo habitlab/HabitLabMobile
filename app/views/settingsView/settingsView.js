@@ -34,9 +34,7 @@ exports.reset = function() {
 };
 
 exports.enableServices = function() {
-	// DialogOverlay.showPosNegDialogOverlay(context, "Hello", "Yes", "No", null, null);
-	// FullScreenOverlay.showPosNegDialogOverlay(context, "You can put quite a long text message here, can't you? I wonder how long of a message is too long... The quick brown fox jumped over the lazy dog. Well, if you can see this far, then this text view must be large enough...", "yes", "no", null, null);
-	FullScreenOverlay.showPosNegDialogOverlay(context, "Continue to Facebook?", "You've already been here 25 times today", "yes please", "get me out of here!", null, null);
+
 };
 
 exports.disableServices = function () {
@@ -49,14 +47,6 @@ exports.toggleDrawer = function() {
 
 
 exports.getRunningServices = function() {
-	// var intent = new Intent("android.settings.APP_NOTIFICATION_SETTINGS");
-	// intent.putExtra("app_package", context.getPackageName());
-	// intent.putExtra("app_uid", context.getApplicationInfo().uid);
-
-	// var foregroundActivity = application.android.foregroundActivity;
-	// foregroundActivity.startActivity(intent);
-
-
 	ServiceManager.getRunningServices();
 };
 
