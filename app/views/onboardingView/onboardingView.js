@@ -68,19 +68,17 @@ exports.pageLoaded = function(args) {
 exports.hideCursor = function(args) {
   var textField = args.object;
   console.warn("hude");
-}
+};
 
 
 exports.goToNextSlide = function(args) {
-  console.warn("swiping");
   if (args.direction === 2) {
     container.nextSlide();
   } 
   if (args.direction === 1) {
     container.previousSlide();
   }
-  
-}
+};
 
 
 exports.checkNameNextSlide = function(args) {
@@ -91,7 +89,7 @@ exports.checkNameNextSlide = function(args) {
   } else {
     exports.goToNextSlide(args);
   }
-}
+};
 
 
 exports.checkUsagePermission = function(args) {
@@ -117,46 +115,34 @@ exports.giveUsagePermission = function(args) {
  } else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the Game", "You've already authorized HabitLab. Swipe to continue!", "Sweet!");
  }
-}
+};
 
 exports.giveDrawPermission = function(args) {
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
-   }  else {
+  } else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab. Swipe to continue!", "Sweet!");
- }
-}
+  }
+};
 
 
 exports.getUsagePermission = function(args) {
-   console.warn(!PermissionUtil.checkActionUsagePermission())
-   if (!PermissionUtil.checkActionUsagePermission()) {
+  if (!PermissionUtil.checkActionUsagePermission()) {
     PermissionUtil.launchActionUsageIntent();
- } else {
+  } else {
     exports.goToNextSlide(args);
- }
-}
-
+  }
+};
 
 exports.getDrawPermission = function(args) {
-   console.warn(PermissionUtil.checkSystemOverlayPermission())
-   if(!PermissionUtil.checkSystemOverlayPermission()) {
+  if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
-   } else {
+  } else {
     exports.goToNextSlide(args);
-   }
-}
+  }
+};
 
-exports.goToSkip = function(args) {
-  container.goToSlide(4);
-  //frameModule.topmost().navigate("views/progressView/progressView");
-}
-
-const ServiceManager = require("~/services/ServiceManager");
 var context = application.android.context;
-var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
-var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
-var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
 
 exports.goToGoalView = function(args) {
   if (!StorageUtil.isSetUp()) {
@@ -178,22 +164,8 @@ exports.goToGoalView = function(args) {
     alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);    
   }
 
-  /** SERVICE STARTER **/
-  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-    context.startService(trackingServiceIntent);
-  }
-
-  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-    context.startService(unlockServiceIntent);
-  }
-
-  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-    context.startService(dummyServiceIntent);
-  }  
-  
   if (args.direction === 2) {
-    console.warn("Go to goals")
-    frameModule.topmost().navigate("views/appsView/appsView");
+    frameModule.topmost().navigate('views/appsView/appsView');
   } 
   if (args.direction === 1) {
     container.previousSlide();

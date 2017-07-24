@@ -16,7 +16,8 @@ var interventions = {
   DURATION_NOTIFICATION: 7,
   VISIT_TOAST: 8, // for amount of time on phone today
   VISIT_NOTIFICATION: 9,
-  VIDEO_BLOCKER: 10
+  VIDEO_BLOCKER: 10,
+  FULL_SCREEN_OVERLAY: 11
 };
 
 var interventionDetails = [
@@ -30,7 +31,8 @@ var interventionDetails = [
   {name: "Visit Length Notification", description: "Sends a notification with visit duration in minutes for a specific app", level: 'medium'},
   {name: "Visits Toast", description: "Sends a disappearing message with today's visit count for a specific app", target: 'app', level: 'easy'},
   {name: "Visits Notification", description: "Sends a notification with today's visit count for a specific app", target: 'app', level: 'medium'},
-  {name: "Video Pause", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']}
+  {name: "Video Pause Overlay", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']},
+  {name: "Full Screen Overlay", description: "Covers screen while on selected applicaiton and prompts you to either continue or exit", target: 'app', level: 'easy'}
 ];
 
 exports.interventions = interventions;
@@ -107,6 +109,9 @@ var startOfDay = function() {
  *           SETTING UP             *
  ************************************/
 
+exports.eraseData = function() {
+  appSettings.clear();
+};
 
 /* export: setUp
  * -------------
@@ -243,6 +248,18 @@ exports.visited = function(packageName) {
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
+/* export: decrementVisits
+ * -----------------------
+ * Minuses one to the visits for today.
+ */
+exports.decrementVisits = function(packageName) {
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  if (appInfo['stats'][index()]['visits']) {
+    appInfo['stats'][index()]['visits']--;
+  }
+  appSettings.setString(packageName, JSON.stringify(appInfo));
+};
+
 /* export: getUnlocks
  * ------------------
  * Gets number of unlocks on the given day. Returns as
@@ -349,6 +366,10 @@ exports.midnightReset = function() {
 /************************************
  *           INTERVENTIONS          *
  ************************************/
+
+ exports.getInterventionsForApp = function(pkg) {
+  return JSON.parse(appSettings.getString(pkg)).enabled;
+ };
 
 /* export: enableForAll
  * --------------------
@@ -544,7 +565,5 @@ exports.getProgressViewInfo = function() {
     appStat.packageName = item;
     retObj.appStats.push(appStat);
   });
-
-  // console.dir(retObj.phoneStats);
   return retObj;
 };

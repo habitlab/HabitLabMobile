@@ -42,9 +42,10 @@
   height: 85%;
 }
 
-#button {
+#done-button {
   background-color: #69BD68;
   color: white;
+  height: 15%;
 }
 
 #title {

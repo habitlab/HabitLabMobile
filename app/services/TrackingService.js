@@ -127,6 +127,8 @@ var trackUsage = function () {
             InterventionManager.logVisitStart();
             InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](true, currentPackage);
             InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](true, currentPackage);
+            console.warn("Here");
+            InterventionManager.interventions[StorageUtil.interventions.FULL_SCREEN_OVERLAY](true, currentPackage);
         } else {
             // reset logging information
             startOfVisit = undefined;

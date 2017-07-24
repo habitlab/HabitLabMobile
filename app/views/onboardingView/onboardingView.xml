@@ -59,11 +59,9 @@
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[4]}}" class="squish" />
         <Label text="{{texts[6]}}" textWrap='true' />
-
       </Slides:Slide>
 
     </Slides:SlideContainer>
-    <!-- <Label text='skip' tap='goToSkip' class='onboarding-label skip' /> -->
   </StackLayout>
 
 </Page>
