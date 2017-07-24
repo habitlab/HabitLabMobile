@@ -98,9 +98,9 @@ exports.onDone = function() {
   var wasChanged = false;
 
   //notification on done (first time only)
-  if (!StorageUtil.isSetUp()) {
+  // if (!StorageUtil.isSetUp()) {
     fancyAlert.TNSFancyAlert.showSuccess("Nice!", "How long do you want to spend on these apps?", "Set Goals");
-  }
+  // }
 
 
   Object.keys(toToggle).forEach(function(key) {

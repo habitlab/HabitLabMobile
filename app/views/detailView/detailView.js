@@ -23,6 +23,7 @@ var createItem = function(pkg)  {
   label.className = "detail-label";
   
   item.getViewById("icon").src = UsageUtil.getIcon(pkg);
+  //class="thumb img-rounded"
   
   var sw = item.getViewById("switch");
   sw.checked = StorageUtil.isEnabledForApp(id, pkg);

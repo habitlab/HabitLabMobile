@@ -20,9 +20,13 @@ var TypedValue = android.util.TypedValue;
  ******************************/
 
 var iconBkgd = [34, 0.81, 1];
+var headerBkgd = [174, .77, .77];
 
 var BACKGROUND = new Paint();
 BACKGROUND.setColor(Color.WHITE);
+
+var HEADER = new Paint();
+HEADER.setColor(Color.HSVToColor(headerBkgd));
 
 var ICON_FILL = new Paint();
 ICON_FILL.setColor(Color.HSVToColor(iconBkgd));
@@ -30,7 +34,7 @@ ICON_FILL.setColor(Color.HSVToColor(iconBkgd));
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
-var ICON_RADIUS = 0.125 * SCREEN_WIDTH;
+var ICON_RADIUS = 0.075 * SCREEN_HEIGHT;
 
 
 var appCtx = app.android.context;
@@ -39,11 +43,12 @@ var appCtx = app.android.context;
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND);
+		canvas.drawRect(0, 0, SCREEN_WIDTH, 0.225 * SCREEN_HEIGHT, HEADER);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
 		var iconRight = iconLeft + 2 * ICON_RADIUS;
-		var iconTop = (SCREEN_HEIGHT) / 5;
+		var iconTop = (SCREEN_HEIGHT) * 0.15;
 		var iconBottom = iconTop + 2 * ICON_RADIUS;
 		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
@@ -64,7 +69,7 @@ var DialogView = android.view.View.extend({
 
 
 
-function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallback) {
+function showPosNegDialogOverlay(context, title, msg, pos, neg, posCallback, negCallback) {
 	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
 	// add view
@@ -75,9 +80,23 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
     var view = new DialogView(context);
     windowManager.addView(view, viewParams);
 
+
+    // add title
+    var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
+    	0.1 * SCREEN_WIDTH, 0.275 * SCREEN_HEIGHT, 
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    textParams.gravity = Gravity.LEFT | Gravity.TOP;
+    var titleView = new TextView(context);
+    titleView.setText(title);
+    titleView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 14);
+    titleView.setTextColor(Color.BLACK);
+    titleView.setHorizontallyScrolling(false);
+    titleView.setGravity(Gravity.CENTER);
+    windowManager.addView(titleView, textParams);
+
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.4 * SCREEN_HEIGHT,
-    	0.1 * SCREEN_WIDTH, 0.25 * SCREEN_HEIGHT, 
+    	0.1 * SCREEN_WIDTH, 0.3 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     var textView = new TextView(context);
@@ -90,7 +109,7 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.35 * SCREEN_WIDTH, 
-    	0.1 * SCREEN_HEIGHT, 0.1 * SCREEN_WIDTH, 0.6 * SCREEN_HEIGHT, 
+    	0.1 * SCREEN_HEIGHT, 0.1 * SCREEN_WIDTH, 0.65 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -108,7 +127,7 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
 
     // add positive button
     var negButtonParams = new WindowManager.LayoutParams(0.35 * SCREEN_WIDTH, 
-    	0.1 * SCREEN_HEIGHT, 0.55 * SCREEN_WIDTH, 0.6 * SCREEN_HEIGHT, 
+    	0.1 * SCREEN_HEIGHT, 0.55 * SCREEN_WIDTH, 0.65 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -127,6 +146,7 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
     var removeViews = function () {
     	windowManager.removeView(view);
     	windowManager.removeView(textView);
+    	windowManager.removeView(titleView);
 	    windowManager.removeView(posButton);
 	    windowManager.removeView(negButton);
     }
