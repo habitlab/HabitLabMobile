@@ -367,6 +367,10 @@ exports.midnightReset = function() {
  *           INTERVENTIONS          *
  ************************************/
 
+ exports.getInterventionsForApp = function(pkg) {
+  return JSON.parse(appSettings.getString(pkg)).enabled;
+ };
+
 /* export: enableForAll
  * --------------------
  * Completely enables the given intervention (by id).
@@ -562,6 +566,5 @@ exports.getProgressViewInfo = function() {
     retObj.appStats.push(appStat);
   });
 
-  console.dir(retObj.phoneStats);
   return retObj;
 };

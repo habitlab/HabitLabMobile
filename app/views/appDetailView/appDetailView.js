@@ -7,11 +7,11 @@ var gestures = require('ui/gestures').GestureTypes;
 
 var drawer;
 var page;
-var id;
-var enabled;
 var pkg;
+var name;
+var icon;
 
-var createItem = function(id)  {
+var createItem = function(enabled, id)  {
   var item = builder.load({
     path: 'shared/togglelistelem',
     name: 'togglelistelem'
@@ -21,11 +21,11 @@ var createItem = function(id)  {
   item.className = 'app-detail-grid';
 
   var label = item.getViewById("name");
-  label.text = UsageUtil.interventionDetails[id].name;
+  label.text = StorageUtil.interventionDetails[id].name;
   label.className = "app-detail-label";
     
   var sw = item.getViewById("switch");
-  sw.checked = StorageUtil.isEnabledForApp(id, pkg);
+  sw.checked = enabled;
   sw.on(gestures.tap, function() {
     StorageUtil.toggleForApp(id, pkg);
   });
@@ -34,19 +34,24 @@ var createItem = function(id)  {
 };
 
 var setUpDetail = function(packageName) {
-  page.getViewById('title').text = packageName;
+  page.getViewById('app-detail-title').text = name;
+  page.getViewById('app-detail-icon').src = icon;
 
-  // var level = StorageUtil.interventionDetails[id].level;
-  // var levelLabel = page.getViewById('level');
-  // levelLabel.text = level;
-  // levelLabel.className += " " + level;
+  var average = UsageUtil.getAvgTimeOnAppThisWeek(packageName);
+  var averageLabel = page.getViewById('average');
+  averageLabel.text = average + ' minutes/day';
+  var level = " good";
+  if (average >= 15) {
+    level = average >= 30 ? ' bad' : ' medium';
+  }
+  averageLabel.className += level;
 
   var layout = page.getViewById('list');
-  var interventions = StorageUtil.getInterventionsForApp();
+  var interventions = StorageUtil.getInterventionsForApp(packageName);
 
-  interventions.forEach(function (id) {
-    if (!layout.getViewById('intervention' + id)) {
-      layout.addChild(createItem(id));
+  interventions.forEach(function (enabled, id) {
+    if (!layout.getViewById('intervention' + id) && StorageUtil.interventionDetails[id].target === 'app') {
+      layout.addChild(createItem(enabled, id));
     }
   });
 
@@ -59,12 +64,11 @@ exports.toggleDrawer = function() {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (page.navigationContext) {
-    id = page.navigationContext.id;
-  }
 
-  pkg = args.navigationContext && args.navigationContext.packageName;
-  if (pkg) {
+  if ( page.navigationContext) {
+    pkg = page.navigationContext.packageName;
+    name = page.navigationContext.name;
+    icon = page.navigationContext.icon;
     setUpDetail(pkg);
   }
 };

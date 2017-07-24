@@ -1,14 +1,15 @@
 .app-detail-title {
   font-size: 24%;
-  padding-bottom: 10%;
-  padding-top: 10%;
   text-align: center;
-  color: #FFA730;
 }
 
 .app-detail-label {
   font-size: 20%;
   padding: 4%;
+}
+
+.app-detail-icon {
+  height: 10%;
 }
 
 .app-detail-grid {
@@ -29,7 +30,31 @@
   color: red;
 }
 
-.level-layout {
+#name {
+  padding-top: 12%;
+  padding-bottom: 12%;
+  font-size: 19%;
+  vertical-align: middle;
+}
+
+.app-detail-flex-layout {
   flex-direction: row;
   justify-content: center;
+  align-items: center;
+}
+
+.small {
+  font-size: 16%;
+}
+
+#title-layout {
+  margin-top: 2%;
+  vertical-align: middle;
+}
+
+.manage-title {
+  color: #FFA730;
+  margin: 2%;
+  font-size: 22%;
+  text-align: center;
 }
