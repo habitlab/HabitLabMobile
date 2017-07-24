@@ -296,13 +296,18 @@ var positiveCallback = function () {
   allowVideoBlocking(false);
 };
 
+
+var foregroundActivity = app.android.foregroundActivity;
+
 // callback function for audioFocusListener
 var negativeCallback = function () {
   var toHome = new Intent(Intent.ACTION_MAIN);
   toHome.addCategory(Intent.CATEGORY_HOME);
 
-  var foregroundActivity = application.android.foregroundActivity;
-  foregroundActivity.startActivity(toHome); 
+  var app = require("application");
+  //var foregroundActivity = app.android.foregroundActivity;
+  console.warn(foregroundActivity);
+  foregroundActivity.startActivity(toHome); // THIS LINE IS BUGGY (when the app is killed, undefined foregroundActivity)
 };
 
 

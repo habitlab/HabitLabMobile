@@ -94,51 +94,52 @@ var stopTimer = function() {
  * Function to be run at predetermined intervals in the 
  * background. Plugs interventions into the device.
  */
-const MIN_VISIT_DURATION = 2000; // in ms
-var currentActivePackage = "";
 var inBlacklistedApplication;
+var startOfVisit;
 var screenOff = false;
-var visitStart;
-var visit;
+var currentPackage = "org.nativescript.HabitLabMobile";
 var trackUsage = function () {
     if (screenOff) return;
     var newPackage = getActivePackage();
     if (newPackage) {
-        // if you were in a blacklisted application, update time spent there
+        var now = System.currentTimeMillis();
+
+        // close the most recent blacklisted visit (if there was one)
         if (inBlacklistedApplication) {
-            var timeSpent = System.currentTimeMillis() - visitStart;
-            StorageUtil.updateAppTime(currentActivePackage, timeSpent);
+            var timeSpent = now - startOfVisit || 0; // in case of concurrency issue w/ alertScreenOff
+            StorageUtil.updateAppTime(currentPackage, timeSpent);
+            console.warn("Closing visit for " + currentPackage + " (length: " + timeSpent + ")");
         }
 
-        // if the new package is blacklisted, take note of visit start
+        currentPackage = newPackage; // set the newPackage as the currentPackage
+
+        // check if new package is blacklisted
         if (StorageUtil.isPackageSelected(newPackage)) {
-            visit = true;
-            visitStart = System.currentTimeMillis(); // log visit start time
-            currentActivePackage = newPackage;
+
+            // log visit information
+            startOfVisit = now;
+            inBlacklistedApplication = true;
+            StorageUtil.visited(currentPackage); // log a visit
+            console.warn("Starting Visit for " + currentPackage);
+
+            // on-launch interventions
+            InterventionManager.allowVideoBlocking(true);
             InterventionManager.logVisitStart();
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](true, currentPackage);
+            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](true, currentPackage);
         } else {
             // reset logging information
-            visit = false;
-            visitStart = 0;
+            startOfVisit = undefined;
             inBlacklistedApplication = false;
             InterventionManager.allowVideoBlocking(false);
-            currentActivePackage = "";
         }
-    } else if (visit) {
-        if (System.currentTimeMillis() - visitStart > MIN_VISIT_DURATION) {
-            visit = false;
-            inBlacklistedApplication = true; 
-            StorageUtil.visited(currentActivePackage); // log a visit
-            InterventionManager.allowVideoBlocking(true);
-            InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](true, currentActivePackage);
-            InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](true, currentActivePackage);
-        } 
-    } else if (inBlacklistedApplication && visitStart) {
-        // been in a blacklisted application for more than 2 seconds
-        InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](true, currentActivePackage, visitStart);
-        InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](true, currentActivePackage, visitStart);
+    } else if (inBlacklistedApplication) {
+        console.warn("    inside: " + currentPackage);
+        // interventions that last the lifespan of visit
+        InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](true, currentPackage, startOfVisit);
+        InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](true, currentPackage, startOfVisit);
 
-        if (currentActivePackage === "com.facebook.katana" || currentActivePackage === "com.google.android.youtube") {
+        if (currentPackage === "com.facebook.katana" || currentPackage === "com.google.android.youtube") {
             InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true);
         }
     }
@@ -156,34 +157,22 @@ var trackUsage = function () {
  */
 var usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE);
 var event = new UsageEvents.Event();
-var previousPackageName = "";
 var getActivePackage = function() {
     var events = usageStatsManager.queryEvents(System.currentTimeMillis() - 3000, System.currentTimeMillis());
     
-    // exit immediately if there are no events
-    if (!events.hasNextEvent()) return null;
-    
     // iterate to the next event
-    var foregroundEvent;
+    var foregroundPackage;
     while (events.hasNextEvent()) {
         events.getNextEvent(event);
         if (event.getEventType() === UsageEvents.Event.MOVE_TO_FOREGROUND) {
-            foregroundEvent = event;
+            foregroundPackage = event.getPackageName();
         }
     }
 
     // pull the package name from the event, if applicable
-    if (foregroundEvent) {
-        var packageName = foregroundEvent.getPackageName();
-        if (previousPackageName !== packageName) {
-            previousPackageName = packageName;
-            return packageName;
-        } else {
-            return null;
-        }
-    } else {
-        return null;
-    }
+    if (foregroundPackage && currentPackage !== foregroundPackage) {
+        return foregroundPackage;
+    } 
 }
 
 
@@ -195,19 +184,20 @@ var getActivePackage = function() {
  * clear any tracking information that is active-package 
  * sensitive)
  */
- var alertScreenOff = function () {
-    previousPackageName = "";
-    screenOff = true;
-    if (visitStart) {
-        var timeSpent = System.currentTimeMillis() - visitStart;
-        StorageUtil.updateAppTime(currentActivePackage, timeSpent);
+var alertScreenOff = function () {
+    // close the most recent blacklisted visit (if there was one)
+    if (inBlacklistedApplication) {
+        var timeSpent = System.currentTimeMillis() - startOfVisit;
+        StorageUtil.updateAppTime(currentPackage, timeSpent);
+        console.warn("Closing visit for " + currentPackage + " (length: " + timeSpent + ")");
 
         // reset logging information
-        visitStart = 0;
-        visit = false;
-        currentActivePackage = "";
+        currentPackage = "SCREEN OFF";
+        startOfVisit = undefined;
         inBlacklistedApplication = false;
+        InterventionManager.allowVideoBlocking(false);
     }
+    screenOff = true;
  }
 
 
@@ -231,18 +221,19 @@ var getActivePackage = function() {
  * sensitive)
  */
  var alertShutdown = function () {
-    previousPackageName = "";
-    screenOff = true;
-    if (visitStart) {
-        var timeSpent = System.currentTimeMillis() - visitStart;
-        StorageUtil.updateAppTime(currentActivePackage, timeSpent);
+    // close the most recent blacklisted visit (if there was one)
+    if (inBlacklistedApplication) {
+        var timeSpent = System.currentTimeMillis() - startOfVisit;
+        StorageUtil.updateAppTime(currentPackage, timeSpent);
+        console.warn("Closing visit for " + currentPackage + " (length: " + timeSpent + ")");
 
         // reset logging information
-        visitStart = 0;
-        visit = false;
-        currentActivePackage = "";
+        currentPackage = "SCREEN OFF";
+        startOfVisit = undefined;
         inBlacklistedApplication = false;
+        InterventionManager.allowVideoBlocking(false);
     }
+    screenOff = true;
  }
 
 

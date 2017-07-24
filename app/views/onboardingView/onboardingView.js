@@ -115,7 +115,7 @@ exports.getDrawPermission = function(args) {
 const ServiceManager = require("~/services/ServiceManager");
 const Intent = android.content.Intent;
 
-var context = applicationModule.android.context;
+var context = application.android.context;
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
 var dummyServiceIntent = new Intent(context, com.habitlab.DummyService.class);
@@ -124,23 +124,9 @@ exports.goToNavView = function(args) {
   if (!StorageUtil.isSetUp()) {
     StorageUtil.setUp();
 
-    /** SERVICE STARTER **/
-    if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-      context.startService(trackingServiceIntent);
-    }
-
-    if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-      context.startService(unlockServiceIntent);
-    }
-
-    if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-      context.startService(dummyServiceIntent);
-    }
-
-
     /** SET UP ALARM **/
     const DAY = 86400 * 1000;
-    var context = application.android.context;
+    // var context = application.android.context;
     var alarm = context.getSystemService(android.content.Context.ALARM_SERVICE);
     var intent = new android.content.Intent(context, com.habitlab.AlarmReceiver.class);
     var pi = android.app.PendingIntent.getBroadcast(context, 0, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT);
@@ -152,6 +138,19 @@ exports.goToNavView = function(args) {
     midnight.setTimeInMillis(midnight.getTimeInMillis() + DAY);
 
     alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);    
+  }
+
+  /** SERVICE STARTER **/
+  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+    context.startService(trackingServiceIntent);
+  }
+
+  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+    context.startService(unlockServiceIntent);
+  }
+
+  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+    context.startService(dummyServiceIntent);
   }
   
   frameModule.topmost().navigate("views/navView/navView");
