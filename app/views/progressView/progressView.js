@@ -367,7 +367,8 @@ exports.populateListViewsWeek = function() {
     var timeOnTargetAppsWeek = Math.round(usageUtil.getTimeOnTargetAppsWeek(0)/6)/10;
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek)*100); 
 
-    var unlocks = storageUtil.getUnlocks();
+    //var unlocks = storageUtil.getUnlocks();
+    var unlocks = 213
     var total = 0;
     for (var i = 0; i < unlocks.length; i++) {
         total += unlocks[i]
