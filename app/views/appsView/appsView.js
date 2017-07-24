@@ -1,3 +1,4 @@
+var application = require("application");
 var UsageUtil = require("~/util/UsageInformationUtil");
 var StorageUtil = require("~/util/StorageUtil");
 var fancyAlert = require("nativescript-fancyalert");
