@@ -269,10 +269,6 @@ exports.populateListViewsDay = function() {
      var targetTime = Math.round(progressInfo.phoneStats[TODAY].time/60000)
      var perc =  Math.round(targetTime/total*100);
 
-     console.warn(unlocks);
-     console.warn(glances)
-     console.warn(total)
-     console.warn(targetTime)
 
     var apps = exports.getAppsToday();
 
@@ -427,15 +423,12 @@ exports.populateListViewMonth = function () {
 
 
 exports.getAppsToday = function() {
-    console.dir(progressInfo);
     var list = [];
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = Math.round(progressInfo.appStats[i][TODAY].time/60000);
         var visits = progressInfo.appStats[i][TODAY].visits;
         var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
         var icon = usageUtil.getIcon(progressInfo.appStats[i].packageName);
-        // var app = new dayApp(name, visits, icon, mins);
-        // list.push(app);
         console.warn(mins)
         console.warn(visits)
         console.warn(name)
@@ -459,15 +452,6 @@ exports.getAppsToday = function() {
 };
 
    
-
-    // Object for an app that contains all the info for the list view 
-    // dayApp = function(name, visits, imagesrc, mins) {
-    //     this.name = name;
-    //     this.visits = visits;
-    //     this.image = imagesrc;
-    //     if (mins < 0) mins = 0;
-    //     this.mins = mins;
-    // }
 
 
     function weekApp(name, avgMins, imagesrc) {
