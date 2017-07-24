@@ -267,7 +267,7 @@ var shouldBlockVideo = true;
  * Sets shouldBlockVideo variable to either permit video blocking on 
  * the current package (true) or disable it (false)
  */
-var allowVideoBlocking = function(bool) {
+var allowVideoBlocking = function (bool) {
   shouldBlockVideo = bool;
 };
 
@@ -292,14 +292,14 @@ var blockVideo = function (real) {
 
 
 // callback function for audioFocusListener
-var positiveCallback = function () {
+var stopVideoBlocking = function () {
   allowVideoBlocking(false);
 };
 
 
 // callback function for audioFocusListener
 var foreground = application.android.foregroundActivity;
-var negativeCallback = function () {
+var exitToHome = function () {
   var toHome = new Intent(Intent.ACTION_MAIN);
   toHome.addCategory(Intent.CATEGORY_HOME);
   foreground.startActivity(toHome); // THIS LINE IS BUGGY (when the app is killed, undefined foregroundActivity)
@@ -317,11 +317,26 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
     onAudioFocusChange: function (change) {
       if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
         DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
-          "Yes", "No", positiveCallback, negativeCallback);
-        console.warn("activated")
+          "Yes", "No", stopVideoBlocking, exitToHome);
       }
     }
 });
+
+
+
+/**************************************
+ *        OVERLAY INTERVENTION        *
+ **************************************/
+var showFullScreenOverlay = function (real, pkg) {
+  var applicationName = UsageInformationUtil.getAppName(pkg);
+  var visits = StorageUtil.getVisits(pkg, StorageUtil.days.TODAY);
+
+  var title = "Continue to " + applicationName + "?";
+  var msg = "You've already been here " + visits + " times today. Want to take a break?";
+
+  FullScreenOverlay.showPosNegDialogOverlay(context, title, msg, 
+    "yes please", "get me out of here!", null, exitToHome);
+}
 
 
 
