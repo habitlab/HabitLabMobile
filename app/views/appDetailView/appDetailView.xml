@@ -1,0 +1,29 @@
+<Page loaded="pageLoaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar title="HabitLab" class="action-bar" >
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <StackLayout orientation="vertical" id="app-detail" >
+        <Label id="title" class="app-detail-label app-detail-title" />
+        <Label id="description" class="app-detail-label" />
+        <FlexboxLayout orientation="horizontal" class="app-minutes-layout">
+          <Label text="average: " class="app-detail-label" />
+          <Label id="average" class="app-detail-label" />
+        </FlexboxLayout>
+        <ScrollView orientation="vertical">
+          <StackLayout orientation="vertical" id="list" />
+        </ScrollView>
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>

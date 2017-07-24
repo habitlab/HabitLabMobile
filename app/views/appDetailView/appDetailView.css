@@ -1,0 +1,35 @@
+.app-detail-title {
+  font-size: 24%;
+  padding-bottom: 10%;
+  padding-top: 10%;
+  text-align: center;
+  color: #FFA730;
+}
+
+.app-detail-label {
+  font-size: 20%;
+  padding: 4%;
+}
+
+.app-detail-grid {
+  margin: 4%;
+  border-color: lightgray;
+  border-bottom-width: 1px;
+}
+
+.good {
+  color: green;
+}
+
+.medium {
+  color: orange;
+}
+
+.bad {
+  color: red;
+}
+
+.level-layout {
+  flex-direction: row;
+  justify-content: center;
+}
