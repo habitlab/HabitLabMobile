@@ -63,7 +63,7 @@
       </Slides:Slide>
 
     </Slides:SlideContainer>
-    <Label text='skip' tap='goToSkip' class='onboarding-label skip' />
+    <!-- <Label text='skip' tap='goToSkip' class='onboarding-label skip' /> -->
   </StackLayout>
 
 </Page>
