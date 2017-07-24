@@ -4,7 +4,7 @@
   xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:accordion="nativescript-accordion">
 
-  <ActionBar title="HabitLab" class="action-bar">
+  <ActionBar title="Goals" class="action-bar">
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
     <ActionItem tap="onManageApps" icon="res://ic_manage_apps" />
 	</ActionBar>

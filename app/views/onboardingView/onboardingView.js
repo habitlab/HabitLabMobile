@@ -6,9 +6,11 @@ var view = require("ui/core/view");
 var colorModule = require("tns-core-modules/color")
 var Color = android.graphics.Color;
 var dialogs = require("ui/dialogs");
+var fancyAlert = require("nativescript-fancyalert");
 
 var frameModule = require("ui/frame");
 var gestures = require("ui/gestures").GestureTypes;
+var gesture = require("ui/gestures");
 
 var page;
 var name;
@@ -16,18 +18,18 @@ var container;
 var onboarding = {};
 
 onboarding.texts = [
-  'Design your time online',
+  'Design your time on your phone',
   'Choose the apps you want to spend less time on.',
   'Build better habits with personalized interventions.',
-  'See how your habits improve over time.',
+  'Find what works for you and see how your habits improve over time.',
   'To get started, allow HabitLab to access your app data',
-  'Allow HabitLab to work over other apps',
+  'Just one left! Allow HabitLab to work over other apps',
   'Swipe to pick your apps.\n'
 
   ];
 
 onboarding.titles = [
-  'Welcome to HabitLab',
+  'Welcome to HabitLab,',
   'Set Your Goals',
   'Stop Wasting Time',
   'Track Your Progress',
@@ -36,8 +38,8 @@ onboarding.titles = [
 
 onboarding.visuals = [
   '~/images/icon.png',
-  '~/images/onboarding_applock.png',
   '~/images/onboarding_goals.png',
+  '~/images/onboarding_applock.png',
   '~/images/onboarding_progress.png',
   '~/images/onboarding_swiperight.png'
 ];
@@ -62,6 +64,13 @@ exports.pageLoaded = function(args) {
 };
 
 
+//hide cursor when the return button on the keyboardi s pressed 
+exports.hideCursor = function(args) {
+  var textField = args.object;
+  console.warn("hude");
+}
+
+
 exports.goToNextSlide = function(args) {
   console.warn("swiping");
   if (args.direction === 2) {
@@ -78,15 +87,30 @@ exports.checkNameNextSlide = function(args) {
   var textfield = page.getViewById("name");
   name = textfield.text;
   if (name === "") {
-      dialogs.alert("Please enter your name!").then(function() {
-       console.warn("Dialog closed!");
-      });
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "Dismiss");
   } else {
     console.warn("proceeding")
     exports.goToNextSlide(args);
   }
   
   
+}
+
+
+exports.giveUsagePermission = function(args) {
+  if (!PermissionUtil.checkActionUsagePermission()) {
+    PermissionUtil.launchActionUsageIntent();
+ } else {
+    fancyAlert.TNSFancyAlert.showInfo("Good job!", "You've already authorized HabitLab. Swipe to continue", "Sweet!");
+ }
+}
+
+exports.giveDrawPermission = function(args) {
+  if(!PermissionUtil.checkSystemOverlayPermission()) {
+    PermissionUtil.launchSystemOverlayIntent();
+   }  else {
+    fancyAlert.TNSFancyAlert.showInfo("Good job!", "You've already authorized HabitLab. Swipe to continue", "Sweet!");
+ }
 }
 
 
@@ -112,15 +136,13 @@ exports.getDrawPermission = function(args) {
 
 
 
-const ServiceManager = require("~/services/ServiceManager");
-const Intent = android.content.Intent;
 
 var context = application.android.context;
 var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
 var dummyServiceIntent = new Intent(context, com.habitlab.DummyService.class);
 
-exports.goToNavView = function(args) {
+exports.goToGoalView = function(args) {
   if (!StorageUtil.isSetUp()) {
     StorageUtil.setUp();
 
@@ -151,7 +173,14 @@ exports.goToNavView = function(args) {
 
   if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
     context.startService(dummyServiceIntent);
+  }  
+  
+  if (args.direction === 2) {
+    console.warn("Go to goals")
+    frameModule.topmost().navigate("views/appsView/appsView");
+  } 
+  if (args.direction === 1) {
+    container.previousSlide();
   }
   
-  frameModule.topmost().navigate("views/navView/navView");
 };

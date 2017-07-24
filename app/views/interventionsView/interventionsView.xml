@@ -3,7 +3,7 @@
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
-  <ActionBar title="HabitLab" class="action-bar" >
+  <ActionBar title="Nudges" class="action-bar" >
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
 

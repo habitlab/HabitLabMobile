@@ -5,10 +5,10 @@
 
 
       <Slides:Slide class="firstSlide" swipe="checkNameNextSlide">
-        <StackLayout>
+        <StackLayout id="first">
         <Image src="{{visuals[0]}}" id="icon" />
         <Label text="{{titles[0]}}" class='title' textWrap='true'  id="hi"/>
-        <TextField hint="Enter your name" text="{{ name }}" autocorrect="false" autocapitalization="none" style="color:white" id="name" />
+        <TextField hint="Enter your name" text="{{ name }}" autocorrect="false" autocapitalization="none" style="color:white" id="name" returnPress="hideCursor"/>
         <Label text="{{texts[0]}}" textWrap='true' id="welcome" />
       </StackLayout>
       </Slides:Slide>
@@ -39,6 +39,7 @@
             controls="false" 
             loop="true" autoplay="true" height="400" 
             src="~/videos/UsageExample.mp4" />
+          <Button text="Give Usage Permission" tap="giveUsagePermission"/>
         </StackLayout>
       </Slides:Slide>
 
@@ -49,11 +50,12 @@
                 controls="false" 
                 loop="true" autoplay="true" height="400" 
                 src="~/videos/DrawOverExample.mp4" />
+              <Button text="Give Overlay Permission" tap="giveDrawPermission"/>
         </StackLayout>
       </Slides:Slide>
 
 
-      <Slides:Slide id='lastslide' class="slide" swipe="goToNavView">
+      <Slides:Slide id='lastslide' class="slide" swipe="goToGoalView">
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[4]}}" class="squish" />
         <Label text="{{texts[6]}}" textWrap='true' />
@@ -61,7 +63,7 @@
       </Slides:Slide>
 
     </Slides:SlideContainer>
-    <Label text='skip' tap='goToNavView' class='onboarding-label skip' />
+    <Label text='skip' tap='goToGoalView' class='onboarding-label skip' />
   </StackLayout>
 
 </Page>
