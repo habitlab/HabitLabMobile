@@ -64,7 +64,7 @@ exports.pageLoaded = function(args) {
 
 //Creates the pie chart on the day tab
 exports.dayView = function(args) {
-    var appsToday = getAppsToday();//gets the target apps used today
+    var appsToday = exports.getAppsToday();//gets the target apps used today
     var total = Math.round(progressInfo.phoneStats[TODAY].totalTime);
 
     // // add data
@@ -73,6 +73,8 @@ exports.dayView = function(args) {
     var main = 0;
     var min;
     var extra;
+
+
      if (appsToday.length <= 4) {
         min = appsToday
         flag = false;
@@ -263,14 +265,14 @@ exports.monthView = function(args) {
 exports.populateListViewsDay = function() {   
      var unlocks = progressInfo.phoneStats[TODAY].unlocks
      var glances = progressInfo.phoneStats[TODAY].glances
-     var total = progressInfo.phoneStats[TODAY].totalTime/60000
-     var targetTime = progressInfo.phoneStats[TODAY].time/60000
-     var perc =  Math.round(targetTime/total)*100;
+     var total = Math.round(progressInfo.phoneStats[TODAY].totalTime/60000)
+     var targetTime = Math.round(progressInfo.phoneStats[TODAY].time/60000)
+     var perc =  Math.round(targetTime/total*100);
 
      console.warn(unlocks);
      console.warn(glances)
      console.warn(total)
-     console.warn(totalTarget)
+     console.warn(targetTime)
 
     var apps = exports.getAppsToday();
 
