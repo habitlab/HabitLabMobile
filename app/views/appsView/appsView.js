@@ -70,6 +70,13 @@ var createCell = function(info, r, c)  {
   return cell;
 };
 
+
+const ServiceManager = require("~/services/ServiceManager");
+var context = application.android.context;
+var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
+var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
+var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
+
 exports.pageLoaded = function(args) {
   /** SERVICE STARTER **/
   if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
