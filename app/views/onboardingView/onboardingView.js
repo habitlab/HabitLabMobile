@@ -178,19 +178,6 @@ exports.goToGoalView = function(args) {
     alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);    
   }
 
-  /** SERVICE STARTER **/
-  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-    context.startService(trackingServiceIntent);
-  }
-
-  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-    context.startService(unlockServiceIntent);
-  }
-
-  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-    context.startService(dummyServiceIntent);
-  }  
-  
   if (args.direction === 2) {
     console.warn("Go to goals")
     frameModule.topmost().navigate("views/appsView/appsView");

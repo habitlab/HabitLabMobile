@@ -19,7 +19,7 @@
         <ScrollView orientation="vertical" class="app-list-scroll" >
           <GridLayout id="grid" columns="*,*,*" />
         </ScrollView>
-        <Button text="done" id="button" tap="onDone"/>
+        <Button text="done" id="done-button" tap="onDone"/>
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 

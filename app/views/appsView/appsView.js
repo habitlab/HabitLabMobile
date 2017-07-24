@@ -71,7 +71,19 @@ var createCell = function(info, r, c)  {
 };
 
 exports.pageLoaded = function(args) {
-  StorageUtil.getProgressViewInfo();
+  /** SERVICE STARTER **/
+  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+    context.startService(trackingServiceIntent);
+  }
+
+  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+    context.startService(unlockServiceIntent);
+  }
+
+  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+    context.startService(dummyServiceIntent);
+  }  
+  
   toToggle = {};
   drawer = args.object.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
