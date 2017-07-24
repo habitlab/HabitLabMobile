@@ -6,7 +6,7 @@
   xmlns:lv="nativescript-telerik-ui/listview"
   navigatingTo="navigatingTo">
 
-	<ActionBar title="HabitLab" class="action-bar">
+	<ActionBar title="Progress" class="action-bar">
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 
@@ -23,7 +23,7 @@
 			   <TabViewItem.view>
 			   		<!-- <dayTab:dayTab/> -->
 			   		<StackLayout>
-			   			<Label text="Minutes on Target Apps Today" class="header"/>
+			   			<Label text="Minutes on Watchlist Apps Today" class="header"/>
 			   			<Placeholder creatingView="dayView"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
@@ -65,7 +65,7 @@
 			 <TabViewItem.view>
 						 <!-- <weekTab:weekTab/> -->
 						 <StackLayout>
-						 	<Label text="Minutes on Target Apps This Week" class="header"/>
+						 	<Label text="Minutes on Watchlist Apps This Week" class="header"/>
 						 	<Placeholder creatingView="weekView" id="line"/>
 						 <!-- 	For the horizontal button like displays  -->
 						 		<lv:RadListView id="weekButtons" class="list-group">
@@ -107,7 +107,7 @@
 					 <TabViewItem.view>
 					     <!-- <monthTab:monthTab/> -->
 					     <StackLayout>
-					     	<Label text="Minutes on Target Apps This Month" class="header"/>
+					     	<Label text="Minutes on Watchlist Apps This Month" class="header"/>
 					     	<Placeholder creatingView="monthView" />
 
 					     	<lv:RadListView id="monthButtons" class="list-group">

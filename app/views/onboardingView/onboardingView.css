@@ -23,6 +23,14 @@ TextField {
 	margin-bottom: 5%;
 }
 
+Button {
+	padding: 5%;
+	width: 70%;
+	margin: 5%;
+	background-color: #FF9F1C;
+	color: white;
+}
+
 .squish {
 	width: 60%;
 	height: auto;
@@ -75,5 +83,9 @@ TextField {
 	border-color: #FFFFFF;
 	text-align: center;
 	font-size: 25%;
+}
+
+#first {
+	padding-top:30%;
 }
 

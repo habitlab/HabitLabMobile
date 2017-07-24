@@ -1,89 +1,89 @@
 .list-number {
 	text-align: center;
-	font-size: 30;
+	font-size: 30%;
 	color: #E0696B;
 }
 
 .list-desc {
 	text-align: center;
-	font-size: 10;
+	font-size: 10%;
 }
 
 .list-group-item-heading {
-	font-size: 15;
+	font-size: 15%;
 	color: #011627
 }
 
 .list-group-item-text {
-	font-size: 12;
+	font-size: 12%;
 }
 
 
 .small-text {
 	text-align: center;
-	font-size: 10;
+	font-size: 10%;
 	color: #E0696B;
 
 }
 
 .number-emphasis {
 	text-align: center;
-	font-size: 30;
+	font-size: 30%;
 
 }
 
 
 .header {
 	text-align: center;
-	margin-top:5;
-	font-size:20;
+	margin-top:2%;
+	font-size:20%;
 }
 
 
 .button {
 	color: #011627;
-	font-size: 18;
+	font-size: 18%;
 	background-color: #FFA730;
 }
 
 .normal-text {
 	text-align: center;
-	padding: 5;
-	font-size: 20;
+	padding: 5%;
+	font-size: 20%;
 }
 
 .left-elem {
 	text-align: center;
-	margin-right: 10;
+	margin-right: 10%;
 }
 
 .right-elem {
 	text-align: center;
-	margin-left: 10;
+	margin-left: 10%;
 }
 
 #numbers {
 	text-align: center;
-	font-size: 30;
+	font-size: 30%;
 	color: #E71D36;
 }
 
 
 #listButtons {
-	margin-top: 15;
-	padding: 15;
+	margin-top: 3%;
+	padding: 10%;
 	background-color: #FFBD60;
 }
 
 #weekButtons {
-	margin-top: 15;
-	padding: 15;
+	margin-top: 3%;
+	padding: 10%;
 	background-color: #DAECF3;
 }
 
 #monthButtons {
-	margin-top: 15;
-	padding: 15;
+	margin-top: 3%;
+	padding: 10%;
 	background-color: #F7BBC3;
 }
 
@@ -94,19 +94,19 @@
 .slide-indicator-inactive{
     background-color: #2EC4B6;
     opacity : 0.4;
-    width : 8;
-    height : 8;
-    margin-left : 3;
-    margin-right : 3;
-    border-radius : 4;
+    width : 8%;
+    height : 8%;
+    margin-left : 3%;
+    margin-right : 3%;
+    border-radius : 4%;
 }
  
 .slide-indicator-active{
     background-color: #2EC4B6;
     opacity : 0.9;
-    width : 14;
-    height : 14;
-    margin-left : 3;
-    margin-right : 3;
-    border-radius : 7;
+    width : 14%;
+    height : 14%;
+    margin-left : 3%;
+    margin-right : 3%;
+    border-radius : 7%;
 }

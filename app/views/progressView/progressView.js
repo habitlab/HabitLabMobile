@@ -101,6 +101,14 @@ exports.dayView = function(args) {
         	entries.add(new PieEntry(leftover, "Other"));
         }
     }
+
+    //For demo:
+    // entries.add(new PieEntry(23, "Facebook"))
+    // entries.add(new PieEntry(41, "Instagram"))
+    // entries.add(new PieEntry(11, "Snapchat"))
+    // entries.add(new PieEntry(7, "Messenger"))
+    // entries.add(new PieEntry(18, "YouTube"))
+
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
     var data = new PieData(dataset);
@@ -265,6 +273,7 @@ exports.populateListViewsDay = function() {
     var total = Math.round(usageUtil.getTimeOnPhoneSingleDay(0)/6)/10;
     var perc = (total === 0 ? 0 : Math.round(totalTarget/total)*100); 
 	var unlocks = storageUtil.getUnlocks(storageUtil.days.TODAY);
+    var glances = storageUtil.getGlances(storageUtil.days.TODAY);
 	var apps = [];
 
 	//populates list of apps
@@ -284,15 +293,43 @@ exports.populateListViewsDay = function() {
     }
     return 0;
   	});
-   	var listView = view.getViewById(page, "listview");
-	listView.items = apps;
+    var listView = view.getViewById(page, "listview");
+    listView.items = apps;
+
+    //For demo:
+    // var list = []
+    // list.push ({
+    //     name: "Instagram",
+    //     image: usageUtil.getIcon("com.instagram.android"),
+    //     visits: 11,
+    //     mins: 41
+    // },
+    // {
+    //     name: "Facebook",
+    //     image: usageUtil.getIcon("com.facebook.katana"),
+    //     visits: 4,
+    //     mins: 23
+    // },
+    // {
+    //     name: "YouTube",
+    //     visits: 2,
+    //     mins: 18
+    // },
+    // {
+    //     name: "Snapchat",
+    //     visits: 15,
+    //     mins: 11
+    // }
+    // )
+    // var listView = view.getViewById(page, "listview");
+    // listView.items = list;
 
 	//'buttons' that show the usage daily overall phone usage 
 	var stats = [];
 	stats.push(
 	{
-		value: total,
-		desc: "hrs on phone"
+		value: glances,
+		desc: "glances"
 	},
 	{
 		value: unlocks,
@@ -300,9 +337,24 @@ exports.populateListViewsDay = function() {
 	},
     {
         value: perc + "%",
-        desc: "phone time on target apps"
+        desc: "phone time on watchlist apps"
     }
 	)
+    //For demo"
+    // stats.push(
+    // {
+    //     value: 91,
+    //     desc: "glances"
+    // },
+    // {
+    //     value: 72,
+    //     desc: "unlocks"
+    // },
+    // {
+    //     value: 77 + "%",
+    //     desc: "of phone time on watchlist"
+    // }
+    // )
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
 };
@@ -326,7 +378,7 @@ exports.populateListViewsWeek = function() {
 	weekStats.push(
 	{
 		value: timeOnTargetAppsWeek,
-		desc: "hrs on target apps this week"
+		desc: "hrs on watchlist this week"
 	},
 	{
 		value: total,
@@ -334,7 +386,7 @@ exports.populateListViewsWeek = function() {
 	},
     {
         value: perc + "%",
-        desc: "% phone time on target apps"
+        desc: "% phone time on watchlist"
     }
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
@@ -379,7 +431,7 @@ exports.populateListViewMonth = function () {
 	},
     {
         value: perc + "%",
-        desc: "% phone time on target apps"
+        desc: "% phone time on watchlist apps"
     }
 	)
 	var monthButtons = view.getViewById(page, "monthButtons");
@@ -491,11 +543,11 @@ function getSpannableString() {
         myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);
         return myString;
     }
-    var myString = new SpannableString("Total: \n" + total + " \n mins" );
+    var myString = new SpannableString("Total:\n" + total + "\nmins" );
     myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);
-    myString.setSpan(new RelativeSizeSpan(2.0), 6,8,0);
-    myString.setSpan(new ForegroundColorSpan(Color.RED), 6,8,0);
+    myString.setSpan(new RelativeSizeSpan(2.0), 6,myString.length()-5,0);
+    myString.setSpan(new ForegroundColorSpan(Color.RED), 6,myString.length()-5,0);
     myString.setSpan( new RelativeSizeSpan(0.9), myString.length()-5, myString.length(), 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), myString.length()-5, myString.length(), 0);
     myString.setSpan(new StyleSpan(Typeface.ITALIC), myString.length()-5, myString.length(), 0);
