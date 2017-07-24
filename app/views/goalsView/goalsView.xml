@@ -22,9 +22,12 @@
         <StackLayout orientation="vertical" id="phoneGoals" />
         
         <Label text="App Goals" class="section-title" />
-        <ScrollView orientation="vertical" id="scroll">
-          <StackLayout orientation="vertical" id="appGoals" class="goal-scroll"/>
-        </ScrollView>
+        <StackLayout>
+          <ScrollView orientation="vertical" id="scroll">
+            <StackLayout orientation="vertical" id="appGoals" class="goal-scroll"/>
+          </ScrollView>
+          <Button text="done" onTap="onDone" id="button"/>
+          </StackLayout>
 
       </StackLayout>
     </sd:RadSideDrawer.mainContent>

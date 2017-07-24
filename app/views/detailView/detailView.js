@@ -23,6 +23,7 @@ var createItem = function(pkg)  {
   label.className = "detail-label";
   
   item.getViewById("icon").src = UsageUtil.getIcon(pkg);
+  //class="thumb img-rounded"
   
   var sw = item.getViewById("switch");
   sw.checked = StorageUtil.isEnabledForApp(id, pkg);
@@ -42,7 +43,7 @@ var setUpDetail = function() {
   var level = StorageUtil.interventionDetails[id].level;
   var levelLabel = page.getViewById('level');
   levelLabel.text = level;
-  levelLabel.className = level;
+  levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {
     var packages = StorageUtil.getSelectedPackages();

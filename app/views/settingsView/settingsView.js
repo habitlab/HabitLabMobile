@@ -40,18 +40,7 @@ exports.enableServices = function() {
 };
 
 exports.disableServices = function () {
-	// var list = StorageUtil.getSelectedPackages();
-
-	// for (var i = 0; i < list.length; i++) {
-	// 	var pkg = list[i];
-	// 	var time = StorageUtil.getAppTime(pkg, StorageUtil.days.TODAY);
-
-	// 	console.warn("Package: " + pkg, "| Time Spent: " + time);
-	// }
-
-
-	// var time = StorageUtil.getTotalTime(StorageUtil.days.TODAY);
-	// console.warn(time);
+	
 };
 
 exports.toggleDrawer = function() {

@@ -3,7 +3,7 @@
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
-  <ActionBar title="Nudges" class="action-bar" >
+  <ActionBar title="HabitLab" class="action-bar" >
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
 
@@ -13,14 +13,13 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <StackLayout orientation="vertical" id="detail" >
-        <Label id="title" class="detail-label" />
-        <Label id="description" class="detail-label" />
-        <FlexboxLayout orientation="horizontal" class="level-layout">
-          <Label text="level: " class="detail-label" />
-          <Label id="level" class="detail-label" />
+      <StackLayout orientation="vertical" id="app-detail" >
+        <Label id="title" class="app-detail-label app-detail-title" />
+        <Label id="description" class="app-detail-label" />
+        <FlexboxLayout orientation="horizontal" class="app-minutes-layout">
+          <Label text="average: " class="app-detail-label" />
+          <Label id="average" class="app-detail-label" />
         </FlexboxLayout>
-        <Button id='button' text="try" />
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical" id="list" />
         </ScrollView>
