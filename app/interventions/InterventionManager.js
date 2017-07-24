@@ -297,17 +297,12 @@ var positiveCallback = function () {
 };
 
 
-var foregroundActivity = app.android.foregroundActivity;
-
 // callback function for audioFocusListener
+var foreground = application.android.foregroundActivity;
 var negativeCallback = function () {
   var toHome = new Intent(Intent.ACTION_MAIN);
   toHome.addCategory(Intent.CATEGORY_HOME);
-
-  var app = require("application");
-  //var foregroundActivity = app.android.foregroundActivity;
-  console.warn(foregroundActivity);
-  foregroundActivity.startActivity(toHome); // THIS LINE IS BUGGY (when the app is killed, undefined foregroundActivity)
+  foreground.startActivity(toHome); // THIS LINE IS BUGGY (when the app is killed, undefined foregroundActivity)
 };
 
 

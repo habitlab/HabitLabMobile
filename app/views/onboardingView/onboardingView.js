@@ -136,11 +136,11 @@ exports.getDrawPermission = function(args) {
 
 
 
-
+const ServiceManager = require("~/services/ServiceManager");
 var context = application.android.context;
-var trackingServiceIntent = new Intent(context, com.habitlab.TrackingService.class);
-var unlockServiceIntent = new Intent(context, com.habitlab.UnlockService.class);
-var dummyServiceIntent = new Intent(context, com.habitlab.DummyService.class);
+var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
+var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
+var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
 
 exports.goToGoalView = function(args) {
   if (!StorageUtil.isSetUp()) {
