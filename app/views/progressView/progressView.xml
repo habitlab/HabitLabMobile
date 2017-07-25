@@ -26,8 +26,11 @@
 			   <TabViewItem.view>
 			   		<!-- <dayTab:dayTab/> -->
 			   		<StackLayout>
-			   			<Label text="Minutes on Watchlist Apps Today" class="header"/>
-			   			<Placeholder creatingView="dayView"/>
+			   			<StackLayout orientation="horizontal">
+			   				<Label text="Minutes on Watchlist Apps Today" class="header"/>
+			   				<Button text="{{ showDayGraph ? 'Hide' : 'Show'}}" tap="toggle" class="shide"/>
+			   			</StackLayout>
+			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="listButtons" class="list-group">
@@ -68,8 +71,11 @@
 			 <TabViewItem.view>
 						 <!-- <weekTab:weekTab/> -->
 						 <StackLayout>
-						 	<Label text="Minutes on Watchlist Apps This Week" class="header"/>
-						 	<Placeholder creatingView="weekView" id="line"/>
+						 	<StackLayout orientation="horizontal">
+						 		<Label text="Minutes on Watchlist Apps This Week" class="header"/>
+						 		<Button text="{{ showWeekGraph ? 'Hide' : 'Show'}}" tap="toggleWeek" class="shide"/>
+						 	</StackLayout>
+						 	<Placeholder creatingView="weekView" visibility = "{{ showWeekGraph ? 'visible' : 'collapsed'}}" id="line"/>
 						 <!-- 	For the horizontal button like displays  -->
 						 		<lv:RadListView id="weekButtons" class="list-group">
 			   					<lv:RadListView.listViewLayout>
@@ -114,8 +120,12 @@
 					 <TabViewItem.view>
 					     <!-- <monthTab:monthTab/> -->
 					     <StackLayout>
-					     	<Label text="Minutes on Watchlist Apps This Month" class="header"/>
-					     	<Placeholder creatingView="monthView" />
+					     	<StackLayout orientation="horizontal">
+						     	<Label text="Minutes on Watchlist Apps This Month" class="header"/>
+						     	<Button text="{{ showMonthGraph ? 'Hide' : 'Show'}}" tap="toggleMonth" class="shide"/>
+						 	</StackLayout>
+						 	
+						 	<Placeholder creatingView="monthView" visibility = "{{ showMonthGraph ? 'visible' : 'collapsed'}}"/>
 
 					     	<lv:RadListView id="monthButtons" class="list-group">
 			   					<lv:RadListView.listViewLayout>
