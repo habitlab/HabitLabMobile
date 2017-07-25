@@ -22,13 +22,11 @@ android.app.Service.extend("com.habitlab.PermissionCheckerService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
-        console.warn("PERMISSION CHECKER SERVICE CREATED");
 		return android.app.Service.START_STICKY; 
 	}, 
 
     onDestroy: function() {
         // do nothing
-        console.warn("PERMISSION CHECKER SERVICE DESTROYED");
     },
 
     onCreate: function() {
@@ -76,12 +74,10 @@ var overlayPermission = false;
 
 var checkPermission = function () {
     if (!usagePermission && PermissionUtil.checkActionUsagePermission()) {
-        console.warn("Got usage");
         usagePermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
         foregroundActivity.startActivity(intent);        
     } else if (!overlayPermission && PermissionUtil.checkSystemOverlayPermission()) {
-        console.warn("Got overlay");
 
         overlayPermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");

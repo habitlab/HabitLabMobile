@@ -48,6 +48,7 @@ onboarding.visuals = [
 
 
 exports.pageLoaded = function(args) {
+  console.warn('pageloaded');
   var navigated = false;
   page = args.object;
   page.bindingContext = onboarding;
