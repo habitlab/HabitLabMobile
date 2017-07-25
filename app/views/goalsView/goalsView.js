@@ -88,8 +88,6 @@ var createAppGoal = function(pkg) {
   var icon = item.getViewById('icon');
   icon.src = basicInfo.icon;
   item.on("touch, tap", function(args) {
-    console.log(args.eventName);
-    console.log(args.action);
     if (args.eventName === 'tap') {
       var options = {
         moduleName: 'views/appDetailView/appDetailView',
