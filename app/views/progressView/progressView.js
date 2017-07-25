@@ -85,30 +85,30 @@ exports.pageLoaded = function(args) {
 exports.dayView = function(args) {
     var appsToday = exports.getAppsToday();//gets the target apps used today
     var total = Math.round((progressInfo.phoneStats[TODAY].totalTime)/MINS_MS);
+    console.log(appsToday.length);
 
     // // add data
     var piechart = new PieChart(args.context);
     var entries = new ArrayList();
     var main = 0;
     var min;
-    var extra;
 
      if (appsToday.length <= 4) {
-        min = appsToday
-        flag = false;
+        min = appsToday.length;
+        useOther = false;
      } else if (appsToday.length === 5) {
-        flag = false;
+        useOther = false;
         min = 5
      } else if (appsToday.length > 5) {
         min = 4;
-        flag = true
+        useOther = true
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
 	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
 	     	main += appsToday[i].mins;
      }
-    if (flag) {
+    if (useOther) {
          var leftover = total - main;
         if (leftover > 1){
         	entries.add(new PieEntry(leftover, "Other"));
@@ -407,7 +407,7 @@ exports.populateListViewsWeek = function() {
 	},
     {
         value: perc + "%",
-        desc: "% phone time on watchlist"
+        desc: "phone time on watchlist"
     }
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
@@ -464,7 +464,7 @@ exports.populateListViewMonth = function () {
 	},
     {
         value: perc + "%",
-        desc: "% phone time on watchlist apps"
+        desc: "phone time on watchlist apps"
     }
 	)
 	var monthButtons = view.getViewById(page, "monthButtons");
