@@ -408,7 +408,9 @@ exports.populateListViewsWeek = function() {
     		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
     		var avgMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS*7)));
     		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
-    		var appObj = new weekApp(name, avgMins, imagesrc);
+    		var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
+            var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
+            var appObj = new weekApp(name, avgMins, imagesrc, percChange);
     		weekApps.push(appObj);
     }
     weekApps.sort(function compare(a, b) {
@@ -500,11 +502,11 @@ exports.getAppsToday = function() {
    
 
 
-    function weekApp(name, avgMins, imagesrc) {
+    function weekApp(name, avgMins, imagesrc, percChange) {
         this.name = name;
         if (avgMins < 0) avgMins = 0;
         this.avgMins = avgMins;
-        // this.perChange = perChange;
+        this.percChange = percChange;
         this.image = imagesrc;
     }
 
@@ -599,6 +601,8 @@ function getSpannableString() {
 
     //#mins
     myString.setSpan(new RelativeSizeSpan(2.0), 6,myString.length()-5,0);
+    //CHECK PHONE GOALS
+    console.warn(storageUtil.getPhoneGoals())
     if (total <= storageUtil.getPhoneGoals()) {
         myString.setSpan(new ForegroundColorSpan(Color.GREEN), 6,myString.length()-5,0);
     } else {

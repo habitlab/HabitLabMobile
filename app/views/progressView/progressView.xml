@@ -90,10 +90,11 @@
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
-			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <Label row="0" col="1" text="{{ name }}" class="list-group-item-heading"/>
-	   			        	            <StackLayout row ="0" col="2">
+	   			        	            <Label row="0" col="2" text = "{{ percChange }}"/>
+	   			        	            <StackLayout row ="0" col="3">
 		   			        	            <Label text="{{ avgMins }}" class="list-group-item-text" horizontalAlignment="center"/>
 		   			        	            <Label text="avg mins/day" class="list-desc"/>
 	   			        	        	</StackLayout>
