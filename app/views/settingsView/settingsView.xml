@@ -13,15 +13,13 @@
 				<sidedrawer:sd/>
     </sd:RadSideDrawer.drawerContent>
 
-    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-
-      <StackLayout orientation="vertical">
-        <Button text="Enable Service" tap="enableServices" />
-        <Button text="Disable Service" tap="disableServices" />
-        <Button text="Get Running Services" tap="getRunningServices" />
-        <Button text="Wipe Database" tap="reset" />
-
-      </StackLayout>
+    <sd:RadSideDrawer.mainContent>
+      <GridLayout class="settings-grid" rows="auto,auto" columns="auto,auto">
+        <Button class="settings-button" row="0" col="0" />
+        <Button class="settings-button" row="0" col="1" />
+        <Button class="settings-button" row="1" col="0" tap="goToFAQ" />
+        <Button class="settings-button" row="1" col="1" />
+      </GridLayout>
 
     </sd:RadSideDrawer.mainContent>
 
