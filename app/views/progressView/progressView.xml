@@ -6,7 +6,10 @@
   xmlns:lv="nativescript-telerik-ui/listview"
   navigatingTo="navigatingTo">
 
-	<ActionBar title="Progress" class="action-bar">
+	<ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Progress" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 
@@ -87,13 +90,17 @@
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
-			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
-	   			        	            <Label row="0" col="1" text="{{ name }}" class="list-group-item-heading"/>
-	   			        	            <StackLayout row ="0" col="2">
-		   			        	            <Label text="{{ avgMins }}" class="list-group-item-text" horizontalAlignment="center"/>
-		   			        	            <Label text="avg mins/day" class="list-desc"/>
-	   			        	        	</StackLayout>
+	   			        	            <StackLayout row="0" col="1" >
+	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
+	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
+	   			        	            </StackLayout>
+	   			        	            <Label row="0" col="2" text = "{{ percChange }}" id="perChange"/>
+	   			        	            <!-- <StackLayout row ="0" col="3"> -->
+		   			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
+	   			        	        	<!-- </StackLayout> -->
 			   			        	</GridLayout>
 			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>

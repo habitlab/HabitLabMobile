@@ -4,7 +4,10 @@
   xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:accordion="nativescript-accordion">
 
-  <ActionBar title="Goals" class="action-bar">
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Goals" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
     <ActionItem tap="onManageApps" icon="res://ic_manage_apps" />
 	</ActionBar>
