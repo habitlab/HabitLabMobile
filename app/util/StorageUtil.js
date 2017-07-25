@@ -132,7 +132,6 @@ exports.setUp = function() {
   });
 
   appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
-  
 };
 
 /* export: isSetUp

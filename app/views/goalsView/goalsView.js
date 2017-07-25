@@ -101,7 +101,7 @@ var createAppGoal = function(pkg) {
     } else {
       if (args.action === 'down') {
         item.className = 'flex selected';
-      } else if (args.action === 'up') {
+      } else if (args.action === 'up' || args.action === 'move') {
         item.className = 'flex';
       }
     }
@@ -153,8 +153,6 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
   }
-  console.warn(StorageUtil.getProgressViewInfo().appStats[0].packageName);
-  console.warn(JSON.stringify(StorageUtil.getProgressViewInfo().appStats[0]));
 };
 
 

@@ -31,6 +31,11 @@
 #button {
   background-color: #69BD68;
   color: white;
+  height: 15%;
+}
+
+#scroll {
+  height: 85%;
 }
 
 .selected {
