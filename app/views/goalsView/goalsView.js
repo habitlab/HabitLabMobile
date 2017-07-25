@@ -153,8 +153,6 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
   }
-  console.warn(StorageUtil.getProgressViewInfo().appStats[0].packageName);
-  console.warn(JSON.stringify(StorageUtil.getProgressViewInfo().appStats[0]));
 };
 
 

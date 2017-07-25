@@ -17,13 +17,11 @@ android.app.Service.extend("com.habitlab.DummyService", {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-        console.log("DUMMY SERVICE CREATED");
 		return android.app.Service.START_STICKY; 
 	}, 
 
     onDestroy: function() {
         // do nothing
-        console.log("DUMMY SERVICE DESTROYED");
     },
 
     onCreate: function() {

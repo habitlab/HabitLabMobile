@@ -48,7 +48,6 @@ onboarding.visuals = [
 
 
 exports.pageLoaded = function(args) {
-  console.warn('pageloaded');
   var navigated = false;
   page = args.object;
   page.bindingContext = onboarding;
@@ -68,7 +67,6 @@ exports.pageLoaded = function(args) {
 //hide cursor when the return button on the keyboard is pressed 
 exports.hideCursor = function(args) {
   var textField = args.object;
-  console.warn("hude");
 };
 
 

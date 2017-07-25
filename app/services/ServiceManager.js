@@ -30,20 +30,7 @@ var isRunning = function (serviceName) {
  * Prints out a list of services currently running on the device,
  * hightlighting the ones created by HabitLab
  */
-var getRunningServices = function() {	
-	console.log("---------------------------------------------");
-	var manager = context.getSystemService(Context.ACTIVITY_SERVICE);
-	var services = manager.getRunningServices(Integer.MAX_VALUE);
-	for (var i = 0; i < services.size(); i++) {
-		var service = services.get(i);
-		var serviceName = service.service.getClassName();
-		if (serviceName.startsWith("com.habitlab.")) {
-			console.log("=====>", serviceName);
-		} else {
-			console.log("      ", serviceName);
-		}	
-	}
-}
+var getRunningServices = function() {};
 
 
 /*
