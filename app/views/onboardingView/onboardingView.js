@@ -37,7 +37,7 @@ onboarding.titles = [
   ];
 
 onboarding.visuals = [
-  '~/images/icon.png',
+  '~/images/logo_bubbles.png',
   '~/images/onboarding_goals.png',
   '~/images/onboarding_applock.png',
   '~/images/onboarding_progress.png',
