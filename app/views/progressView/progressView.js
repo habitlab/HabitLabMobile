@@ -51,7 +51,25 @@ var MINS_MS = 60000;
 
 
 
+
+const ServiceManager = require("~/services/ServiceManager");
+var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
+var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
+var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
+
 exports.pageLoaded = function(args) {
+  /** SERVICE STARTER **/
+  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+    context.startService(trackingServiceIntent);
+  }
+
+  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+    context.startService(unlockServiceIntent);
+  }
+
+  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+    context.startService(dummyServiceIntent);
+  }  
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
 	exports.populateListViewsDay();
@@ -127,11 +145,6 @@ exports.dayView = function(args) {
     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
     piechart.invalidate();
     args.view = piechart;
-    console.log("day graph loaded")
-    // console.dir(progressInfo)
-    // console.dir(progressInfo.appStats[4])
-    // console.dir(progressInfo.appStats[4][21])
-    // console.dir(progressInfo.appStats[4][21].time)
 
 };
 
@@ -149,7 +162,6 @@ exports.weekView = function(args) {
    		//array of values for each week
    		var appValues = [];
    		for (var app = 0; app < progressInfo.appStats.length; app++) {
-   			//var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
             var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].time/MINS_MS)
    			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
@@ -608,10 +620,9 @@ function getSpannableString() {
 
     //#mins
     myString.setSpan(new RelativeSizeSpan(2.0), 6,myString.length()-5,0);
-    //CHECK PHONE GOALS
-    console.warn(storageUtil.getPhoneGoals())
-    if (total <= storageUtil.getPhoneGoals()) {
-        myString.setSpan(new ForegroundColorSpan(Color.GREEN), 6,myString.length()-5,0);
+    if (total <= storageUtil.getPhoneGoals().minutes) {
+        myString.setSpan(new ForegroundColorSpan(Color.parseColor("#69BD68")), 6,myString.length()-5,0);
+
     } else {
         myString.setSpan(new ForegroundColorSpan(Color.RED), 6,myString.length()-5,0);
     }
