@@ -414,13 +414,13 @@ exports.populateListViewsWeek = function() {
     var weekList = view.getViewById(page, "weekList");
 	weekList.items = weekApps;
     //COME BACK TO 
-    var pChange = view.getViewById(page, "perChange");
-    console.log(pChange);
-    if (change >= 0) {
-        pChange.color(Color.GREEN);
-    } else {
-        pChange.color(Color.RED);
-    }
+    // var pChange = view.getViewById(page, "perChange");
+    // console.log(pChange);
+    // if (change >= 0) {
+    //     pChange.color(Color.GREEN);
+    // } else {
+    //     pChange.color(Color.RED);
+    // }
  }
 
 
