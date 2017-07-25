@@ -19,6 +19,7 @@ const Toast = require('nativescript-toast');
 
 // global vars
 var context = application.android.context.getApplicationContext();
+var foregroundActivity = application.android.foregroundActivity;
 var timerID;
 
 /*
@@ -33,20 +34,19 @@ android.app.Service.extend("com.habitlab.TrackingService", {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-        console.warn("TRACKING SERVICE CREATED");
 		return android.app.Service.START_STICKY; 
 	}, 
 
     onDestroy: function() {
         // do nothing
-        console.warn("TRACKING SERVICE DESTROYED");
+        // this.super.onDestroy();
     },
 
-    onTaskRemoved: function(intent) {
-        // this.super.onTaskRemoved(intent);
-        // stopTimer();
-        // this.stopSelf();
-    },
+    // onTaskRemoved: function(intent) {
+    //     // this.super.onTaskRemoved(intent);
+    //     // stopTimer();
+    //     // this.stopSelf();
+    // },
 
     onCreate: function() {
         // do nothing
@@ -108,7 +108,6 @@ var trackUsage = function () {
         if (inBlacklistedApplication) {
             var timeSpent = now - startOfVisit || 0; // in case of concurrency issue w/ alertScreenOff
             StorageUtil.updateAppTime(currentPackage, timeSpent);
-            console.warn("Closing visit for " + currentPackage + " (length: " + timeSpent + ")");
         }
 
         currentPackage = newPackage; // set the newPackage as the currentPackage
@@ -120,14 +119,12 @@ var trackUsage = function () {
             startOfVisit = now;
             inBlacklistedApplication = true;
             StorageUtil.visited(currentPackage); // log a visit
-            console.warn("Starting Visit for " + currentPackage);
 
             // on-launch interventions
             InterventionManager.allowVideoBlocking(true);
             InterventionManager.logVisitStart();
             InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](true, currentPackage);
             InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](true, currentPackage);
-            console.warn("Here");
             InterventionManager.interventions[StorageUtil.interventions.FULL_SCREEN_OVERLAY](true, currentPackage);
         } else {
             // reset logging information
@@ -136,14 +133,10 @@ var trackUsage = function () {
             InterventionManager.allowVideoBlocking(false);
         }
     } else if (inBlacklistedApplication) {
-        console.warn("    inside: " + currentPackage);
         // interventions that last the lifespan of visit
         InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](true, currentPackage, startOfVisit);
         InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](true, currentPackage, startOfVisit);
-
-        if (currentPackage === "com.facebook.katana" || currentPackage === "com.google.android.youtube") {
-            InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true);
-        }
+        InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true, currentPackage);
     }
 };
 
@@ -191,7 +184,6 @@ var alertScreenOff = function () {
     if (inBlacklistedApplication) {
         var timeSpent = System.currentTimeMillis() - startOfVisit;
         StorageUtil.updateAppTime(currentPackage, timeSpent);
-        console.warn("Closing visit for " + currentPackage + " (length: " + timeSpent + ")");
 
         // reset logging information
         currentPackage = "SCREEN OFF";
@@ -227,7 +219,6 @@ var alertScreenOff = function () {
     if (inBlacklistedApplication) {
         var timeSpent = System.currentTimeMillis() - startOfVisit;
         StorageUtil.updateAppTime(currentPackage, timeSpent);
-        console.warn("Closing visit for " + currentPackage + " (length: " + timeSpent + ")");
 
         // reset logging information
         currentPackage = "SCREEN OFF";

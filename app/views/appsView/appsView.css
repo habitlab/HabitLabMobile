@@ -39,13 +39,13 @@
 .app-list-scroll {
   width: 100%;
   margin: auto;
-  height: 85%;
+  height: 83%;
 }
 
 #done-button {
   background-color: #69BD68;
   color: white;
-  height: 15%;
+  height: 17%;
 }
 
 #title {
@@ -54,5 +54,4 @@
   padding: 10%;
   background-color: #F7BBC3;
   color: #747F89;
-
 }

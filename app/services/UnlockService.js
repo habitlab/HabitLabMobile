@@ -38,7 +38,7 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
             TrackingService.alertScreenOn();
             StorageUtil.unlocked();
             InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION](true);
-            // InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST](true);
+            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST](true);
         } else if (action === Intent.ACTION_SCREEN_OFF) {
             TrackingService.alertScreenOff();
 
@@ -63,12 +63,10 @@ android.app.Service.extend("com.habitlab.UnlockService", {
         this.super.onStartCommand(intent, flags, startId);
         setUpReceiver();
         this.startForeground(ServiceManager.getForegroundID(), ServiceManager.getForegroundNotification());
-        console.warn("UNLOCK SERVICE CREATED");
         return android.app.Service.START_STICKY; 
     }, 
 
     onDestroy: function() {
-        console.warn("UNLOCK SERVICE DESTROYED");
     },
 
     onCreate: function() {

@@ -143,6 +143,14 @@ exports.isSetUp = function() {
   return appSettings.getBoolean('onboarded');
 };
 
+exports.setName = function(newName) {
+  appSettings.setString('name', newName);
+};
+
+exports.getName = function() {
+  return appSettings.getString('name');
+};
+
 
 /************************************
  *           MANAGEMENT             *
@@ -452,8 +460,14 @@ exports.isEnabledForAll = function(id) {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  return force || (JSON.parse(appSettings.getString('enabled'))[id] && 
-        (interventionDetails[id].target === 'phone' || JSON.parse(appSettings.getString(packageName)).enabled[id]));
+  var target = interventionDetails[id].target; // 'phone' or 'app'
+  var can = JSON.parse(appSettings.getString('enabled'))[id]; // enabled overall
+  if (target === 'phone') {
+    return can;
+  } else if (can) { // target === 'app'
+    var specified = interventionDetails[id].apps;
+    return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id];
+  }
 };
 
 /* export: forceIntervene

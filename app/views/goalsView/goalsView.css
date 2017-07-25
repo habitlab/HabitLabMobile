@@ -28,8 +28,16 @@
   padding-left: 6%;
 }
 
+#scroll {
+  height: 83%;
+}
 
 #button {
   background-color: #69BD68;
   color: white;
+  height: 17%;
+}
+
+.selected {
+  background-color: #F5F5F5;
 }

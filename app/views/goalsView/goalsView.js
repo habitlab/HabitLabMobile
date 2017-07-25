@@ -87,16 +87,25 @@ var createAppGoal = function(pkg) {
 
   var icon = item.getViewById('icon');
   icon.src = basicInfo.icon;
-  icon.on(gestures.tap, function() {
-    var options = {
-      moduleName: 'views/appDetailView/appDetailView',
-      context: {
-        packageName: pkg,
-        name: basicInfo.name,
-        icon: basicInfo.icon
+  item.on("touch, tap", function(args) {
+    if (args.eventName === 'tap') {
+      var options = {
+        moduleName: 'views/appDetailView/appDetailView',
+        context: {
+          packageName: pkg,
+          name: basicInfo.name,
+          icon: basicInfo.icon
+        }
+      }
+      frameModule.topmost().navigate(options);
+    } else {
+      if (args.action === 'down') {
+        item.className = 'flex selected';
+      } else if (args.action === 'up' || args.action === 'cancel') {
+        item.className = 'flex';
       }
     }
-    frameModule.topmost().navigate(options);
+    
   });
 
   var np = item.getViewById('np');
@@ -144,8 +153,6 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
   }
-  console.warn(StorageUtil.getProgressViewInfo().appStats[0].packageName);
-  console.warn(JSON.stringify(StorageUtil.getProgressViewInfo().appStats[0]));
 };
 
 

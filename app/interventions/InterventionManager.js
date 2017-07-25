@@ -273,14 +273,14 @@ var allowVideoBlocking = function (bool) {
  * Blocks all videos from the current package by constantly 
  * requesting audio focus.
  */
-var blockVideo = function (real) {
+var blockVideo = function (real, pkg) {
   if (!real) {
     DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
           "Yes", "No", null, null);
     return;
   }
 
-  if (shouldBlockVideo) {
+  if (shouldBlockVideo && StorageUtil.canIntervene(StorageUtil.interventions.VIDEO_BLOCKER, pkg)) {
     audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
   }
 };
@@ -332,22 +332,23 @@ var showFullScreenOverlay = function (real, pkg) {
     return;
   }
   
-  var visits = StorageUtil.getVisits(pkg);
-  if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
-    var applicationName = UsageInformationUtil.getAppName(pkg);
-    var title = "Continue to " + applicationName + "?";
-    var msg = "You've already been here " + visits + " times today. Want to take a break?";
-    FullScreenOverlay.showOverlay(context, title, msg, 
-      "Continue", "get me out of here!", null, exitToHome);
+  if (StorageUtil.canIntervene(StorageUtil.interventions.FULL_SCREEN_OVERLAY, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
+      var applicationName = UsageInformationUtil.getAppName(pkg);
+      var title = "Continue to " + applicationName + "?";
+      var msg = "You've already been here " + visits + " times today. Want to take a break?";
+      FullScreenOverlay.showOverlay(context, title, msg, 
+        "Continue", "get me out of here!", null, exitToHome);
+    }
   }
-
 }
 
 
 
 module.exports = { 
   interventions: [
-    popToastGlanced,
+    null,
     sendNotificationGlances,
     popToastUnlocked,
     sendUnlocksNotification,
@@ -359,7 +360,6 @@ module.exports = {
     sendNotificationVisited,
     blockVideo,
     showFullScreenOverlay
-    // showHeaderFooter
   ], 
   allowVideoBlocking,
   logVisitStart

@@ -128,6 +128,9 @@ exports.dayView = function(args) {
     piechart.invalidate();
     args.view = piechart;
     console.warn("day graph loaded")
+        console.warn(progressInfo)
+    console.warn(progressInfo.appStats[4])
+    console.warn(progressInfo.appStats[4][21])
 
 };
 
@@ -258,8 +261,6 @@ exports.dayView = function(args) {
 
 
 
-
-
 exports.populateListViewsDay = function() {   
      var unlocks = progressInfo.phoneStats[TODAY].unlocks
      var glances = progressInfo.phoneStats[TODAY].glances
@@ -269,10 +270,6 @@ exports.populateListViewsDay = function() {
 
 
     var apps = exports.getAppsToday();
-
-
-    // var listView = view.getViewById(page, "listview");
-    // listView.items = apps;
 
     //For demo:
     // var list = []
@@ -451,9 +448,6 @@ exports.getAppsToday = function() {
         var visits = progressInfo.appStats[i][TODAY].visits;
         var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
         var icon = usageUtil.getIcon(progressInfo.appStats[i].packageName);
-        console.warn(mins)
-        console.warn(visits)
-        console.warn(name)
         list.push({
             name: name,
             visits: visits,
