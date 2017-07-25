@@ -26,16 +26,16 @@ var createItem = function(id)  {
   item.on("tap, touch", function(args) {
     if (args.eventName === 'tap') {
       var options = {
-      moduleName: 'views/detailView/detailView',
-      context: {
-        id: id
-      }
+        moduleName: 'views/detailView/detailView',
+        context: {
+          id: id
+        }
       };
       frame.topmost().navigate(options);
     } else {
       if (args.action === 'down') {
         item.className = 'intervention-grid selected';
-      } else if (args.action === 'up') {
+      } else if (args.action === 'up' || args.action === 'cancel') {
         item.className = 'intervention-grid';
       }
     }
