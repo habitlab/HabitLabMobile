@@ -143,6 +143,14 @@ exports.isSetUp = function() {
   return appSettings.getBoolean('onboarded');
 };
 
+exports.setName = function(newName) {
+  appSettings.setString('name', newName);
+};
+
+exports.getName = function() {
+  return appSettings.getString('name');
+};
+
 
 /************************************
  *           MANAGEMENT             *

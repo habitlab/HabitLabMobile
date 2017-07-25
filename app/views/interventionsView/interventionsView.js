@@ -24,7 +24,6 @@ var createItem = function(id)  {
   label.className = 'intervention-label';
 
   item.on("tap, touch", function(args) {
-    console.dir(args.eventName)
     if (args.eventName === 'tap') {
       var options = {
       moduleName: 'views/detailView/detailView',
@@ -40,7 +39,6 @@ var createItem = function(id)  {
         item.className = 'intervention-grid';
       }
     }
-    
   });
 
   var sw = item.getViewById("switch");
