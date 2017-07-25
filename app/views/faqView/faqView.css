@@ -1,0 +1,47 @@
+.faq-question {
+  font-size: 18%;
+  padding: 10%;
+  padding-left: 10%;
+  color: black;
+}
+
+.faq-answer {
+  font-size: 16%;
+  padding-left: 10%;
+  padding-top: 5%;
+  padding-bottom: 15%;
+  color: black;
+}
+
+.faq-item {
+  margin: 15px;
+  margin-bottom: 0;
+}
+
+.faq-layout {
+  padding-bottom: 10%;
+}
+
+.gray {
+  background-color: #D3D3D3;
+}
+
+.orange {
+  background-color: #FFA730;
+}
+
+.red {
+  background-color: #E71D36;
+}
+
+.blue {
+  background-color: #2EC4B6;
+}
+
+.green {
+  background-color: #72e500;
+}
+
+.black {
+  background-color: #011627;
+}
