@@ -6,7 +6,10 @@
   xmlns:lv="nativescript-telerik-ui/listview"
   navigatingTo="navigatingTo">
 
-	<ActionBar title="Progress" class="action-bar">
+	<ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Progress" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 

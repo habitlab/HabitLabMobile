@@ -2,11 +2,7 @@
 @import url('~/platform.css');
 
 Page.onboarding {
-  /*background-image: url("res://background")*/
   background-color: #67D4C9;
- /* background-repeat: no-repeat;
-  background-position: top;
-  background-size: cover;*/
 }
 
 .action-bar {
@@ -32,4 +28,8 @@ Page.onboarding {
     margin-left : 3;
     margin-right : 3;
     border-radius : 7;
+}
+
+.action-bar-title {
+  font-size: 20%;
 }

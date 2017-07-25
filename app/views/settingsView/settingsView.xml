@@ -3,7 +3,10 @@
   xmlns:sd="nativescript-telerik-ui/sidedrawer" 
   xmlns:sidedrawer="shared/sd">
 
-  <ActionBar title="Settings" class="action-bar">
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Settings" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
 
