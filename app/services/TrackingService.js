@@ -39,13 +39,14 @@ android.app.Service.extend("com.habitlab.TrackingService", {
 
     onDestroy: function() {
         // do nothing
+        // this.super.onDestroy();
     },
 
-    onTaskRemoved: function(intent) {
-        // this.super.onTaskRemoved(intent);
-        // stopTimer();
-        // this.stopSelf();
-    },
+    // onTaskRemoved: function(intent) {
+    //     // this.super.onTaskRemoved(intent);
+    //     // stopTimer();
+    //     // this.stopSelf();
+    // },
 
     onCreate: function() {
         // do nothing
