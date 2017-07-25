@@ -273,14 +273,14 @@ var allowVideoBlocking = function (bool) {
  * Blocks all videos from the current package by constantly 
  * requesting audio focus.
  */
-var blockVideo = function (real) {
+var blockVideo = function (real, pkg) {
   if (!real) {
     DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
           "Yes", "No", null, null);
     return;
   }
 
-  if (shouldBlockVideo) {
+  if (shouldBlockVideo && StorageUtil.canIntervene(StorageUtil.interventions.VIDEO_BLOCKER, pkg)) {
     audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
   }
 };
@@ -322,7 +322,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 /**************************************
  *        OVERLAY INTERVENTION        *
  **************************************/
-var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
+var FULL_SCREEN_OVERLAY_INTERVAL = ; // visits
 
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
@@ -332,15 +332,16 @@ var showFullScreenOverlay = function (real, pkg) {
     return;
   }
   
-  var visits = StorageUtil.getVisits(pkg);
-  if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
-    var applicationName = UsageInformationUtil.getAppName(pkg);
-    var title = "Continue to " + applicationName + "?";
-    var msg = "You've already been here " + visits + " times today. Want to take a break?";
-    FullScreenOverlay.showOverlay(context, title, msg, 
-      "Continue", "get me out of here!", null, exitToHome);
+  if (StorageUtil.canIntervene(StorageUtil.interventions.FULL_SCREEN_OVERLAY, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
+      var applicationName = UsageInformationUtil.getAppName(pkg);
+      var title = "Continue to " + applicationName + "?";
+      var msg = "You've already been here " + visits + " times today. Want to take a break?";
+      FullScreenOverlay.showOverlay(context, title, msg, 
+        "Continue", "get me out of here!", null, exitToHome);
+    }
   }
-
 }
 
 

@@ -140,10 +140,7 @@ var trackUsage = function () {
         // interventions that last the lifespan of visit
         InterventionManager.interventions[StorageUtil.interventions.DURATION_TOAST](true, currentPackage, startOfVisit);
         InterventionManager.interventions[StorageUtil.interventions.DURATION_NOTIFICATION](true, currentPackage, startOfVisit);
-
-        if (currentPackage === "com.facebook.katana" || currentPackage === "com.google.android.youtube") {
-            InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true);
-        }
+        InterventionManager.interventions[StorageUtil.interventions.VIDEO_BLOCKER](true, currentPackage);
     }
 };
 
