@@ -24,8 +24,8 @@ onboarding.texts = [
   'Choose the apps you want to spend less time on.',
   'Build better habits with personalized interventions.',
   'Find what works for you and see how your habits improve over time.',
-  'To get started, allow HabitLab to access your app data',
-  'Just one left! Allow HabitLab to work over other apps',
+  'Allow HabitLab to access your app data',
+  'Last one!',
   'Swipe to pick your apps.\n'
 
   ];
@@ -39,7 +39,7 @@ onboarding.titles = [
   ];
 
 onboarding.visuals = [
-  '~/images/icon.png',
+  '~/images/logo_bubbles.png',
   '~/images/onboarding_goals.png',
   '~/images/onboarding_applock.png',
   '~/images/onboarding_progress.png',

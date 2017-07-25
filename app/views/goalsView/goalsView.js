@@ -35,7 +35,9 @@ var createPhoneGoal = function(goal, value) {
     page: page
   });
 
-  item.getViewById('icon').visibility = 'collapsed';
+  var icon = item.getViewById('icon');
+  icon.visibility = 'collapsed';
+
   item.getViewById('name').visibility = 'collapsed';
 
   var np = item.getViewById('np');
@@ -82,7 +84,29 @@ var createAppGoal = function(pkg) {
   var basicInfo = UsageUtil.getBasicInfo(pkg);
 
   item.getViewById('name').text = basicInfo.name;
-  item.getViewById('icon').src = basicInfo.icon;
+
+  var icon = item.getViewById('icon');
+  icon.src = basicInfo.icon;
+  item.on("touch, tap", function(args) {
+    if (args.eventName === 'tap') {
+      var options = {
+        moduleName: 'views/appDetailView/appDetailView',
+        context: {
+          packageName: pkg,
+          name: basicInfo.name,
+          icon: basicInfo.icon
+        }
+      }
+      frameModule.topmost().navigate(options);
+    } else {
+      if (args.action === 'down') {
+        item.className = 'flex selected';
+      } else if (args.action === 'up') {
+        item.className = 'flex';
+      }
+    }
+    
+  });
 
   var np = item.getViewById('np');
   np.id = pkg;
@@ -129,6 +153,8 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
   }
+  console.warn(StorageUtil.getProgressViewInfo().appStats[0].packageName);
+  console.warn(JSON.stringify(StorageUtil.getProgressViewInfo().appStats[0]));
 };
 
 

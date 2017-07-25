@@ -4,10 +4,10 @@ var Toast = require("nativescript-toast");
 
 var view = 'onboardingView';
 if (StorageUtil.isSetUp()) {
-  view = 'navView';
+  view = 'progressView';
 }
 applicationModule.start({ 
   moduleName: "views/" + view + "/" + view, 
-  backstackVisible: view === 'navView'
+  backstackVisible: view === 'progressView'
 });
 applicationModule.setCssFileName("app.css");

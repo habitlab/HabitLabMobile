@@ -143,6 +143,14 @@ exports.isSetUp = function() {
   return appSettings.getBoolean('onboarded');
 };
 
+exports.setName = function(newName) {
+  appSettings.setString('name', newName);
+};
+
+exports.getName = function() {
+  return appSettings.getString('name');
+};
+
 
 /************************************
  *           MANAGEMENT             *
@@ -245,6 +253,18 @@ exports.getVisits = function(packageName) {
 exports.visited = function(packageName) {
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo['stats'][index()]['visits']++;
+  appSettings.setString(packageName, JSON.stringify(appInfo));
+};
+
+/* export: decrementVisits
+ * -----------------------
+ * Minuses one to the visits for today.
+ */
+exports.decrementVisits = function(packageName) {
+  var appInfo = JSON.parse(appSettings.getString(packageName));
+  if (appInfo['stats'][index()]['visits']) {
+    appInfo['stats'][index()]['visits']--;
+  }
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
@@ -354,6 +374,10 @@ exports.midnightReset = function() {
 /************************************
  *           INTERVENTIONS          *
  ************************************/
+
+ exports.getInterventionsForApp = function(pkg) {
+  return JSON.parse(appSettings.getString(pkg)).enabled;
+ };
 
 /* export: enableForAll
  * --------------------
@@ -549,7 +573,5 @@ exports.getProgressViewInfo = function() {
     appStat.packageName = item;
     retObj.appStats.push(appStat);
   });
-
-  console.dir(retObj.phoneStats);
   return retObj;
 };

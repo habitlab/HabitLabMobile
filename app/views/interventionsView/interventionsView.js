@@ -22,14 +22,23 @@ var createItem = function(id)  {
   var label = item.getViewById("name");
   label.text = interventionList[id].name;
   label.className = 'intervention-label';
-  label.on(gestures.tap, function() {
-    var options = {
+
+  item.on("tap, touch", function(args) {
+    if (args.eventName === 'tap') {
+      var options = {
       moduleName: 'views/detailView/detailView',
       context: {
         id: id
       }
-    };
-    frame.topmost().navigate(options);
+      };
+      frame.topmost().navigate(options);
+    } else {
+      if (args.action === 'down') {
+        item.className = 'intervention-grid selected';
+      } else if (args.action === 'up') {
+        item.className = 'intervention-grid';
+      }
+    }
   });
 
   var sw = item.getViewById("switch");

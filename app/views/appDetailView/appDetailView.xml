@@ -14,11 +14,13 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation="vertical" id="app-detail" >
-        <Label id="title" class="app-detail-label app-detail-title" />
-        <Label id="description" class="app-detail-label" />
-        <FlexboxLayout orientation="horizontal" class="app-minutes-layout">
-          <Label text="average: " class="app-detail-label" />
-          <Label id="average" class="app-detail-label" />
+        <FlexboxLayout orientation="horizontal" class="app-detail-flex-layout" id="title-layout">
+          <Image id="app-detail-icon" class="app-detail-icon" />
+          <Label id="app-detail-title" class="app-detail-title"/>
+        </FlexboxLayout>
+        <FlexboxLayout orientation="horizontal" class="app-detail-flex-layout" id="minutes-layout">
+          <Label text="Average: " class="app-detail-label small" />
+          <Label id="average" class="app-detail-label small" />
         </FlexboxLayout>
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical" id="list" />

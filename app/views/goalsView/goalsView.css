@@ -28,8 +28,11 @@
   padding-left: 6%;
 }
 
-
 #button {
   background-color: #69BD68;
   color: white;
+}
+
+.selected {
+  background-color: #F5F5F5;
 }
