@@ -54,9 +54,8 @@ exports.pageLoaded = function(args) {
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
 	exports.populateListViewsDay();
-    console.warn("page loaded copmlete")
-	// exports.populateListViewsWeek();
-//	exports.populateListViewMonth();
+	exports.populateListViewsWeek();
+	exports.populateListViewMonth();
 };
 
 
@@ -127,135 +126,133 @@ exports.dayView = function(args) {
     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
     piechart.invalidate();
     args.view = piechart;
-    console.warn("day graph loaded")
-        console.warn(progressInfo)
-    console.warn(progressInfo.appStats[4])
-    console.warn(progressInfo.appStats[4][21])
+    console.log("day graph loaded")
+    // console.dir(progressInfo)
+    // console.dir(progressInfo.appStats[4])
+    // console.dir(progressInfo.appStats[4][21])
+    // console.dir(progressInfo.appStats[4][21].time)
 
 };
 
 
 
 
-//creates the bar graph on the week tab
-// exports.weekView = function(args) {
-//     var barchart = new BarChart(args.context);
-//     //array of datasets
-//     var IbarSet = new ArrayList();
-//     //array of BarEntries
-//     var entries = new ArrayList();
-//     for (var day = 6; day >=0; day--) {
-//    		//array of values for each week
-//    		var appValues = [];
-//    		for (var ga = 0; ga < progressInfo.appStats.length; ga++) {
-//    			//var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
-//             var totalTimeDay = progressInfo.appStats[i][TODAY-day].time
-//             console.warn(totalTimeDay);
-//    			appValues.push(new java.lang.Integer(totalTimeDay));
-//    		}
-//    		//now have an array of values for a week
-//    		entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
-//    }
-//   	var dataset = new BarDataSet(entries, "");
-//     dataset.setStackLabels(getAppNames());
-//   	dataset.setColors(getColors(goalApps.length));
-//   	IbarSet.add(dataset);
-// 	var data = new BarData(IbarSet);
-//     data.setValueTextColor(Color.WHITE);
-//     barchart.setData(data);
+// creates the bar graph on the week tab
+exports.weekView = function(args) {
+    var barchart = new BarChart(args.context);
+    //array of datasets
+    var IbarSet = new ArrayList();
+    //array of BarEntries
+    var entries = new ArrayList();
+    for (var day = 6; day >=0; day--) {
+   		//array of values for each week
+   		var appValues = [];
+   		for (var app = 0; app < progressInfo.appStats.length; app++) {
+   			//var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
+            var totalTimeDay = progressInfo.appStats[app][TODAY-day].time
+   			appValues.push(new java.lang.Integer(totalTimeDay));
+   		}
+   		//now have an array of values for a week
+   		entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
+   }
+  	var dataset = new BarDataSet(entries, "");
+    dataset.setStackLabels(getAppNames());
+  	dataset.setColors(getColors(progressInfo.appStats.length));
+  	IbarSet.add(dataset);
+	var data = new BarData(IbarSet);
+    data.setValueTextColor(Color.WHITE);
+    barchart.setData(data);
 
-//     //set axis labels
-//     var xLabels = getDayLabels();
-//      let axisformatter = new IAxisValueFormatter({
-//         getFormattedValue: function(value, axis) {
-//             return xLabels[value]
-//         },
-//         getDecimalDigits: function() {
-//             return 0
-//         }
-//      })
-//     var xAxis = barchart.getXAxis()
-//     var yAxis = barchart.getAxisLeft()
-//     yAxis.setAxisMinimum(0)
-//     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//     xAxis.setGranularity(1)
-//     xAxis.setDrawGridLines(false);
-//     barchart.getAxisRight().setEnabled(false);
-//     xAxis.setValueFormatter(axisformatter)
-//     var desc = barchart.getDescription();
-//     desc.setEnabled(Description.false);
-//     yAxis.setStartAtZero(true);
-//     barchart.setDrawValueAboveBar(false);
-//     var legend = barchart.getLegend();
-//     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+    //set axis labels
+    var xLabels = getDayLabels();
+     let axisformatter = new IAxisValueFormatter({
+        getFormattedValue: function(value, axis) {
+            return xLabels[value]
+        },
+        getDecimalDigits: function() {
+            return 0
+        }
+     })
+    var xAxis = barchart.getXAxis()
+    var yAxis = barchart.getAxisLeft()
+    yAxis.setAxisMinimum(0)
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setGranularity(1)
+    xAxis.setDrawGridLines(false);
+    barchart.getAxisRight().setEnabled(false);
+    xAxis.setValueFormatter(axisformatter)
+    var desc = barchart.getDescription();
+    desc.setEnabled(Description.false);
+    yAxis.setStartAtZero(true);
+    barchart.setDrawValueAboveBar(false);
+    var legend = barchart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
-//      barchart.animateY(3000);
-// 	 barchart.setFitBars(true);
-// 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-// 	 barchart.invalidate();
-// 	 args.view = barchart;
-// };
-
+     barchart.animateY(3000);
+	 barchart.setFitBars(true);
+	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+	 barchart.invalidate();
+	 args.view = barchart;
+};
 
 
-// exports.monthView = function(args) {
-//     var barchart = new BarChart(args.context);
-//     var IbarSet = new ArrayList();
-//     //array of datasets
-//     var IbarSet = new ArrayList();
-//     //array of BarEntries
-//     var entries = new ArrayList();
-//    for (var week = 3; week >=0; week--) {
-//    		//array of values for each week
-//    		var appValues = [];
-//    		for (var ga = 0; ga < progressInfo.appStats.length; ga++) {
-//    			var totalTimeWeekApp = usageUtil.getTotalTimeOnAppWeek(goalApps[ga], week);
 
-//             if (totalTimeWeekApp < 0) totalTimeWeekApp = 0;
-//    			appValues.push(new java.lang.Integer(totalTimeWeekApp));
-//    		}
-//    		//now have an array of values for a week
-//    		entries.add(new BarEntry(4-week, toJavaFloatArray(appValues)));
-//    }
-//   	var dataset = new BarDataSet(entries, "");
-//     dataset.setStackLabels(getAppNames());
-//   	dataset.setColors(getColors(goalApps.length));
-//   	IbarSet.add(dataset);
-// 	var data = new BarData(IbarSet);
-//     data.setValueTextColor(Color.WHITE);
-//     barchart.setData(data);
+exports.monthView = function(args) {
+    var barchart = new BarChart(args.context);
+    var IbarSet = new ArrayList();
+    //array of datasets
+    var IbarSet = new ArrayList();
+    //array of BarEntries
+    var entries = new ArrayList();
+   for (var weeksAgo = 3; weeksAgo >=0; weeksAgo--) {
+   		//array of values for each week
+   		var appValues = [];
+   		for (var app = 0; app < progressInfo.appStats.length; app++) {
+            var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo));
+   			appValues.push(new java.lang.Integer(totalTimeWeekApp));
+   		}
+   		//now have an array of values for a week
+   		entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
+   }
+  	var dataset = new BarDataSet(entries, "");
+    dataset.setStackLabels(getAppNames());
+  	dataset.setColors(getColors(progressInfo.appStats.length));
+  	IbarSet.add(dataset);
+	var data = new BarData(IbarSet);
+    data.setValueTextColor(Color.WHITE);
+    barchart.setData(data);
 
-//     var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
-//      let axisformatter = new IAxisValueFormatter({
-//         getFormattedValue: function(value, axis) {
-//             return xLabels[value]
-//         },
-//         getDecimalDigits: function() {
-//             return 0
-//         }
-//      })
+    var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
+     let axisformatter = new IAxisValueFormatter({
+        getFormattedValue: function(value, axis) {
+            return xLabels[value]
+        },
+        getDecimalDigits: function() {
+            return 0
+        }
+     })
 
-//     var xAxis = barchart.getXAxis()
-//     var yAxis = barchart.getAxisLeft()
-//     yAxis.setAxisMinimum(0)
-//     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//     xAxis.setGranularity(1)
-//     xAxis.setDrawGridLines(false);
-//     barchart.getAxisRight().setEnabled(false);
-//     xAxis.setValueFormatter(axisformatter)
-//     var desc = barchart.getDescription();
-//     desc.setEnabled(Description.false);
-//     yAxis.setStartAtZero(true);
-//     barchart.setDrawValueAboveBar(false);
-//     var legend = barchart.getLegend();
-//     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
-//     barchart.animateY(3000);
-//     barchart.setFitBars(true);
-//     barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-//     barchart.invalidate();
-//     args.view = barchart;
+    var xAxis = barchart.getXAxis()
+    var yAxis = barchart.getAxisLeft()
+    yAxis.setAxisMinimum(0)
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setGranularity(1)
+    xAxis.setDrawGridLines(false);
+    barchart.getAxisRight().setEnabled(false);
+    xAxis.setValueFormatter(axisformatter)
+    var desc = barchart.getDescription();
+    desc.setEnabled(Description.false);
+    yAxis.setStartAtZero(true);
+    barchart.setDrawValueAboveBar(false);
+    var legend = barchart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
+    barchart.animateY(3000);
+    barchart.setFitBars(true);
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.invalidate();
+    args.view = barchart;
 
-// };
+};
 
 
 
@@ -343,7 +340,7 @@ totalTimeWeek = function(weeksAgo, value) {
     var week = 4-weeksAgo
     var start = 7*(week-1)
     var end = week*7
-    var sum;
+    var sum = 0;
     for (var i = start; i < end; i++) {
         switch(value) {
             case ("total"):
@@ -359,81 +356,109 @@ totalTimeWeek = function(weeksAgo, value) {
     return sum;
 }
 
+totalTimeMonth = function(value) {
+    var sum = 0;
+    for (var i = 0; i <= TODAY; i++) {
+        switch(value) {
+            case ("total"):
+                 sum += progressInfo.phoneStats[i].totalTime;
+            case ("target"):
+                sum += progressInfo.phoneStats[i].time;
+            case ("glances"):
+                sum += progressInfo.phoneStats[i].glances;
+            case ("unlocks"):
+                sum += progressInfo.phoneStats[i].unlocks;
+        }
+    }
+    return sum;
+}
 
 
-// exports.populateListViewsWeek = function() {
-//     var timeOnPhoneWeek = Math.round(totalTimeWeek(0, "total")/60000)
-//     var timeOnTargetAppsWeek = Math.round(totalTimeWeek(0, "target")/6)/10
-//     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
-//     var unlocks = totalTimeWeek(0, "unlocks");
-//     // var avgUnlocks = Math.round(total/unlocks.length);
+exports.populateListViewsWeek = function() {
+    var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")/60000))
+    var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")/6)/10)
+    var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
+    var unlocks = totalTimeWeek(0, "unlocks");
+    // var avgUnlocks = Math.round(total/unlocks.length);
 
-// 	var weekStats = [];
-// 	weekStats.push(
-// 	{
-// 		value: timeOnTargetAppsWeek,
-// 		desc: "hrs on watchlist this week"
-// 	},
-// 	{
-// 		value: unlocks,
-// 		desc: "total unlocks this week"
-// 	},
-//     {
-//         value: perc + "%",
-//         desc: "% phone time on watchlist"
-//     }
-// 	)
-// 	var weekButtons = view.getViewById(page, "weekButtons");
-// 	weekButtons.items = weekStats;
-
-
-// 	var weekApps=[];
-// 	for(var i = 0; i < goalApps.length; ++i) {
-//     		var name = usageUtil.getAppName(goalApps[i]);
-//             //change
-//     		var avgMins = 11;
-//     		var imagesrc = usageUtil.getIcon(goalApps[i]);
-//     		var appObj = new weekApp(name, avgMins, imagesrc);
-//     		weekApps.push(appObj);
-//     }
-//     weekApps.sort(function compare(a, b) {
-//     if (a.avgMins < b.avgMins) {
-//       return 1;
-//     } else if (a.avgMins > b.avgMins) {
-//       return -1;
-//     }
-//     return 0;
-//   	});
-//     var weekList = view.getViewById(page, "weekList");
-// 	weekList.items = weekApps;
-//  }
+	var weekStats = [];
+	weekStats.push(
+	{
+		value: timeOnTargetAppsWeek,
+		desc: "hrs on watchlist this week"
+	},
+	{
+		value: unlocks,
+		desc: "total unlocks this week"
+	},
+    {
+        value: perc + "%",
+        desc: "% phone time on watchlist"
+    }
+	)
+	var weekButtons = view.getViewById(page, "weekButtons");
+	weekButtons.items = weekStats;
 
 
-// exports.populateListViewMonth = function () {
-// 	var totalTimePhoneMonth = Math.round(usageUtil.getTotalTimeOnPhoneThisMonth()/6)/10;
-//     var totalTarget = Math.round(usageUtil.getTotalTimeOnTargetAppsThisMonth()/6)/10;
-//         var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth)*100); 
-
-// 	var monthStats = [];
-// 	monthStats.push(
-// 	{
-// 		value: totalTarget,
-// 		desc: "avg hrs on phone/day"
-// 	},
-// 	{
-// 		value: 72,
-// 		desc: "avg unlocks/day"
-// 	},
-//     {
-//         value: perc + "%",
-//         desc: "% phone time on watchlist apps"
-//     }
-// 	)
-// 	var monthButtons = view.getViewById(page, "monthButtons");
-// 	monthButtons.items = monthStats;
-// };
+	var weekApps=[];
+	for(var i = 0; i < progressInfo.appStats.length; ++i) {
+    		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+    		var avgMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/7));
+    		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+    		var appObj = new weekApp(name, avgMins, imagesrc);
+    		weekApps.push(appObj);
+    }
+    weekApps.sort(function compare(a, b) {
+    if (a.avgMins < b.avgMins) {
+      return 1;
+    } else if (a.avgMins > b.avgMins) {
+      return -1;
+    }
+    return 0;
+  	});
+    var weekList = view.getViewById(page, "weekList");
+	weekList.items = weekApps;
+ }
 
 
+exports.populateListViewMonth = function () {
+	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")/6)/10);
+    var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")/6)/10);
+    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth)*100); 
+    var avgUnlocks = (totalTimeMonth("unlocks") === 0 ? 0 : Math.round(totalTimeMonth("unlocks")/28));
+
+	var monthStats = [];
+	monthStats.push(
+	{
+		value: totalTarget,
+		desc: "avg hrs on phone/day"
+	},
+	{
+		value: avgUnlocks,
+		desc: "avg unlocks/day"
+	},
+    {
+        value: perc + "%",
+        desc: "% phone time on watchlist apps"
+    }
+	)
+	var monthButtons = view.getViewById(page, "monthButtons");
+	monthButtons.items = monthStats;
+};
+
+
+
+getTotalTimeAppWeek = function(array, weeksAgo) {
+    var week = 4-weeksAgo
+    var start = 7*(week-1)
+    var end = week*7
+    var sum = 0;
+    for (var i = start; i < end; i++) {
+        sum += array[i].time;
+    }
+    //var avg = Math.round(sum/7);
+    return sum;
+}
 
 
 
