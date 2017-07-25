@@ -48,6 +48,10 @@
 			android:exported="false">
 		</service>
 		<service 
+			android:name="com.habitlab.PermissionCheckerService"
+			android:exported="false">
+		</service>
+		<service 
 			android:name="com.habitlab.UnlockService"
 			android:exported="false" >
 		</service>

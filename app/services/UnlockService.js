@@ -38,7 +38,7 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
             TrackingService.alertScreenOn();
             StorageUtil.unlocked();
             InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION](true);
-            // InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST](true);
+            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST](true);
         } else if (action === Intent.ACTION_SCREEN_OFF) {
             TrackingService.alertScreenOff();
 
