@@ -1,3 +1,5 @@
+const ServiceManager = require("~/services/ServiceManager");
+
 var application = require("application");
 var StorageUtil = require("~/util/StorageUtil");
 var PermissionUtil = require("~/util/PermissionUtil");
@@ -43,15 +45,13 @@ onboarding.visuals = [
   '~/images/onboarding_progress.png',
   '~/images/onboarding_swiperight.png'
 ];
- 
+
 
 exports.pageLoaded = function(args) {
-  console.warn('pageloaded');
   var navigated = false;
-
   page = args.object;
   page.bindingContext = onboarding;
-  container = page.getViewById("slides")
+  container = page.getViewById("slides");
  
   page.getViewById('slides').on('finished', function () {
     page.getViewById('lastslide').on(gestures.swipe, function (args) {

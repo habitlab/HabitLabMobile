@@ -347,7 +347,7 @@ var showFullScreenOverlay = function (real, pkg) {
 
 module.exports = { 
   interventions: [
-    popToastGlanced,
+    null,
     sendNotificationGlances,
     popToastUnlocked,
     sendUnlocksNotification,
@@ -359,7 +359,6 @@ module.exports = {
     sendNotificationVisited,
     blockVideo,
     showFullScreenOverlay
-    // showHeaderFooter
   ], 
   allowVideoBlocking,
   logVisitStart
