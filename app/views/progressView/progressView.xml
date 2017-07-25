@@ -96,7 +96,7 @@
 	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
 	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
-	   			        	            <Label row="0" col="2" text = "{{ percChange }}"/>
+	   			        	            <Label row="0" col="2" text = "{{ percChange }}" id="perChange"/>
 	   			        	            <!-- <StackLayout row ="0" col="3"> -->
 		   			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
 		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->

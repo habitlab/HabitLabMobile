@@ -84,7 +84,7 @@ exports.pageLoaded = function(args) {
 //Creates the pie chart on the day tab
 exports.dayView = function(args) {
     var appsToday = exports.getAppsToday();//gets the target apps used today
-    var total = Math.round(progressInfo.phoneStats[TODAY].totalTime);
+    var total = Math.round((progressInfo.phoneStats[TODAY].totalTime)/MINS_MS);
 
     // // add data
     var piechart = new PieChart(args.context);
@@ -435,7 +435,8 @@ exports.populateListViewsWeek = function() {
   	});
     var weekList = view.getViewById(page, "weekList");
 	weekList.items = weekApps;
-    // var pChange = page.getElementById("percChange");
+    // var pChange = page.getViewById('perChange');
+    // console.log(pChange);
     // if (change >= 0) {
     //     pChange.color(Color.GREEN);
     // } else {
