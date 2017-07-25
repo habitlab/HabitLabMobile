@@ -101,7 +101,7 @@ exports.checkUsagePermission = function(args) {
 }
 
 exports.checkDrawPermission = function(args) {
-  if (!PermissionUtil.checkActionUsagePermission()) {
+  if (!PermissionUtil.checkSystemOverlayPermission()) {
       fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please give permission to continue", "Dismiss");
   } else {
     exports.goToNextSlide(args);

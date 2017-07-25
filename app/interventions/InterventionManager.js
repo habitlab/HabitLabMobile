@@ -322,7 +322,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 /**************************************
  *        OVERLAY INTERVENTION        *
  **************************************/
-var FULL_SCREEN_OVERLAY_INTERVAL = ; // visits
+var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
 
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
