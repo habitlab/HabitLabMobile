@@ -395,8 +395,8 @@ exports.populateListViewsWeek = function() {
 	var weekApps=[];
 	for(var i = 0; i < progressInfo.appStats.length; ++i) {
 		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
-		var avgMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS*7)));
-        var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/MINS_MS));
+        var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var avgMins = Math.round(totalMins/28);
 		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
 		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
@@ -404,9 +404,9 @@ exports.populateListViewsWeek = function() {
 		weekApps.push(appObj);
     }
     weekApps.sort(function compare(a, b) {
-    if (a.avgMins < b.avgMins) {
+    if (a.totalMins < b.totalMins) {
       return 1;
-    } else if (a.avgMins > b.avgMins) {
+    } else if (a.totalMins > b.totalMins) {
       return -1;
     }
     return 0;
@@ -414,13 +414,13 @@ exports.populateListViewsWeek = function() {
     var weekList = view.getViewById(page, "weekList");
 	weekList.items = weekApps;
     //COME BACK TO 
-    // var pChange = view.getViewById(page, "perChange");
-    // console.log(pChange);
-    // if (change >= 0) {
-    //     pChange.color(Color.GREEN);
-    // } else {
-    //     pChange.color(Color.RED);
-    // }
+    var pChange = view.getViewById(page, "perChange");
+    console.log(pChange);
+    if (change >= 0) {
+        pChange.color(Color.GREEN);
+    } else {
+        pChange.color(Color.RED);
+    }
  }
 
 
@@ -448,13 +448,42 @@ exports.populateListViewMonth = function () {
 	)
 	var monthButtons = view.getViewById(page, "monthButtons");
 	monthButtons.items = monthStats;
+
+    var monthApps=[];
+    for(var i = 0; i < progressInfo.appStats.length; ++i) {
+        var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var avgMins = Math.round(totalMins/28);
+        var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+        var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
+        monthApps.push(appObj);
+    }
+    monthApps.sort(function compare(a, b) {
+    if (a.totalMins < b.totalMins) {
+      return 1;
+    } else if (a.totalMins > b.totalMins) {
+      return -1;
+    }
+    return 0;
+    });
+    var monthList = view.getViewById(page, "monthList");
+    monthList.items = monthApps;
+  
+
+
 };
 
 
 
 
 
-
+getTotalTimeAppMonth = function(array) {
+    var sum = 0;
+    for (var i = 0; i <= TODAY; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
 
 
 
@@ -542,6 +571,13 @@ exports.getAppsToday = function() {
 
    
 
+function monthApp(name, avgMins, imagesrc, totalMins) {
+    this.name = name;
+    if (avgMins < 0) avgMins = 0;
+    this.avgMins = avgMins;
+    this.image = imagesrc;
+    this.totalMins = totalMins;
+}
 
 function weekApp(name, avgMins, imagesrc, percChange, totalMins) {
     this.name = name;

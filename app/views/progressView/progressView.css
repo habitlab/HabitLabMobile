@@ -34,7 +34,9 @@
 
 
 .header {
-	text-align: center;
+	/*text-align: center;*/
+	display: inline-block;
+	margin-left: 12%;
 	margin-top:2%;
 	font-size:20%;
 	color: #747F89;
@@ -114,5 +116,16 @@
 
 
 .shide {
-	width: wrap-content;
+	width: 12%;
+	height: 7%;
+	padding: 2%;
+	font-size: 10%;
+	background-color: #D35474;
+	color:white;
+}
+
+.titleStack {
+	/*text-align: center;*/
+		vertical-align: center;
+
 }
