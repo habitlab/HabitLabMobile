@@ -338,6 +338,8 @@ function getTotalTimeOnPhoneWeek(weeksAgo) {
 		if (appUsage === 0) continue;
 		appUsage = appUsage/60000;
 		total += appUsage;
+		console.log(packageName)
+		console.log(total)
 	}
 
 	return total;

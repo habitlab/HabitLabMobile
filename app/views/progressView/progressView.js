@@ -146,6 +146,8 @@ exports.weekView = function(args) {
    		var appValues = [];
    		for (var ga = 0; ga < goalApps.length; ga++) {
    			var totalTimeDay = usageUtil.getTimeOnApplicationSingleDay(goalApps[ga], day);
+            // console.warn(totalTimeDay);
+            // console.warn(usageUtil.getAppName(goalApps[ga]))
             if (totalTimeDay === 0) totalTimeDay = 0;
    			appValues.push(new java.lang.Integer(totalTimeDay));
    		}
@@ -427,6 +429,9 @@ exports.getAppsToday = function() {
         var visits = progressInfo.appStats[i][TODAY].visits;
         var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
         var icon = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+        console.warn(mins)
+        console.warn(visits)
+        console.warn(name)
         list.push({
             name: name,
             visits: visits,

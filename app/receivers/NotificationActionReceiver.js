@@ -11,6 +11,7 @@ android.content.BroadcastReceiver.extend("com.habitlab.NotificationActionReceive
 		var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		if (action === "action.habitlab.NotificationPositive") {
+			console.warn("HELLO");
 			InterventionManager.setBlockMedia(false);
 			notificationManager.cancel(7777);
 		} else if (action === "action.habitlab.NotificationNegative") {

@@ -20,9 +20,11 @@ exports.onLoad = args =>{
     		// Edit when get visits
     		var visits = 6;
     		var imagesrc = usageUtil.getIcon(goalApps[i]);
+    		console.log(imagesrc);
     		var appObj = new app(name, visits, imagesrc);
     		apps.push(appObj);
     }
+    console.dir(apps);
    	var listView = view.getViewById(thisView, "listview");
 	listView.items = apps;
 
