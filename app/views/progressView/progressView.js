@@ -232,7 +232,6 @@ exports.monthView = function(args) {
             return 0
         }
      })
-
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -407,10 +406,11 @@ exports.populateListViewsWeek = function() {
 	for(var i = 0; i < progressInfo.appStats.length; ++i) {
     		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
     		var avgMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS*7)));
+            var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/MINS_MS));
     		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
     		var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
             var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
-            var appObj = new weekApp(name, avgMins, imagesrc, percChange);
+            var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
     		weekApps.push(appObj);
     }
     weekApps.sort(function compare(a, b) {
@@ -423,6 +423,12 @@ exports.populateListViewsWeek = function() {
   	});
     var weekList = view.getViewById(page, "weekList");
 	weekList.items = weekApps;
+    // var pChange = page.getElementById("percChange");
+    // if (change >= 0) {
+    //     pChange.color(Color.GREEN);
+    // } else {
+    //     pChange.color(Color.RED);
+    // }
  }
 
 
@@ -502,12 +508,13 @@ exports.getAppsToday = function() {
    
 
 
-    function weekApp(name, avgMins, imagesrc, percChange) {
+    function weekApp(name, avgMins, imagesrc, percChange, totalMins) {
         this.name = name;
         if (avgMins < 0) avgMins = 0;
         this.avgMins = avgMins;
         this.percChange = percChange;
         this.image = imagesrc;
+        this.totalMins = totalMins;
     }
 
 
