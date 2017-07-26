@@ -25,6 +25,9 @@
           <Label text="Average: " class="app-detail-label small" />
           <Label id="average" class="app-detail-label small" />
         </FlexboxLayout>
+
+        <Placeholder creatingView="weekView" id="line"/>
+ 
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical" id="list" />
         </ScrollView>
