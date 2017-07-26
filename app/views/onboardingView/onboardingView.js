@@ -15,7 +15,6 @@ var gestures = require("ui/gestures").GestureTypes;
 var gesture = require("ui/gestures");
 
 var page;
-var name;
 var container;
 var onboarding = {};
 
@@ -82,10 +81,11 @@ exports.goToNextSlide = function(args) {
 
 exports.checkNameNextSlide = function(args) {
   var textfield = page.getViewById("name");
-  name = textfield.text;
+  var name = textfield.text;
   if (name === "") {
       fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "Dismiss");
   } else {
+    StorageUtil.setName(name);
     exports.goToNextSlide(args);
   }
 };

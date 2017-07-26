@@ -1,8 +1,6 @@
 var application = require("application");
 var frame = require("ui/frame");
 var fancyAlert = require("nativescript-fancyalert");
-var dialogs = require("ui/dialogs");
-const PromptDialog = cn.refactor.lib.colordialog.PromptDialog;
 const StorageUtil = require("~/util/StorageUtil");
 const Toast = require("nativescript-toast");
 
@@ -23,7 +21,9 @@ exports.editName = function () {
     layout.setPadding(100, 50, 100, 50);
 
     var editText = new android.widget.EditText(application.android.foregroundActivity);
-    editText.setText(StorageUtil.getName());
+    var currentName = StorageUtil.getName();
+    editText.setText(currentName);
+    editText.setSelection(currentName.length);
     editText.setGravity(android.view.Gravity.CENTER);
  	layout.addView(editText, new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 
  		android.widget.LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -54,7 +54,7 @@ exports.editName = function () {
 
 
 exports.setHours = function () {
-
+	fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
 };
 
 
@@ -73,7 +73,7 @@ exports.eraseData = function() {
 
     var onClickListener = new android.view.View.OnClickListener({
 	    onClick: function (view) {
-	    	StorageUtil.setUp();
+	    	StorageUtil.setUpDB();
 	    	dialog.dismiss();
 	    }
 	});
