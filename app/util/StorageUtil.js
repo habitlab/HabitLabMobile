@@ -1,4 +1,5 @@
 var appSettings = require("application-settings");
+var getPresets = require("~/util/UsageInformationUtil").getInstalledPresets;
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
@@ -177,8 +178,7 @@ exports.eraseData = function() {
  * Clears storage and resets everything to defaults.
  */
 exports.setUpDB = function() {
-  var preset = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
-                "com.snapchat.android", "com.instagram.android"];
+  var preset = getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
@@ -193,8 +193,7 @@ exports.setUpDB = function() {
 };
 
 exports.setUpFakeDB = function() {
-  var preset = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
-                "com.snapchat.android", "com.instagram.android"];
+  var preset = getInstalledPresets();
   appSettings.setString('selectedPackages', JSON.stringify(preset));
 
   preset.forEach(function (item) {
@@ -656,4 +655,8 @@ exports.getProgressViewInfo = function() {
     retObj.appStats.push(appStat);
   });
   return retObj;
+};
+
+exports.getAppStats = function(packageName) {
+  return arrangeData(JSON.parse(appSettings.getString(packageName)).stats);
 };
