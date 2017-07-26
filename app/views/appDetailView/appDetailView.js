@@ -122,6 +122,7 @@ exports.toggleDrawer = function() {
 exports.pageNavigating = function(args) {
   console.log('pageNavigating')
   page = args.object;
+  drawer = page.getViewById("sideDrawer");
   if ( page.navigationContext) {
     console.log('pageNavigating have navigationContext')
     pkg = page.navigationContext.packageName;
@@ -162,7 +163,6 @@ exports.weekView = function(args) {
       entries.add(new BarEntry(6-day, totalTimeDay));
    }
     var dataset = new BarDataSet(entries, "");
-    //dataset.setStackLabels(toJavaStringArray(getAppNames()));
     dataset.setColor(Color.parseColor("#DAECF3"));
     IbarSet.add(dataset);
     var data = new BarData(IbarSet);
