@@ -134,7 +134,7 @@ exports.pageLoaded = function(args) {
 
 function getAppNames() {
     name = progressInfo.appStats.map(function(app){
-        return usageUtil.getAppName(app.packageName);
+        return usageUtil.getBasicInfo(app.packageName).name;
     });
     return name;
 
