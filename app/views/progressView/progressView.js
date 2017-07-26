@@ -394,10 +394,11 @@ exports.populateListViewsWeek = function() {
 
 	var weekApps=[];
 	for(var i = 0; i < progressInfo.appStats.length; ++i) {
-		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+		var name = appInfo.name;
         var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/7);
-		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+		var imagesrc = appInfo.icon;
 		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
         var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
@@ -451,10 +452,11 @@ exports.populateListViewMonth = function () {
 
     var monthApps=[];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
-        var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = appInfo.name;
         var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/28);
-        var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+        var imagesrc = appInfo.icon;
         var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
         monthApps.push(appObj);
     }
@@ -548,8 +550,9 @@ exports.getAppsToday = function() {
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = Math.round(progressInfo.appStats[i][TODAY].time/MINS_MS);
         var visits = progressInfo.appStats[i][TODAY].visits;
-        var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
-        var icon = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = appInfo.name;
+        var icon = appInfo.icon;
         list.push({
             name: name,
             visits: visits,
@@ -640,7 +643,7 @@ function toJavaStringArray(arr) {
 function getAppNames() {
     var names = Array.create(java.lang.String, progressInfo.appStats.length);
     for (let i = 0; i < progressInfo.appStats.length; ++i) {
-        names[i] = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        names[i] = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName).name;
     }
     return names;
 }

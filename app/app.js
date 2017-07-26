@@ -6,6 +6,7 @@ var view = 'onboardingView';
 if (StorageUtil.isSetUp()) {
   view = 'progressView';
 }
+
 applicationModule.start({ 
   moduleName: "views/" + view + "/" + view, 
   backstackVisible: view === 'progressView'
