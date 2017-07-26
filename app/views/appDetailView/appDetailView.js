@@ -118,26 +118,24 @@ exports.toggleDrawer = function() {
 
 
 
-exports.pageLoaded = function(args) {
-  console.log("page loaded")
-  page = args.object;
-  drawer = page.getViewById("sideDrawer");
-  console.dir(progressInfo);
-  var packageNames = progressInfo.appStats.map(function(app){
-      return app.packageName;
-  });
-  console.dir(packageNames)
 
+exports.pageNavigating = function(args) {
+  console.log('pageNavigating')
+  page = args.object;
   if ( page.navigationContext) {
+    console.log('pageNavigating have navigationContext')
     pkg = page.navigationContext.packageName;
     console.dir(pkg);
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
-     index = packageNames.indexOf(pkg);
-    console.log(index);
+    var packageNames = progressInfo.appStats.map(function(app){
+      return app.packageName;
+    });
+    index = packageNames.indexOf(pkg);
     setUpDetail(pkg);
   }
-};
+}
+
 
 
 
@@ -158,10 +156,8 @@ function toJavaStringArray(arr) {
 }
 
 
+
 exports.weekView = function(args) {
-  console.log("loading week view");
-    console.log(index);
-    console.dir(progressInfo.appStats[index])
     var barchart = new BarChart(args.context);
     //array of datasets
     var IbarSet = new ArrayList();
@@ -169,11 +165,7 @@ exports.weekView = function(args) {
     var entries = new ArrayList();
     for (var day = 6; day >=0; day--) {
       //array of values for each week
-      // var totalTimeDay = Math.round(progressInfo.appStats[index][TODAY-day].time/MINS_MS)
-
-      //WHY IS THIS LOADING BEFORE PAGE LOADED
-      var totalTimeDay = Math.floor(Math.random(0,40)*101);
-      //now have an array of values for a week
+      var totalTimeDay = Math.round(progressInfo.appStats[index][TODAY-day].time/MINS_MS)
       entries.add(new BarEntry(6-day, totalTimeDay));
    }
     var dataset = new BarDataSet(entries, "");
@@ -215,6 +207,10 @@ exports.weekView = function(args) {
    barchart.invalidate();
    args.view = barchart;
 };
+
+
+
+
 
 //returns [today, yesterday, day before...]
 function getDayLabels() {

@@ -81,6 +81,7 @@ exports.pageLoaded = function(args) {
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
+
 };
 
 exports.toggle = function () {
@@ -401,6 +402,8 @@ exports.populateListViewsWeek = function() {
 		var imagesrc = appInfo.icon;
 		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
+        var pChange = view.getViewById(page, "perChange");
+        // var color = (change >= 0 ? "green" : "red")
         var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
 		weekApps.push(appObj);
     }
@@ -589,6 +592,7 @@ function weekApp(name, avgMins, imagesrc, percChange, totalMins) {
     this.percChange = percChange;
     this.image = imagesrc;
     this.totalMins = totalMins;
+    // this.color = color;
 }
 
 
