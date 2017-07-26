@@ -128,10 +128,6 @@ exports.pageNavigating = function(args) {
     console.dir(pkg);
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
-    var packageNames = progressInfo.appStats.map(function(app){
-      return app.packageName;
-    });
-    index = packageNames.indexOf(pkg);
     setUpDetail(pkg);
   }
 }
@@ -139,13 +135,6 @@ exports.pageNavigating = function(args) {
 
 
 
-function getAppNames() {
-    name = progressInfo.appStats.map(function(app){
-        return usageUtil.getBasicInfo(app.packageName).name;
-    });
-    return name;
-
-}
 
 function toJavaStringArray(arr) {
     var output = Array.create(java.lang.String, arr.length)
@@ -158,6 +147,10 @@ function toJavaStringArray(arr) {
 
 
 exports.weekView = function(args) {
+  var packageNames = progressInfo.appStats.map(function(app){
+      return app.packageName;
+    });
+    index = packageNames.indexOf(pkg);
     var barchart = new BarChart(args.context);
     //array of datasets
     var IbarSet = new ArrayList();
@@ -169,7 +162,7 @@ exports.weekView = function(args) {
       entries.add(new BarEntry(6-day, totalTimeDay));
    }
     var dataset = new BarDataSet(entries, "");
-    dataset.setStackLabels(toJavaStringArray(getAppNames()));
+    //dataset.setStackLabels(toJavaStringArray(getAppNames()));
     dataset.setColor(Color.parseColor("#DAECF3"));
     IbarSet.add(dataset);
     var data = new BarData(IbarSet);
@@ -199,7 +192,7 @@ exports.weekView = function(args) {
     yAxis.setStartAtZero(true);
     barchart.setDrawValueAboveBar(false);
     var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+    legend.setEnabled(false);
 
      barchart.animateY(3000);
    barchart.setFitBars(true);
