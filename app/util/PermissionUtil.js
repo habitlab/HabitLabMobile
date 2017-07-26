@@ -6,7 +6,6 @@ var Settings = android.provider.Settings;
 var AppOpsManager = android.app.AppOpsManager;
 var Process = android.os.Process;
 var Context = android.content.Context;
-var fancyAlert = require("nativescript-fancyalert");
 
 
 /* 
