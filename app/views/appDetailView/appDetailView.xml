@@ -8,7 +8,7 @@
 
   <ActionBar class="action-bar">
     <ActionBar.titleView>
-      <Label text="App Detail" horizontalAlignment="center" class="action-bar-title" />
+      <Label text="App Details" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
