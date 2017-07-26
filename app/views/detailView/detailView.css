@@ -3,6 +3,10 @@
   padding: 4%;
 }
 
+.detail-icon {
+  width: 10%;
+}
+
 #title {
   font-size: 25%;
   text-align: center;

@@ -1,5 +1,5 @@
 <FlexboxLayout direction="row" class="flex" id="goalelem">
-  <Image id="icon" col="0" class="goal-icon" />
+  <Image id="icon" col="0" class="goal-icon thumb img-rounded" />
   <Label id="name" col="1" class="goal-name" />
   <FlexboxLayout flexDirection="row" class="np"  id="np" col="3">
     <Button text="-" id="minus" class="np-button" />
