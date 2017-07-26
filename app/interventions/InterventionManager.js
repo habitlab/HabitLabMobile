@@ -47,7 +47,7 @@ var popToastVisited = function(real, pkg) {
 
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
-    var applicationName = UsageInformationUtil.getAppName(pkg);
+    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
     var visits = StorageUtil.getVisits(pkg);
 
     if (visits % VISITED_TOAST_INTERVAL === 0 && visits % VISITED_NOTIF_INTERVAL !== 0) {
@@ -70,7 +70,7 @@ var sendNotificationVisited = function(real, pkg) {
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_NOTIFICATION, pkg)) {
-    var applicationName = UsageInformationUtil.getAppName(pkg);
+    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
     var visits = StorageUtil.getVisits(pkg);
     var title = applicationName + " Usage";
     var msg = "You have opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
@@ -218,7 +218,7 @@ var popToastVisitLength = function (real, pkg, visitStart) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_TOAST, pkg)) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_TOAST_INTERVAL && !sentToast) {
-      var applicationName = UsageInformationUtil.getAppName(pkg);
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       Toast.makeText("You've been on " + applicationName + " for 5 minutes").show();
       sentToast = true;
     }
@@ -240,7 +240,7 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotification) {
-      var applicationName = UsageInformationUtil.getAppName(pkg);
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = applicationName + " Visit Length";
       var msg = "You've been using " + applicationName + " for 15 minutes";
       NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
@@ -335,7 +335,7 @@ var showFullScreenOverlay = function (real, pkg) {
   if (StorageUtil.canIntervene(StorageUtil.interventions.FULL_SCREEN_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
-      var applicationName = UsageInformationUtil.getAppName(pkg);
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = "Continue to " + applicationName + "?";
       var msg = "You've already been here " + visits + " times today. Want to take a break?";
       FullScreenOverlay.showOverlay(context, title, msg, 

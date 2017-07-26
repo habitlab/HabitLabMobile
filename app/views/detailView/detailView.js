@@ -18,11 +18,13 @@ var createItem = function(pkg)  {
   item.id = pkg;
   item.className = 'detail-grid';
 
+  var appInfo = UsageUtil.getBasicInfo(pkg);
+
   var label = item.getViewById("name");
-  label.text = UsageUtil.getAppName(pkg);
+  label.text = appInfo.name;
   label.className = "detail-label";
   
-  item.getViewById("icon").src = UsageUtil.getIcon(pkg);
+  item.getViewById("icon").src = appInfo.icon;
   //class="thumb img-rounded"
   
   var sw = item.getViewById("switch");

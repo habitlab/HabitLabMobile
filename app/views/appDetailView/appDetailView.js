@@ -37,7 +37,7 @@ var setUpDetail = function(packageName) {
   page.getViewById('app-detail-title').text = name;
   page.getViewById('app-detail-icon').src = icon;
 
-  var average = UsageUtil.getAvgTimeOnAppThisWeek(packageName);
+  var average = 50; // bogus value so it compiles // UsageUtil.getAvgTimeOnAppThisWeek(packageName);
   var averageLabel = page.getViewById('average');
   averageLabel.text = average + ' minutes/day';
   var level = " good";
