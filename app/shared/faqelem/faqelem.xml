@@ -1,0 +1,6 @@
+<GridLayout rows="auto,auto" columns="*,auto" >
+  <Label id="question" row="0" col="0" />
+  <Image id="toggle" row="0" col="1" />
+  <Label id="answer" row="1" col="0" visibility="collapse" />
+  <Button id="button" row="1" col="1" visibility="collapse" />
+</GridLayout>

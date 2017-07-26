@@ -365,7 +365,7 @@ exports.midnightReset = function() {
   var list = JSON.parse(appSettings.getString('selectedPackages'));
   list.forEach(function (packageName) {
     var appInfo = JSON.parse(appSettings.getString(packageName));
-    appInfo['stats'][today] = PkgStat();
+    appInfo.stats[today] = PkgStat();
     appSettings.setString(packageName, JSON.stringify(appInfo));
   });
 };

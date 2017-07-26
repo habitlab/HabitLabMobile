@@ -26,8 +26,11 @@
 			   <TabViewItem.view>
 			   		<!-- <dayTab:dayTab/> -->
 			   		<StackLayout>
-			   			<Label text="Minutes on Watchlist Apps Today" class="header"/>
-			   			<Placeholder creatingView="dayView"/>
+			   			<GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
+			   				<Label text="Mins on Watchlist Today" row="0" col="0" class="header" horizontalAlignment="center"/>
+			   				<Button text="{{ showDayGraph ? 'Hide' : 'Show'}}" tap="toggle" class="shide" row="0" col="1"/>
+			   			</GridLayout>
+			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="listButtons" class="list-group">
@@ -68,8 +71,11 @@
 			 <TabViewItem.view>
 						 <!-- <weekTab:weekTab/> -->
 						 <StackLayout>
-						 	<Label text="Minutes on Watchlist Apps This Week" class="header"/>
-						 	<Placeholder creatingView="weekView" id="line"/>
+							 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
+					   				<Label text="Mins on Watchlist This Week" row="0" col="0" class="header" horizontalAlignment="center"/>
+					   				<Button text="{{ showWeekGraph ? 'Hide' : 'Show'}}" tap="toggleWeek" class="shide" row="0" col="1"/>
+				   			</GridLayout>
+						 	<Placeholder creatingView="weekView" visibility = "{{ showWeekGraph ? 'visible' : 'collapsed'}}" id="line"/>
 						 <!-- 	For the horizontal button like displays  -->
 						 		<lv:RadListView id="weekButtons" class="list-group">
 			   					<lv:RadListView.listViewLayout>
@@ -96,7 +102,7 @@
 	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
 	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
-	   			        	            <Label row="0" col="2" text = "{{ percChange }}" id="perChange"/>
+	   			        	            <Label row="0" col="2" text = "{{ percChange }}" id="perChange" horizontalAlignment="center"/>
 	   			        	            <!-- <StackLayout row ="0" col="3"> -->
 		   			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
 		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
@@ -114,8 +120,12 @@
 					 <TabViewItem.view>
 					     <!-- <monthTab:monthTab/> -->
 					     <StackLayout>
-					     	<Label text="Minutes on Watchlist Apps This Month" class="header"/>
-					     	<Placeholder creatingView="monthView" />
+					   		 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
+					   				<Label text="Mins on Watchlist This Month" row="0" col="0" class="header" horizontalAlignment="center"/>
+					   				<Button text="{{ showMonthGraph ? 'Hide' : 'Show'}}" tap="toggleMonth" class="shide" row="0" col="1"/>
+				   			</GridLayout>
+						 	
+						 	<Placeholder creatingView="monthView" visibility = "{{ showMonthGraph ? 'visible' : 'collapsed'}}"/>
 
 					     	<lv:RadListView id="monthButtons" class="list-group">
 			   					<lv:RadListView.listViewLayout>
@@ -126,6 +136,25 @@
 			   			                <Label text="{{ value }}" class="list-number" />
 			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 			   			            </StackLayout>
+			   			        </lv:RadListView.itemTemplate>
+
+			   			    </lv:RadListView>
+			   			    <lv:RadListView id="monthList" class="list-group">
+			   					<lv:RadListView.listViewLayout>
+			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
+			   			        </lv:RadListView.listViewLayout>
+			   			        <lv:RadListView.itemTemplate>
+			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+	   			        	            <StackLayout row="0" col="1" >
+	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
+	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
+	   			        	            </StackLayout>
+	   			        	            <!-- <StackLayout row ="0" col="3"> -->
+		   			        	            <Label row="0" col="2" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
+	   			        	        	<!-- </StackLayout> -->
+			   			        	</GridLayout>
 			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
 

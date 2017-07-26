@@ -48,6 +48,8 @@ var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 var progressInfo = storageUtil.getProgressViewInfo();
 var TODAY = 27;
 var MINS_MS = 60000;
+var observable = require("data/observable");
+var pageData = new observable.Observable();
 
 
 
@@ -72,13 +74,26 @@ exports.pageLoaded = function(args) {
   }  
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
+    pageData.set("showDayGraph", true);
+    pageData.set("showWeekGraph", true);
+    pageData.set("showMonthGraph", true);
+    args.object.bindingContext = pageData;
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
 };
 
+exports.toggle = function () {
+    pageData.set("showDayGraph", !pageData.get("showDayGraph"));
+}
 
+exports.toggleWeek = function() {
+    pageData.set("showWeekGraph", !pageData.get("showWeekGraph"));
+}
 
+exports.toggleMonth = function() {
+    pageData.set("showMonthGraph", !pageData.get("showMonthGraph"));
+}
 
 
 //Creates the pie chart on the day tab
@@ -324,7 +339,7 @@ exports.populateListViewsDay = function() {
 	},
     {
         value: perc + "%",
-        desc: "phone time on watchlist apps"
+        desc: "time on watchlist"
     }
 	)
     //For demo"
@@ -346,6 +361,146 @@ exports.populateListViewsDay = function() {
 	listButtons.items = stats;
     console.warn("list view day done")
 };
+
+
+
+exports.populateListViewsWeek = function() {
+    var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")/MINS_MS))
+    var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")/MINS_MS));
+    var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
+    var unlocks = totalTimeWeek(0, "unlocks");
+    // var avgUnlocks = Math.round(total/unlocks.length);
+    var hrsOnWatchlistWeek = Math.round(timeOnTargetAppsWeek/6)/10;
+
+	var weekStats = [];
+	weekStats.push(
+	{
+		value: hrsOnWatchlistWeek,
+		desc: "hrs on watchlist"
+	},
+	{
+		value: unlocks,
+		desc: "unlocks"
+	},
+    {
+        value: perc + "%",
+        desc: "time on watchlist"
+    }
+	)
+	var weekButtons = view.getViewById(page, "weekButtons");
+	weekButtons.items = weekStats;
+    var change;
+
+
+	var weekApps=[];
+	for(var i = 0; i < progressInfo.appStats.length; ++i) {
+		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var avgMins = Math.round(totalMins/28);
+		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
+        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
+        var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
+		weekApps.push(appObj);
+    }
+    weekApps.sort(function compare(a, b) {
+    if (a.totalMins < b.totalMins) {
+      return 1;
+    } else if (a.totalMins > b.totalMins) {
+      return -1;
+    }
+    return 0;
+  	});
+    var weekList = view.getViewById(page, "weekList");
+	weekList.items = weekApps;
+    //COME BACK TO 
+    // var pChange = view.getViewById(page, "perChange");
+    // console.log(pChange);
+    // if (change >= 0) {
+    //     pChange.color(Color.GREEN);
+    // } else {
+    //     pChange.color(Color.RED);
+    // }
+ }
+
+
+exports.populateListViewMonth = function () {
+	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")/MINS_MS));
+    var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")/MINS_MS));
+    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth)*100); 
+    var avgUnlocks = (totalTimeMonth("unlocks") === 0 ? 0 : Math.round(totalTimeMonth("unlocks")/28));
+    var avgHrs = Math.round(totalTimePhoneMonth/(28*6))/10
+
+	var monthStats = [];
+	monthStats.push(
+	{
+		value: avgHrs,
+		desc: "avg hrs on phone/day"
+	},
+	{
+		value: avgUnlocks,
+		desc: "avg unlocks/day"
+	},
+    {
+        value: perc + "%",
+        desc: "time on watchlist"
+    }
+	)
+	var monthButtons = view.getViewById(page, "monthButtons");
+	monthButtons.items = monthStats;
+
+    var monthApps=[];
+    for(var i = 0; i < progressInfo.appStats.length; ++i) {
+        var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
+        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var avgMins = Math.round(totalMins/28);
+        var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
+        var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
+        monthApps.push(appObj);
+    }
+    monthApps.sort(function compare(a, b) {
+    if (a.totalMins < b.totalMins) {
+      return 1;
+    } else if (a.totalMins > b.totalMins) {
+      return -1;
+    }
+    return 0;
+    });
+    var monthList = view.getViewById(page, "monthList");
+    monthList.items = monthApps;
+  
+
+
+};
+
+
+
+
+
+getTotalTimeAppMonth = function(array) {
+    var sum = 0;
+    for (var i = 0; i <= TODAY; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
+
+
+
+
+
+//Returns the total time spent on an app in a week in ms when passed in an appStat
+getTotalTimeAppWeek = function(array, weeksAgo) {
+    var week = 4-weeksAgo
+    var start = 7*(week-1)
+    var end = week*7
+    var sum = 0;
+    for (var i = start; i < end; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
+
 
 
 
@@ -387,110 +542,6 @@ totalTimeMonth = function(value) {
 }
 
 
-exports.populateListViewsWeek = function() {
-    var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")/MINS_MS))
-    var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")/MINS_MS));
-    var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
-    var unlocks = totalTimeWeek(0, "unlocks");
-    // var avgUnlocks = Math.round(total/unlocks.length);
-    var hrsOnWatchlistWeek = Math.round(timeOnTargetAppsWeek/6)/10;
-
-	var weekStats = [];
-	weekStats.push(
-	{
-		value: hrsOnWatchlistWeek,
-		desc: "hrs on watchlist this week"
-	},
-	{
-		value: unlocks,
-		desc: "total unlocks this week"
-	},
-    {
-        value: perc + "%",
-        desc: "phone time on watchlist"
-    }
-	)
-	var weekButtons = view.getViewById(page, "weekButtons");
-	weekButtons.items = weekStats;
-
-
-	var weekApps=[];
-	for(var i = 0; i < progressInfo.appStats.length; ++i) {
-    		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
-    		var avgMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS*7)));
-            var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/MINS_MS));
-    		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
-    		var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
-            var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
-            var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
-    		weekApps.push(appObj);
-    }
-    weekApps.sort(function compare(a, b) {
-    if (a.avgMins < b.avgMins) {
-      return 1;
-    } else if (a.avgMins > b.avgMins) {
-      return -1;
-    }
-    return 0;
-  	});
-    var weekList = view.getViewById(page, "weekList");
-	weekList.items = weekApps;
-    // var pChange = page.getViewById('perChange');
-    // console.log(pChange);
-    // if (change >= 0) {
-    //     pChange.color(Color.GREEN);
-    // } else {
-    //     pChange.color(Color.RED);
-    // }
- }
-
-
-exports.populateListViewMonth = function () {
-	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")/MINS_MS));
-    var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")/MINS_MS));
-    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth)*100); 
-    var avgUnlocks = (totalTimeMonth("unlocks") === 0 ? 0 : Math.round(totalTimeMonth("unlocks")/28));
-    var avgHrs = Math.round(totalTimePhoneMonth/(28*6))/10
-
-	var monthStats = [];
-	monthStats.push(
-	{
-		value: avgHrs,
-		desc: "avg hrs on phone/day"
-	},
-	{
-		value: avgUnlocks,
-		desc: "avg unlocks/day"
-	},
-    {
-        value: perc + "%",
-        desc: "phone time on watchlist apps"
-    }
-	)
-	var monthButtons = view.getViewById(page, "monthButtons");
-	monthButtons.items = monthStats;
-};
-
-
-
-
-//Returns the total time spent on an app in a week in ms
-getTotalTimeAppWeek = function(array, weeksAgo) {
-    var week = 4-weeksAgo
-    var start = 7*(week-1)
-    var end = week*7
-    var sum = 0;
-    for (var i = start; i < end; i++) {
-        sum += array[i].time;
-    }
-    return sum;
-}
-
-
-
-
-
-
 //Returns a list of apps used today with their name, visits, icon and minutes in ascending order
 exports.getAppsToday = function() {
     var list = [];
@@ -520,15 +571,22 @@ exports.getAppsToday = function() {
 
    
 
+function monthApp(name, avgMins, imagesrc, totalMins) {
+    this.name = name;
+    if (avgMins < 0) avgMins = 0;
+    this.avgMins = avgMins;
+    this.image = imagesrc;
+    this.totalMins = totalMins;
+}
 
-    function weekApp(name, avgMins, imagesrc, percChange, totalMins) {
-        this.name = name;
-        if (avgMins < 0) avgMins = 0;
-        this.avgMins = avgMins;
-        this.percChange = percChange;
-        this.image = imagesrc;
-        this.totalMins = totalMins;
-    }
+function weekApp(name, avgMins, imagesrc, percChange, totalMins) {
+    this.name = name;
+    if (avgMins < 0) avgMins = 0;
+    this.avgMins = avgMins;
+    this.percChange = percChange;
+    this.image = imagesrc;
+    this.totalMins = totalMins;
+}
 
 
 getColors = function(stacksize) {

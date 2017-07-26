@@ -1,0 +1,27 @@
+<Page loaded="pageLoaded"
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="FAQ" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <ScrollView orientation="vertical">
+        <StackLayout orientation="vertical" id="faq-list" class="faq-layout"/>
+      </ScrollView>
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+
+</Page>
