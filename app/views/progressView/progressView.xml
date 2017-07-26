@@ -22,9 +22,8 @@
 
 		<TabView androidSelectedTabHighlightColor="#FFA730">
 		 <TabView.items>
-			<TabViewItem title="Day" xmlns:dayTab="progressTabs/dayTab" >
+			<TabViewItem title="Day" >
 			   <TabViewItem.view>
-			   		<!-- <dayTab:dayTab/> -->
 			   		<StackLayout>
 			   			<GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
 			   				<Label text="Mins on Watchlist Today" row="0" col="0" class="header" horizontalAlignment="center"/>
@@ -67,9 +66,8 @@
 					</TabViewItem.view>
 				</TabViewItem>
 			
-		 <TabViewItem title="Week" xmlns:weekTab="progressTabs/weekTab">
+		 <TabViewItem title="Week" >
 			 <TabViewItem.view>
-						 <!-- <weekTab:weekTab/> -->
 						 <StackLayout>
 							 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
 					   				<Label text="Mins on Watchlist This Week" row="0" col="0" class="header" horizontalAlignment="center"/>
@@ -116,9 +114,8 @@
 					  </TabViewItem.view>
 				  </TabViewItem>
 							     
-				<TabViewItem title="Month" xmlns:monthTab="progressTabs/monthTab">
+				<TabViewItem title="Month">
 					 <TabViewItem.view>
-					     <!-- <monthTab:monthTab/> -->
 					     <StackLayout>
 					   		 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
 					   				<Label text="Mins on Watchlist This Month" row="0" col="0" class="header" horizontalAlignment="center"/>
