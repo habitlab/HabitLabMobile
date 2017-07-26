@@ -1,4 +1,5 @@
 <Page 
+  loaded="pageLoaded"
   navigatingTo="pageNavigating"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
@@ -25,15 +26,17 @@
         </FlexboxLayout>
 
         <ScrollView orientation="vertical">
+          <StackLayout orientation="vertical">
 
-          <Label text="Progress" class='enabled-nudges-title' />
-          <Placeholder creatingView="weekView" id="line"/>
+            <Label text="Progress" class='app-detail-subtitle' />
+            <Placeholder creatingView="weekView" id="line"/>
 
-          <Label text="App Goals" class='enabled-nudges-title' />
-          <goalelem:goalelem id="goal-changer" />
+            <Label text="App Goals" class='app-detail-subtitle top-padded' />
+            <goalelem:goalelem id="goal-changer" />
 
-          <Label text="Enabled Nudges" class='enabled-nudges-title' />
-          <StackLayout orientation="vertical" id="list" />
+            <Label text="Enabled Nudges" class='app-detail-subtitle top-padded' />
+            <StackLayout orientation="vertical" id="list" />
+          </StackLayout>
           
         </ScrollView>
       </StackLayout>

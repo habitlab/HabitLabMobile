@@ -4,7 +4,7 @@
   margin-left: 2%;
 }
 
-.enabled-nudges-title {
+.app-detail-subtitle {
   font-size: 21%;
   text-align: center;
   color: #FFA730;
@@ -48,6 +48,14 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+
+.top-padded {
+  padding-top: 20%;
+}
+
+.goal-changer {
+  padding-top: 6%;
 }
 
 .small {

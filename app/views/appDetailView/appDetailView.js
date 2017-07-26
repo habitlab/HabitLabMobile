@@ -1,12 +1,9 @@
 var StorageUtil = require('~/util/StorageUtil');
-var UsageUtil = require('~/util/UsageInformationUtil');
 var IM = require('~/interventions/InterventionManager');
 
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
 
-var usageUtil = require('~/util/UsageInformationUtil.js');
-var storageUtil = require('~/util/StorageUtil.js');
 var frameModule = require("ui/frame");
 var gestures = require("ui/gestures");
 var view = require("ui/core/view");
@@ -16,10 +13,8 @@ var Placeholder = require("ui/placeholder")
 var app = require("tns-core-modules/application")
 var observable = require("data/observable");
 var pageData = new observable.Observable();
-var page;
 var context = app.android.context;
 var goalApps;
-var drawer;
 var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
 var Entry = com.github.mikephil.charting.data.Entry
@@ -54,7 +49,6 @@ var page;
 var pkg;
 var name;
 var icon;
-var index;
 var appStats;
 
 var createItem = function(enabled, id)  {
@@ -79,13 +73,14 @@ var createItem = function(enabled, id)  {
   return item;
 };
 
-var setUpDetail = function(packageName) {
+var setUpDetail = function() {
   page.getViewById('app-detail-title').text = name;
   page.getViewById('app-detail-icon').src = icon;
 
   var goalChanger = page.getViewById('goal-changer');
+  goalChanger.className += ' goal-changer';
   goalChanger.getViewById('name').visibility = 'collapse';
-  goalChanger.getViewById('icon').visibility = 'collapse';
+  goalChanger.getViewById('icon').visibility = 'hidden';
   goalChanger.getViewById('number').text = StorageUtil.getMinutesGoal(pkg);
   goalChanger.getViewById('label').text = 'mins';
 
@@ -102,7 +97,7 @@ var setUpDetail = function(packageName) {
   });
 
   var layout = page.getViewById('list');
-  var interventions = StorageUtil.getInterventionsForApp(packageName);
+  var interventions = StorageUtil.getInterventionsForApp(pkg);
 
   interventions.forEach(function (enabled, id) {
     if (!layout.getViewById('intervention' + id) && StorageUtil.interventionDetails[id].target === 'app') {
@@ -118,41 +113,35 @@ exports.toggleDrawer = function() {
 
 exports.pageNavigating = function(args) {
   page = args.object;
-  drawer = page.getViewById("sideDrawer");
-  if ( page.navigationContext) {
+  if (page.navigationContext) {
     pkg = page.navigationContext.packageName;
+    appStats = StorageUtil.getAppStats(pkg);
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
   }
 }
 
 exports.pageLoaded = function(args) {
+  page = args.object;
   drawer = page.getViewById('sideDrawer');
-  appStats = StorageUtil.getAppStats(pkg);
-  setUpDetail(pkg);
+  setUpDetail();
 };
 
 
 function toJavaStringArray(arr) {
-    var output = Array.create(java.lang.String, arr.length)
+    var output = Array.create(java.lang.String, arr.length);
     for (let i = 0; i < arr.length; ++i) {
-        output[i] = arr[i]
+        output[i] = arr[i];
     }
-    return output
+    return output;
 }
 
-
-
 exports.weekView = function(args) {
-  var packageNames = progressInfo.appStats.map(function(app){
-      return app.packageName;
-    });
-    index = packageNames.indexOf(pkg);
-    var barchart = new BarChart(args.context);
-    //array of datasets
-    var IbarSet = new ArrayList();
-    //array of BarEntries
-    var entries = new ArrayList();
+  var barchart = new BarChart(args.context);
+  //array of datasets
+  var IbarSet = new ArrayList();
+  //array of BarEntries
+  var entries = new ArrayList();
     for (var day = 6; day >=0; day--) {
       //array of values for each week
       var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)

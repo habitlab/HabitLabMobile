@@ -1,4 +1,4 @@
-<FlexboxLayout direction="row" class="flex">
+<FlexboxLayout direction="row" class="flex" id="goalelem">
   <Image id="icon" col="0" class="goal-icon" />
   <Label id="name" col="1" class="goal-name" />
   <FlexboxLayout flexDirection="row" class="np"  id="np" col="3">
