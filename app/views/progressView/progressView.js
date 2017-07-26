@@ -396,7 +396,7 @@ exports.populateListViewsWeek = function() {
 	for(var i = 0; i < progressInfo.appStats.length; ++i) {
 		var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
         var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
-        var avgMins = Math.round(totalMins/28);
+        var avgMins = Math.round(totalMins/7);
 		var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
 		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
@@ -427,7 +427,7 @@ exports.populateListViewsWeek = function() {
 exports.populateListViewMonth = function () {
 	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")/MINS_MS));
     var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")/MINS_MS));
-    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth)*100); 
+    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth*100)); 
     var avgUnlocks = (totalTimeMonth("unlocks") === 0 ? 0 : Math.round(totalTimeMonth("unlocks")/28));
     var avgHrs = Math.round(totalTimePhoneMonth/(28*6))/10
 
@@ -452,7 +452,7 @@ exports.populateListViewMonth = function () {
     var monthApps=[];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var name = usageUtil.getAppName(progressInfo.appStats[i].packageName);
-        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/28);
         var imagesrc = usageUtil.getIcon(progressInfo.appStats[i].packageName);
         var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
