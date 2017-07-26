@@ -29,6 +29,7 @@
           <ScrollView orientation="vertical" id="scroll">
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll"/>
           </ScrollView>
+          <Button tap="setFakeData" text="create fake data"/>
           <Button text="done" onTap="onDone" id="button"/>
         </StackLayout>
 
