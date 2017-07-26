@@ -83,7 +83,7 @@ exports.checkNameNextSlide = function(args) {
   var textfield = page.getViewById("name");
   var name = textfield.text;
   if (name === "") {
-      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "Dismiss");
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "OK");
   } else {
     StorageUtil.setName(name);
     exports.goToNextSlide(args);
@@ -93,7 +93,7 @@ exports.checkNameNextSlide = function(args) {
 
 exports.checkUsagePermission = function(args) {
   if (!PermissionUtil.checkActionUsagePermission()) {
-      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please permit usage access to continue", "Dismiss");
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please permit usage access to continue", "OK");
   } else {
     exports.goToNextSlide(args);
   }
@@ -101,7 +101,7 @@ exports.checkUsagePermission = function(args) {
 
 exports.checkDrawPermission = function(args) {
   if (!PermissionUtil.checkSystemOverlayPermission()) {
-      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please give permission to continue", "Dismiss");
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please give permission to continue", "OK");
   } else {
     exports.goToNextSlide(args);
   }
@@ -141,14 +141,14 @@ exports.getDrawPermission = function(args) {
   }
 };
 
-var context = application.android.context;
 
 exports.goToGoalView = function(args) {
   if (!StorageUtil.isSetUp()) {
-    StorageUtil.setUp();
+    StorageUtil.setUpDB();
 
     /** SET UP ALARM **/
     const DAY = 86400 * 1000;
+    var context = application.android.context;
     // var context = application.android.context;
     var alarm = context.getSystemService(android.content.Context.ALARM_SERVICE);
     var intent = new android.content.Intent(context, com.habitlab.AlarmReceiver.class);
@@ -165,8 +165,7 @@ exports.goToGoalView = function(args) {
 
   if (args.direction === 2) {
     frameModule.topmost().navigate('views/appsView/appsView');
-  } 
-  if (args.direction === 1) {
+  } else if (args.direction === 1) {
     container.previousSlide();
   }
   

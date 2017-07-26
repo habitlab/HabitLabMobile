@@ -117,12 +117,10 @@ exports.eraseData = function() {
  * -------------
  * Clears storage and resets everything to defaults.
  */
-exports.setUp = function() {
-  appSettings.clear();
+exports.setUpDB = function() {
   var preset = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
                 "com.snapchat.android", "com.instagram.android"];
 
-  appSettings.setBoolean('onboarded', true);
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
 
@@ -131,7 +129,12 @@ exports.setUp = function() {
     createPackageData(item);
   });
 
-  appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));  
+  appSettings.setBoolean('setup', true);
+  appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
+};
+
+exports.setOnboarded = function() {
+  appSettings.setBoolean('onboarded', true);
 };
 
 /* export: isSetUp
@@ -139,6 +142,10 @@ exports.setUp = function() {
  * Checks if the user has been onboarded yet.
  */
 exports.isSetUp = function() {
+  return appSettings.getBoolean('setup');
+};
+
+exports.isOnboarded = function() {
   return appSettings.getBoolean('onboarded');
 };
 

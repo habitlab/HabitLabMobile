@@ -71,27 +71,7 @@ var createCell = function(info, r, c)  {
   return cell;
 };
 
-
-const ServiceManager = require("~/services/ServiceManager");
-var context = application.android.context;
-var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
-var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
-var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
-
-exports.pageLoaded = function(args) {
-  /** SERVICE STARTER **/
-  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-    context.startService(trackingServiceIntent);
-  }
-
-  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-    context.startService(unlockServiceIntent);
-  }
-
-  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-    context.startService(dummyServiceIntent);
-  }  
-  
+exports.pageLoaded = function(args) { 
   toToggle = {};
   drawer = args.object.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
@@ -103,14 +83,12 @@ exports.toggleDrawer = function() {
 };
 
 exports.onDone = function() {
-  var wasChanged = false;
-
   //notification on done (first time only)
-  // if (!StorageUtil.isSetUp()) {
-    fancyAlert.TNSFancyAlert.showSuccess("Nice!", "How long do you want to spend on these apps?", "Set Goals");
-  // }
+  if (!StorageUtil.isOnboarded()) {
+    fancyAlert.TNSFancyAlert.showSuccess("Last step!", "Set goals for your phone and app usage.", "Got it!");
+  }
 
-
+  var wasChanged = false;
   Object.keys(toToggle).forEach(function(key) {
     if (toToggle[key]) {
       StorageUtil.togglePackage(key);
