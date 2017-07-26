@@ -47,7 +47,6 @@
           </StackLayout>
         </AbsoluteLayout>
       </GridLayout>
-
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>

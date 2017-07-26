@@ -29,8 +29,8 @@ var notificationID = {
 /*************************************
  *     VISIT COUNT INTERVENTIONS     *
  *************************************/
-var VISITED_TOAST_INTERVAL = 5;
-var VISITED_NOTIF_INTERVAL = 15;
+var VISITED_TOAST_INTERVAL = 1;
+var VISITED_NOTIF_INTERVAL = 2;
 
 
 /**
@@ -86,10 +86,10 @@ var sendNotificationVisited = function(real, pkg) {
 /*************************************
  *   UNLOCKS/GLANCES INTERVENTIONS   *
  *************************************/
-var UNLOCKS_TOAST_INTERVAL = 10;
-var GLANCES_TOAST_INTERVAL = 20;
-var UNLOCKS_NOTIF_INTERVAL = 25;
-var GLANCES_NOTIF_INTERVAL = 35;
+var UNLOCKS_TOAST_INTERVAL = 1;
+var GLANCES_TOAST_INTERVAL = 1;
+var UNLOCKS_NOTIF_INTERVAL = 1;
+var GLANCES_NOTIF_INTERVAL = 1;
 
 
 /**
@@ -322,7 +322,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 /**************************************
  *        OVERLAY INTERVENTION        *
  **************************************/
-var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
+var FULL_SCREEN_OVERLAY_INTERVAL = 3; // visits
 
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {

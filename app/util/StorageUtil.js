@@ -71,6 +71,45 @@ var PhGoal = function() {
   return {glances: 75, unlocks: 50, minutes: 120};
 };
 
+var randBW = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+var FakePkgStat = function() {
+  return {
+    visits: randBW(10, 40), 
+    time: randBW(600000, 2700000)
+  };
+};
+
+var FakePkgGoal = function() {
+  return {minutes: 15};
+};
+
+var FakePhStat = function() {
+  var numGlances = randBW(50, 120);
+  var list = JSON.parse(appSettings.getString('selectedPackages'));
+  var total = 0;
+  list.forEach(function(item) {
+    total += exports.getAppTime(item);
+  });
+
+  return {
+    glances: numGlances, 
+    unlocks: randBW(numGlances, numGlances*2), 
+    totalTime: randBW(total, total + 5400000), 
+    time: total
+  };
+};
+
+var FakePhGoal = function() {
+  return {
+    glances: 75, 
+    unlocks: 50, 
+    minutes: 120
+  };
+};
+
 /* helper: createPackageData
  * -------------------------
  * Updates storage to include data for newly added packages.
@@ -91,6 +130,26 @@ var createPhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
       goals: PhGoal(), 
       stats: Array(28).fill(PhStat()),
+      enabled: Array(interventionDetails.length).fill(true)
+    }));
+};
+
+var createFakePackageData = function(packageName) {
+  var stats = []
+  for (var i = 0; i < 28; i++) {
+    stats.push(FakePkgStat());
+  }
+  appSettings.setString(packageName, JSON.stringify({
+      goals: FakePkgGoal(), 
+      stats: stats,
+      enabled: Array(interventionDetails.length).fill(true)
+    }));
+};
+
+var createFakePhoneData = function() {
+  appSettings.setString('phone', JSON.stringify({
+      goals: FakePhGoal(), 
+      stats: Array(28).fill(FakePhStat()),
       enabled: Array(interventionDetails.length).fill(true)
     }));
 };
@@ -124,14 +183,25 @@ exports.setUpDB = function() {
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
 
-  createPhoneData();
   preset.forEach(function (item) {
     createPackageData(item);
   });
+  createPhoneData();
 
   appSettings.setBoolean('setup', true);
   appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
 };
+
+exports.setUpFakeDB = function() {
+  var preset = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
+                "com.snapchat.android", "com.instagram.android"];
+  appSettings.setString('selectedPackages', JSON.stringify(preset));
+
+  preset.forEach(function (item) {
+    createFakePackageData(item);
+  });
+  createFakePhoneData();
+}
 
 exports.setOnboarded = function() {
   appSettings.setBoolean('onboarded', true);
