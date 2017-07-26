@@ -157,8 +157,11 @@ exports.pageLoaded = function(args) {
 
 
 exports.onDone = function() {
-   fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up.", "View my stats");
-   frameModule.topmost().navigate("views/progressView/progressView");
+  if (!StorageUtil.isOnboarded()) {
+    fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up.", "Awesome!");
+    StorageUtil.setOnboarded();
+  } 
+  frameModule.topmost().navigate("views/progressView/progressView");
 }
 
 
