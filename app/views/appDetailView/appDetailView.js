@@ -46,7 +46,6 @@ var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
 var Typeface = android.graphics.Typeface;
 var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
-var progressInfo = storageUtil.getProgressViewInfo();
 var TODAY = 27;
 var MINS_MS = 60000;
 
@@ -56,6 +55,7 @@ var pkg;
 var name;
 var icon;
 var index;
+var appStats;
 
 var createItem = function(enabled, id)  {
   var item = builder.load({
@@ -84,7 +84,7 @@ var setUpDetail = function(packageName) {
   page.getViewById('app-detail-icon').src = icon;
 
   var goalChanger = page.getViewById('goal-changer');
-  goalChanger.getViewById('name').text = 'Goal:';
+  goalChanger.getViewById('name').visibility = 'collapse';
   goalChanger.getViewById('icon').visibility = 'collapse';
   goalChanger.getViewById('number').text = StorageUtil.getMinutesGoal(pkg);
   goalChanger.getViewById('label').text = 'mins';
@@ -116,28 +116,20 @@ exports.toggleDrawer = function() {
     drawer.toggleDrawerState();
 };
 
-
-
-
 exports.pageNavigating = function(args) {
-  console.log('pageNavigating')
   page = args.object;
   if ( page.navigationContext) {
-    console.log('pageNavigating have navigationContext')
     pkg = page.navigationContext.packageName;
-    console.dir(pkg);
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
-    var packageNames = progressInfo.appStats.map(function(app){
-      return app.packageName;
-    });
-    index = packageNames.indexOf(pkg);
-    setUpDetail(pkg);
   }
 }
 
-
-
+exports.pageLoaded = function(args) {
+  drawer = page.getViewById('sideDrawer');
+  appStats = StorageUtil.getAppStats(pkg);
+  setUpDetail(pkg);
+};
 
 function getAppNames() {
     name = progressInfo.appStats.map(function(app){
@@ -165,7 +157,7 @@ exports.weekView = function(args) {
     var entries = new ArrayList();
     for (var day = 6; day >=0; day--) {
       //array of values for each week
-      var totalTimeDay = Math.round(progressInfo.appStats[index][TODAY-day].time/MINS_MS)
+      var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
       entries.add(new BarEntry(6-day, totalTimeDay));
    }
     var dataset = new BarDataSet(entries, "");

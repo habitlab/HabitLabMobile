@@ -23,13 +23,21 @@
           <Image id="app-detail-icon" class="app-detail-icon" />
           <Label id="app-detail-title" class="app-detail-title"/>
         </FlexboxLayout>
-        <Placeholder creatingView="weekView" id="line"/>
-        <goalelem:goalelem id="goal-changer" />
-        <Label text="Enabled Nudges" class='enabled-nudges-title' />
+
         <ScrollView orientation="vertical">
+
+          <Label text="Progress" class='enabled-nudges-title' />
+          <Placeholder creatingView="weekView" id="line"/>
+
+          <Label text="App Goals" class='enabled-nudges-title' />
+          <goalelem:goalelem id="goal-changer" />
+
+          <Label text="Enabled Nudges" class='enabled-nudges-title' />
           <StackLayout orientation="vertical" id="list" />
+          
         </ScrollView>
       </StackLayout>
+
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
 </Page>
