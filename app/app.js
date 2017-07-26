@@ -2,8 +2,6 @@ var applicationModule = require("application");
 var StorageUtil = require('~/util/StorageUtil');
 var Toast = require("nativescript-toast");
 
-StorageUtil.eraseData();
-console.log(StorageUtil.isSetUp());
 var view = 'onboardingView';
 if (StorageUtil.isSetUp()) {
   view = 'progressView';
