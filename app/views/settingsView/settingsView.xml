@@ -18,10 +18,34 @@
 
     <sd:RadSideDrawer.mainContent>
       <GridLayout class="settings-grid" rows="auto,auto" columns="auto,auto">
-        <Button class="settings-button" row="0" col="0" />
-        <Button class="settings-button" row="0" col="1" />
-        <Button class="settings-button" row="1" col="0" tap="goToFAQ" />
-        <Button class="settings-button" row="1" col="1" />
+        <AbsoluteLayout class="settings-button-layout" row="0" col="0" >
+          <Button class="settings-button" id="edit-name" tap="editName" />
+          <StackLayout class="settings-button-icon">
+            <Image background-color="#FFA730" class="settings-button-img" src="res://ic_account"/>
+            <Label text="Edit Name"/>
+          </StackLayout>
+        </AbsoluteLayout>
+        <AbsoluteLayout class="settings-button-layout" row="0" col="1" >
+          <Button class="settings-button" id="set-hours" tap="setHours" />
+          <StackLayout class="settings-button-icon">
+            <Image class="settings-button-img" src="res://ic_alarm"/>
+            <Label text="Hours Active"/>
+          </StackLayout>
+        </AbsoluteLayout>
+        <AbsoluteLayout class="settings-button-layout" row="1" col="0" >
+          <Button class="settings-button" id="erase-data" tap="eraseData" />
+          <StackLayout class="settings-button-icon">
+            <Image class="settings-button-img" src="res://ic_trash"/>
+            <Label text="Erase Data"/>
+          </StackLayout>
+        </AbsoluteLayout>
+        <AbsoluteLayout class="settings-button-layout" row="1" col="1" >
+          <Button class="settings-button" id="faq" tap="goToFAQ" />
+          <StackLayout class="settings-button-icon">
+            <Image class="settings-button-img" src="res://ic_faq"/>
+            <Label text="FAQ"/>
+          </StackLayout>
+        </AbsoluteLayout>
       </GridLayout>
 
     </sd:RadSideDrawer.mainContent>

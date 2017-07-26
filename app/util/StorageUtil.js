@@ -132,7 +132,6 @@ exports.setUpDB = function() {
 
   appSettings.setBoolean('setup', true);
   appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
-  
 };
 
 exports.setOnboarded = function() {
