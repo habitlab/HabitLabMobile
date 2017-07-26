@@ -46,7 +46,7 @@ exports.getApplicationList = function() {
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
 		var packageName = getPackageName(info);
-		if (packageName === "org.nativescript.HabitLabMobile");
+		if (packageName === "org.nativescript.HabitLabMobile") { continue };
 		var label = info.loadLabel(pm).toString();
 		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
 
