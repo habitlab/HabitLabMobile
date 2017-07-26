@@ -83,14 +83,23 @@ var setUpDetail = function(packageName) {
   page.getViewById('app-detail-title').text = name;
   page.getViewById('app-detail-icon').src = icon;
 
-  var average = 50; // bogus value so it compiles // UsageUtil.getAvgTimeOnAppThisWeek(packageName);
-  var averageLabel = page.getViewById('average');
-  averageLabel.text = average + ' minutes/day';
-  var level = " good";
-  if (average >= 15) {
-    level = average >= 30 ? ' bad' : ' medium';
-  }
-  averageLabel.className += level;
+  var goalChanger = page.getViewById('goal-changer');
+  goalChanger.getViewById('name').text = 'Goal:';
+  goalChanger.getViewById('icon').visibility = 'collapse';
+  goalChanger.getViewById('number').text = StorageUtil.getMinutesGoal(pkg);
+  goalChanger.getViewById('label').text = 'mins';
+
+  goalChanger.getViewById('plus').on(gestures.tap, function() {
+    var newNum = getGoal(number.text, true);
+    number.text = newNum;
+    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
+  });
+
+  goalChanger.getViewById('minus').on(gestures.tap, function() {
+    var newNum = getGoal(number.text, false);
+    number.text = newNum;
+    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
+  });
 
   var layout = page.getViewById('list');
   var interventions = StorageUtil.getInterventionsForApp(packageName);

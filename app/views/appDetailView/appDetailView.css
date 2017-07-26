@@ -1,6 +1,13 @@
 .app-detail-title {
   font-size: 24%;
   text-align: center;
+  margin-left: 2%;
+}
+
+.enabled-nudges-title {
+  font-size: 21%;
+  text-align: center;
+  color: #FFA730;
 }
 
 .app-detail-label {

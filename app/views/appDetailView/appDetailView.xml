@@ -1,11 +1,12 @@
 <Page loaded="pageLoaded"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
-  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
+  xmlns:goalelem="shared/goalelem">
 
   <ActionBar class="action-bar">
     <ActionBar.titleView>
-      <Label text="Manage Nudges" horizontalAlignment="center" class="action-bar-title" />
+      <Label text="App Detail" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
@@ -21,13 +22,9 @@
           <Image id="app-detail-icon" class="app-detail-icon" />
           <Label id="app-detail-title" class="app-detail-title"/>
         </FlexboxLayout>
-        <FlexboxLayout orientation="horizontal" class="app-detail-flex-layout" id="minutes-layout">
-          <Label text="Average: " class="app-detail-label small" />
-          <Label id="average" class="app-detail-label small" />
-        </FlexboxLayout>
-
         <Placeholder creatingView="weekView" id="line"/>
- 
+        <goalelem:goalelem id="goal-changer" />
+        <Label text="Enabled Nudges" class='enabled-nudges-title' />
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical" id="list" />
         </ScrollView>

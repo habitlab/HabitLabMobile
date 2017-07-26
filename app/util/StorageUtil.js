@@ -1,5 +1,4 @@
 var appSettings = require("application-settings");
-var getPresets = require("~/util/UsageInformationUtil").getInstalledPresets;
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
@@ -178,7 +177,7 @@ exports.eraseData = function() {
  * Clears storage and resets everything to defaults.
  */
 exports.setUpDB = function() {
-  var preset = getInstalledPresets();
+  var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
@@ -193,7 +192,7 @@ exports.setUpDB = function() {
 };
 
 exports.setUpFakeDB = function() {
-  var preset = getInstalledPresets();
+  var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
   appSettings.setString('selectedPackages', JSON.stringify(preset));
 
   preset.forEach(function (item) {
