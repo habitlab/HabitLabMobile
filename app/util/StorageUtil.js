@@ -118,7 +118,6 @@ exports.eraseData = function() {
  * Clears storage and resets everything to defaults.
  */
 exports.setUpDB = function() {
-  appSettings.clear();
   var preset = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
                 "com.snapchat.android", "com.instagram.android"];
 
