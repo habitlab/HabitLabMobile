@@ -131,8 +131,7 @@ exports.setUp = function() {
     createPackageData(item);
   });
 
-  appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
-  
+  appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));  
 };
 
 /* export: isSetUp
