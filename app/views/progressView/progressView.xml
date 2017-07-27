@@ -4,7 +4,7 @@
   xmlns:sd="nativescript-telerik-ui/sidedrawer" 
   xmlns:taskPie="nativescript-taskpie"
   xmlns:lv="nativescript-telerik-ui/listview"
-  navigatingTo="navigatingTo">
+  xmlns:RL="nativescript-ripple">
 
 	<ActionBar class="action-bar">
     <ActionBar.titleView>
@@ -46,11 +46,13 @@
 
 			   			<!-- 
 			   			    For the list of goal apps and their time usage -->
+			   			 
 			   				<lv:RadListView id="listview" class="list-group" items="{{ dayItems }}" itemTap="goToDetailApps" >
 			   					<lv:RadListView.listViewLayout>
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
+			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
 			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
@@ -59,8 +61,10 @@
 	   			        	            </StackLayout>
 	   			        	            <Label row ="0" col="2" text="{{ mins + ' mins' }}" class="list-group-item-text"/>
 			   			        	</GridLayout>
+			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
+			   			
 
 				   		</StackLayout>
 					</TabViewItem.view>
