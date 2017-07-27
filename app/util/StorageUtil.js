@@ -181,19 +181,20 @@ exports.setUpDB = function() {
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
+  appSettings.setBoolean('setup', true);
 
   preset.forEach(function (item) {
     createPackageData(item);
   });
   createPhoneData();
 
-  appSettings.setBoolean('setup', true);
   appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
 };
 
 exports.setUpFakeDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
   appSettings.setString('selectedPackages', JSON.stringify(preset));
+  appSettings.setBoolean('setup', true);
 
   preset.forEach(function (item) {
     createFakePackageData(item);

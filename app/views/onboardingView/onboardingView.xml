@@ -55,7 +55,7 @@
       </Slides:Slide>
 
 
-      <Slides:Slide id='lastslide' class="slide" swipe="goToGoalView">
+      <Slides:Slide id='lastslide' class="slide" swipe="goToAppsView">
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Image src="{{visuals[4]}}" class="squish" />
         <Label text="{{texts[6]}}" textWrap='true' />
