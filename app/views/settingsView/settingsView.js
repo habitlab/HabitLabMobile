@@ -86,6 +86,6 @@ exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 
 };
 
-
-
-
+exports.onInfo = function() {
+    frame.topmost().navigate('views/infoView/infoView');
+};
