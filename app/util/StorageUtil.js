@@ -658,5 +658,8 @@ exports.getProgressViewInfo = function() {
 };
 
 exports.getAppStats = function(packageName) {
-  return arrangeData(JSON.parse(appSettings.getString(packageName)).stats);
+  var obj = JSON.parse(appSettings.getString(packageName));
+  var arr = arrangeData(obj.stats);
+  arr.goals = obj.goals;
+  return arr;
 };
