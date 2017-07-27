@@ -400,8 +400,8 @@ exports.populateListViewsWeek = function() {
         var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/7);
 		var imagesrc = appInfo.icon;
-		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
-        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
+		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
+        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
         var pChange = view.getViewById(page, "perChange");
         var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
 		weekApps.push(appObj);
