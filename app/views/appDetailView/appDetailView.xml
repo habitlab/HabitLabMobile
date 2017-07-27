@@ -28,7 +28,10 @@
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical">
 
-            <Label text="Progress" class='app-detail-subtitle' />
+            <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="*, *">
+                    <Label text="Progress" row="0" col="0" class="app-detail-subtitle" horizontalAlignment="center"/>
+                  <!--   <Button text="{{ showWeekGraph ? 'Month' : 'Week'}}" tap="toggleWeek" row="0" col="1"/> -->
+                </GridLayout>
             <Placeholder creatingView="weekView" id="line"/>
 
             <Label text="App Goals" class='app-detail-subtitle top-padded' />

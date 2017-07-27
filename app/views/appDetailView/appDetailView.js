@@ -52,28 +52,30 @@ var name;
 var icon;
 var appStats;
 
-var createItem = function(enabled, id)  {
-  var item = builder.load({
-    path: 'shared/togglelistelem',
-    name: 'togglelistelem'
-  });
 
-  item.id = 'intervention' + id;
-  item.className = 'app-detail-grid';
 
-  var label = item.getViewById("name");
-  label.text = StorageUtil.interventionDetails[id].name;
-  label.className = "app-detail-label";
-    
-  var sw = item.getViewById("switch");
-  sw.checked = enabled;
-  sw.on(gestures.tap, function() {
-    StorageUtil.toggleForApp(id, pkg);
-  });
+exports.pageNavigating = function(args) {
+  page = args.object;
+  if (page.navigationContext) {
+    pkg = page.navigationContext.packageName;
+    appStats = StorageUtil.getAppStats(pkg);
+    name = page.navigationContext.name;
+    icon = page.navigationContext.icon;
+  }
+  pageData.set("showWeekGraph", false);
+  page.bindingContext = pageData;
+}
 
-  return item;
+exports.pageLoaded = function(args) {
+  page = args.object;
+  drawer = page.getViewById('sideDrawer');
+  setUpDetail();
+  console.warn("page loaded")
 };
 
+
+
+//Sets up goals
 var setUpDetail = function() {
   page.getViewById('app-detail-title').text = name;
   page.getViewById('app-detail-icon').src = icon;
@@ -105,66 +107,75 @@ var setUpDetail = function() {
       layout.addChild(createItem(enabled, id));
     }
   });
-
-};
-
-exports.toggleDrawer = function() {
-    drawer.toggleDrawerState();
-};
-
-exports.pageNavigating = function(args) {
-  page = args.object;
-  if (page.navigationContext) {
-    pkg = page.navigationContext.packageName;
-    appStats = StorageUtil.getAppStats(pkg);
-    name = page.navigationContext.name;
-    icon = page.navigationContext.icon;
-  }
-}
-
-exports.pageLoaded = function(args) {
-  page = args.object;
-  drawer = page.getViewById('sideDrawer');
-  setUpDetail();
+  console.warn("set up detail copmlete")
 };
 
 
-function toJavaStringArray(arr) {
-    var output = Array.create(java.lang.String, arr.length);
-    for (let i = 0; i < arr.length; ++i) {
-        output[i] = arr[i];
-    }
-    return output;
-}
 
+var createItem = function(enabled, id)  {
+  var item = builder.load({
+    path: 'shared/togglelistelem',
+    name: 'togglelistelem'
+  });
+
+  item.id = 'intervention' + id;
+  item.className = 'app-detail-grid';
+
+  var label = item.getViewById("name");
+  label.text = StorageUtil.interventionDetails[id].name;
+  label.className = "app-detail-label";
+    
+  var sw = item.getViewById("switch");
+  sw.checked = enabled;
+  sw.on(gestures.tap, function() {
+    StorageUtil.toggleForApp(id, pkg);
+  });
+
+  return item;
+};
+
+
+
+
+//Sets up graph
 exports.weekView = function(args) {
   var barchart = new BarChart(args.context);
   //array of datasets
   var IbarSet = new ArrayList();
   //array of BarEntries
-  var entries = new ArrayList();
-    for (var day = 6; day >=0; day--) {
-      //array of values for each week
-      var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
-      entries.add(new BarEntry(6-day, totalTimeDay));
-   }
-    var dataset = new BarDataSet(entries, "");
+  var entries;
+  var dataset;
+  var xLabels = getDayLabels();
+  if (pageData.get("showWeekGraph")) {
+    //week view
+    console.warn("week view")
+    console.warn(pageData.get("showWeekGraph"))
+    entries = makeWeekArray();
+    dataset = new BarDataSet(entries, "");
     dataset.setColor(Color.parseColor("#DAECF3"));
-    IbarSet.add(dataset);
-    var data = new BarData(IbarSet);
-    data.setValueTextColor(Color.WHITE);
-    barchart.setData(data);
+  } else {
+    //month view 
+    console.warn("month view")
+    console.warn(pageData.get("showWeekGraph"))
+    entries = makeMonthArray();
+    dataset = new BarDataSet(entries, "");
+    dataset.setColor(Color.parseColor("#DAECF3"));
+    xLabels = getMonthLabels();
+  }
+  IbarSet.add(dataset);
+  var data = new BarData(IbarSet);
+  data.setValueTextColor(Color.WHITE);
+  barchart.setData(data);
 
-    //set axis labels
-    var xLabels = getDayLabels();
-     let axisformatter = new IAxisValueFormatter({
-        getFormattedValue: function(value, axis) {
-            return xLabels[value]
-        },
-        getDecimalDigits: function() {
-            return 0
-        }
-     })
+  //set axis labels
+   let axisformatter = new IAxisValueFormatter({
+      getFormattedValue: function(value, axis) {
+          return xLabels[value]
+      },
+      getDecimalDigits: function() {
+          return 0
+      }
+   })
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -180,8 +191,8 @@ exports.weekView = function(args) {
     var legend = barchart.getLegend();
     legend.setEnabled(false);
 
-    //goal and average lines -- NEED TO LOAD IN DATA 
-    var avg = 10;
+    //goal and average lines 
+    var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/7);
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
@@ -201,20 +212,63 @@ exports.weekView = function(args) {
     }
     yAxis.addLimitLine(avgLine);
     yAxis.addLimitLine(goalLine);
-    
 
-
-
-    barchart.animateY(3000);
+  barchart.animateY(3000);
    barchart.setFitBars(true);
    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
    barchart.invalidate();
+    console.warn("made graph lol");
    args.view = barchart;
 };
 
 
 
+getTotalTimeAppWeek = function(array, weeksAgo) {
+    var week = 4-weeksAgo
+    var start = 7*(week-1)
+    var end = week*7
+    var sum = 0;
+    for (var i = start; i < end; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
 
+
+makeWeekArray = function() {
+  var weekData = new ArrayList();
+     for (var day = 6; day >=0; day--) {
+      //array of values for each week
+      var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
+      weekData.add(new BarEntry(6-day, totalTimeDay));
+   }
+   return weekData;
+}
+
+makeMonthArray = function() {
+  var monthData = new ArrayList();
+  for (var day = 27; day >= 0; day--) {
+    var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
+    monthData.add(new BarEntry(27-day, totalTimeDay));
+  }
+  return monthData;
+}
+
+
+
+getMonthLabels = function() {
+  var monthLabels = [];
+  var format = new SimpleDateFormat("MMM d", Locale.US);
+  var today = Calendar.getInstance();
+
+   for (var i = 0; i < 28; i++) {
+        var end = Calendar.getInstance();
+        end.setTimeInMillis(today.getTimeInMillis() - (27-i)*(86400 * 1000));
+        var day = format.format(end.getTime());
+        monthLabels.push(day);
+    }
+    return monthLabels;
+}
 
 //returns [today, yesterday, day before...]
 function getDayLabels() {
@@ -230,3 +284,14 @@ function getDayLabels() {
     }
     return weekDay;
 }
+
+exports.toggleDrawer = function() {
+    drawer.toggleDrawerState();
+};
+
+
+
+exports.toggleWeek = function() {
+    pageData.set("showWeekGraph", pageData.get("showWeekGraph"));
+};
+
