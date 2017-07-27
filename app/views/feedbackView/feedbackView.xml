@@ -25,6 +25,7 @@
         <Label text="Learn more about HabitLab" class="contact-header" textWrap="true" />
         <Button text="Visit the Chrome extension" tap="goToChromeExtension" class="contact-button"/>
         <Button text="Visit the GitHub Wiki" tap="goToGitHubWiki" class="contact-button"/>
+        <Button text="ERASE ALL DATA" tap="onErase" />
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 

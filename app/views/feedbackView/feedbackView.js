@@ -34,3 +34,8 @@ exports.goToChromeExtension = function() {
 exports.goToGitHubWiki = function() {
   util.openUrl('https://github.com/habitlab/habitlab/wiki');
 };
+
+var StorageUtil = require('~/util/StorageUtil');
+exports.onErase = function() {
+  StorageUtil.eraseData();
+};
