@@ -1,0 +1,35 @@
+<Page loaded="pageLoaded" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns:sidedrawer="shared/sd">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="About HabitLab" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+
+    <sd:RadSideDrawer.drawerContent>
+        <sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent>
+        <StackLayout orientation="vertical" >
+          <Image class="info-logo" src="~/images/stanford_logo.png" />
+          <Label textWrap="true" class="info-summary" text="HabitLab is a research project run by the Stanford HCI Group." />
+          <Label textWrap="true" class="info-subtitle" text="What does HabitLab do?" />
+
+          <ScrollView orientation="vertical">
+            <Label textWrap="true" class="info-description" text="This app is part of a research study on developing better online and mobile habits. You can participate by using this app and/or installing the HabitLab Chrome extension. This app asks you to specify some goals (such as spending less time on Facebook), and will deploy various 'nudges' that aim help you achieve those goals. It will log data related to progress on your goals (such as time spent on domains). This information is anonymized and will not be shared with anyone outside our research team." />
+          </ScrollView>
+
+          <Label textWrap="true" class="info-thankyou" text="Thank you for taking the time to be part of this study!" />
+        </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+
+</Page>

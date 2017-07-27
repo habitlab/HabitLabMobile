@@ -113,7 +113,7 @@ exports.dayView = function(args) {
     var entries = new ArrayList();
     var main = 0;
     var min;
-
+    //If there are more than 4 entries in the pie chart, use 'other' for hte 5th label
      if (appsToday.length <= 4) {
         min = appsToday.length;
         useOther = false;
@@ -135,14 +135,6 @@ exports.dayView = function(args) {
         	entries.add(new PieEntry(leftover, "Other"));
         }
     }
-
-    //For demo:
-    // entries.add(new PieEntry(23, "Facebook"))
-    // entries.add(new PieEntry(41, "Instagram"))
-    // entries.add(new PieEntry(11, "Snapchat"))
-    // entries.add(new PieEntry(7, "Messenger"))
-    // entries.add(new PieEntry(18, "YouTube"))
-
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
     var data = new PieData(dataset);
@@ -171,7 +163,6 @@ exports.dayView = function(args) {
 
 
 
-
 // creates the bar graph on the week tab
 exports.weekView = function(args) {
     var barchart = new BarChart(args.context);
@@ -179,6 +170,7 @@ exports.weekView = function(args) {
     var IbarSet = new ArrayList();
     //array of BarEntries
     var entries = new ArrayList();
+
     for (var day = 6; day >=0; day--) {
    		//array of values for each week
    		var appValues = [];
@@ -299,34 +291,6 @@ exports.populateListViewsDay = function() {
 
 
     dayApps = exports.getAppsToday();
-
-    //For demo:
-    // var list = []
-    // list.push ({
-    //     name: "Instagram",
-    //     image: usageUtil.getIcon("com.instagram.android"),
-    //     visits: 11,
-    //     mins: 41
-    // },
-    // {
-    //     name: "Facebook",
-    //     image: usageUtil.getIcon("com.facebook.katana"),
-    //     visits: 4,
-    //     mins: 23
-    // },
-    // {
-    //     name: "YouTube",
-    //     image: usageUtil.getIcon("com.google.android.youtube"),
-    //     visits: 2,
-    //     mins: 18
-    // },
-    // {
-    //     name: "Snapchat",
-    //     image: usageUtil.getIcon("com.snapchat.android"),
-    //     visits: 15,
-    //     mins: 11
-    // }
-    // )
     pageData.set("dayItems", dayApps);
 
 	//'buttons' that show the usage daily overall phone usage 
@@ -346,21 +310,6 @@ exports.populateListViewsDay = function() {
         desc: "time on watchlist"
     }
 	)
-    //For demo"
-    // stats.push(
-    // {
-    //     value: 91,
-    //     desc: "glances"
-    // },
-    // {
-    //     value: 72,
-    //     desc: "unlocks"
-    // },
-    // {
-    //     value: 77 + "%",
-    //     desc: "of phone time on watchlist"
-    // }
-    // )
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
     console.warn("list view day done")
@@ -373,7 +322,6 @@ exports.populateListViewsWeek = function() {
     var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")/MINS_MS));
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
     var unlocks = totalTimeWeek(0, "unlocks");
-    // var avgUnlocks = Math.round(total/unlocks.length);
     var hrsOnWatchlistWeek = Math.round(timeOnTargetAppsWeek/6)/10;
 
 	var weekStats = [];
@@ -401,10 +349,10 @@ exports.populateListViewsWeek = function() {
         var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/7);
 		var imagesrc = appInfo.icon;
-		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
-        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
-        var pChange = view.getViewById(page, "perChange");
-        // var color = (change >= 0 ? "green" : "red")
+		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
+        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
+        // var pChange = view.getViewById(page, "perChange");
+        // console.warn(pChange);
         var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
 		weekApps.push(appObj);
     }
@@ -496,7 +444,7 @@ exports.goToDetailApps = function(args) {
 
 
 
-
+//Returns the total time spent on an app in a month when passed in that app's object
 getTotalTimeAppMonth = function(array) {
     var sum = 0;
     for (var i = 0; i <= TODAY; i++) {
@@ -523,7 +471,7 @@ getTotalTimeAppWeek = function(array, weeksAgo) {
 
 
 
-
+//Returns the total # of any value for any given week (0, 1, 2 or 3 weeks ago)
 totalTimeWeek = function(weeksAgo, value) {
     var week = 4-weeksAgo
     var start = 7*(week-1)
@@ -544,6 +492,7 @@ totalTimeWeek = function(weeksAgo, value) {
     return sum;
 }
 
+//Returns the total # of any value for a month
 totalTimeMonth = function(value) {
     var sum = 0;
     for (var i = 0; i <= TODAY; i++) {

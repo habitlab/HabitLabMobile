@@ -1,0 +1,28 @@
+.info-logo {
+  margin-top: 2%;
+  width: 75%;
+}
+
+.info-summary {
+  font-size: 23%;
+  text-align: center;
+  margin: 3%;
+}
+
+.info-subtitle {
+  font-size: 21%;
+  text-align: center;
+}
+
+.info-description {
+  font-size: 18%;
+  margin: 4%;
+  margin-top: 1%;
+}
+
+.info-thankyou {
+  font-size: 22%;  
+  color: #FFA730;
+  text-align: center;
+  margin: 3%;
+}
