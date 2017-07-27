@@ -107,7 +107,7 @@ exports.getBasicInfo = function(packageName) {
 	} else {
 		return {
 			name: "(placeholder)",
-			icon: "res://icon"
+			icon: "res://ic_habitlab_logo"
 		};
 	}
 }

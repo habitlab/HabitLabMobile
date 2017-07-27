@@ -43,7 +43,7 @@ var getRunningServices = function() {};
 var getForegroundNotification = function() {
     var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
     var notificationBuilder = new NotificationCompat.Builder(context);
-    var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
+    var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     notificationBuilder.setSmallIcon(icon_id);
     notificationBuilder.setContentTitle("HabitLab")
     notificationBuilder.setContentText("Here to help improve your habits!");

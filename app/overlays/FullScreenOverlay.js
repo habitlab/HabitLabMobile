@@ -53,7 +53,7 @@ var DialogView = android.view.View.extend({
 		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
 		// add icon
-		var icon_id = appCtx.getResources().getIdentifier("logo_bubbles", "drawable", appCtx.getPackageName());
+		var icon_id = appCtx.getResources().getIdentifier("ic_habitlab_white", "drawable", appCtx.getPackageName());
 		var bitmap = appCtx.getResources().getDrawable(icon_id).getBitmap();
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
 		var newHeight = 1.5 * ICON_RADIUS;
