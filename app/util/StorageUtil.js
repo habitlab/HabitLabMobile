@@ -18,7 +18,8 @@ var interventions = {
   VISIT_NOTIFICATION: 9,
   VIDEO_BLOCKER: 10,
   FULL_SCREEN_OVERLAY: 11,
-  COUNTUP_TIMER_OVERLAY: 12
+  COUNTUP_TIMER_OVERLAY: 12,
+  COUNTDOWN_TIMER_OVERLAY: 13
 };
 
 var interventionDetails = [
@@ -34,7 +35,8 @@ var interventionDetails = [
   {name: 'Repeat Offender', icon: 'res://ic_repeat', functionality: "Visits Notification", description: "Sends a notification telling you how many times you've been on a certain app today", target: 'app', level: 'medium'},
   {name: 'Block-Buster', icon: 'res://ic_videocam', functionality: "Video Pause Overlay", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']},
   {name: 'No Peeking!', icon: 'res://ic_key', functionality: "Full Screen Overlay", description: "Covers the screen when you enter a watchlisted app and prompts you to either continue or exit the app", target: 'app', level: 'easy'},
-  {name: 'Counting on You', icon: 'res://ic_clock', functionality: "Timer Counting Up Overlay", description: "Puts a timer in the bottom right corner of your screen counting how long you spend in an app", target: 'app', level: 'easy'}
+  {name: 'Counting on You', icon: 'res://ic_clock', functionality: "Timer Counting Up Overlay", description: "Puts a timer in the bottom right corner of your screen counting how long you spend in an app", target: 'app', level: 'easy'},
+  {name: 'The Final Countdown', icon: 'res://ic_exclamation', functionality: "Timer Counting Down Overlay", description: "Puts a timer in the bottom right corner of your screen counting down until it closes the app", target: 'app', level: 'hard'}
 ];
 
 exports.interventions = interventions;
