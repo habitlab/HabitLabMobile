@@ -25,13 +25,21 @@ var notificationID = {
   VISIT: 3000
 };
 
+// Intervention Intervals
+var VISITED_TOAST_INTERVAL = 5; // visits
+var VISITED_NOTIF_INTERVAL = 10; // visits
+var UNLOCKS_TOAST_INTERVAL = 15; // unlocks
+var GLANCES_TOAST_INTERVAL = 20; // glances
+var UNLOCKS_NOTIF_INTERVAL = 25; // unlocks
+var GLANCES_NOTIF_INTERVAL = 35; // glances
+var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
+var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
+var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
+
 
 /*************************************
  *     VISIT COUNT INTERVENTIONS     *
  *************************************/
-var VISITED_TOAST_INTERVAL = 1;
-var VISITED_NOTIF_INTERVAL = 2;
-
 
 /**
  * popToastVisited
@@ -86,11 +94,6 @@ var sendNotificationVisited = function(real, pkg) {
 /*************************************
  *   UNLOCKS/GLANCES INTERVENTIONS   *
  *************************************/
-var UNLOCKS_TOAST_INTERVAL = 1;
-var GLANCES_TOAST_INTERVAL = 1;
-var UNLOCKS_NOTIF_INTERVAL = 1;
-var GLANCES_NOTIF_INTERVAL = 1;
-
 
 /**
  * sendUnlocksNotification
@@ -183,13 +186,9 @@ var popToastGlanced = function(real) {
 /**************************************
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
-var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
-var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
-
 // logging vars
 var sentToast = false;
 var sentNotification = false;
-
 
 /**
  * logOpenTime
@@ -322,7 +321,6 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 /**************************************
  *        OVERLAY INTERVENTION        *
  **************************************/
-var FULL_SCREEN_OVERLAY_INTERVAL = 3; // visits
 
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
