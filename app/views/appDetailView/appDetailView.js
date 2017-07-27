@@ -43,6 +43,7 @@ var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 var TODAY = 27;
 var MINS_MS = 60000;
+var LimitLine = com.github.mikephil.charting.components.LimitLine;
 
 var drawer;
 var page;
@@ -179,7 +180,32 @@ exports.weekView = function(args) {
     var legend = barchart.getLegend();
     legend.setEnabled(false);
 
-     barchart.animateY(3000);
+    //goal and average lines -- NEED TO LOAD IN DATA 
+    var avg = 10;
+    var avgLine = new LimitLine(avg, "Average");
+    avgLine.setLineWidth(2);
+    avgLine.setTextColor(Color.parseColor("#737373"));
+    var goal = 10;
+    var goalLine = new LimitLine(avg, "Goal");
+    goalLine.setLineWidth(2);
+    //Gray
+    goalLine.setTextColor(Color.parseColor("#737373"));
+    //Blue
+    goalLine.setLineColor(Color.parseColor("#37879A"));
+    if (avg <= goal) {
+      //Green
+      avgLine.setLineColor(Color.parseColor("#69BD68"));
+    } else {
+      //Red
+      avgLine.setLineColor(Color.parseColor("#E71D36"));
+    }
+    yAxis.addLimitLine(avgLine);
+    yAxis.addLimitLine(goalLine);
+    
+
+
+
+    barchart.animateY(3000);
    barchart.setFitBars(true);
    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
    barchart.invalidate();

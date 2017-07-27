@@ -102,7 +102,7 @@
 			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
-	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
+	   			        	                <Label text="{{ name }}" class="list-group-item-heading"/>
 	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
 	   			        	            <Label row="0" col="2" text = "{{ percChange }}" id="perChange" horizontalAlignment="center"/>
