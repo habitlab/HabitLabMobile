@@ -106,10 +106,7 @@
 	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
 	   			        	            <Label row="0" col="2" text = "{{ percChange }}" id="perChange" horizontalAlignment="center"/>
-	   			        	            <!-- <StackLayout row ="0" col="3"> -->
 		   			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
-		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
-	   			        	        	<!-- </StackLayout> -->
 			   			        	</GridLayout>
 			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>

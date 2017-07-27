@@ -186,7 +186,7 @@ exports.weekView = function(args) {
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
     var goal = 20;
-    var goalLine = new LimitLine(avg, "Goal");
+    var goalLine = new LimitLine(goal, "Goal");
     goalLine.setLineWidth(2);
     //Gray
     goalLine.setTextColor(Color.parseColor("#737373"));
