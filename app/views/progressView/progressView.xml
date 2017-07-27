@@ -47,7 +47,7 @@
 			   			<!-- 
 			   			    For the list of goal apps and their time usage -->
 			   			 
-			   				<lv:RadListView id="listview" class="list-group" items="{{ dayItems }}" itemTap="goToDetailApps" >
+			   				<lv:RadListView id="listview" class="list-group" items="{{ dayItems }}" >
 			   					<lv:RadListView.listViewLayout>
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
 			   			        </lv:RadListView.listViewLayout>
@@ -98,6 +98,7 @@
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
+			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
 			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
@@ -110,6 +111,7 @@
 		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
 	   			        	        	<!-- </StackLayout> -->
 			   			        	</GridLayout>
+			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
 
@@ -145,6 +147,7 @@
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
+			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
 			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
@@ -156,6 +159,7 @@
 		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
 	   			        	        	<!-- </StackLayout> -->
 			   			        	</GridLayout>
+			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
 
