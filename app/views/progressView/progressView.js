@@ -171,7 +171,6 @@ exports.dayView = function(args) {
 
 
 
-
 // creates the bar graph on the week tab
 exports.weekView = function(args) {
     var barchart = new BarChart(args.context);
@@ -179,6 +178,7 @@ exports.weekView = function(args) {
     var IbarSet = new ArrayList();
     //array of BarEntries
     var entries = new ArrayList();
+
     for (var day = 6; day >=0; day--) {
    		//array of values for each week
    		var appValues = [];
@@ -373,7 +373,6 @@ exports.populateListViewsWeek = function() {
     var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")/MINS_MS));
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
     var unlocks = totalTimeWeek(0, "unlocks");
-    // var avgUnlocks = Math.round(total/unlocks.length);
     var hrsOnWatchlistWeek = Math.round(timeOnTargetAppsWeek/6)/10;
 
 	var weekStats = [];
@@ -404,7 +403,6 @@ exports.populateListViewsWeek = function() {
 		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "-") + change + "%");
         var pChange = view.getViewById(page, "perChange");
-        // var color = (change >= 0 ? "green" : "red")
         var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
 		weekApps.push(appObj);
     }
