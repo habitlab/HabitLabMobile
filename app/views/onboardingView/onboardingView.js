@@ -47,6 +47,10 @@ onboarding.visuals = [
 
 
 exports.pageLoaded = function(args) {
+  if (StorageUtil.isSetUp()) {
+    frameModule.topmost().navigate('views/progressView/progressView');
+  }
+
   var navigated = false;
   page = args.object;
   page.bindingContext = onboarding;
@@ -142,7 +146,7 @@ exports.getDrawPermission = function(args) {
 };
 
 
-exports.goToGoalView = function(args) {
+exports.goToAppsView = function(args) {
   if (!StorageUtil.isSetUp()) {
     StorageUtil.setUpDB();
 

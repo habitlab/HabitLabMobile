@@ -50,6 +50,11 @@ var TODAY = 27;
 var MINS_MS = 60000;
 var observable = require("data/observable");
 var pageData = new observable.Observable();
+var ObservableArray = require("data/observable-array").ObservableArray;
+
+var dayApps = new ObservableArray ([]);
+var weekApps = new ObservableArray ([]);
+var monthApps = new ObservableArray ([]);
 
 
 
@@ -77,7 +82,7 @@ exports.pageLoaded = function(args) {
     pageData.set("showDayGraph", true);
     pageData.set("showWeekGraph", true);
     pageData.set("showMonthGraph", true);
-    args.object.bindingContext = pageData;
+    page.bindingContext = pageData;
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
@@ -285,7 +290,6 @@ exports.monthView = function(args) {
 
 
 
-
 exports.populateListViewsDay = function() {   
      var unlocks = progressInfo.phoneStats[TODAY].unlocks
      var glances = progressInfo.phoneStats[TODAY].glances
@@ -294,7 +298,7 @@ exports.populateListViewsDay = function() {
      var perc = (total === 0 ? 0 : Math.round(targetTime/total*100)); 
 
 
-    var apps = exports.getAppsToday();
+    dayApps = exports.getAppsToday();
 
     //For demo:
     // var list = []
@@ -323,8 +327,7 @@ exports.populateListViewsDay = function() {
     //     mins: 11
     // }
     // )
-    var listView = view.getViewById(page, "listview");
-    listView.items = apps;
+    pageData.set("dayItems", dayApps);
 
 	//'buttons' that show the usage daily overall phone usage 
     var hrsTotal = Math.round(total/6)/10;
@@ -392,8 +395,6 @@ exports.populateListViewsWeek = function() {
 	weekButtons.items = weekStats;
     var change;
 
-
-	var weekApps=[];
 	for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
 		var name = appInfo.name;
@@ -415,8 +416,7 @@ exports.populateListViewsWeek = function() {
     }
     return 0;
   	});
-    var weekList = view.getViewById(page, "weekList");
-	weekList.items = weekApps;
+    pageData.set("weekItems", weekApps);
     //COME BACK TO 
     // var pChange = view.getViewById(page, "perChange");
     // console.log(pChange);
@@ -453,7 +453,6 @@ exports.populateListViewMonth = function () {
 	var monthButtons = view.getViewById(page, "monthButtons");
 	monthButtons.items = monthStats;
 
-    var monthApps=[];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
         var name = appInfo.name;
@@ -471,12 +470,28 @@ exports.populateListViewMonth = function () {
     }
     return 0;
     });
-    var monthList = view.getViewById(page, "monthList");
-    monthList.items = monthApps;
-  
-
-
+    pageData.set("monthItems", monthApps);
 };
+
+
+//Allows the list to be pressable 
+exports.goToDetailApps = function(args) {
+    console.log("tapped")
+    var tappedItem = args.view.bindingContext;
+    console.log(tappedItem.name)
+    var options = {
+        moduleName: 'views/appDetailView/appDetailView',
+        context: {
+          packageName: getPackageName(tappedItem.name),
+          name: tappedItem.name,
+          icon: tappedItem.image
+        }
+      }
+      frameModule.topmost().navigate(options);
+
+    console.dir(tappedItem)
+}
+
 
 
 
@@ -651,6 +666,17 @@ function getAppNames() {
     }
     return names;
 }
+
+
+function getPackageName(name) {
+     for (let i = 0; i < progressInfo.appStats.length; ++i) {
+        if (name === usageUtil.getBasicInfo(progressInfo.appStats[i].packageName).name) {
+            return progressInfo.appStats[i].packageName;
+        }
+    }
+    return null;
+}
+
 
 
 //returns [today, yesterday, day before...]

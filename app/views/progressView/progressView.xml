@@ -46,7 +46,7 @@
 
 			   			<!-- 
 			   			    For the list of goal apps and their time usage -->
-			   				<lv:RadListView id="listview" class="list-group">
+			   				<lv:RadListView id="listview" class="list-group" items="{{ dayItems }}" itemTap="goToDetailApps" >
 			   					<lv:RadListView.listViewLayout>
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
 			   			        </lv:RadListView.listViewLayout>
@@ -89,7 +89,7 @@
 
 			   			    <!-- 
 			   			    For the list of goal apps and their time usage -->
-			   			    <lv:RadListView id="weekList" class="list-group">
+			   			    <lv:RadListView id="weekList" class="list-group" items="{{ weekItems }}" itemTap="goToDetailApps">
 			   					<lv:RadListView.listViewLayout>
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
@@ -136,7 +136,7 @@
 			   			        </lv:RadListView.itemTemplate>
 
 			   			    </lv:RadListView>
-			   			    <lv:RadListView id="monthList" class="list-group">
+			   			    <lv:RadListView id="monthList" class="list-group" items="{{ monthItems }}" itemTap="goToDetailApps">
 			   					<lv:RadListView.listViewLayout>
 			   			            <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
 			   			        </lv:RadListView.listViewLayout>
