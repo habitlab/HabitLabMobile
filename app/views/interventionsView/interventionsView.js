@@ -12,13 +12,17 @@ var interventionList;
 
 var createItem = function(id)  {
   var item = builder.load({
-    path: 'shared/togglelistelem',
-    name: 'togglelistelem'
+    path: 'shared/detailelem',
+    name: 'detailelem'
   });
 
   item.id = 'item' + id;
   item.className = 'intervention-grid';
   
+  var image = item.getViewById('icon');
+  image.src = interventionList[id].icon;
+  image.className = 'intervention-icon';
+
   var label = item.getViewById("name");
   label.text = interventionList[id].name;
   label.className = 'intervention-label';
@@ -34,9 +38,9 @@ var createItem = function(id)  {
       frame.topmost().navigate(options);
     } else {
       if (args.action === 'down') {
-        item.className = 'intervention-grid selected';
+        item.backgroundColor = '#F5F5F5';
       } else if (args.action === 'up' || args.action === 'cancel') {
-        item.className = 'intervention-grid';
+        item.backgroundColor = '#FFFFFF';
       }
     }
   });

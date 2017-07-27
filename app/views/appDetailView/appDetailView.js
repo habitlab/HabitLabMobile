@@ -54,12 +54,16 @@ var appStats;
 
 var createItem = function(enabled, id)  {
   var item = builder.load({
-    path: 'shared/togglelistelem',
-    name: 'togglelistelem'
+    path: 'shared/detailelem',
+    name: 'detailelem'
   });
 
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
+
+  var image = item.getViewById('icon');
+  image.src = StorageUtil.interventionDetails[id].icon;
+  image.className = 'app-intervention-icon';
 
   var label = item.getViewById("name");
   label.text = StorageUtil.interventionDetails[id].name;

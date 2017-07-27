@@ -21,18 +21,18 @@ var interventions = {
 };
 
 var interventionDetails = [
-  {name: 'Look Out!', functionality: "Glances Toast", description: "Sends a disappearing message telling you how many times you've glanced at your phone today", target: 'phone', level: 'easy'},
-  {name: 'Easy on the Eyes', functionality: "Glances Notification", description: "Sends a notification telling you how many times you've glanced at your phone today", target: 'phone', level: 'medium'},
-  {name: 'Knock Knock', functionality: "Unlocks Toast", description: "Sends a disappearing message telling you how many times you've unlocked your phone today", target: 'phone', level: 'easy'},
-  {name: 'Hello, Old Friend', functionality: "Unlocks Notification", description: "Sends a notification telling you how many times you've unlocked your phone today", target: 'phone', level: 'medium'},
-  {name: 'Progress Report', functionality: "App Usage Toast", description: "Sends a disappearing message telling you how long you've been on your phone today", target: 'phone', level: 'easy'},
-  {name: 'Red Alert!', functionality: "App Usage Notification", description: "Sends a notification telling you how long you've been on your phone today", target: 'phone', level: 'medium'},
-  {name: 'How Time Flies!', functionality: "Visit Length Toast", description: "Sends a disappearing message when you are on a watchlisted app telling you how long that visit has been so far", target: 'app', level: 'easy'},
-  {name: 'The Clock is Ticking', functionality: "Visit Length Notification", description: "Sends a notification when you are on a watchlisted app telling you how long that visit has been so far", level: 'medium'},
-  {name: 'At it Again', functionality: "Visits Toast", description: "Sends a disappearing message telling you how many times you've been on a certain app today", target: 'app', level: 'easy'},
-  {name: 'Repeat Offender', functionality: "Visits Notification", description: "Sends a notification telling you how many times you've been on a certain app today", target: 'app', level: 'medium'},
-  {name: 'Block-Buster', functionality: "Video Pause Overlay", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']},
-  {name: 'No Peeking!', functionality: "Full Screen Overlay", description: "Covers the screen when you enter a watchlisted app and prompts you to either continue or exit the app", target: 'app', level: 'easy'}
+  {name: 'Look Out!', icon: 'res://ic_exclamation_bubble', functionality: "Glances Toast", description: "Sends a disappearing message telling you how many times you've glanced at your phone today", target: 'phone', level: 'easy'},
+  {name: 'Easy on the Eyes', icon: 'res://ic_eye', functionality: "Glances Notification", description: "Sends a notification telling you how many times you've glanced at your phone today", target: 'phone', level: 'medium'},
+  {name: 'Knock Knock', icon: 'res://ic_smile', functionality: "Unlocks Toast", description: "Sends a disappearing message telling you how many times you've unlocked your phone today", target: 'phone', level: 'easy'},
+  {name: 'Hello, Old Friend', icon: 'res://ic_hand', functionality: "Unlocks Notification", description: "Sends a notification telling you how many times you've unlocked your phone today", target: 'phone', level: 'medium'},
+  {name: 'Progress Report', icon: 'res://ic_clipboard', functionality: "App Usage Toast", description: "Sends a disappearing message telling you how long you've been on your phone today", target: 'phone', level: 'easy'},
+  {name: 'Red Alert!', icon: 'res://ic_alert', functionality: "App Usage Notification", description: "Sends a notification telling you how long you've been on your phone today", target: 'phone', level: 'medium'},
+  {name: 'How Time Flies!', icon: 'res://ic_plane', functionality: "Visit Length Toast", description: "Sends a disappearing message when you are on a watchlisted app telling you how long that visit has been so far", target: 'app', level: 'easy'},
+  {name: 'The Clock is Ticking', icon: 'res://ic_hourglass', functionality: "Visit Length Notification", description: "Sends a notification when you are on a watchlisted app telling you how long that visit has been so far", level: 'medium'},
+  {name: 'At it Again', icon: 'res://ic_history', functionality: "Visits Toast", description: "Sends a disappearing message telling you how many times you've been on a certain app today", target: 'app', level: 'easy'},
+  {name: 'Repeat Offender', icon: 'res://ic_repeat', functionality: "Visits Notification", description: "Sends a notification telling you how many times you've been on a certain app today", target: 'app', level: 'medium'},
+  {name: 'Block-Buster', icon: 'res://ic_videocam', functionality: "Video Pause Overlay", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']},
+  {name: 'No Peeking!', icon: 'res://ic_key', functionality: "Full Screen Overlay", description: "Covers the screen when you enter a watchlisted app and prompts you to either continue or exit the app", target: 'app', level: 'easy'}
 ];
 
 exports.interventions = interventions;

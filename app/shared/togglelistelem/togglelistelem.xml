@@ -1,4 +1,0 @@
-<GridLayout columns="*,auto" rows="auto" >
-  <Label id="name" col="0" />
-  <Switch id="switch" col="1" />
-</GridLayout>

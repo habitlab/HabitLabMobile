@@ -11,8 +11,9 @@
 }
 
 .app-detail-label {
-  font-size: 20%;
-  padding: 4%;
+  font-size: 18%;
+  vertical-align: middle;
+  padding: 0;
 }
 
 .app-detail-icon {
@@ -20,9 +21,18 @@
 }
 
 .app-detail-grid {
-  margin: 4%;
   border-color: lightgray;
   border-bottom-width: 1px;
+  padding: 10%;
+}
+
+.app-intervention-icon {
+  background-color: gray;
+  height: 60%;
+  border-radius: 50%;
+  margin: 2%;
+  margin-right: 4%;
+  padding: 5%;
 }
 
 .good {
@@ -35,13 +45,6 @@
 
 .bad {
   color: red;
-}
-
-#name {
-  padding-top: 12%;
-  padding-bottom: 12%;
-  font-size: 19%;
-  vertical-align: middle;
 }
 
 .app-detail-flex-layout {
