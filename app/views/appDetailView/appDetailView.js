@@ -53,7 +53,6 @@ var icon;
 var appStats;
 
 
-
 exports.pageNavigating = function(args) {
   page = args.object;
   if (page.navigationContext) {
@@ -62,15 +61,13 @@ exports.pageNavigating = function(args) {
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
   }
-  pageData.set("showWeekGraph", false);
-  page.bindingContext = pageData;
+  console.warn("navigated")
 }
 
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById('sideDrawer');
   setUpDetail();
-  console.warn("page loaded")
 };
 
 
@@ -137,31 +134,101 @@ var createItem = function(enabled, id)  {
 
 
 
-//Sets up graph
+// //Sets up graph
 exports.weekView = function(args) {
+    var barchart = new BarChart(args.context);
+    //array of datasets
+    var IbarSet = new ArrayList();
+    //array of BarEntries
+    var entries = makeWeekArray();
+    var dataset = new BarDataSet(entries, "");
+    dataset.setColor(Color.parseColor("#FFA730"));
+    IbarSet.add(dataset);
+    var data = new BarData(IbarSet);
+    data.setValueTextColor(Color.WHITE);
+    barchart.setData(data);
+
+    //set axis labels
+    var xLabels = getDayLabels();
+     let axisformatter = new IAxisValueFormatter({
+        getFormattedValue: function(value, axis) {
+            return xLabels[value]
+        },
+        getDecimalDigits: function() {
+            return 0
+        }
+     })
+    var xAxis = barchart.getXAxis()
+    var yAxis = barchart.getAxisLeft()
+    yAxis.setAxisMinimum(0)
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setGranularity(1)
+    xAxis.setDrawGridLines(false);
+    barchart.getAxisRight().setEnabled(false);
+    xAxis.setValueFormatter(axisformatter)
+    var desc = barchart.getDescription();
+    desc.setEnabled(Description.false);
+    yAxis.setStartAtZero(true);
+    barchart.setDrawValueAboveBar(false);
+    var legend = barchart.getLegend();
+    legend.setEnabled(false);
+
+     //goal and average lines 
+    var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/(7*MINS_MS));
+    console.warn(avg);
+    var avgLine = new LimitLine(avg, "Average");
+    avgLine.setLineWidth(2);
+    avgLine.setTextColor(Color.parseColor("#737373"));
+    // var goal = appStats.goals.minutes;
+    var goal = 30;
+    var goalLine = new LimitLine(goal, "Goal");
+    goalLine.setLineWidth(2);
+    //Gray
+    goalLine.setTextColor(Color.parseColor("#737373"));
+    //Blue
+    goalLine.setLineColor(Color.parseColor("#37879A"));
+    if (avg <= goal) {
+      //Green
+      avgLine.setLineColor(Color.parseColor("#69BD68"));
+    } else {
+      //Red
+      avgLine.setLineColor(Color.parseColor("#E71D36"));
+    }
+    yAxis.addLimitLine(avgLine);
+    yAxis.addLimitLine(goalLine);
+
+
+
+    //disable all touch events
+    barchart.setTouchEnabled(false);
+    barchart.setDragEnabled(false);
+  
+
+
+
+
+
+
+    barchart.animateY(1000);
+    barchart.setFitBars(true);
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.invalidate();
+    args.view = barchart;
+};
+
+
+
+
+exports.monthView = function(args) {
   var barchart = new BarChart(args.context);
   //array of datasets
   var IbarSet = new ArrayList();
   //array of BarEntries
-  var entries;
-  var dataset;
-  var xLabels = getDayLabels();
-  if (pageData.get("showWeekGraph")) {
-    //week view
-    console.warn("week view")
-    console.warn(pageData.get("showWeekGraph"))
-    entries = makeWeekArray();
-    dataset = new BarDataSet(entries, "");
-    dataset.setColor(Color.parseColor("#DAECF3"));
-  } else {
-    //month view 
-    console.warn("month view")
-    console.warn(pageData.get("showWeekGraph"))
-    entries = makeMonthArray();
-    dataset = new BarDataSet(entries, "");
-    dataset.setColor(Color.parseColor("#DAECF3"));
-    xLabels = getMonthLabels();
-  }
+  var entries = makeMonthArray();
+  var dataset = new BarDataSet(entries, "");
+  dataset.setColor(Color.parseColor("#F18391"));
+  var xLabels = getMonthLabels();
+  
   IbarSet.add(dataset);
   var data = new BarData(IbarSet);
   data.setValueTextColor(Color.WHITE);
@@ -192,11 +259,13 @@ exports.weekView = function(args) {
     legend.setEnabled(false);
 
     //goal and average lines 
-    var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/7);
+    var avg = Math.round(getTotalTimeAppMonth(appStats)/(28*MINS_MS));
+    console.warn(avg)
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
-    var goal = 20;
+    // var goal = appStats.goals.minutes;
+    var goal = 30;
     var goalLine = new LimitLine(goal, "Goal");
     goalLine.setLineWidth(2);
     //Gray
@@ -213,14 +282,29 @@ exports.weekView = function(args) {
     yAxis.addLimitLine(avgLine);
     yAxis.addLimitLine(goalLine);
 
-  barchart.animateY(3000);
-   barchart.setFitBars(true);
-   barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-   barchart.invalidate();
+     //disable all touch events
+    barchart.setTouchEnabled(false);
+    barchart.setDragEnabled(false);
+  
+    barchart.animateY(1000);
+    barchart.setFitBars(true);
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.invalidate();
     console.warn("made graph lol");
-   args.view = barchart;
-};
+    args.view = barchart;
+    
+  };
 
+
+
+// //Returns the total time spent on an app in a month when passed in that app's object
+getTotalTimeAppMonth = function(array) {
+    var sum = 0;
+    for (var i = 0; i <= TODAY; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
 
 
 getTotalTimeAppWeek = function(array, weeksAgo) {
@@ -291,7 +375,5 @@ exports.toggleDrawer = function() {
 
 
 
-exports.toggleWeek = function() {
-    pageData.set("showWeekGraph", pageData.get("showWeekGraph"));
-};
+
 
