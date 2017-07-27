@@ -58,6 +58,7 @@ exports.getApplicationList = function() {
 			days = Math.ceil(differenceSinceInstall / DAY_MS);
 		}
 
+
 		var stats = usageStatsMap.get(packageName);
 		var time = 0;
 

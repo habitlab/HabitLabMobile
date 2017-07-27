@@ -50,7 +50,7 @@ var setCellInfo = function(cell, info) {
   image.src = info.iconSource;
   selector.visibility = pkgs.includes(info.packageName) ? 'visible' : 'hidden';
 
-  var mins = Math.ceil(info.averageUsage / 60000);
+  var mins = Math.ceil(info.averageUsage);
   if (mins || mins === 0) {
     usage.text = mins + ' min/day';
     if (mins >= 15) {
