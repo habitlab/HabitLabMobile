@@ -91,7 +91,7 @@ var sendNotificationVisited = function(real, pkg) {
       var title = applicationName + " Visit Count";
 
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " opened " + applicationName + " " + visits + (visits === 1 ? " time " : " times ") + "today";
+      msg += " opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
       NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
     }
   }
