@@ -5,6 +5,7 @@ var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
 var DAY_IN_MS = 86400000;
+var MIN_IN_MS = 60000;
 
 /************************************
  *             HELPERS              *
@@ -354,9 +355,11 @@ exports.glanced = function() {
  * day (time is in milliseconds).
  */
 exports.updateAppTime = function(packageName, time) {
+
   var i = index();
   var appInfo = JSON.parse(appSettings.getString(packageName));
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  time = Math.round(time / MIN_IN_MS);
   appInfo['stats'][i]['time'] += time;
   phoneInfo['stats'][i]['time'] += time;
   appSettings.setString(packageName, JSON.stringify(appInfo));
