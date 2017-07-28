@@ -388,7 +388,7 @@ exports.getTargetTime = function() {
  */
 exports.updateTotalTime = function(time) {  
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()]['totalTime'] += time;
+  phoneInfo['stats'][index()]['totalTime'] += Math.round(time / MIN_IN_MS);
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
