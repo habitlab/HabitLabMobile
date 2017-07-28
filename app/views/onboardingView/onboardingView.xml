@@ -58,8 +58,6 @@
       <Slides:Slide id='lastslide' class="slide" swipe="goToNextSlide">
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
         <Button text="Choose your Apps" onTap="goToAppsView"/>
-<!--         <Image src="{{visuals[4]}}" class="squish" />
-        <Label text="{{texts[6]}}" textWrap='true' /> -->
       </Slides:Slide>
 
     </Slides:SlideContainer>

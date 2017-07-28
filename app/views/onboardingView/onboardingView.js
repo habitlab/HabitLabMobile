@@ -166,11 +166,5 @@ exports.goToAppsView = function(args) {
 
     alarm.setRepeating(android.app.AlarmManager.RTC_WAKEUP, midnight.getTimeInMillis(), DAY, pi);    
   }
-
-  if (args.direction === 2) {
-    frameModule.topmost().navigate('views/appsView/appsView');
-  } else if (args.direction === 1) {
-    container.previousSlide();
-  }
-  
+  frameModule.topmost().navigate('views/appsView/appsView');
 };
