@@ -12,7 +12,6 @@ var Placeholder = require("ui/placeholder")
 var app = require("tns-core-modules/application")
 var page;
 var context = app.android.context;
-var goalApps;
 var drawer;
 var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
@@ -51,11 +50,12 @@ var MINS_MS = 60000;
 var observable = require("data/observable");
 var pageData = new observable.Observable();
 var ObservableArray = require("data/observable-array").ObservableArray;
-var progressInfo = storageUtil.getProgressViewInfo();
+var progressInfo;
 var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
 var piechart;
+var basic;
 
 
 
@@ -70,11 +70,9 @@ exports.pageLoaded = function(args) {
   if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
     context.startService(trackingServiceIntent);
   }
-
   if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
     context.startService(unlockServiceIntent);
   }
-
   if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
     context.startService(dummyServiceIntent);
   }  
@@ -84,18 +82,18 @@ exports.pageLoaded = function(args) {
     pageData.set("showDayGraph", true);
     pageData.set("showWeekGraph", true);
     pageData.set("showMonthGraph", true);
-    progressInfo = storageUtil.getProgressViewInfo();
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
-    piechart.invalidate();
     console.warn("page loaded")
 
 };
 
 
 exports.pageNavigating = function(args) {
-    page = args.object;
+    progressInfo = storageUtil.getProgressViewInfo();
+    basic = getBasic();
+    // piechart.invalidate();
     console.warn("navigated progress")
 }
 
@@ -482,9 +480,9 @@ exports.getAppsToday = function() {
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = Math.round(progressInfo.appStats[i][TODAY].time/MINS_MS);
         var visits = progressInfo.appStats[i][TODAY].visits;
-        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
-        var name = appInfo.name;
-        var icon = appInfo.icon;
+        // var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = basic[i].name;
+        var icon = basic[i].icon;
         list.push({
             name: name,
             visits: visits,
@@ -509,11 +507,11 @@ exports.getAppsToday = function() {
 getAppsWeek = function () {
     var weekApps = [];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
-        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
-        var name = appInfo.name;
+        // var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = basic[i].name;
         var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/7);
-        var icon = appInfo.icon;
+        var icon = basic[i].icon;
         var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
         weekApps.push({
@@ -541,11 +539,11 @@ getAppsWeek = function () {
 getAppsMonth = function() {
     var monthApps = [];
      for(var i = 0; i < progressInfo.appStats.length; ++i) {
-        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
-        var name = appInfo.name;
+        // var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var icon = basic[i].icon;
         var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/28);
-        var icon = appInfo.icon;
+        var name = basic[i].name;
         monthApps.push({
             name: name,
             avgMins: avgMins,
@@ -564,7 +562,20 @@ getAppsMonth = function() {
     return monthApps;
 }
 
-   
+//Gets basic info from usageUtil
+getBasic = function() {
+    var basic = [];
+    for (let i = 0; i < progressInfo.appStats.length; ++i) {
+        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = appInfo.name;
+        var icon = appInfo.icon;
+        basic.push({
+            name: name,
+            icon: icon
+        })
+    }
+    return basic;
+}
 
 
 
@@ -620,7 +631,7 @@ function toJavaStringArray(arr) {
 function getAppNames() {
     var names = Array.create(java.lang.String, progressInfo.appStats.length);
     for (let i = 0; i < progressInfo.appStats.length; ++i) {
-        names[i] = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName).name;
+        names[i] = basic[i].name;
     }
     return names;
 }
@@ -628,7 +639,7 @@ function getAppNames() {
 
 function getPackageName(name) {
      for (let i = 0; i < progressInfo.appStats.length; ++i) {
-        if (name === usageUtil.getBasicInfo(progressInfo.appStats[i].packageName).name) {
+        if (name === basic[i].name) {
             return progressInfo.appStats[i].packageName;
         }
     }
