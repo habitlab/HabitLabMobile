@@ -334,7 +334,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  *        OVERLAY INTERVENTIONS        *
  ***************************************/
 
-var showFullScreenOverlay = function (real, context, pkg) {
+var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay(context, "Continue to Faceook?", 
       "You've already been here 25 times today. Want to take a break?", 
