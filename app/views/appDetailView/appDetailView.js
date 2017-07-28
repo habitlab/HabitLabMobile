@@ -181,8 +181,7 @@ exports.weekView = function(args) {
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
-    // var goal = appStats.goals.minutes;
-    var goal = 30;
+    var goal = appStats.goals.minutes;
     var goalLine = new LimitLine(goal, "Goal");
     goalLine.setLineWidth(2);
     //Gray
@@ -259,8 +258,7 @@ exports.monthView = function(args) {
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
-    // var goal = appStats.goals.minutes;
-    var goal = 30;
+    var goal = appStats.goals.minutes;
     var goalLine = new LimitLine(goal, "Goal");
     goalLine.setLineWidth(2);
     //Gray
