@@ -1,11 +1,11 @@
 var StorageUtil = require('~/util/StorageUtil');
 var IM = require('~/interventions/InterventionManager');
+var ID = require('~/interventions/interventionData');
 
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
 
 var frameModule = require("ui/frame");
-var gestures = require("ui/gestures");
 var view = require("ui/core/view");
 var imageSource = require("image-source");
 var colorModule = require("tns-core-modules/color")
@@ -98,18 +98,15 @@ var setUpDetail = function() {
   });
 
   var layout = page.getViewById('list');
-  var interventions = StorageUtil.getInterventionsForApp(pkg);
+  layout.removeChildren();
 
+  var interventions = StorageUtil.getInterventionsForApp(pkg);
   interventions.forEach(function (enabled, id) {
-    if (!layout.getViewById('intervention' + id) && StorageUtil.interventionDetails[id].target === 'app') {
+    if (ID.interventionDetails[id].target === 'app' && IM.interventions[id]) {
       layout.addChild(createItem(enabled, id));
     }
   });
 };
-
-
-
-
 
 var createItem = function(enabled, id)  {
   var item = builder.load({
@@ -121,11 +118,11 @@ var createItem = function(enabled, id)  {
   item.className = 'app-detail-grid';
 
   var image = item.getViewById('icon');
-  image.src = StorageUtil.interventionDetails[id].icon;
+  image.src = ID.interventionDetails[id].icon;
   image.className = 'app-intervention-icon';
 
   var label = item.getViewById("name");
-  label.text = StorageUtil.interventionDetails[id].name;
+  label.text = ID.interventionDetails[id].name;
   label.className = "app-detail-label";
     
   var sw = item.getViewById("switch");

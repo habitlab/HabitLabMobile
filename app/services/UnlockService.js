@@ -5,6 +5,7 @@ var context = application.android.context.getApplicationContext();
 const ServiceManager = require("./ServiceManager");
 const StorageUtil = require('~/util/StorageUtil');
 const InterventionManager = require('~/interventions/InterventionManager');
+const ID = require('~/interventions/interventionData');
 const TrackingService = require("./TrackingService");
 
 // expose native APIs
@@ -32,13 +33,13 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
         if (action === Intent.ACTION_SCREEN_ON) {
             timePhoneTurnedOn = System.currentTimeMillis();
             StorageUtil.glanced();
-            InterventionManager.interventions[StorageUtil.interventions.GLANCE_NOTIFICATION](true);
-            // InterventionManager.interventions[StorageUtil.interventions.GLANCE_TOAST](true);
+            InterventionManager.interventions[ID.interventionIDs.GLANCE_NOTIFICATION](true);
+            // InterventionManager.interventions[ID.interventionIDs.GLANCE_TOAST](true);
         } else if (action === Intent.ACTION_USER_PRESENT) {
             TrackingService.alertScreenOn();
             StorageUtil.unlocked();
-            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_NOTIFICATION](true);
-            InterventionManager.interventions[StorageUtil.interventions.UNLOCK_TOAST](true);
+            InterventionManager.interventions[ID.interventionIDs.UNLOCK_NOTIFICATION](true);
+            InterventionManager.interventions[ID.interventionIDs.UNLOCK_TOAST](true);
         } else if (action === Intent.ACTION_SCREEN_OFF) {
             TrackingService.alertScreenOff();
 

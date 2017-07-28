@@ -6,6 +6,7 @@ const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
 const TimerOverlay = require("~/overlays/TimerOverlay");
+const ID = require('~/interventions/interventionData');
 
 var application = require('application');
 var context = application.android.context.getApplicationContext();
@@ -63,7 +64,7 @@ var popToastVisited = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_TOAST, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
 
     if (visits % VISITED_TOAST_INTERVAL === 0 && visits % VISITED_NOTIF_INTERVAL !== 0) {
@@ -86,7 +87,7 @@ var sendNotificationVisited = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_NOTIFICATION, pkg)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_NOTIFICATION, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % VISITED_NOTIF_INTERVAL === 0) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
@@ -116,7 +117,7 @@ var sendUnlocksNotification = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_NOTIFICATION)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_NOTIFICATION)) {
     var unlocks = StorageUtil.getUnlocks();
     if (unlocks % UNLOCKS_NOTIF_INTERVAL === 0) {
       var title = 'Unlock Alert';
@@ -139,7 +140,7 @@ var popToastUnlocked = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_TOAST)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_TOAST)) {
     var unlocks = StorageUtil.getUnlocks();
     if (unlocks % UNLOCKS_TOAST_INTERVAL === 0) {
       Toast.makeText("You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today").show();
@@ -159,7 +160,7 @@ var sendNotificationGlances = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_NOTIFICATION)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.GLANCE_NOTIFICATION)) {
     var glances = StorageUtil.getGlances();
     if (glances % GLANCES_NOTIF_INTERVAL === 0) {
       var title = 'Glance Alert';
@@ -182,7 +183,7 @@ var popToastGlanced = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_TOAST)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.GLANCE_TOAST)) {
     var glances = StorageUtil.getGlances();
     if (glances % GLANCES_TOAST_INTERVAL === 0) {
       Toast.makeText("You've glanced at your phone " + glances + (glances === 1 ? " time" : " times") + " today").show();
@@ -222,7 +223,7 @@ var popToastVisitLength = function (real, pkg, visitStart) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_TOAST, pkg)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_TOAST, pkg)) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_TOAST_INTERVAL && !sentToast) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
@@ -244,7 +245,7 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
     return;
   }
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.DURATION_NOTIFICATION, pkg)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotification) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
@@ -288,7 +289,7 @@ var blockVideo = function (real, pkg) {
     return;
   }
 
-  if (shouldBlockVideo && StorageUtil.canIntervene(StorageUtil.interventions.VIDEO_BLOCKER, pkg)) {
+  if (shouldBlockVideo && StorageUtil.canIntervene(ID.interventionIDs.VIDEO_BLOCKER, pkg)) {
     audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
   }
 };
@@ -333,7 +334,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  *        OVERLAY INTERVENTIONS        *
  ***************************************/
 
-var showFullScreenOverlay = function (real, pkg) {
+var showFullScreenOverlay = function (real, context, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay(context, "Continue to Faceook?", 
       "You've already been here 25 times today. Want to take a break?", 
@@ -341,7 +342,7 @@ var showFullScreenOverlay = function (real, pkg) {
     return;
   }
   
-  if (StorageUtil.canIntervene(StorageUtil.interventions.FULL_SCREEN_OVERLAY, pkg)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.FULL_SCREEN_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
@@ -361,7 +362,7 @@ var showCountUpTimer = function (real, context, pkg) {
   }
 
 
-  if (StorageUtil.canIntervene(StorageUtil.interventions.COUNTUP_TIMER_OVERLAY, pkg)) {
+  if (StorageUtil.canIntervene(ID.interventionIDs.COUNTUP_TIMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % COUNT_UP_TIMER_INTERVAL === 0) {
       TimerOverlay.showCountUpTimer(context);
@@ -377,7 +378,6 @@ var dismissTimer = function (context) {
 
 module.exports = { 
   interventions: [
-    null,
     sendNotificationGlances,
     popToastUnlocked,
     sendUnlocksNotification,

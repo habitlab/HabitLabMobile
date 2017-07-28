@@ -1,47 +1,10 @@
 var appSettings = require("application-settings");
+var ID = require('~/interventions/interventionData');
+
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
 var DAY_IN_MS = 86400000;
-var force = false;
-
-var interventions = {
-  GLANCE_TOAST: 0,
-  GLANCE_NOTIFICATION: 1,
-  UNLOCK_TOAST: 2,
-  UNLOCK_NOTIFICATION: 3,
-  USAGE_TOAST: 4,
-  USAGE_NOTIFICATION: 5,
-  DURATION_TOAST: 6, // for length of visit to an app
-  DURATION_NOTIFICATION: 7,
-  VISIT_TOAST: 8, // for amount of time on phone today
-  VISIT_NOTIFICATION: 9,
-  VIDEO_BLOCKER: 10,
-  FULL_SCREEN_OVERLAY: 11,
-  COUNTUP_TIMER_OVERLAY: 12,
-  COUNTDOWN_TIMER_OVERLAY: 13
-};
-
-var interventionDetails = [
-  {name: 'Look Out!', icon: 'res://ic_exclamation_bubble', functionality: "Glances Toast", description: "Sends a disappearing message telling you how many times you've glanced at your phone today", target: 'phone', level: 'easy'},
-  {name: 'Easy on the Eyes', icon: 'res://ic_eye', functionality: "Glances Notification", description: "Sends a notification telling you how many times you've glanced at your phone today", target: 'phone', level: 'medium'},
-  {name: 'Knock Knock', icon: 'res://ic_smile', functionality: "Unlocks Toast", description: "Sends a disappearing message telling you how many times you've unlocked your phone today", target: 'phone', level: 'easy'},
-  {name: 'Hello, Old Friend', icon: 'res://ic_hand', functionality: "Unlocks Notification", description: "Sends a notification telling you how many times you've unlocked your phone today", target: 'phone', level: 'medium'},
-  {name: 'Progress Report', icon: 'res://ic_clipboard', functionality: "App Usage Toast", description: "Sends a disappearing message telling you how long you've been on your phone today", target: 'phone', level: 'easy'},
-  {name: 'Red Alert!', icon: 'res://ic_alert', functionality: "App Usage Notification", description: "Sends a notification telling you how long you've been on your phone today", target: 'phone', level: 'medium'},
-  {name: 'How Time Flies!', icon: 'res://ic_plane', functionality: "Visit Length Toast", description: "Sends a disappearing message when you are on a watchlisted app telling you how long that visit has been", target: 'app', level: 'easy'},
-  {name: 'The Clock is Ticking', icon: 'res://ic_hourglass', functionality: "Visit Length Notification", description: "Sends a notification when you are on a watchlisted app telling you how long that visit has been", level: 'medium'},
-  {name: 'At it Again', icon: 'res://ic_history', functionality: "Visits Toast", description: "Sends a disappearing message telling you how many times you've been on a certain app today", target: 'app', level: 'easy'},
-  {name: 'Repeat Offender', icon: 'res://ic_repeat', functionality: "Visits Notification", description: "Sends a notification telling you how many times you've been on a certain app today", target: 'app', level: 'medium'},
-  {name: 'Block-Buster', icon: 'res://ic_videocam', functionality: "Video Pause Overlay", description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", target: 'app', level: 'medium', apps: ['com.facebook.katana', 'com.google.android.youtube']},
-  {name: 'No Peeking!', icon: 'res://ic_key', functionality: "Full Screen Overlay", description: "Covers the screen when you enter a watchlisted app and prompts you to either continue or exit the app", target: 'app', level: 'easy'},
-  {name: 'Counting on You', icon: 'res://ic_clock', functionality: "Timer Counting Up Overlay", description: "Puts a timer in the bottom right corner of your screen counting how long you spend in an app", target: 'app', level: 'easy'},
-  {name: 'The Final Countdown', icon: 'res://ic_exclamation', functionality: "Timer Counting Down Overlay", description: "Puts a timer in the bottom right corner of your screen counting down until it closes the app", target: 'app', level: 'hard'}
-];
-
-exports.interventions = interventions;
-exports.interventionDetails = interventionDetails;
-
 
 /************************************
  *             HELPERS              *
@@ -122,7 +85,7 @@ var createPackageData = function(packageName) {
   appSettings.setString(packageName, JSON.stringify({
       goals: PkgGoal(), 
       stats: Array(28).fill(PkgStat()),
-      enabled: Array(interventionDetails.length).fill(true)
+      enabled: Array(ID.interventionDetails.length).fill(true)
     }));
 };
 
@@ -134,7 +97,7 @@ var createPhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
       goals: PhGoal(), 
       stats: Array(28).fill(PhStat()),
-      enabled: Array(interventionDetails.length).fill(true)
+      enabled: Array(ID.interventionDetails.length).fill(true)
     }));
 };
 
@@ -146,7 +109,7 @@ var createFakePackageData = function(packageName) {
   appSettings.setString(packageName, JSON.stringify({
       goals: FakePkgGoal(), 
       stats: stats,
-      enabled: Array(interventionDetails.length).fill(true)
+      enabled: Array(ID.interventionDetails.length).fill(true)
     }));
 };
 
@@ -154,7 +117,7 @@ var createFakePhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
       goals: FakePhGoal(), 
       stats: Array(28).fill(FakePhStat()),
-      enabled: Array(interventionDetails.length).fill(true)
+      enabled: Array(ID.interventionDetails.length).fill(true)
     }));
 };
 
@@ -192,7 +155,7 @@ exports.setUpDB = function() {
   });
   createPhoneData();
 
-  appSettings.setString('enabled', JSON.stringify(Array(interventionDetails.length).fill(true)));
+  appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
 };
 
 exports.setUpFakeDB = function() {
@@ -539,30 +502,14 @@ exports.isEnabledForAll = function(id) {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  var target = interventionDetails[id].target; // 'phone' or 'app'
+  var target = ID.interventionDetails[id].target; // 'phone' or 'app'
   var can = JSON.parse(appSettings.getString('enabled'))[id]; // enabled overall
   if (target === 'phone') {
     return can;
   } else if (can) { // target === 'app'
-    var specified = interventionDetails[id].apps;
+    var specified = ID.interventionDetails[id].apps;
     return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id];
   }
-};
-
-/* export: forceIntervene
- * ----------------------
- * Forces interventions called after this (stored in JS so doesn't persist).
- */
-exports.forceIntervene = function() {
-  force = true;
-};
-
-/* export: unforceIntervene
- * ------------------------
- * Unforces interventions called after this (stored in JS so doesn't persist).
- */
-exports.unforceIntervene = function() {
-  force = false;
 };
 
 /*****************************

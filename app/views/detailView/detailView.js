@@ -1,6 +1,7 @@
 var StorageUtil = require('~/util/StorageUtil');
 var UsageUtil = require('~/util/UsageInformationUtil');
 var IM = require('~/interventions/InterventionManager');
+var ID = require('~/interventions/interventionData');
 
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
@@ -38,29 +39,28 @@ var createItem = function(pkg)  {
 };
 
 var setUpDetail = function() {
-  page.getViewById('title').text = StorageUtil.interventionDetails[id].name;
+  page.getViewById('title').text = ID.interventionDetails[id].name;
   var desc = page.getViewById('description');
-  desc.text = StorageUtil.interventionDetails[id].description;
+  desc.text = ID.interventionDetails[id].description;
   desc.textWrap = true;
 
-  var level = StorageUtil.interventionDetails[id].level;
+  var level = ID.interventionDetails[id].level;
   var levelLabel = page.getViewById('level');
   levelLabel.text = level;
   levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {
-    var packages = StorageUtil.getSelectedPackages();
     IM.interventions[id]();
   });
 
-  if (StorageUtil.interventionDetails[id].target === 'phone') {
+  if (ID.interventionDetails[id].target === 'phone') {
     return;
   }
 
   var layout = page.getViewById('list');
   var pkgs = StorageUtil.getSelectedPackages();
 
-  var apps = StorageUtil.interventionDetails[id].apps;
+  var apps = ID.interventionDetails[id].apps;
   if (apps) {
     pkgs = pkgs.filter(function (item) {
       return apps.includes(item);
