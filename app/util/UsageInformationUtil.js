@@ -46,10 +46,14 @@ exports.getApplicationList = function() {
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
 		var packageName = getPackageName(info);
+		
+		// filter out habitlab and duplicates
 		if (packageName === "org.nativescript.HabitLabMobile") { continue };
+		
 		var label = info.loadLabel(pm).toString();
+		if (label === "Voice Search") { continue; }
+		
 		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
-
 		var installTime = getInstallationTime(packageName);
 		var differenceSinceInstall = java.lang.System.currentTimeMillis() - installTime
 		var days = 14;
@@ -57,7 +61,6 @@ exports.getApplicationList = function() {
 		if (differenceSinceInstall < 14 * DAY_MS) {
 			days = Math.ceil(differenceSinceInstall / DAY_MS);
 		}
-
 
 		var stats = usageStatsMap.get(packageName);
 		var time = 0;

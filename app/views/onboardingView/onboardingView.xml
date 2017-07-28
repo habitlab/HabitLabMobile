@@ -43,7 +43,7 @@
         </StackLayout>
       </Slides:Slide>
 
-      <Slides:Slide class="slide"  swipe="checkDrawPermission">
+      <Slides:Slide class="slide" swipe="checkDrawPermission">
         <StackLayout>
             <Label text="{{texts[5]}}" textWrap='true' class="onboarding-label header"/>
             <VideoPlayer:Video class="firstVideo"
@@ -55,10 +55,11 @@
       </Slides:Slide>
 
 
-      <Slides:Slide id='lastslide' class="slide" swipe="goToAppsView">
+      <Slides:Slide id='lastslide' class="slide" swipe="goToNextSlide">
         <Label text="{{titles[4]}}" class='title' textWrap='true'/>
-        <Image src="{{visuals[4]}}" class="squish" />
-        <Label text="{{texts[6]}}" textWrap='true' />
+        <Button text="Choose your Apps" onTap="goToAppsView"/>
+<!--         <Image src="{{visuals[4]}}" class="squish" />
+        <Label text="{{texts[6]}}" textWrap='true' /> -->
       </Slides:Slide>
 
     </Slides:SlideContainer>
