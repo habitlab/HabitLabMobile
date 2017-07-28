@@ -62,31 +62,7 @@ exports.pageNavigating = function(args) {
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
   }
-  console.warn("navigated")
 }
-
-var createItem = function(enabled, id)  {
-  var item = builder.load({
-    path: 'shared/detailelem',
-    name: 'detailelem'
-  });
-
-  item.id = 'intervention' + id;
-  item.className = 'app-detail-grid';
-
-  var image = item.getViewById('icon');
-  image.src = StorageUtil.interventionDetails[id].icon;
-  image.className = 'app-intervention-icon';
-
-  var label = item.getViewById("name");
-  label.text = StorageUtil.interventionDetails[id].name;
-  label.className = "app-detail-label";
-    
-  var sw = item.getViewById("switch");
-  sw.checked = enabled;
-  sw.on(gestures.tap, function() {
-    StorageUtil.toggleForApp(id, pkg);
-  });
 
 
 exports.pageLoaded = function(args) {
@@ -129,19 +105,24 @@ var setUpDetail = function() {
       layout.addChild(createItem(enabled, id));
     }
   });
-  console.warn("set up detail copmlete")
 };
+
+
 
 
 
 var createItem = function(enabled, id)  {
   var item = builder.load({
-    path: 'shared/togglelistelem',
-    name: 'togglelistelem'
+    path: 'shared/detailelem',
+    name: 'detailelem'
   });
 
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
+
+  var image = item.getViewById('icon');
+  image.src = StorageUtil.interventionDetails[id].icon;
+  image.className = 'app-intervention-icon';
 
   var label = item.getViewById("name");
   label.text = StorageUtil.interventionDetails[id].name;
@@ -152,11 +133,8 @@ var createItem = function(enabled, id)  {
   sw.on(gestures.tap, function() {
     StorageUtil.toggleForApp(id, pkg);
   });
-
   return item;
-};
-
-
+}
 
 
 // //Sets up graph
@@ -200,7 +178,6 @@ exports.weekView = function(args) {
 
      //goal and average lines 
     var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/(7*MINS_MS));
-    console.warn(avg);
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
@@ -279,7 +256,6 @@ exports.monthView = function(args) {
 
     //goal and average lines 
     var avg = Math.round(getTotalTimeAppMonth(appStats)/(28*MINS_MS));
-    console.warn(avg)
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
@@ -309,7 +285,6 @@ exports.monthView = function(args) {
     barchart.setFitBars(true);
     barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
     barchart.invalidate();
-    console.warn("made graph lol");
     args.view = barchart;
     
   };
