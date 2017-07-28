@@ -231,7 +231,7 @@ exports.weekView = function(args) {
     legend.setEnabled(false);
 
      //goal and average lines 
-    var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/(7*MINS_MS));
+    var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/(7));
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
@@ -308,7 +308,7 @@ exports.monthView = function(args) {
     legend.setEnabled(false);
 
     //goal and average lines 
-    var avg = Math.round(getTotalTimeAppMonth(appStats)/(28*MINS_MS));
+    var avg = Math.round(getTotalTimeAppMonth(appStats)/(28));
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
@@ -369,7 +369,7 @@ makeWeekArray = function() {
   var weekData = new ArrayList();
      for (var day = 6; day >=0; day--) {
       //array of values for each week
-      var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
+      var totalTimeDay = Math.round(appStats[TODAY-day].time)
       weekData.add(new BarEntry(6-day, totalTimeDay));
    }
    return weekData;
@@ -378,7 +378,7 @@ makeWeekArray = function() {
 makeMonthArray = function() {
   var monthData = new ArrayList();
   for (var day = 27; day >= 0; day--) {
-    var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
+    var totalTimeDay = Math.round(appStats[TODAY-day].time)
     monthData.add(new BarEntry(27-day, totalTimeDay));
   }
   return monthData;
