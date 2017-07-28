@@ -103,6 +103,7 @@ var trackUsage = function () {
     var newPackage = getActivePackage();
     if (newPackage) {
         var now = System.currentTimeMillis();
+        InterventionManager.dismissTimer(context);
 
         // close the most recent blacklisted visit (if there was one)
         if (inBlacklistedApplication) {
@@ -126,6 +127,7 @@ var trackUsage = function () {
             InterventionManager.interventions[StorageUtil.interventions.VISIT_TOAST](true, currentPackage);
             InterventionManager.interventions[StorageUtil.interventions.VISIT_NOTIFICATION](true, currentPackage);
             InterventionManager.interventions[StorageUtil.interventions.FULL_SCREEN_OVERLAY](true, currentPackage);
+            InterventionManager.interventions[StorageUtil.interventions.COUNTUP_TIMER_OVERLAY](true, context, currentPackage);
         } else {
             // reset logging information
             startOfVisit = undefined;

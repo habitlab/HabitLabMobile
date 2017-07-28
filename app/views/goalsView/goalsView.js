@@ -104,9 +104,9 @@ var createAppGoal = function(pkg) {
       frameModule.topmost().navigate(options);
     } else {
       if (args.action === 'down') {
-        item.className = 'flex selected';
+        item.backgroundColor = '#F5F5F5';
       } else if (args.action === 'up' || args.action === 'cancel') {
-        item.className = 'flex';
+        item.backgroundColor = '#FFFFFF';
       }
     }
     

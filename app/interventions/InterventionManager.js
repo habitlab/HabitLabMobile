@@ -5,6 +5,7 @@ const DialogOverlay = require("~/overlays/DialogOverlay");
 const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
+const TimerOverlay = require("~/overlays/TimerOverlay");
 
 var application = require('application');
 var context = application.android.context.getApplicationContext();
@@ -35,7 +36,16 @@ var GLANCES_NOTIF_INTERVAL = 35; // glances
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
+var COUNT_UP_TIMER_INTERVAL = 6;
+var MIN_IN_MS = 60000;
 
+var shouldPersonalize = function() {
+  var x = Math.floor(Math.random() * 2) === 0;
+  console.warn(x);
+  return x;
+
+  return Math.floor(Math.random() * 2) === 0;
+};
 
 /*************************************
  *     VISIT COUNT INTERVENTIONS     *
@@ -49,17 +59,16 @@ var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
  */
 var popToastVisited = function(real, pkg) {
   if (!real) {
-    Toast.makeText("Facebook visits today: 7").show();
+    Toast.makeText("You've visited Facebook 8 times today").show();
     return;
   }
 
-
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_TOAST, pkg)) {
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
     var visits = StorageUtil.getVisits(pkg);
 
     if (visits % VISITED_TOAST_INTERVAL === 0 && visits % VISITED_NOTIF_INTERVAL !== 0) {
-      Toast.makeText(applicationName + " visits today: " + visits).show();
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      Toast.makeText("You've opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today").show();
     }
   }
 };
@@ -73,17 +82,18 @@ var popToastVisited = function(real, pkg) {
  */
 var sendNotificationVisited = function(real, pkg) {
   if (!real) {
-    NotificationUtil.sendNotification(context, "Facebook Usage", "You have opened Facebook 7 times today", notificationID.VISIT);
+    NotificationUtil.sendNotification(context, "Facebook Visit Count", "You've opened Facebook 7 times today", notificationID.VISIT);
     return;
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.VISIT_NOTIFICATION, pkg)) {
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
     var visits = StorageUtil.getVisits(pkg);
-    var title = applicationName + " Usage";
-    var msg = "You have opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
-    
     if (visits % VISITED_NOTIF_INTERVAL === 0) {
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = applicationName + " Visit Count";
+
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
       NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
     }
   }
@@ -108,10 +118,10 @@ var sendUnlocksNotification = function(real) {
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_NOTIFICATION)) {
     var unlocks = StorageUtil.getUnlocks();
-    var title = 'Unlock Alert';
-    var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-    
     if (unlocks % UNLOCKS_NOTIF_INTERVAL === 0) {
+      var title = 'Unlock Alert';
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
       NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
     }
   }
@@ -125,15 +135,14 @@ var sendUnlocksNotification = function(real) {
  */
 var popToastUnlocked = function(real) {
   if (!real) {
-    Toast.makeText("Today's Unlock Count: 7").show();
+    Toast.makeText("You've unlocked your phone 7 times today").show();
     return;
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.UNLOCK_TOAST)) {
     var unlocks = StorageUtil.getUnlocks();
-
     if (unlocks % UNLOCKS_TOAST_INTERVAL === 0) {
-      Toast.makeText("Today's Unlock Count: " + unlocks).show();
+      Toast.makeText("You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today").show();
     }
   }
 };
@@ -152,10 +161,10 @@ var sendNotificationGlances = function(real) {
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_NOTIFICATION)) {
     var glances = StorageUtil.getGlances();
-    var title = 'Glance Alert';
-    var msg = "You've glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
-
     if (glances % GLANCES_NOTIF_INTERVAL === 0) {
+      var title = 'Glance Alert';
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
       NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
     }
   }
@@ -169,15 +178,14 @@ var sendNotificationGlances = function(real) {
  */
 var popToastGlanced = function(real) {
   if (!real) {
-    Toast.makeText("Today's Glance Count: 7").show();
+    Toast.makeText("You've glanced at your phone 14 times today").show();
     return;
   }
 
   if (StorageUtil.canIntervene(StorageUtil.interventions.GLANCE_TOAST)) {
     var glances = StorageUtil.getGlances();
-
     if (glances % GLANCES_TOAST_INTERVAL === 0) {
-      Toast.makeText("Today's Glance Count: " + glances).show();
+      Toast.makeText("You've glanced at your phone " + glances + (glances === 1 ? " time" : " times") + " today").show();
     }
   }
 };
@@ -210,7 +218,7 @@ var logVisitStart = function() {
  */
 var popToastVisitLength = function (real, pkg, visitStart) {
   if (!real) {
-    Toast.makeText("You've been on Facebook for 5 minutes").show();
+    Toast.makeText("You've been on Facebook for 5 minutes this visit").show();
     return;
   }
 
@@ -218,7 +226,7 @@ var popToastVisitLength = function (real, pkg, visitStart) {
     var now = System.currentTimeMillis();
     if ((now - visitStart) > DURATION_TOAST_INTERVAL && !sentToast) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      Toast.makeText("You've been on " + applicationName + " for 5 minutes").show();
+      Toast.makeText("You've been on " + applicationName + " for " + Math.ceil(DURATION_TOAST_INTERVAL / MIN_IN_MS) + " minutes this visit").show();
       sentToast = true;
     }
   }
@@ -241,7 +249,8 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
     if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotification) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = applicationName + " Visit Length";
-      var msg = "You've been using " + applicationName + " for 15 minutes";
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " been using " + applicationName + " for " + Math.ceil(DURATION_NOTIF_INTERVAL / MIN_IN_MS) + " minutes";
       NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
       sentNotification = true;
     }
@@ -310,7 +319,9 @@ var exitToHome = function () {
 var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListener({
     onAudioFocusChange: function (change) {
       if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
-        DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
+        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", would" : "Would";
+        msg += " you like to continue watching?";
+        DialogOverlay.showPosNegDialogOverlay(context, msg, 
           "Yes", "No", stopVideoBlocking, exitToHome);
       }
     }
@@ -318,15 +329,15 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 
 
 
-/**************************************
- *        OVERLAY INTERVENTION        *
- **************************************/
+/***************************************
+ *        OVERLAY INTERVENTIONS        *
+ ***************************************/
 
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay(context, "Continue to Faceook?", 
       "You've already been here 25 times today. Want to take a break?", 
-      "Continue", "get me out of here!", null, null);
+      "Continue", "Get me out of here!", null, null);
     return;
   }
   
@@ -335,13 +346,33 @@ var showFullScreenOverlay = function (real, pkg) {
     if (visits % FULL_SCREEN_OVERLAY_INTERVAL === 0) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = "Continue to " + applicationName + "?";
-      var msg = "You've already been here " + visits + " times today. Want to take a break?";
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
       FullScreenOverlay.showOverlay(context, title, msg, 
-        "Continue", "get me out of here!", null, exitToHome);
+        "Continue", "Get me out of here!", null, exitToHome);
     }
   }
 }
 
+
+var showCountUpTimer = function (real, context, pkg) {
+  if (!real) {
+    return;
+  }
+
+
+  if (StorageUtil.canIntervene(StorageUtil.interventions.COUNTUP_TIMER_OVERLAY, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits % COUNT_UP_TIMER_INTERVAL === 0) {
+      TimerOverlay.showCountUpTimer(context);
+    }
+  }
+}
+
+
+var dismissTimer = function (context) {
+  TimerOverlay.dismissTimer(context);
+}
 
 
 module.exports = { 
@@ -357,10 +388,12 @@ module.exports = {
     popToastVisited,
     sendNotificationVisited,
     blockVideo,
-    showFullScreenOverlay
+    showFullScreenOverlay,
+    showCountUpTimer
   ], 
   allowVideoBlocking,
-  logVisitStart
+  logVisitStart,
+  dismissTimer
 };
 
 

@@ -2,7 +2,6 @@ var frameModule = require("ui/frame");
 var menu;
 var selected;
 var options = ['progress-option', 'goals-option', 'settings-option', 'nudges-option', 'feedback-option'];
-// var fancyAlert = require("nativescript-fancyalert");
 
 exports.onLoaded = function(args) {
   menu = args.object;
@@ -12,43 +11,42 @@ exports.onLoaded = function(args) {
 var resetSelected = function() {
   options.forEach(function (item) {
     if (item !== selected) {
-      menu.getViewById(item).className = "side-option";
+      menu.getViewById(item).backgroundColor = "#FFFFFF";
     } else {
-      menu.getViewById(item).className = "side-option selected-option";
+      menu.getViewById(item).backgroundColor = "#F5F5F5";
     }
   });
 };
 
-exports.goToProgress = function() {
-  selected = 'progress-option';
+var setSelected =  function(name) {
+  selected = name + '-option';
   resetSelected();
-  // fancyAlert.TNSFancyAlert.showWaiting("Loading...", "Refreshing your daily stats");
+};
+
+exports.goToProgress = function() {
+  setSelected('progress');
   frameModule.topmost().navigate("views/progressView/progressView");
 };
 
 
 exports.goToGoals = function() {
-  selected = 'goals-option';
-  resetSelected();
+  setSelected('goals');
   frameModule.topmost().navigate("views/goalsView/goalsView");
 };
 
 
 exports.goToSettings = function() {
-  selected = 'settings-option';
-  resetSelected();
+  setSelected('settings');
   frameModule.topmost().navigate("views/settingsView/settingsView");
 };
 
 
 exports.goToNudges = function() {
-  selected = 'nudges-option';
-  resetSelected();
+  setSelected('nudges');
   frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
 exports.goToFeedback = function() {
-  selected = 'feedback-option';
-  resetSelected();
+  setSelected('feedback');
   frameModule.topmost().navigate("views/feedbackView/feedbackView");
 }

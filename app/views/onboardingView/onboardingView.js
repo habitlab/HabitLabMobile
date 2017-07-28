@@ -38,7 +38,7 @@ onboarding.titles = [
   ];
 
 onboarding.visuals = [
-  '~/images/logo_bubbles.png',
+  'res://ic_habitlab_white',
   '~/images/onboarding_goals.png',
   '~/images/onboarding_applock.png',
   '~/images/onboarding_progress.png',

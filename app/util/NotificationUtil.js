@@ -10,7 +10,7 @@ var context = application.android.context.getApplicationContext();
 var sendNotification = function(context, title, msg, id) {
 	var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
     var notificationBuilder = new NotificationCompat.Builder(context);
-    var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
+    var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
     notificationBuilder.setSmallIcon(icon_id);
     notificationBuilder.setContentTitle(title)
@@ -23,7 +23,7 @@ var sendNotification = function(context, title, msg, id) {
 var sendNotificationWithOptions = function(context, title, msg, id) {
     var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
     var notificationBuilder = new NotificationCompat.Builder(context);
-    var icon_id = context.getResources().getIdentifier("logo_bubbles", "drawable", context.getPackageName());
+    var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
     notificationBuilder.setSmallIcon(icon_id);
     notificationBuilder.setContentTitle(title)
@@ -37,7 +37,7 @@ var sendNotificationWithOptions = function(context, title, msg, id) {
     var posPendingIntent = PendingIntent.getBroadcast(context, 0, posIntent, 0);
     var negPendingIntent = PendingIntent.getBroadcast(context, 0, negIntent, 0);
 
-    var icon = context.getResources().getIdentifier("icon", "drawable", context.getPackageName());
+    var icon = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     notificationBuilder.addAction(icon, "Yes", posPendingIntent);
     notificationBuilder.addAction(icon, "No", negPendingIntent);
 

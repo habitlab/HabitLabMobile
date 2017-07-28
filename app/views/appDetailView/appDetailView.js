@@ -53,6 +53,7 @@ var icon;
 var appStats;
 
 
+
 exports.pageNavigating = function(args) {
   page = args.object;
   if (page.navigationContext) {
@@ -63,6 +64,30 @@ exports.pageNavigating = function(args) {
   }
   console.warn("navigated")
 }
+
+var createItem = function(enabled, id)  {
+  var item = builder.load({
+    path: 'shared/detailelem',
+    name: 'detailelem'
+  });
+
+  item.id = 'intervention' + id;
+  item.className = 'app-detail-grid';
+
+  var image = item.getViewById('icon');
+  image.src = StorageUtil.interventionDetails[id].icon;
+  image.className = 'app-intervention-icon';
+
+  var label = item.getViewById("name");
+  label.text = StorageUtil.interventionDetails[id].name;
+  label.className = "app-detail-label";
+    
+  var sw = item.getViewById("switch");
+  sw.checked = enabled;
+  sw.on(gestures.tap, function() {
+    StorageUtil.toggleForApp(id, pkg);
+  });
+
 
 exports.pageLoaded = function(args) {
   page = args.object;
@@ -202,12 +227,6 @@ exports.weekView = function(args) {
     //disable all touch events
     barchart.setTouchEnabled(false);
     barchart.setDragEnabled(false);
-  
-
-
-
-
-
 
     barchart.animateY(1000);
     barchart.setFitBars(true);
