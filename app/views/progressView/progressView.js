@@ -341,38 +341,9 @@ exports.populateListViewsWeek = function() {
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
 	weekButtons.items = weekStats;
-    var change;
 
-	for(var i = 0; i < progressInfo.appStats.length; ++i) {
-        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
-		var name = appInfo.name;
-        var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
-        var avgMins = Math.round(totalMins/7);
-		var imagesrc = appInfo.icon;
-		change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
-        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
-        // var pChange = view.getViewById(page, "perChange");
-        // console.warn(pChange);
-        var appObj = new weekApp(name, avgMins, imagesrc, percChange, totalMins);
-		weekApps.push(appObj);
-    }
-    weekApps.sort(function compare(a, b) {
-    if (a.totalMins < b.totalMins) {
-      return 1;
-    } else if (a.totalMins > b.totalMins) {
-      return -1;
-    }
-    return 0;
-  	});
-    pageData.set("weekItems", weekApps);
-    //COME BACK TO 
-    // var pChange = view.getViewById(page, "perChange");
-    // console.log(pChange);
-    // if (change >= 0) {
-    //     pChange.color(Color.GREEN);
-    // } else {
-    //     pChange.color(Color.RED);
-    // }
+    var weekApps = getAppsWeek();
+	pageData.set("weekItems", weekApps);
  }
 
 
@@ -401,23 +372,7 @@ exports.populateListViewMonth = function () {
 	var monthButtons = view.getViewById(page, "monthButtons");
 	monthButtons.items = monthStats;
 
-    for(var i = 0; i < progressInfo.appStats.length; ++i) {
-        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
-        var name = appInfo.name;
-        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)/(MINS_MS)));
-        var avgMins = Math.round(totalMins/28);
-        var imagesrc = appInfo.icon;
-        var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
-        monthApps.push(appObj);
-    }
-    monthApps.sort(function compare(a, b) {
-    if (a.totalMins < b.totalMins) {
-      return 1;
-    } else if (a.totalMins > b.totalMins) {
-      return -1;
-    }
-    return 0;
-    });
+    var monthApps = getAppsMonth();
     pageData.set("monthItems", monthApps);
 };
 
@@ -539,25 +494,71 @@ exports.getAppsToday = function() {
     return list;
 };
 
+
+
+getAppsWeek = function () {
+    var weekApps = [];
+    for(var i = 0; i < progressInfo.appStats.length; ++i) {
+        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = appInfo.name;
+        var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var avgMins = Math.round(totalMins/7);
+        var imagesrc = appInfo.icon;
+        var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
+        var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
+        // var pChange = view.getViewById(page, "perChange");
+        weekApps.push({
+            name: name,
+            avgMins: avgMins,
+            imagesrc: imagesrc,
+            percChange: percChange,
+            totalMins: totalMins
+
+        })
+    }
+    weekApps.sort(function compare(a, b) {
+    if (a.totalMins < b.totalMins) {
+      return 1;
+    } else if (a.totalMins > b.totalMins) {
+      return -1;
+    }
+    return 0;
+    });
+
+    return weekApps;
+}
+
+
+getAppsMonth = function() {
+    var monthApps = [];
+     for(var i = 0; i < progressInfo.appStats.length; ++i) {
+        var appInfo = usageUtil.getBasicInfo(progressInfo.appStats[i].packageName);
+        var name = appInfo.name;
+        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)/(MINS_MS)));
+        var avgMins = Math.round(totalMins/28);
+        var imagesrc = appInfo.icon;
+        // var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
+        monthApps.push({
+            name: name,
+            avgMins: avgMins,
+            imagesrc: imagesrc,
+            totalMins: totalMins
+        })
+    }
+    monthApps.sort(function compare(a, b) {
+    if (a.totalMins < b.totalMins) {
+      return 1;
+    } else if (a.totalMins > b.totalMins) {
+      return -1;
+    }
+    return 0;
+    });
+    return monthApps;
+}
+
    
 
-function monthApp(name, avgMins, imagesrc, totalMins) {
-    this.name = name;
-    if (avgMins < 0) avgMins = 0;
-    this.avgMins = avgMins;
-    this.image = imagesrc;
-    this.totalMins = totalMins;
-}
 
-function weekApp(name, avgMins, imagesrc, percChange, totalMins) {
-    this.name = name;
-    if (avgMins < 0) avgMins = 0;
-    this.avgMins = avgMins;
-    this.percChange = percChange;
-    this.image = imagesrc;
-    this.totalMins = totalMins;
-    // this.color = color;
-}
 
 
 getColors = function(stacksize) {

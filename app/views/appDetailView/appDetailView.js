@@ -52,32 +52,28 @@ var name;
 var icon;
 var appStats;
 
-var createItem = function(enabled, id)  {
-  var item = builder.load({
-    path: 'shared/detailelem',
-    name: 'detailelem'
-  });
 
-  item.id = 'intervention' + id;
-  item.className = 'app-detail-grid';
 
-  var image = item.getViewById('icon');
-  image.src = StorageUtil.interventionDetails[id].icon;
-  image.className = 'app-intervention-icon';
+exports.pageNavigating = function(args) {
+  page = args.object;
+  if (page.navigationContext) {
+    pkg = page.navigationContext.packageName;
+    appStats = StorageUtil.getAppStats(pkg);
+    name = page.navigationContext.name;
+    icon = page.navigationContext.icon;
+  }
+}
 
-  var label = item.getViewById("name");
-  label.text = StorageUtil.interventionDetails[id].name;
-  label.className = "app-detail-label";
-    
-  var sw = item.getViewById("switch");
-  sw.checked = enabled;
-  sw.on(gestures.tap, function() {
-    StorageUtil.toggleForApp(id, pkg);
-  });
 
-  return item;
+exports.pageLoaded = function(args) {
+  page = args.object;
+  drawer = page.getViewById('sideDrawer');
+  setUpDetail();
 };
 
+
+
+//Sets up goals
 var setUpDetail = function() {
   page.getViewById('app-detail-title').text = name;
   page.getViewById('app-detail-icon').src = icon;
@@ -109,51 +105,47 @@ var setUpDetail = function() {
       layout.addChild(createItem(enabled, id));
     }
   });
-
 };
 
-exports.toggleDrawer = function() {
-    drawer.toggleDrawerState();
-};
 
-exports.pageNavigating = function(args) {
-  page = args.object;
-  if (page.navigationContext) {
-    pkg = page.navigationContext.packageName;
-    appStats = StorageUtil.getAppStats(pkg);
-    name = page.navigationContext.name;
-    icon = page.navigationContext.icon;
-  }
+
+
+
+var createItem = function(enabled, id)  {
+  var item = builder.load({
+    path: 'shared/detailelem',
+    name: 'detailelem'
+  });
+
+  item.id = 'intervention' + id;
+  item.className = 'app-detail-grid';
+
+  var image = item.getViewById('icon');
+  image.src = StorageUtil.interventionDetails[id].icon;
+  image.className = 'app-intervention-icon';
+
+  var label = item.getViewById("name");
+  label.text = StorageUtil.interventionDetails[id].name;
+  label.className = "app-detail-label";
+    
+  var sw = item.getViewById("switch");
+  sw.checked = enabled;
+  sw.on(gestures.tap, function() {
+    StorageUtil.toggleForApp(id, pkg);
+  });
+  return item;
 }
 
-exports.pageLoaded = function(args) {
-  page = args.object;
-  drawer = page.getViewById('sideDrawer');
-  setUpDetail();
-};
 
-
-function toJavaStringArray(arr) {
-    var output = Array.create(java.lang.String, arr.length);
-    for (let i = 0; i < arr.length; ++i) {
-        output[i] = arr[i];
-    }
-    return output;
-}
-
+// //Sets up graph
 exports.weekView = function(args) {
-  var barchart = new BarChart(args.context);
-  //array of datasets
-  var IbarSet = new ArrayList();
-  //array of BarEntries
-  var entries = new ArrayList();
-    for (var day = 6; day >=0; day--) {
-      //array of values for each week
-      var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
-      entries.add(new BarEntry(6-day, totalTimeDay));
-   }
+    var barchart = new BarChart(args.context);
+    //array of datasets
+    var IbarSet = new ArrayList();
+    //array of BarEntries
+    var entries = makeWeekArray();
     var dataset = new BarDataSet(entries, "");
-    dataset.setColor(Color.parseColor("#DAECF3"));
+    dataset.setColor(Color.parseColor("#FFA730"));
     IbarSet.add(dataset);
     var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
@@ -184,12 +176,12 @@ exports.weekView = function(args) {
     var legend = barchart.getLegend();
     legend.setEnabled(false);
 
-    //goal and average lines -- NEED TO LOAD IN DATA 
-    var avg = 10;
+     //goal and average lines 
+    var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/(7*MINS_MS));
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
     avgLine.setTextColor(Color.parseColor("#737373"));
-    var goal = 20;
+    var goal = appStats.goals.minutes;
     var goalLine = new LimitLine(goal, "Goal");
     goalLine.setLineWidth(2);
     //Gray
@@ -205,20 +197,154 @@ exports.weekView = function(args) {
     }
     yAxis.addLimitLine(avgLine);
     yAxis.addLimitLine(goalLine);
-    
 
 
 
-    barchart.animateY(3000);
-   barchart.setFitBars(true);
-   barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-   barchart.invalidate();
-   args.view = barchart;
+    //disable all touch events
+    barchart.setTouchEnabled(false);
+    barchart.setDragEnabled(false);
+
+    barchart.animateY(1000);
+    barchart.setFitBars(true);
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.invalidate();
+    args.view = barchart;
 };
 
 
 
 
+exports.monthView = function(args) {
+  var barchart = new BarChart(args.context);
+  //array of datasets
+  var IbarSet = new ArrayList();
+  //array of BarEntries
+  var entries = makeMonthArray();
+  var dataset = new BarDataSet(entries, "");
+  dataset.setColor(Color.parseColor("#F18391"));
+  var xLabels = getMonthLabels();
+  
+  IbarSet.add(dataset);
+  var data = new BarData(IbarSet);
+  data.setValueTextColor(Color.WHITE);
+  barchart.setData(data);
+
+  //set axis labels
+   let axisformatter = new IAxisValueFormatter({
+      getFormattedValue: function(value, axis) {
+          return xLabels[value]
+      },
+      getDecimalDigits: function() {
+          return 0
+      }
+   })
+    var xAxis = barchart.getXAxis()
+    var yAxis = barchart.getAxisLeft()
+    yAxis.setAxisMinimum(0)
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setGranularity(1)
+    xAxis.setDrawGridLines(false);
+    barchart.getAxisRight().setEnabled(false);
+    xAxis.setValueFormatter(axisformatter)
+    var desc = barchart.getDescription();
+    desc.setEnabled(Description.false);
+    yAxis.setStartAtZero(true);
+    barchart.setDrawValueAboveBar(false);
+    var legend = barchart.getLegend();
+    legend.setEnabled(false);
+
+    //goal and average lines 
+    var avg = Math.round(getTotalTimeAppMonth(appStats)/(28*MINS_MS));
+    var avgLine = new LimitLine(avg, "Average");
+    avgLine.setLineWidth(2);
+    avgLine.setTextColor(Color.parseColor("#737373"));
+    var goal = appStats.goals.minutes;
+    var goalLine = new LimitLine(goal, "Goal");
+    goalLine.setLineWidth(2);
+    //Gray
+    goalLine.setTextColor(Color.parseColor("#737373"));
+    //Blue
+    goalLine.setLineColor(Color.parseColor("#37879A"));
+    if (avg <= goal) {
+      //Green
+      avgLine.setLineColor(Color.parseColor("#69BD68"));
+    } else {
+      //Red
+      avgLine.setLineColor(Color.parseColor("#E71D36"));
+    }
+    yAxis.addLimitLine(avgLine);
+    yAxis.addLimitLine(goalLine);
+
+     //disable all touch events
+    barchart.setTouchEnabled(false);
+    barchart.setDragEnabled(false);
+  
+    barchart.animateY(1000);
+    barchart.setFitBars(true);
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.invalidate();
+    args.view = barchart;
+    
+  };
+
+
+
+// //Returns the total time spent on an app in a month when passed in that app's object
+getTotalTimeAppMonth = function(array) {
+    var sum = 0;
+    for (var i = 0; i <= TODAY; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
+
+
+getTotalTimeAppWeek = function(array, weeksAgo) {
+    var week = 4-weeksAgo
+    var start = 7*(week-1)
+    var end = week*7
+    var sum = 0;
+    for (var i = start; i < end; i++) {
+        sum += array[i].time;
+    }
+    return sum;
+}
+
+
+makeWeekArray = function() {
+  var weekData = new ArrayList();
+     for (var day = 6; day >=0; day--) {
+      //array of values for each week
+      var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
+      weekData.add(new BarEntry(6-day, totalTimeDay));
+   }
+   return weekData;
+}
+
+makeMonthArray = function() {
+  var monthData = new ArrayList();
+  for (var day = 27; day >= 0; day--) {
+    var totalTimeDay = Math.round(appStats[TODAY-day].time/MINS_MS)
+    monthData.add(new BarEntry(27-day, totalTimeDay));
+  }
+  return monthData;
+}
+
+
+
+getMonthLabels = function() {
+  var monthLabels = [];
+  var format = new SimpleDateFormat("MMM d", Locale.US);
+  var today = Calendar.getInstance();
+
+   for (var i = 0; i < 28; i++) {
+        var end = Calendar.getInstance();
+        end.setTimeInMillis(today.getTimeInMillis() - (27-i)*(86400 * 1000));
+        var day = format.format(end.getTime());
+        monthLabels.push(day);
+    }
+    return monthLabels;
+}
 
 //returns [today, yesterday, day before...]
 function getDayLabels() {
@@ -234,3 +360,12 @@ function getDayLabels() {
     }
     return weekDay;
 }
+
+exports.toggleDrawer = function() {
+    drawer.toggleDrawerState();
+};
+
+
+
+
+

@@ -3,8 +3,10 @@
   navigatingTo="pageNavigating"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:Slides="nativescript-slides"
   xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:goalelem="shared/goalelem">
+
 
   <ActionBar class="action-bar">
     <ActionBar.titleView>
@@ -28,9 +30,17 @@
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical">
 
-            <Label text="Progress" class='app-detail-subtitle' />
-            <Placeholder creatingView="weekView" id="line"/>
+            <Slides:SlideContainer id="slides" pageIndicators="true" height="50%">
 
+              <Slides:Slide class="firstSlide">
+                <Label text="Week" class="app-detail-subtitle" horizontalAlignment="center"/>
+                <Placeholder creatingView="weekView" id="line"/>
+              </Slides:Slide>
+              <Slides:Slide class="firstSlide"> 
+                <Label text="Month" class="app-detail-subtitle" horizontalAlignment="center"/>
+                <Placeholder creatingView="monthView" id="line"/>
+              </Slides:Slide>
+            </Slides:SlideContainer>
             <Label text="App Goals" class='app-detail-subtitle top-padded' />
             <goalelem:goalelem id="goal-changer" />
 

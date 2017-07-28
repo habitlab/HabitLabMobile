@@ -7,7 +7,7 @@
       <Slides:Slide class="firstSlide" swipe="checkNameNextSlide">
         <StackLayout id="first">
         <Image src="{{visuals[0]}}" id="icon" />
-        <Label text="{{titles[0]}}" class='title' textWrap='true'  id="hi"/>
+        <Label text="{{titles[0]}}" class='title' textWrap='true' />
         <TextField hint="Enter your name" text="{{ name }}" autocorrect="false" autocapitalization="none" style="color:white" id="name" returnPress="hideCursor"/>
         <Label text="{{texts[0]}}" textWrap='true' id="welcome" />
       </StackLayout>

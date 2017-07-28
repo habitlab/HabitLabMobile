@@ -661,6 +661,8 @@ exports.getProgressViewInfo = function() {
   return retObj;
 };
 
+
+//To be used for app detail view -- returns an appStats object when passed a package name
 exports.getAppStats = function(packageName) {
   var obj = JSON.parse(appSettings.getString(packageName));
   var arr = arrangeData(obj.stats);
