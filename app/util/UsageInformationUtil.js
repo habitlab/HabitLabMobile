@@ -55,7 +55,7 @@ exports.getApplicationList = function() {
 		
 		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
 		var installTime = getInstallationTime(packageName);
-		var differenceSinceInstall = java.lang.System.currentTimeMillis() - installTime
+		var differenceSinceInstall = java.lang.System.currentTimeMillis() - installTime;
 		var days = 14;
 
 		if (differenceSinceInstall < 14 * DAY_MS) {
@@ -70,7 +70,7 @@ exports.getApplicationList = function() {
 		}
 
 		var averageUsage = time / days;
-
+		
 		// construct object
 		var applicationObj = {
 			packageName: packageName,

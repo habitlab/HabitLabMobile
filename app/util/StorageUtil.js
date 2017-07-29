@@ -1,5 +1,5 @@
 var appSettings = require("application-settings");
-var ID = require('~/interventions/interventionData');
+var ID = require('~/interventions/InterventionData');
 
 var Calendar = java.util.Calendar;
 var System = java.lang.System;

@@ -6,7 +6,7 @@ const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
 const TimerOverlay = require("~/overlays/TimerOverlay");
-const ID = require('~/interventions/interventionData');
+const ID = require('~/interventions/InterventionData');
 
 var application = require('application');
 var context = application.android.context.getApplicationContext();
@@ -38,6 +38,7 @@ var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
 var COUNT_UP_TIMER_INTERVAL = 6;
+var COUNT_DOWN_TIMER_INTERVAL = 9;
 var MIN_IN_MS = 60000;
 
 var shouldPersonalize = function() {
@@ -364,8 +365,21 @@ var showCountUpTimer = function (real, context, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTUP_TIMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
-    if (visits % COUNT_UP_TIMER_INTERVAL === 0) {
+    if (visits % COUNT_UP_TIMER_INTERVAL === 0 && visits % COUNT_DOWN_TIMER_INTERVAL !== 0) {
       TimerOverlay.showCountUpTimer(context);
+    }
+  }
+}
+
+var showCountDownTimer = function (real, context, pkg) {
+  if (!real) {
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits % COUNT_DOWN_TIMER_INTERVAL === 0) {
+      TimerOverlay.showCountDownTimer(context, 5, exitToHome);
     }
   }
 }
@@ -389,7 +403,8 @@ module.exports = {
     sendNotificationVisited,
     blockVideo,
     showFullScreenOverlay,
-    showCountUpTimer
+    showCountUpTimer,
+    showCountDownTimer
   ], 
   allowVideoBlocking,
   logVisitStart,

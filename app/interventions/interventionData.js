@@ -112,7 +112,7 @@ exports.interventionDetails = [
   functionality: "Timer Counting Down Overlay", 
   description: "Puts a timer in the bottom right corner of your screen counting down until it closes the app", 
   target: 'app', 
-  level: 'hard'
+  level: 'difficult'
 }, { // 13
   name: '', 
   icon: 'res://ic_eye', 

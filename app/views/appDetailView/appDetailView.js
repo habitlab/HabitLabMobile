@@ -1,6 +1,6 @@
 var StorageUtil = require('~/util/StorageUtil');
 var IM = require('~/interventions/InterventionManager');
-var ID = require('~/interventions/interventionData');
+var ID = require('~/interventions/InterventionData');
 var dialogs = require("ui/dialogs");
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
