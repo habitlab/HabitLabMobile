@@ -68,6 +68,7 @@ var createPhoneGoal = function(goal, value) {
 var setUpPhoneGoals = function() {
   var phoneGoals = StorageUtil.getPhoneGoals();
   var phoneSection = page.getViewById("phoneGoals");
+  phoneSection.removeChildren();
 
   Object.keys(phoneGoals).forEach(function(key) {
     phoneSection.addChild(createPhoneGoal(key, phoneGoals[key]));
@@ -136,13 +137,10 @@ var createAppGoal = function(pkg) {
   return item;
 };
 
-exports.onUnloaded = function(args) {
-  args.object.removeChildren();
-};
-
 var setUpAppGoals = function() {
   var pkgs = StorageUtil.getSelectedPackages();
   var appSection = page.getViewById("appGoals");
+  appSection.removeChildren();
 
   pkgs.forEach(function (pkg) {
     appSection.addChild(createAppGoal(pkg));
@@ -156,11 +154,9 @@ exports.onManageApps = function() {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (page.id !== 'loaded' || (args.navigationContext && args.navigationContext.updated)) {
-    page.id = 'loaded';
-    setUpPhoneGoals();
-    setUpAppGoals();
-  }
+  page.id = 'loaded';
+  setUpPhoneGoals();
+  setUpAppGoals();
 };
 
 

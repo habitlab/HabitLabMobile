@@ -27,7 +27,7 @@
         <Label text="Watchlist Goals" class="section-title" />
         <StackLayout>
           <ScrollView orientation="vertical" id="scroll">
-            <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" unloaded="onUnloaded" />
+            <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
           </ScrollView>
           <Button text="done" onTap="onDone" id="button"/>
         </StackLayout>

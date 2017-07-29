@@ -19,7 +19,7 @@
       <StackLayout orientation="vertical" >
         <Label text="Nudge Manager" class="intervention-label title"/>
         <ScrollView orientation="vertical">
-       		<StackLayout orientation="vertical" id="interventionLayout" unloaded="onUnloaded" />
+       		<StackLayout orientation="vertical" id="interventionLayout" />
         </ScrollView>
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
