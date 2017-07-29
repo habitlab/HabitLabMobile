@@ -7,6 +7,7 @@ const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
 const TimerOverlay = require("~/overlays/TimerOverlay");
 const ID = require('~/interventions/InterventionData');
+const Timer = require("timer");
 
 var application = require('application');
 var context = application.android.context.getApplicationContext();
@@ -357,8 +358,14 @@ var showFullScreenOverlay = function (real, pkg) {
 }
 
 
-var showCountUpTimer = function (real, context, pkg) {
+var showCountUpTimer = function (real, ctx, pkg) {
   if (!real) {
+    dismissTimer(context);
+    TimerOverlay.showCountUpTimer(context);
+    const id = Timer.setTimeout(() => {
+        dismissTimer(context);
+    }, 11000);
+
     return;
   }
 
@@ -366,20 +373,22 @@ var showCountUpTimer = function (real, context, pkg) {
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTUP_TIMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % COUNT_UP_TIMER_INTERVAL === 0 && visits % COUNT_DOWN_TIMER_INTERVAL !== 0) {
-      TimerOverlay.showCountUpTimer(context);
+      TimerOverlay.showCountUpTimer(ctx);
     }
   }
 }
 
-var showCountDownTimer = function (real, context, pkg) {
+var showCountDownTimer = function (real, ctx, pkg) {
   if (!real) {
+    dismissTimer(context);
+    TimerOverlay.showCountDownTimer(context, (1/6), null);
     return;
   }
 
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % COUNT_DOWN_TIMER_INTERVAL === 0) {
-      TimerOverlay.showCountDownTimer(context, 5, exitToHome);
+      TimerOverlay.showCountDownTimer(ctx, 5, exitToHome);
     }
   }
 }
