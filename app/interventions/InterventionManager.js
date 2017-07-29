@@ -369,6 +369,12 @@ var showCountUpTimer = function (real, context, pkg) {
   }
 }
 
+var showCountDownTimer = function (real, context, pkg, length, callback) {
+  if (!real) {
+    return;
+  }
+}
+
 
 var dismissTimer = function (context) {
   TimerOverlay.dismissTimer(context);

@@ -16,27 +16,6 @@ var Bitmap = android.graphics.Bitmap;
 var TypedValue = android.util.TypedValue;
 
 
-/******************************
- *          PAINTS            *                           
- ******************************/
-
- var timerFill = [207, 0.97, 0.15];
- var timerBorder = [34, 0.81, 1];
-
-
-var TIMER_FILL = new Paint();
-TIMER_FILL.setColor(Color.WHITE); // default
-
-var BORDER = new Paint();
-BORDER.setColor(Color.HSVToColor(timerBorder));
-BORDER.setStyle(Paint.Style.STROKE);
-BORDER.setStrokeWidth(15.0);
-
-var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.HSVToColor(timerBorder));
-
-
-
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -44,19 +23,38 @@ var TIMER_WIDTH = 0.47 * SCREEN_WIDTH;
 var TIMER_HEIGHT = 0.09 * SCREEN_HEIGHT;
 var CORNER_RADIUS = 15;
 var OFFSET = 0.05 * SCREEN_WIDTH;
+var BORDER_WIDTH = 0.01 * TIMER_WIDTH;
+
+
+/******************************
+ *          PAINTS            *                           
+ ******************************/
+
+ var timerFill = "#E71D36";
+
+var TIMER_FILL = new Paint();
+TIMER_FILL.setColor(Color.WHITE); // default
+
+var BORDER = new Paint();
+BORDER.setColor(Color.parseColor(timerFill));
+BORDER.setStyle(Paint.Style.STROKE);
+BORDER.setStrokeWidth(BORDER_WIDTH);
+
+var ICON_FILL = new Paint();
+ICON_FILL.setColor(Color.parseColor(timerFill));
 
 // Custom DialogView 
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		// timer box
-		canvas.drawRect(SCREEN_WIDTH - TIMER_WIDTH - OFFSET, SCREEN_HEIGHT - TIMER_HEIGHT - 2 * OFFSET, 
-			SCREEN_WIDTH - OFFSET, SCREEN_HEIGHT - 2*OFFSET, TIMER_FILL);
-		canvas.drawRoundRect(SCREEN_WIDTH - TIMER_WIDTH - OFFSET, SCREEN_HEIGHT - TIMER_HEIGHT - 2 * OFFSET, 
-			SCREEN_WIDTH - OFFSET, SCREEN_HEIGHT - 2*OFFSET, CORNER_RADIUS, CORNER_RADIUS, BORDER);
+		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_WIDTH - BORDER_WIDTH, 
+			TIMER_HEIGHT - BORDER_WIDTH, TIMER_FILL);
+		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_WIDTH - BORDER_WIDTH, 
+			TIMER_HEIGHT - BORDER_WIDTH, BORDER);
 
 		// icon box
-		canvas.drawRect(SCREEN_WIDTH - TIMER_WIDTH - OFFSET, SCREEN_HEIGHT - TIMER_HEIGHT - 2 * OFFSET, 
-			SCREEN_WIDTH - TIMER_WIDTH - OFFSET + TIMER_HEIGHT, SCREEN_HEIGHT - 2 * OFFSET, ICON_FILL);
+		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_HEIGHT, 
+			TIMER_HEIGHT - BORDER_WIDTH, ICON_FILL);
 
 		// add icon
 		var icon_id = app.android.context.getResources().getIdentifier("ic_habitlab_white", 
@@ -67,40 +65,43 @@ var DialogView = android.view.View.extend({
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
 
-		var bitmapLeft = SCREEN_WIDTH - TIMER_WIDTH - OFFSET + (TIMER_HEIGHT - newWidth - 7.5) / 2;
-		var bitmapTop = SCREEN_HEIGHT - TIMER_HEIGHT - 2 * OFFSET + (TIMER_HEIGHT - newHeight - 7.5) / 2;
+		var bitmapLeft = (TIMER_HEIGHT - newWidth) / 2;
+		var bitmapTop = (TIMER_HEIGHT - newHeight) / 2;
 
 		canvas.drawBitmap(icon, bitmapLeft, bitmapTop, new Paint());
-	},
-
-
-	onTouchEvent: function (e) {
-		console.warn("here");
-		console.warn(e.getAction());
-		return true;
 	}
 });
+
 
 var timerID;
 var textView;
 var view;
 
-exports.showCountUpTimer = function(context) {
+exports.showCountUpTimer = function(context) {	
 	var time = 0;
+
+	var timerOpen = true;
+	var startX = SCREEN_WIDTH - TIMER_WIDTH;
+	var startY = SCREEN_HEIGHT - TIMER_HEIGHT;
+	var lastX;
+	var lastY;
+
 	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-	// add timer in bottom right
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
-		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+	// layout params for wrapped content overlay (background clickable)
+	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
+		startX, startY, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+	startParams.gravity = Gravity.LEFT | Gravity.TOP;
+
+	// add timer in bottom left corner
     view = new DialogView(context);
-    windowManager.addView(view, viewParams);
+    windowManager.addView(view, startParams);
 
     // add timer text    
     textView = new TextView(context);
-    textView.setText("00:00:00");
-    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 12);
+    textView.setText("00:00");
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
     textView.setTextColor(Color.BLACK);
     textView.setHorizontallyScrolling(false);
     textView.setGravity(Gravity.CENTER);
@@ -108,32 +109,216 @@ exports.showCountUpTimer = function(context) {
     textView.setHeight(TIMER_HEIGHT);
 
     var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
-			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - OFFSET + TIMER_HEIGHT, 
-	    	SCREEN_HEIGHT - TIMER_HEIGHT - 2 * OFFSET, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, 
+			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
+	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, 
 	    	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
    	windowManager.addView(textView, textParams);
 
 
+   	view.setOnTouchListener(new android.view.View.OnTouchListener({
+		onTouch: function (v, event) {
+			var action = event.getAction();
+			var currentX = event.getX();
+			var currentY = event.getY();
+
+			if (action === android.view.MotionEvent.ACTION_DOWN) {
+				lastX = currentX;
+				lastY = currentY;
+			} else if (action === android.view.MotionEvent.ACTION_UP) {
+				if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
+					&& currentY > 0 && currentY < TIMER_HEIGHT) {
+					if (timerOpen) {
+						textView.setVisibility(android.view.View.INVISIBLE);
+						startParams.width = TIMER_HEIGHT;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
+						timerOpen = false;
+					} else {
+						startParams.width = TIMER_WIDTH;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
+						timerOpen = true;
+						textView.setVisibility(android.view.View.VISIBLE);
+					}
+				} else {
+					// swipe
+					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
+						startParams.x = 0; 
+						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
+					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+						startParams.x = SCREEN_WIDTH - startParams.width;
+						textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+					}
+
+					if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
+						startParams.y = 0;
+						textParams.y = 0;
+					} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
+						startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+						textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+					}
+				}
+
+				windowManager.updateViewLayout(v, startParams);
+				windowManager.updateViewLayout(textView, textParams);
+			}
+
+			return true;
+		}
+	})); 
+
+
     timerID = timer.setInterval(() => {
 	    time++;
 
-	    var hours = Math.floor(time / 3600);
-	    time = time % 3600;
 	    var minutes = Math.floor(time / 60);
 	    var seconds = time % 60;
 
-	    hours = "0" + hours;
+	    if (minutes === 5) {
+	    	textView.setTextColor(Color.parseColor("#FF7538"));
+	    } else if (minutes === 10) {
+	    	textView.setTextColor(Color.parseColor("#C41E3A"));
+	    } 
+
 	    minutes = "0" + minutes;
 	    seconds = "0" + seconds;
 
-	    hours = hours.substr(hours.length - 2, 2);
 	    minutes = minutes.substr(minutes.length - 2, 2);
 	    seconds = seconds.substr(seconds.length - 2, 2); 
 
-	    textView.setText(hours + ":" + minutes + ":" + seconds);
+	    textView.setText(minutes + ":" + seconds);
 	}, 1000);
 }
+
+
+exports.showCountDownTimer = function (context, timeInMins, callback) {
+	var time = timeInMins * 60;
+
+	var timerOpen = true;
+	var startX = SCREEN_WIDTH - TIMER_WIDTH;
+	var startY = SCREEN_HEIGHT - TIMER_HEIGHT;
+	var lastX;
+	var lastY;
+
+	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
+
+	// layout params for wrapped content overlay (background clickable)
+	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
+		startX, startY, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+	startParams.gravity = Gravity.LEFT | Gravity.TOP;
+
+	// add timer in bottom left corner
+    view = new DialogView(context);
+    windowManager.addView(view, startParams);
+
+    // add timer text    
+    textView = new TextView(context);
+
+    var initMins = Math.floor(time / 60);
+	var initSecs = time % 60;
+
+    initMins = "0" + initMins;
+    initSecs = "0" + initSecs;
+
+    initMins = initMins.substr(initMins.length - 2, 2);
+    initSecs = initSecs.substr(initSecs.length - 2, 2); 
+
+    textView.setText(initMins + ":" + initSecs);
+    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    textView.setTextColor(Color.BLACK);
+    textView.setHorizontallyScrolling(false);
+    textView.setGravity(Gravity.CENTER);
+    textView.setWidth(TIMER_WIDTH - TIMER_HEIGHT);
+    textView.setHeight(TIMER_HEIGHT);
+
+    var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
+			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
+	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, 
+	    	PixelFormat.TRANSLUCENT);
+    textParams.gravity = Gravity.LEFT | Gravity.TOP;
+   	windowManager.addView(textView, textParams);
+
+
+   	view.setOnTouchListener(new android.view.View.OnTouchListener({
+		onTouch: function (v, event) {
+			var action = event.getAction();
+			var currentX = event.getX();
+			var currentY = event.getY();
+
+			if (action === android.view.MotionEvent.ACTION_DOWN) {
+				lastX = currentX;
+				lastY = currentY;
+			} else if (action === android.view.MotionEvent.ACTION_UP) {
+				if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
+					&& currentY > 0 && currentY < TIMER_HEIGHT) {
+					if (timerOpen) {
+						textView.setVisibility(android.view.View.INVISIBLE);
+						startParams.width = TIMER_HEIGHT;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
+						timerOpen = false;
+					} else {
+						startParams.width = TIMER_WIDTH;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
+						timerOpen = true;
+						textView.setVisibility(android.view.View.VISIBLE);
+					}
+				} else {
+					// swipe
+					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
+						startParams.x = 0; 
+						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
+					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+						startParams.x = SCREEN_WIDTH - startParams.width;
+						textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+					}
+
+					if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
+						startParams.y = 0;
+						textParams.y = 0;
+					} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
+						startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+						textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+					}
+				}
+
+				windowManager.updateViewLayout(v, startParams);
+				windowManager.updateViewLayout(textView, textParams);
+			}
+
+			return true;
+		}
+	})); 
+
+
+    timerID = timer.setInterval(() => {
+	    time--;
+
+	    var minutes = Math.floor(time / 60);
+	    var seconds = time % 60;
+
+	    if (minutes === 0 && seconds === 0) {
+			exports.dismissTimer(context);
+			if (callback) { callback(); }
+			return;
+	    }
+
+	    if (time === 0.2 * timeInMins * 60) {
+	    	textView.setTextColor(Color.parseColor("#FF7538"));
+	    } else if (minutes === 1) {
+	    	textView.setTextColor(Color.parseColor("#C41E3A"));
+	    } 
+
+	    minutes = "0" + minutes;
+	    seconds = "0" + seconds;
+
+	    minutes = minutes.substr(minutes.length - 2, 2);
+	    seconds = seconds.substr(seconds.length - 2, 2); 
+
+	    textView.setText(minutes + ":" + seconds);
+	}, 1000);
+}
+
+
 
 
 exports.dismissTimer = function (context) {
