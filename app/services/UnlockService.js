@@ -5,7 +5,7 @@ var context = application.android.context.getApplicationContext();
 const ServiceManager = require("./ServiceManager");
 const StorageUtil = require('~/util/StorageUtil');
 const InterventionManager = require('~/interventions/InterventionManager');
-const ID = require('~/interventions/interventionData');
+const ID = require('~/interventions/InterventionData');
 const TrackingService = require("./TrackingService");
 
 // expose native APIs

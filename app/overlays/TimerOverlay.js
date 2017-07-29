@@ -304,7 +304,7 @@ exports.showCountDownTimer = function (context, timeInMins, callback) {
 
 	    if (time === 0.2 * timeInMins * 60) {
 	    	textView.setTextColor(Color.parseColor("#FF7538"));
-	    } else if (minutes === 1) {
+	    } else if (time === 60) {
 	    	textView.setTextColor(Color.parseColor("#C41E3A"));
 	    } 
 

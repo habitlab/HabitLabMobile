@@ -2,7 +2,7 @@
 var application = require("application");
 var Timer = require("timer");
 const InterventionManager = require("~/interventions/InterventionManager");
-const ID = require("~/interventions/interventionData");
+const ID = require("~/interventions/InterventionData");
 
 // utils
 const ServiceManager = require("./ServiceManager");
@@ -129,6 +129,7 @@ var trackUsage = function () {
             InterventionManager.interventions[ID.interventionIDs.VISIT_NOTIFICATION](true, currentPackage);
             InterventionManager.interventions[ID.interventionIDs.FULL_SCREEN_OVERLAY](true, currentPackage);
             InterventionManager.interventions[ID.interventionIDs.COUNTUP_TIMER_OVERLAY](true, context, currentPackage);
+            InterventionManager.interventions[ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY](true, context, currentPackage);
         } else {
             // reset logging information
             startOfVisit = undefined;
