@@ -45,16 +45,17 @@ var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
 var Typeface = android.graphics.Typeface;
 var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
-var progressInfo = storageUtil.getProgressViewInfo();
+
 var TODAY = 27;
 var MINS_MS = 60000;
 var observable = require("data/observable");
 var pageData = new observable.Observable();
 var ObservableArray = require("data/observable-array").ObservableArray;
-
+var progressInfo = storageUtil.getProgressViewInfo();
 var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
+var piechart;
 
 
 
@@ -79,15 +80,26 @@ exports.pageLoaded = function(args) {
   }  
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
+    page.bindingContext = pageData;
     pageData.set("showDayGraph", true);
     pageData.set("showWeekGraph", true);
     pageData.set("showMonthGraph", true);
-    page.bindingContext = pageData;
+    progressInfo = storageUtil.getProgressViewInfo();
 	exports.populateListViewsDay();
 	exports.populateListViewsWeek();
 	exports.populateListViewMonth();
+    piechart.invalidate();
+    console.warn("page loaded")
 
 };
+
+
+exports.pageNavigating = function(args) {
+    page = args.object;
+    console.warn("navigated progress")
+}
+
+
 
 exports.toggle = function () {
     pageData.set("showDayGraph", !pageData.get("showDayGraph"));
@@ -105,11 +117,9 @@ exports.toggleMonth = function() {
 //Creates the pie chart on the day tab
 exports.dayView = function(args) {
     var appsToday = exports.getAppsToday();//gets the target apps used today
-    var total = Math.round((progressInfo.phoneStats[TODAY].totalTime)/MINS_MS);
-    console.log(appsToday.length);
-
+    var total = Math.round((progressInfo.phoneStats[TODAY].time)/MINS_MS);
     // // add data
-    var piechart = new PieChart(args.context);
+    piechart = new PieChart(args.context);
     var entries = new ArrayList();
     var main = 0;
     var min;
@@ -158,6 +168,7 @@ exports.dayView = function(args) {
     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
     piechart.invalidate();
     args.view = piechart;
+    console.warn("reloaded day graph")
 
 };
 
@@ -312,7 +323,6 @@ exports.populateListViewsDay = function() {
 	)
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
-    console.warn("list view day done")
 };
 
 
@@ -503,14 +513,13 @@ getAppsWeek = function () {
         var name = appInfo.name;
         var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/7);
-        var imagesrc = appInfo.icon;
+        var icon = appInfo.icon;
         var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
-        // var pChange = view.getViewById(page, "perChange");
         weekApps.push({
             name: name,
             avgMins: avgMins,
-            imagesrc: imagesrc,
+            image: icon,
             percChange: percChange,
             totalMins: totalMins
 
@@ -536,12 +545,11 @@ getAppsMonth = function() {
         var name = appInfo.name;
         var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)/(MINS_MS)));
         var avgMins = Math.round(totalMins/28);
-        var imagesrc = appInfo.icon;
-        // var appObj = new monthApp(name, avgMins, imagesrc, totalMins);
+        var icon = appInfo.icon;
         monthApps.push({
             name: name,
             avgMins: avgMins,
-            imagesrc: imagesrc,
+            image: icon,
             totalMins: totalMins
         })
     }

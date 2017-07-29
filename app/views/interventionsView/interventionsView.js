@@ -1,5 +1,6 @@
 var StorageUtil = require("~/util/StorageUtil");
 var IM = require('~/interventions/InterventionManager');
+var ID = require('~/interventions/interventionData');
 var Toast = require('nativescript-toast');
 
 var gestures = require("ui/gestures").GestureTypes;
@@ -56,10 +57,11 @@ var createItem = function(id)  {
 
 var setUpList = function() {
   var interventionLayout = page.getViewById("interventionLayout");
-  interventionList = StorageUtil.interventionDetails;
+  interventionList = ID.interventionDetails;
+  interventionLayout.removeChildren();
 
   for (var i = 0; i < interventionList.length; i++) {
-    if (!page.getViewById('item' + i) && IM.interventions[i]) {
+    if (IM.interventions[i]) {
       interventionLayout.addChild(createItem(i));
     }
   }

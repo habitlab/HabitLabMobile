@@ -52,6 +52,10 @@ exports.editName = function () {
     dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(onClickListener);
 };
 
+exports.setFakeData = function() {
+  StorageUtil.setUpFakeDB();
+};
+
 
 exports.setHours = function () {
 	fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");

@@ -30,15 +30,15 @@
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical">
 
-            <Slides:SlideContainer id="slides" pageIndicators="true" height="50%">
+            <Slides:SlideContainer id="slides" pageIndicators="false" height="50%">
 
-              <Slides:Slide class="firstSlide">
+              <Slides:Slide>
                 <Label text="Week" class="app-detail-subtitle" horizontalAlignment="center"/>
-                <Placeholder creatingView="weekView" id="line"/>
+                <Placeholder creatingView="weekView"/>
               </Slides:Slide>
-              <Slides:Slide class="firstSlide"> 
+              <Slides:Slide> 
                 <Label text="Month" class="app-detail-subtitle" horizontalAlignment="center"/>
-                <Placeholder creatingView="monthView" id="line"/>
+                <Placeholder creatingView="monthView"/>
               </Slides:Slide>
             </Slides:SlideContainer>
             <Label text="App Goals" class='app-detail-subtitle top-padded' />

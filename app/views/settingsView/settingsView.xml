@@ -18,6 +18,7 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent>
+    <StackLayout>
       <GridLayout class="settings-grid" rows="auto,auto" columns="auto,auto">
         <AbsoluteLayout class="settings-button-layout" row="0" col="0" >
           <Button class="settings-button" id="edit-name" tap="editName" />
@@ -48,6 +49,9 @@
           </StackLayout>
         </AbsoluteLayout>
       </GridLayout>
+        <Button text="Set fake data" onTap="setFakeData" />
+     </StackLayout>
+
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>

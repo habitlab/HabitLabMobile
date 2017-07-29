@@ -26,6 +26,11 @@
   padding: 10%;
 }
 
+.app-detail-nudge-description {
+  font-size: 11%;
+  color: darkgray;
+}
+
 .app-intervention-icon {
   background-color: gray;
   height: 60%;
@@ -33,6 +38,13 @@
   margin: 2%;
   margin-right: 4%;
   padding: 5%;
+}
+
+.app-detail-disable-button {
+  font-size: 11%;
+  text-transform: none;
+  background-color: #E71D36;
+  color: white;
 }
 
 .good {

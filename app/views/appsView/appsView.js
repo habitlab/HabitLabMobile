@@ -12,22 +12,12 @@ var drawer;
 var pkgs;
 var toToggle;
 
-var setOnTap = function(image, packageName, selector) {
-  image.on(gestures.tap, function() {
-    selector.visibility = selector.visibility === 'visible' ? 'hidden' : 'visible';
-    toToggle[packageName] = toToggle[packageName] === undefined ? true : !toToggle[packageName];
-  });
+exports.onUnloaded = function(args) {
+  args.object.removeChildren();
 };
 
 var createGrid = function(args) {
-  // order by things with icon then by usage
-  var list = UsageUtil.getApplicationList();
-  list.sort(function compare(a, b) {
-    if (!a.averageUsage) {
-      return 1;
-    } else if (!b.averageUsage) {
-      return -1;
-    }
+  var list = UsageUtil.getApplicationList().sort(function compare(a, b) {
     return parseFloat(b.averageUsage) - parseFloat(a.averageUsage);
   });
 
@@ -41,23 +31,26 @@ var createGrid = function(args) {
 };
 
 var setCellInfo = function(cell, info) {
-  var image = cell.getViewById("img");
-  var label = cell.getViewById("lbl");
-  var usage = cell.getViewById("usg");
-  var selector = cell.getViewById("slctr");
+  cell.getViewById("lbl").text = info.label;
 
-  label.text = info.label;
-  image.src = info.iconSource;
+  var usage = cell.getViewById("usg");
+  var mins = Math.ceil(info.averageUsage);
+  usage.text = mins + ' min/day';
+  if (mins >= 15) {
+    usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
+  }
+
+  var selector = cell.getViewById("slctr");
   selector.visibility = pkgs.includes(info.packageName) ? 'visible' : 'hidden';
 
-  var mins = Math.ceil(info.averageUsage);
-  if (mins || mins === 0) {
-    usage.text = mins + ' min/day';
-    if (mins >= 15) {
-      usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
-    }
-  }
-  setOnTap(image, info.packageName, selector);
+  var image = cell.getViewById("img");
+  image.src = info.iconSource;
+  image.on(gestures.tap, function() {
+    selector.visibility = selector.visibility === 'visible' ? 'hidden' : 'visible';
+    console.log(!undefined);
+    toToggle[info.packageName] = !toToggle[info.packageName];
+  });
+
 };
 
 var createCell = function(info, r, c)  {
@@ -65,6 +58,7 @@ var createCell = function(info, r, c)  {
     path: 'shared/appgridcell',
     name: 'appgridcell'
   });
+
   setCellInfo(cell, info);
   layout.GridLayout.setRow(cell, r);
   layout.GridLayout.setColumn(cell, c);
