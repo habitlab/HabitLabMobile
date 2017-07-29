@@ -33,3 +33,18 @@
   margin-right: 4%;
   padding: 5%;
 }
+
+.easy-level {
+  border-color: green;
+  border-left-width: 5px;
+}
+
+.medium-level {
+  border-color: orange;
+  border-left-width: 5px;
+}
+
+.difficult-level {
+  border-color: red;
+  border-left-width: 5px;
+}

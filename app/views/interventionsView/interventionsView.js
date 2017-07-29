@@ -19,6 +19,7 @@ var createItem = function(id)  {
 
   item.id = 'item' + id;
   item.className = 'intervention-grid';
+  item.getViewById('firstrow').className = interventionList[id].level + '-level';
   
   var image = item.getViewById('icon');
   image.src = interventionList[id].icon;

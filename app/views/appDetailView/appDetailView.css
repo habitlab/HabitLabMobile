@@ -59,6 +59,21 @@
   color: red;
 }
 
+.easy-level {
+  border-color: green;
+  border-left-width: 5px;
+}
+
+.medium-level {
+  border-color: orange;
+  border-left-width: 5px;
+}
+
+.difficult-level {
+  border-color: red;
+  border-left-width: 5px;
+}
+
 .app-detail-flex-layout {
   flex-direction: row;
   justify-content: center;

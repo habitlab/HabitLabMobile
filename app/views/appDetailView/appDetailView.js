@@ -170,6 +170,8 @@ var createItem = function(enabled, id)  {
   label.className = "app-detail-label";
 
   var firstRow = item.getViewById('firstrow');
+  firstRow.className = ID.interventionDetails[id].level + '-level';
+
   item.on("tap, touch", function (args) {
     if (args.eventName === 'tap') {
       image2.visibility = image2.visibility === 'hidden' ? 'collapse' : 'hidden';
