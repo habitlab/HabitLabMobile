@@ -62,7 +62,8 @@ exports.interventionDetails = [
   functionality: "Visit Length Toast", 
   description: "Sends a disappearing message when you are on a watchlisted app telling you how long that visit has been", 
   target: 'app', 
-  level: 'easy'
+  level: 'easy',
+  summary: 'Pop up message with current visit duration'
 }, { // 6
   name: 'The Clock is Ticking', 
   icon: 'res://ic_hourglass', 

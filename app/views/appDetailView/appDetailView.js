@@ -1,7 +1,7 @@
 var StorageUtil = require('~/util/StorageUtil');
 var IM = require('~/interventions/InterventionManager');
 var ID = require('~/interventions/interventionData');
-
+var dialogs = require("ui/dialogs");
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
 
@@ -52,7 +52,21 @@ var name;
 var icon;
 var appStats;
 
+var getGoal = function(txt, add) {
+  var num = txt.replace(/[^0-9]/g, '') || 0;
 
+  var newNum = parseInt(num) - 5
+  if (add) {
+    newNum += 10;
+  }
+  
+  if (newNum > 1440) {
+    newNum = 1440;
+  } else if (newNum < 0) {
+    newNum = 0
+  }
+  return newNum;
+};
 
 exports.pageNavigating = function(args) {
   page = args.object;
@@ -62,16 +76,13 @@ exports.pageNavigating = function(args) {
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
   }
-}
-
+};
 
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById('sideDrawer');
   setUpDetail();
 };
-
-
 
 //Sets up goals
 var setUpDetail = function() {
@@ -82,7 +93,9 @@ var setUpDetail = function() {
   goalChanger.className += ' goal-changer';
   goalChanger.getViewById('name').visibility = 'collapse';
   goalChanger.getViewById('icon').visibility = 'hidden';
-  goalChanger.getViewById('number').text = StorageUtil.getMinutesGoal(pkg);
+  
+  var number = goalChanger.getViewById('number');
+  number.text = StorageUtil.getMinutesGoal(pkg);
   goalChanger.getViewById('label').text = 'mins';
 
   goalChanger.getViewById('plus').on(gestures.tap, function() {
@@ -97,13 +110,13 @@ var setUpDetail = function() {
     StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
   });
 
-  var layout = page.getViewById('list');
-  layout.removeChildren();
+  var list = page.getViewById('list');
+  list.removeChildren();
 
   var interventions = StorageUtil.getInterventionsForApp(pkg);
   interventions.forEach(function (enabled, id) {
     if (ID.interventionDetails[id].target === 'app' && IM.interventions[id]) {
-      layout.addChild(createItem(enabled, id));
+      list.addChild(createItem(enabled, id));
     }
   });
 };
@@ -117,19 +130,61 @@ var createItem = function(enabled, id)  {
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
 
+  var button = item.getViewById('button');
+  button.text = 'DISABLE';
+  button.className = 'app-detail-disable-button';
+  button.on('tap', function() {
+    dialogs.confirm({
+      title: "Disable this Nudge Completely?",
+      message: "This means the nudge will no longer show up for any apps.",
+      okButtonText: "Disable",
+      cancelButtonText: "Cancel"
+    }).then(function (result) {
+      if (result) {
+        StorageUtil.disableForAll(id);
+      }
+    });
+  });
+
+  var description = item.getViewById('description');
+  description.className = 'app-detail-nudge-description';
+  description.text = ID.interventionDetails[id].summary;
+  description.textWrap = true;
+
   var image = item.getViewById('icon');
   image.src = ID.interventionDetails[id].icon;
   image.className = 'app-intervention-icon';
 
-  var label = item.getViewById("name");
-  label.text = ID.interventionDetails[id].name;
-  label.className = "app-detail-label";
-    
+  var image2 = item.getViewById('icon2');
+  image2.src = ID.interventionDetails[id].icon;
+  image2.className = 'app-intervention-icon';
+
   var sw = item.getViewById("switch");
   sw.checked = enabled;
   sw.on(gestures.tap, function() {
     StorageUtil.toggleForApp(id, pkg);
   });
+
+  var label = item.getViewById("name");
+  label.text = ID.interventionDetails[id].name;
+  label.className = "app-detail-label";
+
+  var firstRow = item.getViewById('firstrow');
+  item.on("tap, touch", function (args) {
+    if (args.eventName === 'tap') {
+      image2.visibility = image2.visibility === 'hidden' ? 'collapse' : 'hidden';
+      description.visibility = description.visibility === 'visible' ? 'collapse' : 'visible';
+      button.visibility = description.visibility;
+    } else {
+      if (args.action === 'down') {
+        item.backgroundColor = '#F5F5F5';
+      } else if (args.action === 'up' || args.action === 'cancel') {
+        item.backgroundColor = '#FFFFFF';
+      }
+    }
+    
+  });
+  
   return item;
 }
 

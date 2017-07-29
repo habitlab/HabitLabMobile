@@ -136,6 +136,10 @@ var createAppGoal = function(pkg) {
   return item;
 };
 
+exports.onUnloaded = function(args) {
+  args.object.removeChildren();
+};
+
 var setUpAppGoals = function() {
   var pkgs = StorageUtil.getSelectedPackages();
   var appSection = page.getViewById("appGoals");

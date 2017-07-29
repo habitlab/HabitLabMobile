@@ -352,7 +352,7 @@ exports.glanced = function() {
 /* export: updateAppTime
  * ---------------------
  * Called when an app has been visited to update the time spent on that app for the 
- * day (time is in milliseconds).
+ * day (time is in minutes).
  */
 exports.updateAppTime = function(packageName, time) {
 
@@ -368,7 +368,7 @@ exports.updateAppTime = function(packageName, time) {
 
 /* export: getAppTime
  * ------------------
- * Returns time on the app so far today (in ms).
+ * Returns time on the app so far today (in minutes).
  */
 exports.getAppTime = function(packageName) {
   return JSON.parse(appSettings.getString(packageName)).stats[index()]['time'];
@@ -376,7 +376,7 @@ exports.getAppTime = function(packageName) {
 
 /* export: getTargetTime
  * ---------------------
- * Returns total time on target apps so far today (in ms).
+ * Returns total time on target apps so far today (in minutes).
  */
 exports.getTargetTime = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['time'];
@@ -384,7 +384,7 @@ exports.getTargetTime = function() {
 
 /* export: updateTotalTime
  * -----------------------
- * Called when the phone has been used. Updates the total time for the day (time is in milliseconds).
+ * Called when the phone has been used. Updates the total time for the day (time is in minutes).
  */
 exports.updateTotalTime = function(time) {  
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
@@ -394,7 +394,7 @@ exports.updateTotalTime = function(time) {
 
 /* export: getTotalTime
  * --------------------
- * Returns total time on phone so far today (in ms).
+ * Returns total time on phone so far today (in minutes).
  */
 exports.getTotalTime = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime'];
