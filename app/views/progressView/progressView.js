@@ -10,9 +10,7 @@ var imageSource = require("image-source");
 var colorModule = require("tns-core-modules/color")
 var Placeholder = require("ui/placeholder")
 var app = require("tns-core-modules/application")
-var page;
 var context = app.android.context;
-var drawer;
 var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
 var Entry = com.github.mikephil.charting.data.Entry
@@ -46,7 +44,8 @@ var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 var TODAY = 27;
-var MINS_MS = 60000;
+var page;
+var drawer;
 var observable = require("data/observable");
 var pageData = new observable.Observable();
 var ObservableArray = require("data/observable-array").ObservableArray;
@@ -57,13 +56,12 @@ var monthApps = new ObservableArray ([]);
 var piechart;
 var basic;
 
-
-
-
 const ServiceManager = require("~/services/ServiceManager");
 var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
 var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
+
+
 
 exports.pageLoaded = function(args) {
   /** SERVICE STARTER **/
@@ -79,27 +77,32 @@ exports.pageLoaded = function(args) {
 	page = args.object;
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
-    progressInfo = storageUtil.getProgressViewInfo();
+
+    //Initialize all 'show/hide' buttons of the graphs
     pageData.set("showDayGraph", true);
     pageData.set("showWeekGraph", true);
     pageData.set("showMonthGraph", true);
-	exports.populateListViewsDay();
-	exports.populateListViewsWeek();
-	exports.populateListViewMonth();
-    console.warn("page loaded")
 
+    //populate all lists 
+	populateListViewsDay();
+	populateListViewsWeek();
+	populateListViewMonth();
 };
 
 
 exports.pageNavigating = function(args) {
+    //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
+
+    //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
+
+    //invalidate charts
     // piechart.invalidate();
-    console.warn("navigated progress")
 }
 
 
-
+//Toggle buttons for day/week/month graphs
 exports.toggle = function () {
     pageData.set("showDayGraph", !pageData.get("showDayGraph"));
 }
@@ -232,7 +235,7 @@ exports.weekView = function(args) {
 };
 
 
-
+//Creates a stacked bar chart for the month view
 exports.monthView = function(args) {
     var barchart = new BarChart(args.context);
     var IbarSet = new ArrayList();
@@ -247,7 +250,6 @@ exports.monthView = function(args) {
             var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo)));
    			appValues.push(new java.lang.Integer(totalTimeWeekApp));
    		}
-   		//now have an array of values for a week
    		entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
    }
   	var dataset = new BarDataSet(entries, "");
@@ -291,8 +293,8 @@ exports.monthView = function(args) {
 
 
 
-
-exports.populateListViewsDay = function() {   
+//Creates a list view for the dayView, showing name, #times opened, and minutes 
+populateListViewsDay = function() {   
      var unlocks = progressInfo.phoneStats[TODAY].unlocks
      var glances = progressInfo.phoneStats[TODAY].glances
      var total = (progressInfo.phoneStats[TODAY].totalTime === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].totalTime));
@@ -300,8 +302,6 @@ exports.populateListViewsDay = function() {
      console.warn(total);
      console.warn(targetTime)
      var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
-
-
     dayApps = exports.getAppsToday();
     pageData.set("dayItems", dayApps);
 
@@ -327,8 +327,8 @@ exports.populateListViewsDay = function() {
 };
 
 
-
-exports.populateListViewsWeek = function() {
+//Creates list view for week, showing name, avg min.day and total minutes
+populateListViewsWeek = function() {
     var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")))
     var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")));
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
@@ -357,8 +357,8 @@ exports.populateListViewsWeek = function() {
 	pageData.set("weekItems", weekApps);
  }
 
-
-exports.populateListViewMonth = function () {
+//Creates a list view for the month view, with name, avg min/day and total mintues
+populateListViewMonth = function () {
 	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")));
     var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")));
     var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth*100)); 
@@ -505,7 +505,7 @@ exports.getAppsToday = function() {
 };
 
 
-
+//Returns the total time spent on waitlist apps this week as an array of app objects
 getAppsWeek = function () {
     var weekApps = [];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
@@ -532,11 +532,10 @@ getAppsWeek = function () {
     }
     return 0;
     });
-
     return weekApps;
 }
 
-
+//Returns the total time spent on waitlist apps this month as an array of app objects
 getAppsMonth = function() {
     var monthApps = [];
      for(var i = 0; i < progressInfo.appStats.length; ++i) {
@@ -562,7 +561,7 @@ getAppsMonth = function() {
     return monthApps;
 }
 
-//Gets basic info from usageUtil
+//Gets basic info (name and icon) from usageUtil
 getBasic = function() {
     var basic = [];
     for (let i = 0; i < progressInfo.appStats.length; ++i) {
@@ -579,7 +578,7 @@ getBasic = function() {
 
 
 
-
+//Colors to be used in graphs 
 getColors = function(stacksize) {
     var colors = [];
     //Deep yellow
@@ -601,7 +600,7 @@ getColors = function(stacksize) {
 }
 
 
-
+//Convert javascript arrays to java arrays
 function toJavaFloatArray(arr) {
     var output = Array.create('float', arr.length)
     for (let i = 0; i < arr.length; ++i) {
@@ -627,7 +626,7 @@ function toJavaStringArray(arr) {
 }
 
 
-
+//Returns a java array of just the app names (used for stack labels)
 function getAppNames() {
     var names = Array.create(java.lang.String, progressInfo.appStats.length);
     for (let i = 0; i < progressInfo.appStats.length; ++i) {
@@ -636,7 +635,7 @@ function getAppNames() {
     return names;
 }
 
-
+//Returns the package name for a given app 'name' - used in navigation
 function getPackageName(name) {
      for (let i = 0; i < progressInfo.appStats.length; ++i) {
         if (name === basic[i].name) {
