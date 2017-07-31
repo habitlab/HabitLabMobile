@@ -102,8 +102,7 @@ exports.pageLoaded = function(args) {
 
 exports.pageNavigating = function(args) {
     page = args.object;
-    console.warn("page navigated")
-
+    
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
 
@@ -146,7 +145,6 @@ getDayEntries = function() {
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
-            console.warn(appsToday[i].visits);
             entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
             main += appsToday[i].mins;
      }
@@ -725,7 +723,6 @@ function getSpannableString() {
         return myString;
     }
     //Total
-    console.warn('getSpannableSpring called')
     var myString = new SpannableString("Total:\n" + total + "\nmins" );
     myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);
