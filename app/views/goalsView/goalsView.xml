@@ -23,10 +23,10 @@
 
         <ScrollView orientation="vertical" id="scroll">
           <StackLayout orientation="vertical">
-            <Label text="Phone Goals" class="section-title" />
+            <Label text="Phone" class="section-title" />
             <StackLayout orientation="vertical" id="phoneGoals" />
             
-            <Label text="Watchlist Goals" class="section-title" />
+            <Label text="Watchlist" class="section-title" />
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
           </StackLayout>
         </ScrollView>
