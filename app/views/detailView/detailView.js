@@ -46,7 +46,7 @@ var setUpDetail = function() {
 
   var level = ID.interventionDetails[id].level;
   var levelLabel = page.getViewById('level');
-  levelLabel.text = level;
+  levelLabel.text = level.charAt(0).toUpperCase() + level.slice(1);;
   levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {

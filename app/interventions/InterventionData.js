@@ -124,7 +124,7 @@ exports.interventionDetails = [
   functionality: "Timer Counting Down Overlay", 
   description: "Puts a flick-to-move timer in the bottom right corner of your screen counting down until it closes the app", 
   target: 'app', 
-  level: 'difficult',
+  level: 'hard',
   summary: "On screen timer that closes the app when time runs out"
 }, { // 13
   name: '', 
@@ -164,6 +164,6 @@ exports.interventionDetails = [
   functionality: "Dimmer Overlay", 
   description: "Reduce the screen brightness little by little until the screen completely dimmed", 
   target: 'app', 
-  level: 'difficult',
+  level: 'hard',
   summary: 'Dim the screen little at a time'
 }];
