@@ -55,7 +55,11 @@ var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
 var piechart;
+var barchart;
+var monthchart;
+var barchartMade = false;
 var piechartMade = false;
+var monthchartMade = false;
 var basic;
 
 const ServiceManager = require("~/services/ServiceManager");
@@ -77,6 +81,7 @@ exports.pageLoaded = function(args) {
     context.startService(dummyServiceIntent);
   }  
 
+    console.warn("page loaded")
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
@@ -97,11 +102,22 @@ exports.pageLoaded = function(args) {
         piechart.notifyDataSetChanged();
         piechart.invalidate();
     }
+    if (barchartMade) {
+        rerender_weekview()
+        barchart.notifyDataSetChanged();
+        barchart.invalidate();
+    }
+    if (monthchartMade) {
+        rerender_monthchart()
+        monthchart.notifyDataSetChanged();
+        monthchart.invalidate();
+    }
 };
 
 
 exports.pageNavigating = function(args) {
     page = args.object;
+    console.warn("page navigated")
 
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
@@ -145,7 +161,8 @@ getDayEntries = function() {
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
-            entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
+            console.warn(appsToday[i].mins);
+            entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
             main += appsToday[i].mins;
      }
     if (useOther) {
@@ -168,7 +185,7 @@ function rerender_dayview() {
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
             return Math.round(value)+"";
         }
-     })
+     })     
     // Customize appearence of the pie chart 
     var data = new PieData(dataset);
     data.setValueFormatter(dataFormatter);
@@ -201,35 +218,39 @@ exports.dayView = function(args) {
     piechart.notifyDataSetChanged();
     piechart.invalidate();
     args.view = piechart;
+
 };
 
-
-
-// creates the bar graph on the week tab
-exports.weekView = function(args) {
-    var barchart = new BarChart(args.context);
-    //array of datasets
-    var IbarSet = new ArrayList();
+//Data for week view
+getWeekEntries = function() {
     //array of BarEntries
     var entries = new ArrayList();
 
     for (var day = 6; day >=0; day--) {
-   		//array of values for each week
-   		var appValues = [];
-   		for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].time)
-   			appValues.push(new java.lang.Integer(totalTimeDay));
-   		}
-   		//now have an array of values for a week
-   		entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
+        //array of values for each week
+        var appValues = [];
+        for (var app = 0; app < progressInfo.appStats.length; app++) {
+            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].visits)
+            appValues.push(new java.lang.Integer(totalTimeDay));
+        }
+        //now have an array of values for a week
+        entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
    }
-  	var dataset = new BarDataSet(entries, "");
+   return entries;
+}
+
+
+//Refresh view for week
+function rerender_weekview() {
+    var entries = getWeekEntries();
+    var dataset = new BarDataSet(entries, "");
     dataset.setStackLabels(getAppNames());
-  	dataset.setColors(getColors(progressInfo.appStats.length));
-  	IbarSet.add(dataset);
-	var data = new BarData(IbarSet);
+    dataset.setColors(getColors(progressInfo.appStats.length));
+     //array of datasets
+    var IbarSet = new ArrayList();
+    IbarSet.add(dataset);
+    var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
-    barchart.setData(data);
 
     let dataFormatter = new IValueFormatter({
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
@@ -266,48 +287,60 @@ exports.weekView = function(args) {
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
     //Setting up barchart
-     barchart.animateY(3000);
-	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-	 barchart.invalidate();
-	 args.view = barchart;
+    barchart.setData(data);
+    barchart.animateY(3000);
+    barchart.setFitBars(true);
+}
+
+
+
+
+// creates the bar graph on the week tab
+exports.weekView = function(args) {
+    barchart = new BarChart(args.context);
+    barchartMade = true;
+    rerender_weekview();
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.notifyDataSetChanged();
+    barchart.invalidate();
+    args.view = barchart;
 };
 
-
-//Creates a stacked bar chart for the month view
-exports.monthView = function(args) {
-    var barchart = new BarChart(args.context);
-    var IbarSet = new ArrayList();
-    //array of datasets
-    var IbarSet = new ArrayList();
-    //array of BarEntries
+//Returns an array of barentries
+getMonthEntries = function() {
     var entries = new ArrayList();
    for (var weeksAgo = 3; weeksAgo >=0; weeksAgo--) {
-   		//array of values for each week
-   		var appValues = [];
-   		for (var app = 0; app < progressInfo.appStats.length; app++) {
+        //array of values for each week
+        var appValues = [];
+        for (var app = 0; app < progressInfo.appStats.length; app++) {
             var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo)));
-   			appValues.push(new java.lang.Integer(totalTimeWeekApp));
-   		}
-   		entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
+            appValues.push(new java.lang.Integer(totalTimeWeekApp));
+        }
+        entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
    }
-  	var dataset = new BarDataSet(entries, "");
-    dataset.setStackLabels(getAppNames());
-  	dataset.setColors(getColors(progressInfo.appStats.length));
-  	IbarSet.add(dataset);
-	var data = new BarData(IbarSet);
-    data.setValueTextColor(Color.WHITE);
-    barchart.setData(data);
+   return entries;
+}
 
+
+
+rerender_monthchart = function() {
+    //array of BarEntries
+    var entries = getMonthEntries();
+    var dataset = new BarDataSet(entries, "");
+    dataset.setStackLabels(getAppNames());
+    dataset.setColors(getColors(progressInfo.appStats.length));
+    //array of datasets
+    var IbarSet = new ArrayList();
+    IbarSet.add(dataset);
+    var data = new BarData(IbarSet);
+    data.setValueTextColor(Color.WHITE);
+    //Label formatters
     let dataFormatter = new IValueFormatter({
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
             return Math.round(value)+"";
         }
      })
      data.setValueFormatter(dataFormatter);
-
-
-
     var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
      let axisformatter = new IAxisValueFormatter({
         getFormattedValue: function(value, axis) {
@@ -318,28 +351,37 @@ exports.monthView = function(args) {
         }
      })
      //Customize appearence of the axis
-    var xAxis = barchart.getXAxis()
-    var yAxis = barchart.getAxisLeft()
+    var xAxis = monthchart.getXAxis()
+    var yAxis = monthchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     xAxis.setGranularity(1)
     xAxis.setDrawGridLines(false);
-    barchart.getAxisRight().setEnabled(false);
+    monthchart.getAxisRight().setEnabled(false);
     xAxis.setValueFormatter(axisformatter)
-    var desc = barchart.getDescription();
+    var desc = monthchart.getDescription();
     desc.setEnabled(Description.false);
     yAxis.setStartAtZero(true);
-    barchart.setDrawValueAboveBar(false);
-    var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	
+    monthchart.setDrawValueAboveBar(false);
+    var legend = monthchart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);   
 
     //Setting up barchart 
-    barchart.animateY(3000);
-    barchart.setFitBars(true);
-    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-    barchart.invalidate();
-    args.view = barchart;
+    monthchart.setData(data);
+    monthchart.animateY(3000);
+    monthchart.setFitBars(true);
+}
 
+
+//Creates a stacked bar chart for the month view
+exports.monthView = function(args) {
+    monthchart = new BarChart(args.context);  
+    monthchartMade = true;
+    rerender_monthchart();
+    monthchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    monthchart.notifyDataSetChanged();
+    monthchart.invalidate();
+    args.view = monthchart;
 };
 
 
@@ -437,6 +479,7 @@ populateListViewMonth = function () {
 };
 
 
+
 //Allows the list to be pressable 
 exports.goToDetailApps = function(args) {
     console.log("tapped")
@@ -463,7 +506,7 @@ exports.goToDetailApps = function(args) {
 getTotalTimeAppMonth = function(array) {
     var sum = 0;
     for (var i = 0; i <= TODAY; i++) {
-        sum += array[i].time;
+        sum += array[i].visits;
     }
     return sum;
 }
@@ -479,7 +522,7 @@ getTotalTimeAppWeek = function(array, weeksAgo) {
     var end = week*7
     var sum = 0;
     for (var i = start; i < end; i++) {
-        sum += array[i].time;
+        sum += array[i].visits;
     }
     return sum;
 }
