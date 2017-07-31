@@ -11,16 +11,14 @@ var MIN_IN_MS = 60000;
  *             HELPERS              *
  ************************************/
 
-var daysSinceEpoch = function(ms) {
-  if (ms) {
-    return Math.floor(ms / DAY_IN_MS);
-  } else {
-    return Math.floor(java.lang.System.currentTimeMillis() / DAY_IN_MS);
-  }
+var daysSinceEpoch = function() {
+  var offset = new Date().getTimezoneOffset();
+  var now = Date.now() - (offset * MIN_IN_MS);
+  return Math.floor(now / DAY_IN_MS);
 };
 
-var index = function(ms) {
-  return daysSinceEpoch(ms) % 28;
+var index = function() {
+  return daysSinceEpoch() % 28;
 };
 
 var PkgStat = function() {
