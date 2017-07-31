@@ -10,9 +10,7 @@ var imageSource = require("image-source");
 var colorModule = require("tns-core-modules/color")
 var Placeholder = require("ui/placeholder")
 var app = require("tns-core-modules/application")
-var page;
 var context = app.android.context;
-var drawer;
 var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
 var Entry = com.github.mikephil.charting.data.Entry
@@ -29,6 +27,7 @@ var SimpleDateFormat = java.text.SimpleDateFormat;
 var Locale = java.util.Locale
 var GregorianCalendar = java.util.GregorianCalendar
 var IAxisValueFormatter = com.github.mikephil.charting.formatter.IAxisValueFormatter
+var IValueFormatter = com.github.mikephil.charting.formatter.IValueFormatter
 var XAxis = com.github.mikephil.charting.components.XAxis
 var YAxis = com.github.mikephil.charting.components.YAxis
 var PieChart = com.github.mikephil.charting.charts.PieChart
@@ -46,7 +45,8 @@ var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 
 var TODAY = 27;
-var MINS_MS = 60000;
+var page;
+var drawer;
 var observable = require("data/observable");
 var pageData = new observable.Observable();
 var ObservableArray = require("data/observable-array").ObservableArray;
@@ -55,15 +55,16 @@ var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
 var piechart;
+var piechartMade = false;
 var basic;
-
-
-
+// var dayArgs;
 
 const ServiceManager = require("~/services/ServiceManager");
 var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
 var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
 var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
+
+
 
 exports.pageLoaded = function(args) {
   /** SERVICE STARTER **/
@@ -76,30 +77,46 @@ exports.pageLoaded = function(args) {
   if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
     context.startService(dummyServiceIntent);
   }  
-	page = args.object;
+    console.warn("page loaded")
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
+
+    //Initialize all 'show/hide' buttons of the graphs
     pageData.set("showDayGraph", true);
     pageData.set("showWeekGraph", true);
     pageData.set("showMonthGraph", true);
-	exports.populateListViewsDay();
-	exports.populateListViewsWeek();
-	exports.populateListViewMonth();
-    console.warn("page loaded")
 
+    //populate all lists 
+	populateListViewsDay();
+	populateListViewsWeek();
+	populateListViewMonth();
+
+    //invalidate charts
+    if(piechartMade) {
+        //console.warn(progressInfo.appStats)
+        console.warn("invalidated")
+       exports.dayView(dayArgs);
+       // exports.pageNavigating(args);
+        // piechart.notifyDataSetChanged();
+        // piechart.invalidate();
+    }
 };
 
 
 exports.pageNavigating = function(args) {
+    page = args.object;
+    console.warn("page navigated")
+
+    //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
+
+    //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
-    // piechart.invalidate();
-    console.warn("navigated progress")
 }
 
 
-
+//Toggle buttons for day/week/month graphs
 exports.toggle = function () {
     pageData.set("showDayGraph", !pageData.get("showDayGraph"));
 }
@@ -113,16 +130,14 @@ exports.toggleMonth = function() {
 }
 
 
-//Creates the pie chart on the day tab
-exports.dayView = function(args) {
-    var appsToday = exports.getAppsToday();//gets the target apps used today
+//Entries for the pie chart
+getDayEntries = function() {
+    var appsToday = getAppsToday(); //gets the target apps used today
     var total = Math.round((progressInfo.phoneStats[TODAY].time));
-    // // add data
-    piechart = new PieChart(args.context);
     var entries = new ArrayList();
     var main = 0;
     var min;
-    //If there are more than 4 entries in the pie chart, use 'other' for hte 5th label
+    //If there are more than 4 entries in the pie chart, use 'other' for the 5th label
      if (appsToday.length <= 4) {
         min = appsToday.length;
         useOther = false;
@@ -135,27 +150,51 @@ exports.dayView = function(args) {
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
-	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
-	     	main += appsToday[i].mins;
+            console.warn(appsToday[i].visits);
+            entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
+            main += appsToday[i].mins;
      }
     if (useOther) {
          var leftover = total - main;
         if (leftover > 1){
-        	entries.add(new PieEntry(leftover, "Other"));
+            entries.add(new PieEntry(leftover, "Other"));
         }
     }
+    piechart.notifyDataSetChanged();
+    piechart.invalidate();
+    return entries;
+}
+
+
+
+
+
+
+
+//Creates the pie chart on the day tab
+exports.dayView = function(args) {
+    piechartMade = true;
+    dayArgs = args;
+    piechart = new PieChart(args.context);
+    var entries = getDayEntries();
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
-    var data = new PieData(dataset);
-
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     
     // Customize appearence of the pie chart 
-    data.setValueTextSize(11);
+    var data = new PieData(dataset);
+    data.setValueFormatter(dataFormatter);
+    data.setValueTextSize(11);  
     data.setValueTextColor(Color.WHITE);
     var desc = piechart.getDescription();
     piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     desc.setEnabled(Description.false);
     piechart.setDrawSliceText(false);
-    piechart.setHoleRadius(70);
+    piechart.setHoleRadius(70); 
     piechart.setTransparentCircleRadius(75);
     piechart.setCenterText(getSpannableString());
     var legend = piechart.getLegend();
@@ -165,6 +204,7 @@ exports.dayView = function(args) {
     // Initialize and set pie chart 
     piechart.setData(data);
     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
+    piechart.notifyDataSetChanged();
     piechart.invalidate();
     args.view = piechart;
     console.warn("reloaded day graph")
@@ -199,6 +239,14 @@ exports.weekView = function(args) {
     data.setValueTextColor(Color.WHITE);
     barchart.setData(data);
 
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     data.setValueFormatter(dataFormatter);
+
+
     //set axis labels
     var xLabels = getDayLabels();
      let axisformatter = new IAxisValueFormatter({
@@ -209,6 +257,7 @@ exports.weekView = function(args) {
             return 0
         }
      })
+    // Customize appearence of the axis
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -224,6 +273,7 @@ exports.weekView = function(args) {
     var legend = barchart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
+    //Setting up barchart
      barchart.animateY(3000);
 	 barchart.setFitBars(true);
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
@@ -232,7 +282,7 @@ exports.weekView = function(args) {
 };
 
 
-
+//Creates a stacked bar chart for the month view
 exports.monthView = function(args) {
     var barchart = new BarChart(args.context);
     var IbarSet = new ArrayList();
@@ -247,7 +297,6 @@ exports.monthView = function(args) {
             var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo)));
    			appValues.push(new java.lang.Integer(totalTimeWeekApp));
    		}
-   		//now have an array of values for a week
    		entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
    }
   	var dataset = new BarDataSet(entries, "");
@@ -258,6 +307,15 @@ exports.monthView = function(args) {
     data.setValueTextColor(Color.WHITE);
     barchart.setData(data);
 
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     data.setValueFormatter(dataFormatter);
+
+
+
     var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
      let axisformatter = new IAxisValueFormatter({
         getFormattedValue: function(value, axis) {
@@ -267,6 +325,7 @@ exports.monthView = function(args) {
             return 0
         }
      })
+     //Customize appearence of the axis
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -280,7 +339,9 @@ exports.monthView = function(args) {
     yAxis.setStartAtZero(true);
     barchart.setDrawValueAboveBar(false);
     var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	
+
+    //Setting up barchart 
     barchart.animateY(3000);
     barchart.setFitBars(true);
     barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
@@ -291,18 +352,14 @@ exports.monthView = function(args) {
 
 
 
-
-exports.populateListViewsDay = function() {   
+//Creates a list view for the dayView, showing name, #times opened, and minutes 
+populateListViewsDay = function() {   
      var unlocks = progressInfo.phoneStats[TODAY].unlocks
      var glances = progressInfo.phoneStats[TODAY].glances
      var total = (progressInfo.phoneStats[TODAY].totalTime === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].totalTime));
      var targetTime = (progressInfo.phoneStats[TODAY].time === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].time));
-     console.warn(total);
-     console.warn(targetTime)
      var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
-
-
-    dayApps = exports.getAppsToday();
+    dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
 
 	//'buttons' that show the usage daily overall phone usage 
@@ -327,8 +384,8 @@ exports.populateListViewsDay = function() {
 };
 
 
-
-exports.populateListViewsWeek = function() {
+//Creates list view for week, showing name, avg min.day and total minutes
+populateListViewsWeek = function() {
     var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")))
     var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")));
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
@@ -357,8 +414,8 @@ exports.populateListViewsWeek = function() {
 	pageData.set("weekItems", weekApps);
  }
 
-
-exports.populateListViewMonth = function () {
+//Creates a list view for the month view, with name, avg min/day and total mintues
+populateListViewMonth = function () {
 	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")));
     var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")));
     var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth*100)); 
@@ -478,7 +535,7 @@ totalTimeMonth = function(value) {
 
 
 //Returns a list of apps used today with their name, visits, icon and minutes in ascending order
-exports.getAppsToday = function() {
+getAppsToday = function() {
     var list = [];
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = Math.round(progressInfo.appStats[i][TODAY].time);
@@ -505,7 +562,7 @@ exports.getAppsToday = function() {
 };
 
 
-
+//Returns the total time spent on waitlist apps this week as an array of app objects
 getAppsWeek = function () {
     var weekApps = [];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
@@ -532,11 +589,10 @@ getAppsWeek = function () {
     }
     return 0;
     });
-
     return weekApps;
 }
 
-
+//Returns the total time spent on waitlist apps this month as an array of app objects
 getAppsMonth = function() {
     var monthApps = [];
      for(var i = 0; i < progressInfo.appStats.length; ++i) {
@@ -562,7 +618,7 @@ getAppsMonth = function() {
     return monthApps;
 }
 
-//Gets basic info from usageUtil
+//Gets basic info (name and icon) from usageUtil
 getBasic = function() {
     var basic = [];
     for (let i = 0; i < progressInfo.appStats.length; ++i) {
@@ -579,7 +635,7 @@ getBasic = function() {
 
 
 
-
+//Colors to be used in graphs 
 getColors = function(stacksize) {
     var colors = [];
     //Deep yellow
@@ -601,7 +657,7 @@ getColors = function(stacksize) {
 }
 
 
-
+//Convert javascript arrays to java arrays
 function toJavaFloatArray(arr) {
     var output = Array.create('float', arr.length)
     for (let i = 0; i < arr.length; ++i) {
@@ -627,7 +683,7 @@ function toJavaStringArray(arr) {
 }
 
 
-
+//Returns a java array of just the app names (used for stack labels)
 function getAppNames() {
     var names = Array.create(java.lang.String, progressInfo.appStats.length);
     for (let i = 0; i < progressInfo.appStats.length; ++i) {
@@ -636,7 +692,7 @@ function getAppNames() {
     return names;
 }
 
-
+//Returns the package name for a given app 'name' - used in navigation
 function getPackageName(name) {
      for (let i = 0; i < progressInfo.appStats.length; ++i) {
         if (name === basic[i].name) {

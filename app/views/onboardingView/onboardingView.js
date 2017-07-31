@@ -75,7 +75,8 @@ exports.hideCursor = function(args) {
   var textField = args.object;
 };
 
-
+//If swipe left, go to next slide, if swipe right, go to previous slide
+// May want to reimplement this function as the swiping can sometimes be 'stiff'
 exports.goToNextSlide = function(args) {
   if (args.direction === 2) {
     container.nextSlide();
@@ -86,6 +87,8 @@ exports.goToNextSlide = function(args) {
 };
 
 
+//Only lets the user continue past the first slide if a name is entered 
+// else, a dialog appears
 exports.checkNameNextSlide = function(args) {
   var textfield = page.getViewById("name");
   var name = textfield.text;
@@ -97,7 +100,7 @@ exports.checkNameNextSlide = function(args) {
   }
 };
 
-
+//Ensures that usage permissions are given before allowing user to swipe to next slide
 exports.checkUsagePermission = function(args) {
   if (!PermissionUtil.checkActionUsagePermission()) {
       fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please permit usage access to continue", "OK");
@@ -106,6 +109,7 @@ exports.checkUsagePermission = function(args) {
   }
 }
 
+//Ensures that overlay permissions are given before allowing user to swipe to next slide
 exports.checkDrawPermission = function(args) {
   if (!PermissionUtil.checkSystemOverlayPermission()) {
       fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please give permission to continue", "OK");
@@ -114,7 +118,7 @@ exports.checkDrawPermission = function(args) {
   }
 }
 
-
+//When the user taps the 'give permission' button - If the user hasn't already given permission, open settings
 exports.giveUsagePermission = function(args) {
   if (!PermissionUtil.checkActionUsagePermission()) {
     PermissionUtil.launchActionUsageIntent();
@@ -123,6 +127,7 @@ exports.giveUsagePermission = function(args) {
  }
 };
 
+//When the user taps the 'give permission' button - If the user hasn't already given permission, open settings
 exports.giveDrawPermission = function(args) {
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
@@ -132,23 +137,7 @@ exports.giveDrawPermission = function(args) {
 };
 
 
-exports.getUsagePermission = function(args) {
-  if (!PermissionUtil.checkActionUsagePermission()) {
-    PermissionUtil.launchActionUsageIntent();
-  } else {
-    exports.goToNextSlide(args);
-  }
-};
-
-exports.getDrawPermission = function(args) {
-  if(!PermissionUtil.checkSystemOverlayPermission()) {
-    PermissionUtil.launchSystemOverlayIntent();
-  } else {
-    exports.goToNextSlide(args);
-  }
-};
-
-
+//Takes the user to the apps view to select their apps 
 exports.goToAppsView = function(args) {
   if (!StorageUtil.isSetUp()) {
     StorageUtil.setUpDB();

@@ -21,16 +21,17 @@
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation='vertical'>
 
-        <Label text="Phone Goals" class="section-title" />
-        <StackLayout orientation="vertical" id="phoneGoals" />
-        
-        <Label text="Watchlist Goals" class="section-title" />
-        <StackLayout>
-          <ScrollView orientation="vertical" id="scroll">
+        <ScrollView orientation="vertical" id="scroll">
+          <StackLayout orientation="vertical">
+            <Label text="Phone" class="section-title" />
+            <StackLayout orientation="vertical" id="phoneGoals" />
+            
+            <Label text="Watchlist" class="section-title" />
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
-          </ScrollView>
-          <Button text="done" onTap="onDone" id="button"/>
-        </StackLayout>
+          </StackLayout>
+        </ScrollView>
+
+        <Button text="done" onTap="onDone" id="button"/>
 
       </StackLayout>
     </sd:RadSideDrawer.mainContent>

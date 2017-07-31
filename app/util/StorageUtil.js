@@ -11,16 +11,14 @@ var MIN_IN_MS = 60000;
  *             HELPERS              *
  ************************************/
 
-var daysSinceEpoch = function(ms) {
-  if (ms) {
-    return Math.floor(ms / DAY_IN_MS);
-  } else {
-    return Math.floor(java.lang.System.currentTimeMillis() / DAY_IN_MS);
-  }
+var daysSinceEpoch = function() {
+  var offset = new Date().getTimezoneOffset();
+  var now = Date.now() - (offset * MIN_IN_MS);
+  return Math.floor(now / DAY_IN_MS);
 };
 
-var index = function(ms) {
-  return daysSinceEpoch(ms) % 28;
+var index = function() {
+  return daysSinceEpoch() % 28;
 };
 
 var PkgStat = function() {
@@ -429,9 +427,24 @@ exports.midnightReset = function() {
  * Completely enables the given intervention (by id).
  */
 exports.enableForAll = function(id) {
+  // enable overall
   var enabled = JSON.parse(appSettings.getString('enabled'));
   enabled[id] = true;
   appSettings.setString('enabled', JSON.stringify(enabled));
+
+  if (ID.interventionDetails[id].target === 'phone') {
+    return;
+  }
+
+  // go through and set individual toggles
+  var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+  pkgs.forEach(function (item) {
+    var appInfo = JSON.parse(appSettings.getString(item));
+    if (!appInfo.enabled[id]) {
+      appInfo.enabled[id] = true;
+      appSettings.setString(item, JSON.stringify(appInfo));
+    }
+  });
 };
 
 /* export: disableForAll
@@ -439,9 +452,24 @@ exports.enableForAll = function(id) {
  * Completely disables the given intervention (by id).
  */
 exports.disableForAll = function(id) {
+  // disable overall
   var enabled = JSON.parse(appSettings.getString('enabled'));
   enabled[id] = false;
   appSettings.setString('enabled', JSON.stringify(enabled));
+
+  if (ID.interventionDetails[id].target === 'phone') {
+    return;
+  }
+
+  // go through and set individual toggles
+  var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+  pkgs.forEach(function (item) {
+    var appInfo = JSON.parse(appSettings.getString(item));
+    if (appInfo.enabled[id]) {
+      appInfo.enabled[id] = false;
+      appSettings.setString(item, JSON.stringify(appInfo));
+    }
+  });
 };
 
 /* export: toggleForAll
@@ -449,9 +477,24 @@ exports.disableForAll = function(id) {
  * Completely disables/enables the given intervention (by id).
  */
 exports.toggleForAll = function(id) {
+  // toggle overall
   var enabled = JSON.parse(appSettings.getString('enabled'));
   enabled[id] = !enabled[id];
   appSettings.setString('enabled', JSON.stringify(enabled));
+
+  if (ID.interventionDetails[id].target === 'phone') {
+    return;
+  }
+
+  // go through and set individual toggles
+  var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+  pkgs.forEach(function (item) {
+    var appInfo = JSON.parse(appSettings.getString(item));
+    if (appInfo.enabled[id] !== enabled[id]) {
+      appInfo.enabled[id] = enabled[id];
+      appSettings.setString(item, JSON.stringify(appInfo));
+    }
+  });
 };
 
 /* export: enable
@@ -459,9 +502,17 @@ exports.toggleForAll = function(id) {
  * Enables the given intervention for a specific package (by id).
  */
 exports.enableForApp = function(id, packageName) {
+  // enable individually
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo.enabled[id] = true;
   appSettings.setString(packageName, JSON.stringify(appInfo));
+
+  // make sure enabled is true overall
+  var enabled = JSON.parse(appSettings.getString('enabled'));
+  if (!enabled[id]) {
+    enabled[id] = true;
+    appSettings.setString('enabled', JSON.stringify(enabled));
+  }
 };
 
 /* export: disable
@@ -469,9 +520,33 @@ exports.enableForApp = function(id, packageName) {
  * Disables the given intervention for a specific package (by id).
  */
 exports.disableForApp = function(id, packageName) {
+  // disable individually
   var appInfo = JSON.parse(appSettings.getString(packageName));
-  appInfo.enabled[id] = false;
-  appSettings.setString(packageName, JSON.stringify(appInfo));
+  if (appInfo.enabled[id]) {
+    appInfo.enabled[id] = false;
+    appSettings.setString(packageName, JSON.stringify(appInfo));
+
+    // check if overall disable is necessary
+    var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+    var mustDisable = true;
+    for (var item in pkgs) {
+      if (item === packageName) {
+        continue;
+      }
+
+      appInfo = JSON.parse(appSettings.getString(item));
+      if (enabled[id]) {
+        mustDisable = false;
+        break;
+      }
+    }
+
+    if (mustDisable) {
+      var enabled = JSON.parse(appSettings.getString('enabled'));
+      enabled[id] = false;
+      appSettings.setString('enabled', JSON.stringify(enabled));
+    } 
+  }
 };
 
 /* export: toggle
@@ -482,6 +557,35 @@ exports.toggleForApp = function(id, packageName) {
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo.enabled[id] = !appInfo.enabled[id];
   appSettings.setString(packageName, JSON.stringify(appInfo));
+
+  // if intervention just enabled for app
+  if (appInfo.enabled[id]) {
+    // make sure enabled is true overall
+    var enabled = JSON.parse(appSettings.getString('enabled'));
+    if (!enabled[id]) {
+      enabled[id] = true;
+      appSettings.setString('enabled', JSON.stringify(enabled));
+    }
+  } else { // intervention just disabled for app
+    // check if overall disable is necessary
+    var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+    var mustDisable = true;
+    pkgs.forEach(function (item) {
+      if (item === packageName || !mustDisable) {
+        return;
+      }
+      var currInfo = JSON.parse(appSettings.getString(item));
+      if (currInfo.enabled[id]) {
+        mustDisable = false;
+      }
+    });
+
+    if (mustDisable) {
+      var enabled = JSON.parse(appSettings.getString('enabled'));
+      enabled[id] = false;
+      appSettings.setString('enabled', JSON.stringify(enabled));
+    } 
+  }
 };
 
 /* export: isEnabledForApp
@@ -505,11 +609,9 @@ exports.isEnabledForAll = function(id) {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  var target = ID.interventionDetails[id].target; // 'phone' or 'app'
-  var can = JSON.parse(appSettings.getString('enabled'))[id]; // enabled overall
-  if (target === 'phone') {
-    return can;
-  } else if (can) { // target === 'app'
+  if (ID.interventionDetails[id].target === 'phone') {
+    return JSON.parse(appSettings.getString('enabled'))[id];;
+  } else  { // target === 'app'
     var specified = ID.interventionDetails[id].apps;
     return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id];
   }

@@ -4,7 +4,6 @@ var ID = require('~/interventions/InterventionData');
 var dialogs = require("ui/dialogs");
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
-
 var frameModule = require("ui/frame");
 var view = require("ui/core/view");
 var imageSource = require("image-source");
@@ -31,6 +30,7 @@ var SimpleDateFormat = java.text.SimpleDateFormat;
 var Locale = java.util.Locale
 var GregorianCalendar = java.util.GregorianCalendar
 var IAxisValueFormatter = com.github.mikephil.charting.formatter.IAxisValueFormatter
+var IValueFormatter = com.github.mikephil.charting.formatter.IValueFormatter
 var XAxis = com.github.mikephil.charting.components.XAxis
 var YAxis = com.github.mikephil.charting.components.YAxis
 var Legend = com.github.mikephil.charting.components.Legend
@@ -203,6 +203,12 @@ exports.weekView = function(args) {
     IbarSet.add(dataset);
     var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
+    let dataFormatter = new IValueFormatter({
+      getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+          return Math.round(value)+"";
+      }
+   })
+   data.setValueFormatter(dataFormatter);
     barchart.setData(data);
 
     //set axis labels
@@ -280,8 +286,13 @@ exports.monthView = function(args) {
   
   IbarSet.add(dataset);
   var data = new BarData(IbarSet);
+   let dataFormatter = new IValueFormatter({
+      getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+          return Math.round(value)+"";
+      }
+   })
+   data.setValueFormatter(dataFormatter);
   data.setValueTextColor(Color.WHITE);
-  barchart.setData(data);
 
   //set axis labels
    let axisformatter = new IAxisValueFormatter({
@@ -292,6 +303,7 @@ exports.monthView = function(args) {
           return 0
       }
    })
+
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -332,7 +344,7 @@ exports.monthView = function(args) {
      //disable all touch events
     barchart.setTouchEnabled(false);
     barchart.setDragEnabled(false);
-  
+    barchart.setData(data);
     barchart.animateY(1000);
     barchart.setFitBars(true);
     barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
