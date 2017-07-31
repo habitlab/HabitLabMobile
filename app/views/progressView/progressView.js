@@ -102,7 +102,7 @@ exports.pageLoaded = function(args) {
 
 exports.pageNavigating = function(args) {
     page = args.object;
-    
+
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
 
@@ -145,7 +145,7 @@ getDayEntries = function() {
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
-            entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
+            entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
             main += appsToday[i].mins;
      }
     if (useOther) {
