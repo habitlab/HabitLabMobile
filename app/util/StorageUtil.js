@@ -570,17 +570,15 @@ exports.toggleForApp = function(id, packageName) {
     // check if overall disable is necessary
     var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
     var mustDisable = true;
-    for (var item in pkgs) {
-      if (item === packageName) {
-        continue;
+    pkgs.forEach(function (item) {
+      if (item === packageName || !mustDisable) {
+        return;
       }
-
-      appInfo = JSON.parse(appSettings.getString(item));
-      if (enabled[id]) {
+      var currInfo = JSON.parse(appSettings.getString(item));
+      if (currInfo.enabled[id]) {
         mustDisable = false;
-        break;
       }
-    }
+    });
 
     if (mustDisable) {
       var enabled = JSON.parse(appSettings.getString('enabled'));
