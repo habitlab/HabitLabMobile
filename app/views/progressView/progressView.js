@@ -159,7 +159,7 @@ getDayEntries = function() {
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
             console.warn(appsToday[i].mins);
-            entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
+            entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
             main += appsToday[i].mins;
      }
     if (useOther) {
@@ -257,7 +257,7 @@ getWeekEntries = function() {
         //array of values for each week
         var appValues = [];
         for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].visits)
+            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].time)
             appValues.push(new java.lang.Integer(totalTimeDay));
         }
         //now have an array of values for a week
@@ -532,7 +532,7 @@ exports.goToDetailApps = function(args) {
 getTotalTimeAppMonth = function(array) {
     var sum = 0;
     for (var i = 0; i <= TODAY; i++) {
-        sum += array[i].visits;
+        sum += array[i].time;
     }
     return sum;
 }
@@ -548,7 +548,7 @@ getTotalTimeAppWeek = function(array, weeksAgo) {
     var end = week*7
     var sum = 0;
     for (var i = start; i < end; i++) {
-        sum += array[i].visits;
+        sum += array[i].time;
     }
     return sum;
 }
