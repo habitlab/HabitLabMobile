@@ -2,18 +2,8 @@
   font-size: 23%;
   text-align: center;
   color: #FFA730;
-  margin-top: 3%;
-  margin-bottom: 3%;
-}
-
-.manage-icon {
-  height: 14%;
-  z-index: 1;
-  top: 10%;
-}
-
-.manage-button {
-  transform: translateY(-10%);
+  padding-top: 15%;
+  padding-bottom: 10%;
 }
 
 .label-and-icon {
