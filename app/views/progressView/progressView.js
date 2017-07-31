@@ -212,6 +212,7 @@ exports.weekView = function(args) {
             return 0
         }
      })
+    // Customize appearence of the axis
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -227,6 +228,7 @@ exports.weekView = function(args) {
     var legend = barchart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
+    //Setting up barchart
      barchart.animateY(3000);
 	 barchart.setFitBars(true);
 	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
@@ -269,6 +271,7 @@ exports.monthView = function(args) {
             return 0
         }
      })
+     //Customize appearence of the axis
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
@@ -282,7 +285,9 @@ exports.monthView = function(args) {
     yAxis.setStartAtZero(true);
     barchart.setDrawValueAboveBar(false);
     var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	 
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	
+
+    //Setting up barchart 
     barchart.animateY(3000);
     barchart.setFitBars(true);
     barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
