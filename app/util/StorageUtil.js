@@ -44,7 +44,7 @@ var randBW = function(min, max) {
 var FakePkgStat = function() {
   return {
     visits: randBW(10, 40), 
-    time: randBW(600000, 2700000)
+    time: randBW(10, 45)
   };
 };
 
@@ -63,7 +63,7 @@ var FakePhStat = function() {
   return {
     glances: numGlances, 
     unlocks: randBW(numGlances, numGlances*2), 
-    totalTime: randBW(total, total + 5400000), 
+    totalTime: randBW(total, total + 90), 
     time: total
   };
 };
