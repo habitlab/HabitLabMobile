@@ -57,7 +57,7 @@ var monthApps = new ObservableArray ([]);
 var piechart;
 var piechartMade = false;
 var basic;
-// var dayArgs;
+var dayArgs;
 
 const ServiceManager = require("~/services/ServiceManager");
 var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
@@ -65,9 +65,9 @@ var unlockServiceIntent = new android.content.Intent(context, com.habitlab.Unloc
 var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
 
 
-
 exports.pageLoaded = function(args) {
   /** SERVICE STARTER **/
+
   if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
     context.startService(trackingServiceIntent);
   }
@@ -77,6 +77,7 @@ exports.pageLoaded = function(args) {
   if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
     context.startService(dummyServiceIntent);
   }  
+
     console.warn("page loaded")
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
@@ -96,10 +97,18 @@ exports.pageLoaded = function(args) {
     if(piechartMade) {
         //console.warn(progressInfo.appStats)
         console.warn("invalidated")
-       exports.dayView(dayArgs);
-       // exports.pageNavigating(args);
+        // piechart.clear();
         // piechart.notifyDataSetChanged();
         // piechart.invalidate();
+        //piechart.clear()
+       rerender_dayview()
+       console.warn('r7')
+       //exports.dayView(dayArgs);
+       // exports.pageNavigating(args);
+        piechart.notifyDataSetChanged();
+       console.warn('r8')
+        piechart.invalidate();
+       console.warn('r9')
     }
 };
 
@@ -166,19 +175,12 @@ getDayEntries = function() {
 }
 
 
-
-
-
-
-
-//Creates the pie chart on the day tab
-exports.dayView = function(args) {
-    piechartMade = true;
-    dayArgs = args;
-    piechart = new PieChart(args.context);
+function rerender_dayview() {
+    console.warn('r1')
     var entries = getDayEntries();
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
+    console.warn('r2')
     let dataFormatter = new IValueFormatter({
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
             return Math.round(value)+"";
@@ -187,12 +189,14 @@ exports.dayView = function(args) {
      
     // Customize appearence of the pie chart 
     var data = new PieData(dataset);
+    console.warn('r3')
     data.setValueFormatter(dataFormatter);
     data.setValueTextSize(11);  
     data.setValueTextColor(Color.WHITE);
     var desc = piechart.getDescription();
     piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     desc.setEnabled(Description.false);
+    console.warn('r4')
     piechart.setDrawSliceText(false);
     piechart.setHoleRadius(70); 
     piechart.setTransparentCircleRadius(75);
@@ -200,9 +204,28 @@ exports.dayView = function(args) {
     var legend = piechart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     dataset.setColors(getColors());
+    console.warn('r5')
 
     // Initialize and set pie chart 
     piechart.setData(data);
+    console.warn('r6')
+}
+
+
+
+
+//Creates the pie chart on the day tab
+exports.dayView = function(args) {
+    console.warn('dayView called')
+    console.warn(piechartMade)
+    console.warn(piechart)
+    console.warn(args)
+    dayArgs = args;
+    //if (!piechartMade) {
+       piechart = new PieChart(args.context);
+    //}
+    piechartMade = true;
+    rerender_dayview()
     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
     piechart.notifyDataSetChanged();
     piechart.invalidate();
@@ -731,6 +754,7 @@ function getSpannableString() {
         return myString;
     }
     //Total
+    console.warn('getSpannableSpring called')
     var myString = new SpannableString("Total:\n" + total + "\nmins" );
     myString.setSpan(new RelativeSizeSpan(1.2), 0, 6, 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, 6, 0);
