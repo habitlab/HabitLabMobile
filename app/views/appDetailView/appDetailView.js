@@ -292,6 +292,14 @@ exports.monthView = function(args) {
           return 0
       }
    })
+
+   let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     data.setValueFormatter(dataFormatter);
+
     var xAxis = barchart.getXAxis()
     var yAxis = barchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
