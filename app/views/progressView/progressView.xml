@@ -30,7 +30,7 @@
 			   				<Label text="Mins on Watchlist Today" row="0" col="0" class="header" horizontalAlignment="center"/>
 			   				<Button text="{{ showDayGraph ? 'Hide' : 'Show'}}" tap="toggle" class="shide" row="0" col="1"/>
 			   			</GridLayout>
-			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}"/>
+			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}" id="dayViewGraph"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="listButtons" class="list-group">

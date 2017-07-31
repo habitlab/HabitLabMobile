@@ -27,6 +27,7 @@ var SimpleDateFormat = java.text.SimpleDateFormat;
 var Locale = java.util.Locale
 var GregorianCalendar = java.util.GregorianCalendar
 var IAxisValueFormatter = com.github.mikephil.charting.formatter.IAxisValueFormatter
+var IValueFormatter = com.github.mikephil.charting.formatter.IValueFormatter
 var XAxis = com.github.mikephil.charting.components.XAxis
 var YAxis = com.github.mikephil.charting.components.YAxis
 var PieChart = com.github.mikephil.charting.charts.PieChart
@@ -54,7 +55,9 @@ var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
 var piechart;
+var piechartMade = false;
 var basic;
+// var dayArgs;
 
 const ServiceManager = require("~/services/ServiceManager");
 var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
@@ -74,9 +77,10 @@ exports.pageLoaded = function(args) {
   if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
     context.startService(dummyServiceIntent);
   }  
-	page = args.object;
+    console.warn("page loaded")
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
+    progressInfo = storageUtil.getProgressViewInfo();
 
     //Initialize all 'show/hide' buttons of the graphs
     pageData.set("showDayGraph", true);
@@ -87,18 +91,28 @@ exports.pageLoaded = function(args) {
 	populateListViewsDay();
 	populateListViewsWeek();
 	populateListViewMonth();
+
+    //invalidate charts
+    if(piechartMade) {
+        //console.warn(progressInfo.appStats)
+        console.warn("invalidated")
+       exports.dayView(dayArgs);
+       // exports.pageNavigating(args);
+        // piechart.notifyDataSetChanged();
+        // piechart.invalidate();
+    }
 };
 
 
 exports.pageNavigating = function(args) {
+    page = args.object;
+    console.warn("page navigated")
+
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
 
     //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
-
-    //invalidate charts
-    // piechart.invalidate();
 }
 
 
@@ -116,16 +130,14 @@ exports.toggleMonth = function() {
 }
 
 
-//Creates the pie chart on the day tab
-exports.dayView = function(args) {
-    var appsToday = exports.getAppsToday();//gets the target apps used today
+//Entries for the pie chart
+getDayEntries = function() {
+    var appsToday = getAppsToday(); //gets the target apps used today
     var total = Math.round((progressInfo.phoneStats[TODAY].time));
-    // // add data
-    piechart = new PieChart(args.context);
     var entries = new ArrayList();
     var main = 0;
     var min;
-    //If there are more than 4 entries in the pie chart, use 'other' for hte 5th label
+    //If there are more than 4 entries in the pie chart, use 'other' for the 5th label
      if (appsToday.length <= 4) {
         min = appsToday.length;
         useOther = false;
@@ -138,27 +150,52 @@ exports.dayView = function(args) {
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
-	     	entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
-	     	main += appsToday[i].mins;
+            console.warn(appsToday[i].visits);
+            entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
+            main += appsToday[i].mins;
      }
     if (useOther) {
          var leftover = total - main;
         if (leftover > 1){
-        	entries.add(new PieEntry(leftover, "Other"));
+            entries.add(new PieEntry(leftover, "Other"));
         }
     }
+    piechart.notifyDataSetChanged();
+    piechart.invalidate();
+    return entries;
+}
+
+
+
+
+
+
+
+//Creates the pie chart on the day tab
+exports.dayView = function(args) {
+    piechartMade = true;
+    dayArgs = args;
+    piechart = new PieChart(args.context);
+    var entries = getDayEntries();
     var dataset = new PieDataSet(entries, "");
     dataset.setSliceSpace(0);
-    var data = new PieData(dataset);
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     
 
     // Customize appearence of the pie chart 
-    data.setValueTextSize(11);
+    var data = new PieData(dataset);
+    data.setValueFormatter(dataFormatter);
+    data.setValueTextSize(11);  
     data.setValueTextColor(Color.WHITE);
     var desc = piechart.getDescription();
     piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     desc.setEnabled(Description.false);
     piechart.setDrawSliceText(false);
-    piechart.setHoleRadius(70);
+    piechart.setHoleRadius(70); 
     piechart.setTransparentCircleRadius(75);
     piechart.setCenterText(getSpannableString());
     var legend = piechart.getLegend();
@@ -168,6 +205,7 @@ exports.dayView = function(args) {
     // Initialize and set pie chart 
     piechart.setData(data);
     piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
+    piechart.notifyDataSetChanged();
     piechart.invalidate();
     args.view = piechart;
     console.warn("reloaded day graph")
@@ -304,10 +342,8 @@ populateListViewsDay = function() {
      var glances = progressInfo.phoneStats[TODAY].glances
      var total = (progressInfo.phoneStats[TODAY].totalTime === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].totalTime));
      var targetTime = (progressInfo.phoneStats[TODAY].time === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].time));
-     console.warn(total);
-     console.warn(targetTime)
      var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
-    dayApps = exports.getAppsToday();
+    dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
 
 	//'buttons' that show the usage daily overall phone usage 
@@ -483,7 +519,7 @@ totalTimeMonth = function(value) {
 
 
 //Returns a list of apps used today with their name, visits, icon and minutes in ascending order
-exports.getAppsToday = function() {
+getAppsToday = function() {
     var list = [];
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = Math.round(progressInfo.appStats[i][TODAY].time);
