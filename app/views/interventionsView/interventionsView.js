@@ -11,7 +11,7 @@ var drawer;
 var page;
 var interventionList;
 
-var createItem = function(id)  {
+var createItem = function(info, id)  {
   var item = builder.load({
     path: 'shared/detailelem',
     name: 'detailelem'
@@ -19,14 +19,14 @@ var createItem = function(id)  {
 
   item.id = 'item' + id;
   item.className = 'intervention-grid';
-  item.getViewById('firstrow').className = interventionList[id].level + '-level';
+  item.getViewById('firstrow').className = info.level + '-level';
   
   var image = item.getViewById('icon');
-  image.src = interventionList[id].icon;
+  image.src = info.icon;
   image.className = 'intervention-icon';
 
   var label = item.getViewById("name");
-  label.text = interventionList[id].name;
+  label.text = info.name;
   label.className = 'intervention-label';
 
   item.on("tap, touch", function(args) {
@@ -34,7 +34,8 @@ var createItem = function(id)  {
       var options = {
         moduleName: 'views/detailView/detailView',
         context: {
-          id: id
+          id: id,
+          info: info
         }
       };
       frame.topmost().navigate(options);
@@ -57,15 +58,31 @@ var createItem = function(id)  {
 };
 
 var setUpList = function() {
-  var interventionLayout = page.getViewById("interventionLayout");
-  interventionList = ID.interventionDetails;
-  interventionLayout.removeChildren();
+  var layouts = {};
+  layouts['toast'] = page.getViewById("toast-interventions");
+  layouts['toast'].removeChildren();
+  layouts['notification'] = page.getViewById("notification-interventions");
+  layouts['notification'].removeChildren();
+  layouts['dialog'] = page.getViewById("dialog-interventions");
+  layouts['dialog'].removeChildren();
+  layouts['overlay'] = page.getViewById("overlay-interventions");
+  layouts['overlay'].removeChildren();
 
-  for (var i = 0; i < interventionList.length; i++) {
-    if (IM.interventions[i]) {
-      interventionLayout.addChild(createItem(i));
-    }
-  }
+  var order = {
+    easy: 0,
+    medium: 1,
+    hard: 2
+  };
+  interventionList = ID.interventionDetails.filter(function (item, index) {
+    return IM.interventions[index];
+  }).sort(function (a, b) {
+    return order[a.level] - order[b.level];
+  });
+
+  interventionList.forEach(function (item, index) {
+    layouts[item.style].addChild(createItem(item, index));
+  });
+
 };
 
 exports.pageLoaded = function(args) {

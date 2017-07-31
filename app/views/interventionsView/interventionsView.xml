@@ -16,12 +16,18 @@
     </sd:RadSideDrawer.drawerContent>
 
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
-      <StackLayout orientation="vertical" >
-        <Label text="Nudge Manager" class="intervention-label title"/>
-        <ScrollView orientation="vertical">
-       		<StackLayout orientation="vertical" id="interventionLayout" />
-        </ScrollView>
-      </StackLayout>
+      <ScrollView orientation="vertical">
+        <StackLayout>
+          <Label class="nudges-section-title" text="Toasts" />
+       		<StackLayout orientation="vertical" id="toast-interventions" />
+          <Label class="nudges-section-title" text="Notifications" />
+          <StackLayout orientation="vertical" id="notification-interventions" />
+          <Label class="nudges-section-title" text="Dialogs" />
+          <StackLayout orientation="vertical" id="dialog-interventions" />
+          <Label class="nudges-section-title" text="Overlays" />
+          <StackLayout orientation="vertical" id="overlay-interventions" />
+        </StackLayout>
+      </ScrollView>
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
 </Page>

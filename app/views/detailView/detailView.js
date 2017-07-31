@@ -1,7 +1,6 @@
 var StorageUtil = require('~/util/StorageUtil');
 var UsageUtil = require('~/util/UsageInformationUtil');
 var IM = require('~/interventions/InterventionManager');
-var ID = require('~/interventions/InterventionData');
 
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
@@ -9,6 +8,7 @@ var gestures = require('ui/gestures').GestureTypes;
 var drawer;
 var page;
 var id;
+var info;
 
 var createItem = function(pkg)  {
   var item = builder.load({
@@ -39,12 +39,12 @@ var createItem = function(pkg)  {
 };
 
 var setUpDetail = function() {
-  page.getViewById('title').text = ID.interventionDetails[id].name;
+  page.getViewById('title').text = info.name;
   var desc = page.getViewById('description');
-  desc.text = ID.interventionDetails[id].description;
+  desc.text = info.description;
   desc.textWrap = true;
 
-  var level = ID.interventionDetails[id].level;
+  var level = info.level;
   var levelLabel = page.getViewById('level');
   levelLabel.text = level.charAt(0).toUpperCase() + level.slice(1);;
   levelLabel.className += " " + level;
@@ -53,17 +53,16 @@ var setUpDetail = function() {
     IM.interventions[id]();
   });
 
-  if (ID.interventionDetails[id].target === 'phone') {
+  if (info.target === 'phone') {
     return;
   }
 
   var layout = page.getViewById('list');
   var pkgs = StorageUtil.getSelectedPackages();
 
-  var apps = ID.interventionDetails[id].apps;
-  if (apps) {
+  if (info.apps) {
     pkgs = pkgs.filter(function (item) {
-      return apps.includes(item);
+      return info.apps.includes(item);
     });
   }
 
@@ -84,6 +83,7 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById("sideDrawer");
   if (page.navigationContext) {
     id = page.navigationContext.id;
+    info = page.navigationContext.info;
   }
   setUpDetail();
 };
@@ -92,6 +92,6 @@ var application = require("application");
 var TimerOverlay = require("~/overlays/TimerOverlay");
 var DimmerOverlay = require("~/overlays/DimmerOverlay");
 application.android.on(application.AndroidApplication.activityBackPressedEvent, function (args) {
-      TimerOverlay.dismissTimer(application.android.context);
-      DimmerOverlay.removeDimmer();
-  });
+  TimerOverlay.dismissTimer(application.android.context);
+  DimmerOverlay.removeDimmer();
+});
