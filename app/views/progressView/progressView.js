@@ -185,7 +185,6 @@ exports.dayView = function(args) {
         }
      })
      
-
     // Customize appearence of the pie chart 
     var data = new PieData(dataset);
     data.setValueFormatter(dataFormatter);
@@ -239,6 +238,14 @@ exports.weekView = function(args) {
 	var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
     barchart.setData(data);
+
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     data.setValueFormatter(dataFormatter);
+
 
     //set axis labels
     var xLabels = getDayLabels();
@@ -299,6 +306,15 @@ exports.monthView = function(args) {
 	var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
     barchart.setData(data);
+
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })
+     data.setValueFormatter(dataFormatter);
+
+
 
     var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
      let axisformatter = new IAxisValueFormatter({
