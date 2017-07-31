@@ -78,9 +78,6 @@ exports.toggleDrawer = function() {
 
 exports.onDone = function() {
   //notification on done (first time only)
-  if (!StorageUtil.isOnboarded()) {
-    fancyAlert.TNSFancyAlert.showSuccess("Last step!", "Set goals for your phone and app usage.", "Got it!");
-  }
 
   var wasChanged = false;
   Object.keys(toToggle).forEach(function(key) {
@@ -95,5 +92,16 @@ exports.onDone = function() {
       updated: wasChanged
     }
   };
+
+  if (!StorageUtil.getSelectedPackages().length) {
+    fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
+    return;
+  }
+
+  if (!StorageUtil.isOnboarded()) {
+    fancyAlert.TNSFancyAlert.showSuccess("Last step!", "Set goals for your phone and app usage.", "Got it!");
+  } 
+
+ 
   frame.topmost().navigate(options);
 };

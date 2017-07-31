@@ -1,4 +1,5 @@
 var app = require("application");
+var timer = require("timer");
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -15,13 +16,6 @@ var Bitmap = android.graphics.Bitmap;
 var TypedValue = android.util.TypedValue;
 
 
-/******************************
- *          PAINTS            *                           
- ******************************/
-
-var BACKGROUND = new Paint();
-BACKGROUND.setColor(Color.BLACK);
-
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -31,6 +25,9 @@ var context = app.android.context;
 // Custom DialogView 
 var OverlayView = android.view.View.extend({
 	onDraw: function (canvas) {
+		var BACKGROUND = new Paint();
+		BACKGROUND.setColor(Color.BLACK);
+		BACKGROUND.setAlpha(0);
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND);
 	}
 });
@@ -40,43 +37,42 @@ var overlayParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MA
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
 		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
 overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
-var overlays = [];
+var overlay;
+var timerID;
 
+exports.dim = function(context, interval) {
+	var brightness = android.provider.Settings.System.getInt(context.getContentResolver(),
+        android.provider.Settings.System.SCREEN_BRIGHTNESS) / 255;
+	overlayParams.screenBrightness = brightness;
 
-function initDimmer() {
-	BACKGROUND.setAlpha(1);
-	var overlayView = new OverlayView(context);
-    windowManager.addView(overlayView, overlayParams);
-    overlays.push(overlayView);
-}
+	overlay = new OverlayView(context);
+	windowManager.addView(overlay, overlayParams);
 
-
-function dim() {
-	var alphaToSet = BACKGROUND.getAlpha() + 1;
-	if (alphaToSet > 255) {
-		alphaToSet = 255;
-	}
-	BACKGROUND.setAlpha(alphaToSet);
-	var newView = new OverlayView(context);
-	windowManager.addView(newView, overlayParams);
-	overlays.push(newView);
-}
-
-function removeDimmer() {
-	if (overlays.length === 0) return;
-	
-	try {
-		for (var i = 0; i < overlays.length; i++) {
-			windowManager.removeView(overlays[i]);
+	timerID = timer.setInterval(() => {
+		brightness = brightness - interval;
+		if (brightness > 0) {
+			overlayParams.screenBrightness = brightness;
+			windowManager.updateViewLayout(overlay, overlayParams);
+		} else {
+			brightness = 0;
+			overlayParams.screenBrightness = brightness;
+			windowManager.updateViewLayout(overlay, overlayParams);
+			timer.clearInterval(timerID);
+			timerID = 0;
 		}
-	} catch (e) {}
+	}, 1000);
 }
 
 
-module.exports = {
-	initDimmer,
-	dim,
-	removeDimmer
-};
+exports.removeDimmer = function() {
+	if (overlay) {
+		windowManager.removeView(overlay);
+		overlay = undefined;
+	}
 
+	if (timerID) {
+		timer.clearInterval(timerID);
+		timerID = 0;
+	}
+}
 

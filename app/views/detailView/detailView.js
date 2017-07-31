@@ -87,3 +87,11 @@ exports.pageLoaded = function(args) {
   }
   setUpDetail();
 };
+
+var application = require("application");
+var TimerOverlay = require("~/overlays/TimerOverlay");
+var DimmerOverlay = require("~/overlays/DimmerOverlay");
+application.android.on(application.AndroidApplication.activityBackPressedEvent, function (args) {
+      TimerOverlay.dismissTimer(application.android.context);
+      DimmerOverlay.removeDimmer();
+  });

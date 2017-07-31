@@ -20,7 +20,6 @@ const Toast = require('nativescript-toast');
 
 // global vars
 var context = application.android.context.getApplicationContext();
-var foregroundActivity = application.android.foregroundActivity;
 var timerID;
 
 /*
@@ -105,6 +104,7 @@ var trackUsage = function () {
     if (newPackage) {
         var now = System.currentTimeMillis();
         InterventionManager.dismissTimer(context);
+        InterventionManager.removeDimmer();
 
         // close the most recent blacklisted visit (if there was one)
         if (inBlacklistedApplication) {
@@ -130,6 +130,7 @@ var trackUsage = function () {
             InterventionManager.interventions[ID.interventionIDs.FULL_SCREEN_OVERLAY](true, currentPackage);
             InterventionManager.interventions[ID.interventionIDs.COUNTUP_TIMER_OVERLAY](true, context, currentPackage);
             InterventionManager.interventions[ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY](true, context, currentPackage);
+            InterventionManager.interventions[ID.interventionIDs.DIMMER_OVERLAY](true, context, currentPackage, 0.005);
         } else {
             // reset logging information
             startOfVisit = undefined;

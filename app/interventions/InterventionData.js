@@ -15,7 +15,8 @@ exports.interventionIDs = {
   UNLOCK_DIALOG: 13,
   USAGE_DIALOG: 14,
   DURATION_DIALOG: 15,
-  VISIT_DIALOG: 16
+  VISIT_DIALOG: 16,
+  DIMMER_OVERLAY: 17
 };
 
 //possibilities: {name: 'Look Out!', icon: 'res://ic_exclamation_bubble'}
@@ -71,7 +72,7 @@ exports.interventionDetails = [
   summary: 'Sends a pop up message with current app visit duration'
 }, { // 6
   name: 'The Clock is Ticking', 
-  icon: 'res://ic_hourglass', 
+  icon: 'res://ic_clock', 
   functionality: "Visit Length Notification", 
   description: "Sends a notification when you are on a watchlisted app telling you how long that visit has been", 
   level: 'medium',
@@ -111,7 +112,7 @@ exports.interventionDetails = [
   summary: 'Asks for confirmation before opening watchlisted apps'
 }, { // 11
   name: 'Counting on You', 
-  icon: 'res://ic_clock', 
+  icon: 'res://ic_timer', 
   functionality: "Timer Counting Up Overlay", 
   description: "Puts a flick-to-move timer in the bottom right corner of your screen counting how long you spend in an app", 
   target: 'app', 
@@ -119,7 +120,7 @@ exports.interventionDetails = [
   summary: 'Puts a timer on screen in watchlisted apps'
 }, { // 12
   name: 'The Final Countdown', 
-  icon: 'res://ic_exclamation', 
+  icon: 'res://ic_hourglass', 
   functionality: "Timer Counting Down Overlay", 
   description: "Puts a flick-to-move timer in the bottom right corner of your screen counting down until it closes the app", 
   target: 'app', 
@@ -157,4 +158,12 @@ exports.interventionDetails = [
   target: 'app', 
   level: 'medium',
   summary: ''
+}, { // 17
+  name: 'Look on the Bright Side', 
+  icon: 'res://ic_lightbulb', 
+  functionality: "Dimmer Overlay", 
+  description: "Reduce the screen brightness little by little until the screen completely dimmed", 
+  target: 'app', 
+  level: 'difficult',
+  summary: 'Dim the screen little at a time'
 }];

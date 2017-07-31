@@ -91,7 +91,9 @@ exports.showCountUpTimer = function(context) {
 	// layout params for wrapped content overlay (background clickable)
 	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
 		startX, startY, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
 	startParams.gravity = Gravity.LEFT | Gravity.TOP;
 
 	// add timer in bottom left corner
@@ -110,8 +112,8 @@ exports.showCountUpTimer = function(context) {
 
     var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
 			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, 
-	    	PixelFormat.TRANSLUCENT);
+	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 
+	    	WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
    	windowManager.addView(textView, textParams);
 
@@ -204,7 +206,8 @@ exports.showCountDownTimer = function (context, timeInMins, callback) {
 	// layout params for wrapped content overlay (background clickable)
 	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
 		startX, startY, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 	startParams.gravity = Gravity.LEFT | Gravity.TOP;
 
 	// add timer in bottom left corner
@@ -233,7 +236,8 @@ exports.showCountDownTimer = function (context, timeInMins, callback) {
 
     var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
 			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, 
+	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 	    	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
    	windowManager.addView(textView, textParams);

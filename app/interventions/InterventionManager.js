@@ -6,6 +6,7 @@ const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
 const TimerOverlay = require("~/overlays/TimerOverlay");
+const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -25,7 +26,8 @@ var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
 var notificationID = {
   GLANCE: 1000,
   UNLOCK: 2000,
-  VISIT: 3000
+  VISIT: 3000,
+  DURATION: 4000
 };
 
 // Intervention Intervals
@@ -38,15 +40,12 @@ var GLANCES_NOTIF_INTERVAL = 35; // glances
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
-var COUNT_UP_TIMER_INTERVAL = 6;
-var COUNT_DOWN_TIMER_INTERVAL = 9;
+var COUNT_UP_TIMER_INTERVAL = 12;
+var COUNT_DOWN_TIMER_INTERVAL = 16;
+var DIMMER_OVERLAY_INTERVAL = 1;
 var MIN_IN_MS = 60000;
 
 var shouldPersonalize = function() {
-  var x = Math.floor(Math.random() * 2) === 0;
-  console.warn(x);
-  return x;
-
   return Math.floor(Math.random() * 2) === 0;
 };
 
@@ -243,7 +242,7 @@ var popToastVisitLength = function (real, pkg, visitStart) {
  */
 var sendNotificationVisitLength = function (real, pkg, visitStart) {
   if (!real) {
-    NotificationUtil.sentNotification(context, "Facebook Visit Length", "You've been using Facebook for 10 minutes", notificationID.GLANCE);
+    NotificationUtil.sendNotification(context, "Facebook Visit Length", "You've been using Facebook for 10 minutes", notificationID.DURATION);
     return;
   }
 
@@ -254,7 +253,7 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
       var title = applicationName + " Visit Length";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " been using " + applicationName + " for " + Math.ceil(DURATION_NOTIF_INTERVAL / MIN_IN_MS) + " minutes";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
+      NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION);
       sentNotification = true;
     }
   }
@@ -306,9 +305,12 @@ var stopVideoBlocking = function () {
 // callback function for audioFocusListener
 var foreground = application.android.foregroundActivity;
 var exitToHome = function () {
-  var toHome = new Intent(Intent.ACTION_MAIN);
-  toHome.addCategory(Intent.CATEGORY_HOME);
-  foreground.startActivity(toHome); // THIS LINE IS BUGGY (when the app is killed, undefined foregroundActivity)
+  // if statement to protect if the foreground activity becomes null (after a crash)
+  if (foreground) {
+    var toHome = new Intent(Intent.ACTION_MAIN);
+    toHome.addCategory(Intent.CATEGORY_HOME);
+    foreground.startActivity(toHome); 
+  }
 };
 
 
@@ -336,6 +338,13 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  *        OVERLAY INTERVENTIONS        *
  ***************************************/
 
+
+/**
+ * showFullScreenOverlay
+ * ---------------------
+ * Present a full screen overlay with two buttons (positive
+ * and negative). Overlay disappears on click. 
+ */
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay(context, "Continue to Faceook?", 
@@ -358,13 +367,20 @@ var showFullScreenOverlay = function (real, pkg) {
 }
 
 
+/*
+ * showCountUpTimer
+ * ----------------
+ * Display an overlaid timer (initially in the bottom 
+ * right corner) that counts up. Timer is flickable.
+ * Call dismissTimer to get rid of display. 
+ */
 var showCountUpTimer = function (real, ctx, pkg) {
   if (!real) {
     dismissTimer(context);
     TimerOverlay.showCountUpTimer(context);
     const id = Timer.setTimeout(() => {
         dismissTimer(context);
-    }, 11000);
+    }, 6000);
 
     return;
   }
@@ -378,10 +394,18 @@ var showCountUpTimer = function (real, ctx, pkg) {
   }
 }
 
+
+/*
+ * showCountDownTimer
+ * ------------------
+ * Display an overlaid timer (initially in the bottom 
+ * right corner) that counts down. Timer is flickable.
+ * Call dismissTimer to get rid of display. 
+ */
 var showCountDownTimer = function (real, ctx, pkg) {
   if (!real) {
     dismissTimer(context);
-    TimerOverlay.showCountDownTimer(context, (1/6), null);
+    TimerOverlay.showCountDownTimer(context, (1/12), null);
     return;
   }
 
@@ -394,8 +418,42 @@ var showCountDownTimer = function (real, ctx, pkg) {
 }
 
 
+/*
+ * dismissTimer
+ * ------------
+ * Removes timer from screen, if there is one present.
+ */
 var dismissTimer = function (context) {
   TimerOverlay.dismissTimer(context);
+}
+
+
+/*
+ * dimScreen
+ * ---------
+ * Display an overlaid timer (initially in the bottom 
+ * right corner) that counts up. Timer is flickable.
+ * Call dismissTimer to get rid of display. 
+ */
+var dimScreen = function (real, ctx, pkg, duration) {
+  if (!real) {
+    DimmerOverlay.dim(context, 0.2);
+    Timer.setTimeout(() => {
+        removeDimmer();
+    }, 6500);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.DIMMER_OVERLAY, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits % DIMMER_OVERLAY_INTERVAL === 0) {
+      DimmerOverlay.dim(ctx, duration);
+    }
+  }
+}
+
+var removeDimmer = function (context) {
+  DimmerOverlay.removeDimmer();
 }
 
 
@@ -413,11 +471,17 @@ module.exports = {
     blockVideo,
     showFullScreenOverlay,
     showCountUpTimer,
-    showCountDownTimer
+    showCountDownTimer,
+    null,
+    null,
+    null,
+    null,
+    dimScreen
   ], 
   allowVideoBlocking,
   logVisitStart,
-  dismissTimer
+  dismissTimer,
+  removeDimmer
 };
 
 

@@ -31,9 +31,8 @@ function checkActionUsagePermission() {
  * allow permission to usage statistics.
  */
 function launchActionUsageIntent() {
-	var foregroundActivity = application.android.foregroundActivity;
 	var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-	foregroundActivity.startActivity(int);	
+	application.android.foregroundActivity.startActivity(int);
 }
 
 
@@ -60,9 +59,8 @@ function checkSystemOverlayPermission() {
  * allow permission to draw system overlays.
  */
 function launchSystemOverlayIntent() {
-	var foregroundActivity = application.android.foregroundActivity;
 	var int = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-	foregroundActivity.startActivity(int);	
+	application.android.foregroundActivity.startActivity(int);
 }
 
 
