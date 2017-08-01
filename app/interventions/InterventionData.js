@@ -141,7 +141,7 @@ exports.interventionDetails = [
   style: 'overlay'
 }, { // 13
   name: 'En Garde', 
-  icon: 'res://ic_eye', 
+  icon: 'res://ic_shield', 
   functionality: "Unlocks Dialog", 
   description: "Shows a dialog telling you how many times you've unlocked your phone so far today", 
   target: 'phone', 
@@ -150,7 +150,7 @@ exports.interventionDetails = [
   style: 'dialog'
 }, { // 14
   name: 'All in All', 
-  icon: 'res://ic_eye', 
+  icon: 'res://ic_infinity', 
   functionality: "App Usage Dialog", 
   description: "Shows a dialog telling you the total amount of time you've spent on a certain app today", 
   target: 'app', 
@@ -159,7 +159,7 @@ exports.interventionDetails = [
   style: 'dialog'
 }, { // 15
   name: 'Long Story Short', 
-  icon: 'res://ic_eye', 
+  icon: 'res://ic_book', 
   functionality: "Visit Duration Dialog", 
   description: 'Shows a dialog telling you how long the visit to the current app has lasted', 
   target: 'app', 
@@ -168,7 +168,7 @@ exports.interventionDetails = [
   style: 'dialog'
 }, { // 16
   name: 'Man Overboard!', 
-  icon: 'res://ic_eye', 
+  icon: 'res://ic_rowing', 
   functionality: "Visit Count Dialog", 
   description: "Shows a dialog displaying the number of times you have visited an app today", 
   target: 'app', 
