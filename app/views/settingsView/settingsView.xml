@@ -1,4 +1,4 @@
-<Page loaded="pageLoaded" 
+<Page loaded="pageLoaded" id="settings"
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer" 
   xmlns:sidedrawer="shared/sd">

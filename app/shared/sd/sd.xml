@@ -3,24 +3,24 @@
 		<Image src="res://ic_inline_logo_text" class="sd-icon" row="1"/>
 	</GridLayout>
 	<StackLayout class="sidedrawer-content">
-		<StackLayout orientation="horizontal" class="side-option" tap="goToProgress" id="progress-option" >
-			<Image class="side-icon" src="res://ic_progress" id="progress" />
+		<StackLayout orientation="horizontal" class="side-option" id="progress-option" >
+			<Image class="side-icon" src="res://ic_progress" id="progress-icon" />
 			<Label text="Progress" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" tap="goToGoals" id="goals-option" >
-			<Image class="side-icon" src="res://ic_goals" id="goals" />
+		<StackLayout orientation="horizontal" class="side-option" id="goals-option" >
+			<Image class="side-icon" src="res://ic_goals" id="goals-icon" />
 			<Label text="Goals" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" tap="goToNudges" id="nudges-option" >
-			<Image class="side-icon" src="res://ic_nudges" id="nudges" />
+		<StackLayout orientation="horizontal" class="side-option" id="nudges-option" >
+			<Image class="side-icon" src="res://ic_nudges" id="nudges-icon" />
 			<Label text="Nudges" class="side-label" id='lined-option'/>
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" tap="goToSettings" id="settings-option" >
-			<Image class="side-icon" src="res://ic_settings" id="settings" />
+		<StackLayout orientation="horizontal" class="side-option" id="settings-option" >
+			<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
 			<Label text="Settings" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" tap="goToFeedback" id="feedback-option" >
-			<Image class="side-icon" src="res://ic_feedback" id="feedback" />
+		<StackLayout orientation="horizontal" class="side-option" id="feedback-option" >
+			<Image class="side-icon" src="res://ic_feedback" id="feedback-icon" />
 			<Label text="Feedback" class="side-label" />
 		</StackLayout>
 	</StackLayout>

@@ -1,52 +1,36 @@
 var frameModule = require("ui/frame");
 var menu;
-var selected;
-var options = ['progress-option', 'goals-option', 'settings-option', 'nudges-option', 'feedback-option'];
+var onClicksSet;
+var options = ['progress', 'goals', 'settings', 'nudges', 'feedback'];
 
-exports.onLoaded = function(args) {
-  menu = args.object;
-  resetSelected();
-};
+var setOnTouches = function() {
 
-var resetSelected = function() {
   options.forEach(function (item) {
-    if (item !== selected) {
-      menu.getViewById(item).backgroundColor = "#FFFFFF";
-    } else {
-      menu.getViewById(item).backgroundColor = "#F5F5F5";
-    }
+    var opt = menu.getViewById(item + '-option');
+    opt.backgroundColor = menu.page.id === item ? '#F5F5F5' : '#FFFFFF';
+
+    opt.off("touch");
+    opt.on("touch", function (args) {
+      if (args.action === 'down') {
+        opt.backgroundColor = '#DCDCDC';
+
+      } else if (args.action === 'cancel') {
+        if (item === menu.page.id) {
+          opt.backgroundColor = "#F5F5F5"
+        } else {
+          opt.backgroundColor = '#FFFFFF';
+        }
+      } else if (args.action === 'up') {
+        if (item === 'nudges') {
+          item = 'interventions';
+        }
+        frameModule.topmost().navigate("views/" + item + 'View/' + item + 'View');
+      }
+    });
   });
 };
 
-var setSelected =  function(name) {
-  selected = name + '-option';
-  resetSelected();
+exports.onLoaded = function(args) {
+  menu = args.object;
+  setOnTouches();
 };
-
-exports.goToProgress = function() {
-  setSelected('progress');
-  frameModule.topmost().navigate("views/progressView/progressView");
-};
-
-
-exports.goToGoals = function() {
-  setSelected('goals');
-  frameModule.topmost().navigate("views/goalsView/goalsView");
-};
-
-
-exports.goToSettings = function() {
-  setSelected('settings');
-  frameModule.topmost().navigate("views/settingsView/settingsView");
-};
-
-
-exports.goToNudges = function() {
-  setSelected('nudges');
-  frameModule.topmost().navigate("views/interventionsView/interventionsView");
-};
-
-exports.goToFeedback = function() {
-  setSelected('feedback');
-  frameModule.topmost().navigate("views/feedbackView/feedbackView");
-}
