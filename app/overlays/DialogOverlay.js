@@ -152,27 +152,25 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 
 
 exports.removeTwoOptionDialog = function () {
-	console.warn("here");
 	if (twoOptionView) {
 		windowManager.removeView(twoOptionView);
 		twoOptionView = undefined;
 	}
-	console.warn("here");
+
 	if (twoOptionText) {
 		windowManager.removeView(twoOptionText);
 		twoOptionText = undefined;
 	}
-	console.warn("here");
+
 	if (twoOptionPosButton) {
 		windowManager.removeView(twoOptionPosButton);
 		twoOptionPosButton = undefined;
 	}
-	console.warn("here");
+
 	if (twoOptionNegButton) {
 		windowManager.removeView(twoOptionNegButton);
 		twoOptionNegButton = undefined;
 	}
-	console.warn("here");
 }
 
 
