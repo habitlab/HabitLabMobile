@@ -34,12 +34,12 @@ var UnlockReceiver = android.content.BroadcastReceiver.extend({
             timePhoneTurnedOn = System.currentTimeMillis();
             StorageUtil.glanced();
             InterventionManager.interventions[ID.interventionIDs.GLANCE_NOTIFICATION](true);
-            // InterventionManager.interventions[ID.interventionIDs.GLANCE_TOAST](true);
         } else if (action === Intent.ACTION_USER_PRESENT) {
             TrackingService.alertScreenOn();
             StorageUtil.unlocked();
             InterventionManager.interventions[ID.interventionIDs.UNLOCK_NOTIFICATION](true);
             InterventionManager.interventions[ID.interventionIDs.UNLOCK_TOAST](true);
+            InterventionManager.interventions[ID.interventionIDs.UNLOCK_DIALOG](true);
         } else if (action === Intent.ACTION_SCREEN_OFF) {
             TrackingService.alertScreenOff();
 

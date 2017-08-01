@@ -141,6 +141,7 @@ var trackUsage = function () {
         // interventions that last the lifespan of visit
         InterventionManager.interventions[ID.interventionIDs.DURATION_TOAST](true, currentPackage, startOfVisit);
         InterventionManager.interventions[ID.interventionIDs.DURATION_NOTIFICATION](true, currentPackage, startOfVisit);
+        InterventionManager.interventions[ID.interventionIDs.DURATION_DIALOG](true, currentPackage, startOfVisit);
         InterventionManager.interventions[ID.interventionIDs.VIDEO_BLOCKER](true, currentPackage);
     }
 };

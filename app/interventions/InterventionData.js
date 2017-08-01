@@ -173,7 +173,7 @@ exports.interventionDetails = [
   description: "Shows a dialog displaying the number of times you have visited an app", 
   target: 'app', 
   level: 'medium',
-  summary: 'Shows a dialog with your app visits count'
+  summary: 'Shows a dialog with your app visits count',
   style: 'dialog'
 }, { // 17
   name: 'Look on the Bright Side', 

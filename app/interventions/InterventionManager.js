@@ -30,21 +30,27 @@ var notificationID = {
   DURATION: 4000
 };
 
-// Intervention Intervals
+// Intervention Intervals - Unlock/Glances
+var UNLOCKS_TOAST_INTERVAL = 10; // unlocks
+var UNLOCKS_NOTIF_INTERVAL = 15; // unlocks
+var UNLOCKS_DIALOG_INTERVAL = 25; // unlocks
+var GLANCES_NOTIF_INTERVAL = 35; // glances
+var GLANCES_TOAST_INTERVAL = 1; // glances
+
+
+// Intervention Intervals - On Launch
 var VISITED_TOAST_INTERVAL = 5; // visits
 var VISITED_NOTIF_INTERVAL = 10; // visits
 var VISITED_DIALOG_INTERVAL = 15; // visits
-var UNLOCKS_TOAST_INTERVAL = 15; // unlocks
-var GLANCES_TOAST_INTERVAL = 20; // glances
-var UNLOCKS_NOTIF_INTERVAL = 25; // unlocks
-var GLANCES_NOTIF_INTERVAL = 35; // glances
-var UNLOCKS_DIALOG_INTERVAL = 40; // unlocks
-var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
-var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
-var COUNT_UP_TIMER_INTERVAL = 12;
-var COUNT_DOWN_TIMER_INTERVAL = 16;
-var DIMMER_OVERLAY_INTERVAL = 23;
+var COUNT_UP_TIMER_INTERVAL = 17;
+var COUNT_DOWN_TIMER_INTERVAL = 23;
+var DIMMER_OVERLAY_INTERVAL = 24;
+
+var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
+var DURATION_NOTIF_INTERVAL = 600000; // 10 minutes (in ms)
+var DURATION_DIALOG_INTERVAL = 900000; // 15 minutes (in ms)
+
 var MIN_IN_MS = 60000;
 
 var shouldPersonalize = function() {
@@ -250,6 +256,7 @@ var popToastGlanced = function(real) {
 // logging vars
 var sentToast = false;
 var sentNotification = false;
+var sentDialog = false;
 
 /**
  * logOpenTime
@@ -260,6 +267,7 @@ var sentNotification = false;
 var logVisitStart = function() {
   sentToast = false;
   sentNotification = false;
+  sentDialog = false;
 };
 
 
@@ -309,6 +317,27 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
     }
   }
 };
+
+
+
+var showDialogVisitLength = function (real, pkg, visitStart) {
+  if (!real) {
+    DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay");
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_NOTIFICATION, pkg)) {
+    var now = System.currentTimeMillis();
+    if ((now - visitStart) > DURATION_DIALOG_INTERVAL && !sentDialog) {
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = applicationName + " Visit Length";
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " been using " + applicationName + " for " + Math.ceil(DURATION_NOTIF_INTERVAL / MIN_IN_MS) + " minutes";
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+      sentDialog = true;
+    }
+  }
+}
 
 
 /*************************************
@@ -525,7 +554,7 @@ module.exports = {
     showCountDownTimer,
     showUnlocksDialog,
     null,
-    null,
+    showDialogVisitLength,
     showDialogVisited,
     dimScreen
   ], 
