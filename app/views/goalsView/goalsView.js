@@ -175,5 +175,9 @@ exports.onDone = function() {
 
 
 exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
+  if (!StorageUtil.isOnboarded()) {
+    fancyAlert.TNSFancyAlert.showError("Last Step!", "Click done to finish setting up HabitLab!", "Got It!");
+  } else {
+    drawer.toggleDrawerState();
+  }
 };
