@@ -7,47 +7,20 @@ var PendingIntent = android.app.PendingIntent;
 var Intent = android.content.Intent;
 var context = application.android.context.getApplicationContext();
 
-var sendNotification = function(context, title, msg, id) {
+exports.sendNotification = function(context, title, msg, id) {
 	var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
     var notificationBuilder = new NotificationCompat.Builder(context);
+
     var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
+
+    var notificationIntent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
+    notificationBuilder.setContentIntent(PendingIntent.getActivity(context, 14, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK));
+    
     notificationBuilder.setSmallIcon(icon_id);
     notificationBuilder.setContentTitle(title)
     notificationBuilder.setContentText(msg);
     notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
     notificationBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
     notificationManager.notify(id, notificationBuilder.build());
-};
-
-var sendNotificationWithOptions = function(context, title, msg, id) {
-    var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
-    var notificationBuilder = new NotificationCompat.Builder(context);
-    var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
-    notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
-    notificationBuilder.setSmallIcon(icon_id);
-    notificationBuilder.setContentTitle(title)
-    notificationBuilder.setContentText(msg);
-    notificationBuilder.setColor(android.graphics.Color.HSVToColor(notificationColor));
-    notificationBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
-
-    var posIntent = new Intent("action.habitlab.NotificationPositive");
-    var negIntent = new Intent("action.habitlab.NotificationNegative");
-
-    var posPendingIntent = PendingIntent.getBroadcast(context, 0, posIntent, 0);
-    var negPendingIntent = PendingIntent.getBroadcast(context, 0, negIntent, 0);
-
-    var icon = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
-    notificationBuilder.addAction(icon, "Yes", posPendingIntent);
-    notificationBuilder.addAction(icon, "No", negPendingIntent);
-
-    notificationManager.notify(id, notificationBuilder.build());
-}
-
-
-
-module.exports = {
-    sendNotification, 
-    sendNotificationWithOptions
-};
-            
+};     
