@@ -39,14 +39,9 @@ var createItem = function(pkg)  {
 };
 
 var setUpDetail = function() {
-<<<<<<< HEAD
   if (page.getViewById('list').getChildAt(0)) { return; }
 
-
-  page.getViewById('title').text = ID.interventionDetails[id].name;
-=======
   page.getViewById('title').text = info.name;
->>>>>>> a46b0ba43a8f017a2e166228dca570b07edcbd47
   var desc = page.getViewById('description');
   desc.text = info.description;
   desc.textWrap = true;
