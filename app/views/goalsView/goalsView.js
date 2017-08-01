@@ -75,10 +75,6 @@ var setUpPhoneGoals = function() {
   });
 };
 
-exports.setFakeData = function() {
-  StorageUtil.setUpFakeDB();
-};
-
 var createAppGoal = function(pkg) {
   var item = builder.load({
     path: 'shared/goalelem',

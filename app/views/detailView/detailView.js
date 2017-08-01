@@ -7,7 +7,6 @@ var gestures = require('ui/gestures').GestureTypes;
 
 var drawer;
 var page;
-var id;
 var info;
 
 var createItem = function(pkg)  {
@@ -30,9 +29,9 @@ var createItem = function(pkg)  {
   icon.className = 'detail-icon';
   
   var sw = item.getViewById("switch");
-  sw.checked = StorageUtil.isEnabledForApp(id, pkg);
+  sw.checked = StorageUtil.isEnabledForApp(info.id, pkg);
   sw.on(gestures.tap, function() {
-    StorageUtil.toggleForApp(id, pkg);
+    StorageUtil.toggleForApp(info.id, pkg);
   });
 
   return item;
@@ -52,7 +51,7 @@ var setUpDetail = function() {
   levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {
-    IM.interventions[id]();
+    IM.interventions[info.id]();
   });
 
   if (info.target === 'phone') {
@@ -84,7 +83,6 @@ exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
   if (page.navigationContext) {
-    id = page.navigationContext.id;
     info = page.navigationContext.info;
   }
   setUpDetail();
