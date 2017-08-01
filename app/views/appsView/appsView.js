@@ -73,7 +73,11 @@ exports.pageLoaded = function(args) {
 };
 
 exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
+  if (!StorageUtil.isOnboarded()) {
+    fancyAlert.TNSFancyAlert.showError("Almost done!", "Click done to set up your watchlist!", "Got It!");
+  } else {
+    drawer.toggleDrawerState();
+  }
 };
 
 exports.onDone = function() {
@@ -102,6 +106,5 @@ exports.onDone = function() {
     fancyAlert.TNSFancyAlert.showSuccess("Last step!", "Set goals for your phone and app usage.", "Got it!");
   } 
 
- 
   frame.topmost().navigate(options);
 };
