@@ -15,7 +15,7 @@ var page;
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
 
-  var newNum = parseInt(num) - 5
+  var newNum = parseInt(num) - 5;
   if (add) {
     newNum += 10;
   }
@@ -49,17 +49,17 @@ var createPhoneGoal = function(goal, value) {
 
   var number = np.getViewById('number');
   number.text = value;
-
-  np.getViewById('plus').on(gestures.tap, function() {
-    var newNum = getGoal(number.text, true);
-    number.text = newNum;
+  number.on("unloaded", function (args) {
+    var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changePhoneGoal(newNum, goal);
   });
 
+  np.getViewById('plus').on(gestures.tap, function() {
+    number.text = getGoal(number.text, true);
+  });
+
   np.getViewById('minus').on(gestures.tap, function() {
-    var newNum = getGoal(number.text, false);
-    number.text = newNum;
-    StorageUtil.changePhoneGoal(newNum, goal);
+    number.text = getGoal(number.text, false);
   });
 
   return item;
@@ -73,10 +73,6 @@ var setUpPhoneGoals = function() {
   Object.keys(phoneGoals).forEach(function(key) {
     phoneSection.addChild(createPhoneGoal(key, phoneGoals[key]));
   });
-};
-
-exports.setFakeData = function() {
-  StorageUtil.setUpFakeDB();
 };
 
 var createAppGoal = function(pkg) {
@@ -122,16 +118,17 @@ var createAppGoal = function(pkg) {
   var number = np.getViewById('number');
   number.text = goal;
 
-  np.getViewById('plus').on(gestures.tap, function() {
-    var newNum = getGoal(number.text, true);
-    number.text = newNum;
+  number.on("unloaded", function (args) {
+    var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
   });
 
+  np.getViewById('plus').on(gestures.tap, function() {
+    number.text = getGoal(number.text, true);
+  });
+
   np.getViewById('minus').on(gestures.tap, function() {
-    var newNum = getGoal(number.text, false);
-    number.text = newNum;
-    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
+    number.text = getGoal(number.text, false);
   });
 
   return item;

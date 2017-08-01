@@ -22,7 +22,8 @@ exports.interventionIDs = {
 //possibilities: {name: 'Look Out!', icon: 'res://ic_exclamation_bubble'}
 
 exports.interventionDetails = [
-{ // 0
+{
+  id: 0,
   name: 'Easy on the Eyes',
   icon: 'res://ic_eye', 
   functionality: "Glances Notification", 
@@ -31,7 +32,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends notification with your glance count for the day',
   style: 'notification'
-}, { // 1
+}, {
+  id: 1,
   name: 'Knock Knock', 
   icon: 'res://ic_smile', 
   functionality: "Unlocks Toast", 
@@ -40,7 +42,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends pop up with your glance count for the day',
   style: 'toast'
-}, { // 2
+}, {
+  id: 2,
   name: 'Hello, Old Friend', 
   icon: 'res://ic_hand', 
   functionality: "Unlocks Notification", 
@@ -49,7 +52,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends notification with your unlock count for the day',
   style: 'notification'
-}, { // 3
+}, {
+  id: 3,
   name: 'Progress Report', 
   icon: 'res://ic_clipboard', 
   functionality: "App Usage Toast", 
@@ -58,7 +62,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: "Sends pop up with today's total usage for a certain app",
   style: 'toast'
-}, { // 4
+}, {
+  id: 4,
   name: 'Red Alert!', 
   icon: 'res://ic_alert', 
   functionality: "App Usage Notification", 
@@ -67,7 +72,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: "Sends notification with today's total usage for a certain app",
   style: 'notification'
-}, { // 5
+}, {
+  id: 5,
   name: 'How Time Flies!', 
   icon: 'res://ic_plane', 
   functionality: "Visit Length Toast", 
@@ -76,7 +82,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends a pop up message with current app visit duration',
   style: 'toast'
-}, { // 6
+}, {
+  id: 6,
   name: 'The Clock is Ticking', 
   icon: 'res://ic_clock', 
   functionality: "Visit Length Notification", 
@@ -84,7 +91,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: 'Sends a notification with current app visit duration',
   style: 'notification'
-}, { // 7
+}, {
+  id: 7,
   name: 'At it Again', 
   icon: 'res://ic_history', 
   functionality: "Visits Toast", 
@@ -93,7 +101,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends a pop up with your app visit count',
   style: 'toast'
-}, { // 8
+}, {
+  id: 8,
   name: 'Repeat Offender', 
   icon: 'res://ic_repeat', 
   functionality: "Visits Notification", 
@@ -102,7 +111,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: 'Sends a notification with your app visit count',
   style: 'notification'
-}, { // 9
+}, {
+  id: 9,
   name: 'Block-Buster', 
   icon: 'res://ic_videocam', 
   functionality: "Video Pause Overlay", 
@@ -112,7 +122,8 @@ exports.interventionDetails = [
   apps: ['com.facebook.katana', 'com.google.android.youtube'],
   summary: 'Asks for confirmation before playing videos',
   style: 'overlay'
-}, { // 10
+}, {
+  id: 10,
   name: 'No Peeking!', 
   icon: 'res://ic_key', 
   functionality: "Full Screen Overlay", 
@@ -121,7 +132,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Asks for confirmation before opening watchlisted apps',
   style: 'overlay'
-}, { // 11
+}, {
+  id: 11,
   name: 'Counting on You', 
   icon: 'res://ic_timer', 
   functionality: "Timer Counting Up Overlay", 
@@ -130,7 +142,8 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Puts a timer on screen in watchlisted apps',
   style: 'overlay'
-}, { // 12
+}, {
+  id: 12,
   name: 'The Final Countdown', 
   icon: 'res://ic_hourglass', 
   functionality: "Timer Counting Down Overlay", 
@@ -139,7 +152,8 @@ exports.interventionDetails = [
   level: 'hard',
   summary: "On screen timer that closes the app when time runs out",
   style: 'overlay'
-}, { // 13
+}, {
+  id: 13,
   name: 'En Garde', 
   icon: 'res://ic_shield', 
   functionality: "Unlocks Dialog", 
@@ -148,7 +162,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: "Pops a dialog with the day's total unlock count",
   style: 'dialog'
-}, { // 14
+}, {
+  id: 14,
   name: 'All in All', 
   icon: 'res://ic_infinity', 
   functionality: "App Usage Dialog", 
@@ -157,7 +172,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: "Pops a dialog with the day's total time on the current app",
   style: 'dialog'
-}, { // 15
+}, {
+  id: 15,
   name: 'Long Story Short', 
   icon: 'res://ic_book', 
   functionality: "Visit Duration Dialog", 
@@ -166,7 +182,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: "Pops a dialog with the visit time for the current app",
   style: 'dialog'
-}, { // 16
+}, {
+  id: 16,
   name: 'Man Overboard!', 
   icon: 'res://ic_rowing', 
   functionality: "Visit Count Dialog", 
@@ -175,7 +192,8 @@ exports.interventionDetails = [
   level: 'medium',
   summary: 'Shows a dialog with your app visits count',
   style: 'dialog'
-}, { // 17
+}, {
+  id: 17,
   name: 'Look on the Bright Side', 
   icon: 'res://ic_lightbulb', 
   functionality: "Dimmer Overlay", 

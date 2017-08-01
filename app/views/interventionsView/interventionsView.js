@@ -11,13 +11,13 @@ var drawer;
 var page;
 var interventionList;
 
-var createItem = function(info, id)  {
+var createItem = function(info)  {
   var item = builder.load({
     path: 'shared/detailelem',
     name: 'detailelem'
   });
 
-  item.id = 'item' + id;
+  item.id = 'item' + item.id;
   item.className = 'intervention-grid';
   item.getViewById('firstrow').className = info.level + '-level';
   
@@ -34,7 +34,6 @@ var createItem = function(info, id)  {
       var options = {
         moduleName: 'views/detailView/detailView',
         context: {
-          id: id,
           info: info
         }
       };
@@ -49,9 +48,9 @@ var createItem = function(info, id)  {
   });
 
   var sw = item.getViewById("switch");
-  sw.checked = StorageUtil.isEnabledForAll(id);
+  sw.checked = StorageUtil.isEnabledForAll(info.id);
   sw.on(gestures.tap, function() {
-    StorageUtil.toggleForAll(id);
+    StorageUtil.toggleForAll(info.id);
   });
 
   return item;
@@ -68,19 +67,15 @@ var setUpList = function() {
   layouts['overlay'] = page.getViewById("overlay-interventions");
   layouts['overlay'].removeChildren();
 
-  var order = {
-    easy: 0,
-    medium: 1,
-    hard: 2
-  };
-  interventionList = ID.interventionDetails.filter(function (item, index) {
-    return IM.interventions[index];
-  }).sort(function (a, b) {
+  var order = {easy: 0, medium: 1, hard: 2};
+  interventionList = ID.interventionDetails.sort(function (a, b) {
     return order[a.level] - order[b.level];
   });
 
   interventionList.forEach(function (item, index) {
-    layouts[item.style].addChild(createItem(item, index));
+    if (IM.interventions[item.id]) {
+      layouts[item.style].addChild(createItem(item));
+    }
   });
 
 };

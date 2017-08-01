@@ -23,7 +23,7 @@ onboarding.texts = [
   'Choose the apps you want to spend less time on.',
   'Build better habits with personalized interventions.',
   'Find what works for you and see how your habits improve over time.',
-  'Allow HabitLab to access your app data',
+  'First things first...',
   'Last one!',
   'Swipe to pick your apps.\n'
 

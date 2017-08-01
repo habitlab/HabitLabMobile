@@ -1,4 +1,6 @@
-<Page actionBarHidden="true" class="onboarding" loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
+<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
+  actionBarHidden="true" 
+  class="onboarding" 
   xmlns:Slides="nativescript-slides"  xmlns:VideoPlayer="nativescript-videoplayer">
   <StackLayout orientation='vertical'>
     <Slides:SlideContainer id="slides" pageIndicators="true" height="96%" disablePan="true">
