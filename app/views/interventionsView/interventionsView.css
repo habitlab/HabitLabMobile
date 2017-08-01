@@ -10,19 +10,11 @@
   padding: 10%;
 }
 
-.intervention-grid-selected {
-  border-color: lightgray;
-  border-bottom-width: 1px;
-  padding: 10%;
-  /*background-color: #F5F5F5;*/
-}
-
-.title {
-  font-size: 24%;
-  padding-bottom: 10%;
-  padding-top: 10%;
-  text-align: center;
+.nudges-section-title {
+  font-size: 22%;
   color: #FFA730;
+  padding-top: 10%;
+  padding-left: 10%;
 }
 
 .intervention-icon {
@@ -36,15 +28,15 @@
 
 .easy-level {
   border-color: green;
-  border-left-width: 5px;
+  border-left-width: 10px;
 }
 
 .medium-level {
   border-color: orange;
-  border-left-width: 5px;
+  border-left-width: 10px;
 }
 
-.difficult-level {
+.hard-level {
   border-color: red;
-  border-left-width: 5px;
+  border-left-width: 10px;
 }

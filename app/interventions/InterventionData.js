@@ -127,7 +127,7 @@ exports.interventionDetails = [
   level: 'difficult',
   summary: "On screen timer that closes the app when time runs out"
 }, { // 13
-  name: '', 
+  name: 'En Garde', 
   icon: 'res://ic_eye', 
   functionality: "Unlocks Dialog", 
   description: "", 
@@ -151,13 +151,13 @@ exports.interventionDetails = [
   level: 'medium',
   summary: ''
 }, { // 16
-  name: '', 
+  name: 'Man Overboard!', 
   icon: 'res://ic_eye', 
   functionality: "Visit Count Dialog", 
-  description: "", 
+  description: "Shows a dialog displaying the number of times you have visited an app", 
   target: 'app', 
   level: 'medium',
-  summary: ''
+  summary: 'Shows a dialog with your app visits count'
 }, { // 17
   name: 'Look on the Bright Side', 
   icon: 'res://ic_lightbulb', 

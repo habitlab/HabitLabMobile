@@ -103,8 +103,7 @@ var trackUsage = function () {
     var newPackage = getActivePackage();
     if (newPackage) {
         var now = System.currentTimeMillis();
-        InterventionManager.dismissTimer(context);
-        InterventionManager.removeDimmer();
+        InterventionManager.removeOverlays();
 
         // close the most recent blacklisted visit (if there was one)
         if (inBlacklistedApplication) {
@@ -127,10 +126,11 @@ var trackUsage = function () {
             InterventionManager.logVisitStart();
             InterventionManager.interventions[ID.interventionIDs.VISIT_TOAST](true, currentPackage);
             InterventionManager.interventions[ID.interventionIDs.VISIT_NOTIFICATION](true, currentPackage);
+            InterventionManager.interventions[ID.interventionIDs.VISIT_DIALOG](true, currentPackage);
             InterventionManager.interventions[ID.interventionIDs.FULL_SCREEN_OVERLAY](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.COUNTUP_TIMER_OVERLAY](true, context, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY](true, context, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.DIMMER_OVERLAY](true, context, currentPackage, 0.005);
+            InterventionManager.interventions[ID.interventionIDs.COUNTUP_TIMER_OVERLAY](true, currentPackage);
+            InterventionManager.interventions[ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY](true, currentPackage);
+            InterventionManager.interventions[ID.interventionIDs.DIMMER_OVERLAY](true, currentPackage);
         } else {
             // reset logging information
             startOfVisit = undefined;

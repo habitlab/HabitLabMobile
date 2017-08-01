@@ -1,4 +1,4 @@
-var app = require("application");
+var application = require("application");
 var timer = require("timer");
 
 // native APIs
@@ -30,18 +30,23 @@ var BORDER_WIDTH = 0.01 * TIMER_WIDTH;
  *          PAINTS            *                           
  ******************************/
 
- var timerFill = "#E71D36";
+var timerFills = ["#FFA730", "#E71D36", "#2EC4B6", "#72e500", "#011627"];
 
 var TIMER_FILL = new Paint();
 TIMER_FILL.setColor(Color.WHITE); // default
 
 var BORDER = new Paint();
-BORDER.setColor(Color.parseColor(timerFill));
+BORDER.setColor(Color.parseColor(timerFills[0]));
 BORDER.setStyle(Paint.Style.STROKE);
 BORDER.setStrokeWidth(BORDER_WIDTH);
 
 var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.parseColor(timerFill));
+ICON_FILL.setColor(Color.parseColor(timerFills[0]));
+
+
+var context = application.android.context;
+var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
+
 
 // Custom DialogView 
 var DialogView = android.view.View.extend({
@@ -57,9 +62,9 @@ var DialogView = android.view.View.extend({
 			TIMER_HEIGHT - BORDER_WIDTH, ICON_FILL);
 
 		// add icon
-		var icon_id = app.android.context.getResources().getIdentifier("ic_habitlab_white", 
-			"drawable", app.android.context.getPackageName());
-		var bitmap = app.android.context.getResources().getDrawable(icon_id).getBitmap();
+		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", 
+			"drawable", context.getPackageName());
+		var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
 		var newHeight = 0.75 * TIMER_HEIGHT;
 		var newWidth = newHeight * hToWRatio;
@@ -76,8 +81,8 @@ var DialogView = android.view.View.extend({
 var timerID;
 var textView;
 var view;
-
-exports.showCountUpTimer = function(context) {	
+exports.showCountUpTimer = function() {
+	changeTimerColor();	
 	var time = 0;
 
 	var timerOpen = true;
@@ -85,8 +90,6 @@ exports.showCountUpTimer = function(context) {
 	var startY = SCREEN_HEIGHT - TIMER_HEIGHT;
 	var lastX;
 	var lastY;
-
-	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
 	// layout params for wrapped content overlay (background clickable)
 	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
@@ -192,7 +195,8 @@ exports.showCountUpTimer = function(context) {
 }
 
 
-exports.showCountDownTimer = function (context, timeInMins, callback) {
+exports.showCountDownTimer = function (timeInMins, callback) {
+	changeTimerColor();
 	var time = timeInMins * 60;
 
 	var timerOpen = true;
@@ -301,7 +305,7 @@ exports.showCountDownTimer = function (context, timeInMins, callback) {
 	    var seconds = time % 60;
 
 	    if (minutes === 0 && seconds === 0) {
-			exports.dismissTimer(context);
+			exports.dismissTimer();
 			if (callback) { callback(); }
 			return;
 	    }
@@ -322,11 +326,7 @@ exports.showCountDownTimer = function (context, timeInMins, callback) {
 	}, 1000);
 }
 
-
-
-
-exports.dismissTimer = function (context) {
-	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
+exports.dismissTimer = function () {
 	if (textView) {
 		windowManager.removeView(textView);
 		textView = null;
@@ -343,3 +343,12 @@ exports.dismissTimer = function (context) {
 	}
 }
 
+
+
+function changeTimerColor() {
+	var index = Math.floor(Math.random() * 5);
+	var color = timerFills[index];
+	BORDER.setColor(Color.parseColor(color));
+	ICON_FILL.setColor(Color.parseColor(color));
+	return color;
+}

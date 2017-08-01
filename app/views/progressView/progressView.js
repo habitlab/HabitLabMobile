@@ -10,6 +10,9 @@ var imageSource = require("image-source");
 var colorModule = require("tns-core-modules/color")
 var Placeholder = require("ui/placeholder")
 var app = require("tns-core-modules/application")
+var observable = require("data/observable");
+var ObservableArray = require("data/observable-array").ObservableArray;
+var pageData = new observable.Observable();
 var context = app.android.context;
 var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
@@ -47,17 +50,17 @@ var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 var TODAY = 27;
 var page;
 var drawer;
-var observable = require("data/observable");
-var pageData = new observable.Observable();
-var ObservableArray = require("data/observable-array").ObservableArray;
+var basic;
 var progressInfo;
 var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
 var piechart;
+var barchart;
+var monthchart;
+var barchartMade = false;
 var piechartMade = false;
-var basic;
-// var dayArgs;
+var monthchartMade = false;
 
 const ServiceManager = require("~/services/ServiceManager");
 var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
@@ -66,67 +69,72 @@ var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyS
 
 
 
-exports.pageLoaded = function(args) {
-  /** SERVICE STARTER **/
-  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-    context.startService(trackingServiceIntent);
-  }
-  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-    context.startService(unlockServiceIntent);
-  }
-  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-    context.startService(dummyServiceIntent);
-  }  
-    console.warn("page loaded")
-  	drawer = page.getViewById("sideDrawer");
-    page.bindingContext = pageData;
-    progressInfo = storageUtil.getProgressViewInfo();
-
-    //Initialize all 'show/hide' buttons of the graphs
-    pageData.set("showDayGraph", true);
-    pageData.set("showWeekGraph", true);
-    pageData.set("showMonthGraph", true);
-
-    //populate all lists 
-	populateListViewsDay();
-	populateListViewsWeek();
-	populateListViewMonth();
-
-    //invalidate charts
-    if(piechartMade) {
-        //console.warn(progressInfo.appStats)
-        console.warn("invalidated")
-       exports.dayView(dayArgs);
-       // exports.pageNavigating(args);
-        // piechart.notifyDataSetChanged();
-        // piechart.invalidate();
-    }
-};
-
-
 exports.pageNavigating = function(args) {
     page = args.object;
-    console.warn("page navigated")
-
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
-
     //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
 }
 
 
-//Toggle buttons for day/week/month graphs
-exports.toggle = function () {
-    pageData.set("showDayGraph", !pageData.get("showDayGraph"));
-}
+exports.pageLoaded = function(args) {
+    checkAndStartService();
+  	drawer = page.getViewById("sideDrawer");
+    page.bindingContext = pageData;
+    progressInfo = storageUtil.getProgressViewInfo();
+    setUp();
+};
 
-exports.toggleWeek = function() {
-    pageData.set("showWeekGraph", !pageData.get("showWeekGraph"));
-}
 
-exports.toggleMonth = function() {
-    pageData.set("showMonthGraph", !pageData.get("showMonthGraph"));
+
+/************************************
+ *           DAY GRAPH             *
+ ************************************/
+
+
+
+//Creates the pie chart on the day tab --called by the placeholder
+exports.dayView = function(args) {
+    piechart = new PieChart(args.context);
+    piechartMade = true;
+    rerender_dayview()
+    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
+    piechart.notifyDataSetChanged();
+    piechart.invalidate();
+    args.view = piechart;
+
+};
+
+
+//Refresh function for the piechart
+function rerender_dayview() {
+    var entries = getDayEntries();
+    var dataset = new PieDataSet(entries, "");
+    dataset.setSliceSpace(0);
+    let dataFormatter = new IValueFormatter({
+        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+            return Math.round(value)+"";
+        }
+     })     
+    // Customize appearence of the pie chart 
+    var data = new PieData(dataset);
+    data.setValueFormatter(dataFormatter);
+    data.setValueTextSize(11);  
+    data.setValueTextColor(Color.WHITE);
+    var desc = piechart.getDescription();
+    piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+    desc.setEnabled(Description.false);
+    piechart.setDrawSliceText(false);
+    piechart.setHoleRadius(70); 
+    piechart.setTransparentCircleRadius(75);
+    piechart.setCenterText(getSpannableString());
+    var legend = piechart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+    dataset.setColors(getColors());
+
+    // Initialize and set pie chart 
+    piechart.setData(data);
 }
 
 
@@ -150,8 +158,8 @@ getDayEntries = function() {
      }
      for(var i = 0; i < min; i++) {
             if (appsToday[i].mins === 0) continue;
-            console.warn(appsToday[i].visits);
-            entries.add(new PieEntry(appsToday[i].visits, appsToday[i].name));
+            console.warn(appsToday[i].mins);
+            entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
             main += appsToday[i].mins;
      }
     if (useOther) {
@@ -167,77 +175,36 @@ getDayEntries = function() {
 
 
 
-
-
-
-
-//Creates the pie chart on the day tab
-exports.dayView = function(args) {
-    piechartMade = true;
-    dayArgs = args;
-    piechart = new PieChart(args.context);
-    var entries = getDayEntries();
-    var dataset = new PieDataSet(entries, "");
-    dataset.setSliceSpace(0);
-    let dataFormatter = new IValueFormatter({
-        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
-            return Math.round(value)+"";
-        }
-     })
-     
-    // Customize appearence of the pie chart 
-    var data = new PieData(dataset);
-    data.setValueFormatter(dataFormatter);
-    data.setValueTextSize(11);  
-    data.setValueTextColor(Color.WHITE);
-    var desc = piechart.getDescription();
-    piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
-    desc.setEnabled(Description.false);
-    piechart.setDrawSliceText(false);
-    piechart.setHoleRadius(70); 
-    piechart.setTransparentCircleRadius(75);
-    piechart.setCenterText(getSpannableString());
-    var legend = piechart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
-    dataset.setColors(getColors());
-
-    // Initialize and set pie chart 
-    piechart.setData(data);
-    piechart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT,0.5));
-    piechart.notifyDataSetChanged();
-    piechart.invalidate();
-    args.view = piechart;
-    console.warn("reloaded day graph")
-
-};
+/************************************
+ *           WEEK GRAPH            *
+ ************************************/
 
 
 
 // creates the bar graph on the week tab
 exports.weekView = function(args) {
-    var barchart = new BarChart(args.context);
-    //array of datasets
-    var IbarSet = new ArrayList();
-    //array of BarEntries
-    var entries = new ArrayList();
+    barchart = new BarChart(args.context);
+    barchartMade = true;
+    rerender_weekview();
+    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    barchart.notifyDataSetChanged();
+    barchart.invalidate();
+    args.view = barchart;
+};
 
-    for (var day = 6; day >=0; day--) {
-   		//array of values for each week
-   		var appValues = [];
-   		for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].time)
-   			appValues.push(new java.lang.Integer(totalTimeDay));
-   		}
-   		//now have an array of values for a week
-   		entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
-   }
-  	var dataset = new BarDataSet(entries, "");
+
+
+//Refresh view for week
+function rerender_weekview() {
+    var entries = getWeekEntries();
+    var dataset = new BarDataSet(entries, "");
     dataset.setStackLabels(getAppNames());
-  	dataset.setColors(getColors(progressInfo.appStats.length));
-  	IbarSet.add(dataset);
-	var data = new BarData(IbarSet);
+    dataset.setColors(getColors(progressInfo.appStats.length));
+     //array of datasets
+    var IbarSet = new ArrayList();
+    IbarSet.add(dataset);
+    var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
-    barchart.setData(data);
 
     let dataFormatter = new IValueFormatter({
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
@@ -274,48 +241,70 @@ exports.weekView = function(args) {
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
     //Setting up barchart
-     barchart.animateY(3000);
-	 barchart.setFitBars(true);
-	 barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-	 barchart.invalidate();
-	 args.view = barchart;
-};
+    barchart.setData(data);
+    barchart.animateY(3000);
+    barchart.setFitBars(true);
+}
+
+
+
+//Data for week view - returns an array of barchartentries
+getWeekEntries = function() {
+    //array of BarEntries
+    var entries = new ArrayList();
+
+    for (var day = 6; day >=0; day--) {
+        //array of values for each week
+        var appValues = [];
+        for (var app = 0; app < progressInfo.appStats.length; app++) {
+            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].time)
+            appValues.push(new java.lang.Integer(totalTimeDay));
+        }
+        //now have an array of values for a week
+        entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
+   }
+   return entries;
+}
+
+
+
+
+/************************************
+ *           MONTH GRAPH            *
+ ************************************/
 
 
 //Creates a stacked bar chart for the month view
 exports.monthView = function(args) {
-    var barchart = new BarChart(args.context);
-    var IbarSet = new ArrayList();
+    monthchart = new BarChart(args.context);  
+    monthchartMade = true;
+    rerender_monthchart();
+    monthchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
+    monthchart.notifyDataSetChanged();
+    monthchart.invalidate();
+    args.view = monthchart;
+};
+
+
+
+rerender_monthchart = function() {
+    //array of BarEntries
+    var entries = getMonthEntries();
+    var dataset = new BarDataSet(entries, "");
+    dataset.setStackLabels(getAppNames());
+    dataset.setColors(getColors(progressInfo.appStats.length));
     //array of datasets
     var IbarSet = new ArrayList();
-    //array of BarEntries
-    var entries = new ArrayList();
-   for (var weeksAgo = 3; weeksAgo >=0; weeksAgo--) {
-   		//array of values for each week
-   		var appValues = [];
-   		for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo)));
-   			appValues.push(new java.lang.Integer(totalTimeWeekApp));
-   		}
-   		entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
-   }
-  	var dataset = new BarDataSet(entries, "");
-    dataset.setStackLabels(getAppNames());
-  	dataset.setColors(getColors(progressInfo.appStats.length));
-  	IbarSet.add(dataset);
-	var data = new BarData(IbarSet);
+    IbarSet.add(dataset);
+    var data = new BarData(IbarSet);
     data.setValueTextColor(Color.WHITE);
-    barchart.setData(data);
-
+    //Label formatters
     let dataFormatter = new IValueFormatter({
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
             return Math.round(value)+"";
         }
      })
      data.setValueFormatter(dataFormatter);
-
-
-
     var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
      let axisformatter = new IAxisValueFormatter({
         getFormattedValue: function(value, axis) {
@@ -326,29 +315,50 @@ exports.monthView = function(args) {
         }
      })
      //Customize appearence of the axis
-    var xAxis = barchart.getXAxis()
-    var yAxis = barchart.getAxisLeft()
+    var xAxis = monthchart.getXAxis()
+    var yAxis = monthchart.getAxisLeft()
     yAxis.setAxisMinimum(0)
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
     xAxis.setGranularity(1)
     xAxis.setDrawGridLines(false);
-    barchart.getAxisRight().setEnabled(false);
+    monthchart.getAxisRight().setEnabled(false);
     xAxis.setValueFormatter(axisformatter)
-    var desc = barchart.getDescription();
+    var desc = monthchart.getDescription();
     desc.setEnabled(Description.false);
     yAxis.setStartAtZero(true);
-    barchart.setDrawValueAboveBar(false);
-    var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);	
+    monthchart.setDrawValueAboveBar(false);
+    var legend = monthchart.getLegend();
+    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);   
 
     //Setting up barchart 
-    barchart.animateY(3000);
-    barchart.setFitBars(true);
-    barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
-    barchart.invalidate();
-    args.view = barchart;
+    monthchart.setData(data);
+    monthchart.animateY(3000);
+    monthchart.setFitBars(true);
+}
 
-};
+
+
+//Returns an array of barentries
+getMonthEntries = function() {
+    var entries = new ArrayList();
+   for (var weeksAgo = 3; weeksAgo >=0; weeksAgo--) {
+        //array of values for each week
+        var appValues = [];
+        for (var app = 0; app < progressInfo.appStats.length; app++) {
+            var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo)));
+            appValues.push(new java.lang.Integer(totalTimeWeekApp));
+        }
+        entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
+   }
+   return entries;
+}
+
+
+
+/************************************
+ *        LIST POPULATING           *
+ ************************************/
+
 
 
 
@@ -445,11 +455,62 @@ populateListViewMonth = function () {
 };
 
 
+
+
+
+/************************************
+ *          HELPER FUNCTIONS        *
+ ************************************/
+
+//Service starter
+checkAndStartService = function() {
+  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+    context.startService(trackingServiceIntent);
+  }
+  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+    context.startService(unlockServiceIntent);
+  }
+  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+    context.startService(dummyServiceIntent);
+  }  
+}
+
+
+
+//Sets up the progress view 
+setUp = function() {
+    //Initialize all 'show/hide' buttons of the graphs
+    pageData.set("showDayGraph", true);
+    pageData.set("showWeekGraph", true);
+    pageData.set("showMonthGraph", true);
+
+    //populate all lists 
+    populateListViewsDay();
+    populateListViewsWeek();
+    populateListViewMonth();
+
+    //invalidate charts
+    if(piechartMade) {
+       rerender_dayview()
+        piechart.notifyDataSetChanged();
+        piechart.invalidate();
+    }
+    if (barchartMade) {
+        rerender_weekview()
+        barchart.notifyDataSetChanged();
+        barchart.invalidate();
+    }
+    if (monthchartMade) {
+        rerender_monthchart()
+        monthchart.notifyDataSetChanged();
+        monthchart.invalidate();
+    }
+}
+
+
 //Allows the list to be pressable 
 exports.goToDetailApps = function(args) {
-    console.log("tapped")
     var tappedItem = args.view.bindingContext;
-    console.log(tappedItem.name)
     var options = {
         moduleName: 'views/appDetailView/appDetailView',
         context: {
@@ -750,6 +811,19 @@ function getSpannableString() {
     myString.setSpan(new StyleSpan(Typeface.ITALIC), myString.length()-5, myString.length(), 0);
     return myString;
 
+}
+
+//Toggle buttons for day/week/month graphs
+exports.toggle = function () {
+    pageData.set("showDayGraph", !pageData.get("showDayGraph"));
+}
+
+exports.toggleWeek = function() {
+    pageData.set("showWeekGraph", !pageData.get("showWeekGraph"));
+}
+
+exports.toggleMonth = function() {
+    pageData.set("showMonthGraph", !pageData.get("showMonthGraph"));
 }
 
 

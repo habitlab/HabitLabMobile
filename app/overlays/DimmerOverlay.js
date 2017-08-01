@@ -40,7 +40,7 @@ overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 var overlay;
 var timerID;
 
-exports.dim = function(context, interval) {
+exports.dim = function(interval) {
 	var brightness = android.provider.Settings.System.getInt(context.getContentResolver(),
         android.provider.Settings.System.SCREEN_BRIGHTNESS) / 255;
 	overlayParams.screenBrightness = brightness;

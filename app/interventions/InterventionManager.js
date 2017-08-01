@@ -33,16 +33,18 @@ var notificationID = {
 // Intervention Intervals
 var VISITED_TOAST_INTERVAL = 5; // visits
 var VISITED_NOTIF_INTERVAL = 10; // visits
+var VISITED_DIALOG_INTERVAL = 15; // visits
 var UNLOCKS_TOAST_INTERVAL = 15; // unlocks
 var GLANCES_TOAST_INTERVAL = 20; // glances
 var UNLOCKS_NOTIF_INTERVAL = 25; // unlocks
 var GLANCES_NOTIF_INTERVAL = 35; // glances
+var UNLOCKS_DIALOG_INTERVAL = 40; // unlocks
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
 var DURATION_NOTIF_INTERVAL = 900000; // 15 minutes (in ms)
 var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
 var COUNT_UP_TIMER_INTERVAL = 12;
 var COUNT_DOWN_TIMER_INTERVAL = 16;
-var DIMMER_OVERLAY_INTERVAL = 1;
+var DIMMER_OVERLAY_INTERVAL = 23;
 var MIN_IN_MS = 60000;
 
 var shouldPersonalize = function() {
@@ -102,6 +104,32 @@ var sendNotificationVisited = function(real, pkg) {
 };
 
 
+/**
+ * showDialogVisited
+ * -----------------
+ * Displays a notification after VISITED_DIALOG_INTERVAL visits to the 
+ * specified package.
+ */
+var showDialogVisited = function (real, pkg) {
+  if (!real) {
+    DialogOverlay.showOneOptionDialogOverlay("You've opened Facebook 12 times today", "Okay");
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_DIALOG, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits % VISITED_DIALOG_INTERVAL === 0) {
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = applicationName + " Visit Count";
+
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    }
+  }
+}
+
+
 
 /*************************************
  *   UNLOCKS/GLANCES INTERVENTIONS   *
@@ -148,6 +176,29 @@ var popToastUnlocked = function(real) {
     }
   }
 };
+
+
+/**
+ * showUnlocksDialog
+ * -----------------
+ * Displays a dialog after UNLOCKS_DIALOG_INTERVAL device unlocks.
+ */
+var showUnlocksDialog = function (real) {
+  if (!real) {
+    DialogOverlay.showOneOptionDialogOverlay("You've unlocked your phone 18 times today", "Okay");
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_DIALOG)) {
+    var unlocks = StorageUtil.getUnlocks();
+    if (unlocks % UNLOCKS_DIALOG_INTERVAL === 0) {
+      var title = 'Unlock Alert';
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    }
+  }
+}
 
 
 /**
@@ -285,8 +336,7 @@ var allowVideoBlocking = function (bool) {
  */
 var blockVideo = function (real, pkg) {
   if (!real) {
-    DialogOverlay.showPosNegDialogOverlay(context, "Would you like to continue watching?", 
-          "Yes", "No", null, null);
+    DialogOverlay.showTwoOptionDialogOverlay("Would you like to continue watching?", "Yes", "No", null, null);
     return;
   }
 
@@ -326,8 +376,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
       if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
         var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", would" : "Would";
         msg += " you like to continue watching?";
-        DialogOverlay.showPosNegDialogOverlay(context, msg, 
-          "Yes", "No", stopVideoBlocking, exitToHome);
+        DialogOverlay.showTwoOptionDialogOverlay(msg, "Yes", "No", stopVideoBlocking, exitToHome);
       }
     }
 });
@@ -347,7 +396,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  */
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
-    FullScreenOverlay.showOverlay(context, "Continue to Faceook?", 
+    FullScreenOverlay.showOverlay("Continue to Faceook?", 
       "You've already been here 25 times today. Want to take a break?", 
       "Continue", "Get me out of here!", null, null);
     return;
@@ -360,7 +409,7 @@ var showFullScreenOverlay = function (real, pkg) {
       var title = "Continue to " + applicationName + "?";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
-      FullScreenOverlay.showOverlay(context, title, msg, 
+      FullScreenOverlay.showOverlay(title, msg, 
         "Continue", "Get me out of here!", null, exitToHome);
     }
   }
@@ -374,12 +423,18 @@ var showFullScreenOverlay = function (real, pkg) {
  * right corner) that counts up. Timer is flickable.
  * Call dismissTimer to get rid of display. 
  */
-var showCountUpTimer = function (real, ctx, pkg) {
+var countUpTimerID;
+var showCountUpTimer = function (real, pkg) {
   if (!real) {
-    dismissTimer(context);
-    TimerOverlay.showCountUpTimer(context);
-    const id = Timer.setTimeout(() => {
-        dismissTimer(context);
+    TimerOverlay.dismissTimer();
+    if (countUpTimerID) {
+      Timer.clearTimeout(countUpTimerID);
+      countUpTimerID = 0;
+    }
+
+    TimerOverlay.showCountUpTimer();
+    countUpTimerID = Timer.setTimeout(() => {
+        TimerOverlay.dismissTimer();
     }, 6000);
 
     return;
@@ -389,7 +444,7 @@ var showCountUpTimer = function (real, ctx, pkg) {
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTUP_TIMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % COUNT_UP_TIMER_INTERVAL === 0 && visits % COUNT_DOWN_TIMER_INTERVAL !== 0) {
-      TimerOverlay.showCountUpTimer(ctx);
+      TimerOverlay.showCountUpTimer();
     }
   }
 }
@@ -402,29 +457,19 @@ var showCountUpTimer = function (real, ctx, pkg) {
  * right corner) that counts down. Timer is flickable.
  * Call dismissTimer to get rid of display. 
  */
-var showCountDownTimer = function (real, ctx, pkg) {
+var showCountDownTimer = function (real, pkg) {
   if (!real) {
-    dismissTimer(context);
-    TimerOverlay.showCountDownTimer(context, (1/12), null);
+    TimerOverlay.dismissTimer();
+    TimerOverlay.showCountDownTimer((1/12), null);
     return;
   }
 
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % COUNT_DOWN_TIMER_INTERVAL === 0) {
-      TimerOverlay.showCountDownTimer(ctx, 5, exitToHome);
+      TimerOverlay.showCountDownTimer(5, exitToHome);
     }
   }
-}
-
-
-/*
- * dismissTimer
- * ------------
- * Removes timer from screen, if there is one present.
- */
-var dismissTimer = function (context) {
-  TimerOverlay.dismissTimer(context);
 }
 
 
@@ -435,11 +480,11 @@ var dismissTimer = function (context) {
  * right corner) that counts up. Timer is flickable.
  * Call dismissTimer to get rid of display. 
  */
-var dimScreen = function (real, ctx, pkg, duration) {
+var dimScreen = function (real, pkg) {
   if (!real) {
-    DimmerOverlay.dim(context, 0.2);
+    DimmerOverlay.dim(0.2);
     Timer.setTimeout(() => {
-        removeDimmer();
+        DimmerOverlay.removeDimmer();
     }, 6500);
     return;
   }
@@ -447,14 +492,20 @@ var dimScreen = function (real, ctx, pkg, duration) {
   if (StorageUtil.canIntervene(ID.interventionIDs.DIMMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % DIMMER_OVERLAY_INTERVAL === 0) {
-      DimmerOverlay.dim(ctx, duration);
+      DimmerOverlay.dim(0.005);
     }
   }
 }
 
-var removeDimmer = function (context) {
+var removeOverlays = function() {
   DimmerOverlay.removeDimmer();
+  TimerOverlay.dismissTimer();
+  DialogOverlay.removeOneOptionDialog();
+  DialogOverlay.removeTwoOptionDialog();
+  FullScreenOverlay.removeOverlay();
 }
+
+
 
 
 module.exports = { 
@@ -472,16 +523,15 @@ module.exports = {
     showFullScreenOverlay,
     showCountUpTimer,
     showCountDownTimer,
+    showUnlocksDialog,
     null,
     null,
-    null,
-    null,
+    showDialogVisited,
     dimScreen
   ], 
   allowVideoBlocking,
   logVisitStart,
-  dismissTimer,
-  removeDimmer
+  removeOverlays
 };
 
 

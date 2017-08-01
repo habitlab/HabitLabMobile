@@ -19,7 +19,7 @@ var TypedValue = android.util.TypedValue;
  *          PAINTS            *                           
  ******************************/
 
-var iconBkgd = [34, 0.81, 1];
+var iconBackgrounds = ["#FFA730", "#E71D36", "#2EC4B6", "#72e500", "#011627"];
 
 var DIALOG_FILL = new Paint();
 DIALOG_FILL.setColor(Color.WHITE); // default
@@ -28,7 +28,7 @@ var DIM_BACKGROUND = new Paint();
 DIM_BACKGROUND.setColor(Color.BLACK);
 
 var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.HSVToColor(iconBkgd));
+ICON_FILL.setColor(Color.parseColor(iconBackgrounds[0]));
 
 var ICON_BACK_FILL = new Paint();
 ICON_BACK_FILL.setColor(Color.WHITE);
@@ -46,9 +46,8 @@ var ICON_RADIUS = 0.13 * DIALOG_WIDTH;
 var CORNER_RADIUS = 15;
 
 
-var appCtx = app.android.context;
-
-var textToDisplay = "DISPLAY TEXT";
+var context = app.android.context;
+var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
 // Custom DialogView 
 var DialogView = android.view.View.extend({
@@ -66,8 +65,8 @@ var DialogView = android.view.View.extend({
 		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
 		// add icon
-		var icon_id = appCtx.getResources().getIdentifier("ic_habitlab_white", "drawable", appCtx.getPackageName());
-		var bitmap = appCtx.getResources().getDrawable(icon_id).getBitmap();
+		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
+		var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
@@ -81,30 +80,35 @@ var DialogView = android.view.View.extend({
 });
 
 
-
-function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallback) {
-	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
+var twoOptionView;
+var twoOptionText;
+var twoOptionPosButton;
+var twoOptionNegButton;
+exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCallback) {
+	var color = changeIconColor();
 
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+        WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, 
+		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var view = new DialogView(context);
-    windowManager.addView(view, viewParams);
+    twoOptionView = new DialogView(context);
+    windowManager.addView(twoOptionView, viewParams);
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.36 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var textView = new TextView(context);
-    textView.setText(msg);
-    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 12);
-    textView.setTextColor(Color.BLACK);
-    textView.setHorizontallyScrolling(false);
-    textView.setGravity(Gravity.CENTER);
-    windowManager.addView(textView, textParams);
+    twoOptionText = new TextView(context);
+    twoOptionText.setText(msg);
+    twoOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 12);
+    twoOptionText.setTextColor(Color.BLACK);
+    twoOptionText.setHorizontallyScrolling(false);
+    twoOptionText.setGravity(Gravity.CENTER);
+    windowManager.addView(twoOptionText, textParams);
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
@@ -112,17 +116,18 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var posButton = new Button(context);
-	posButton.setText(pos);
-	posButton.setOnClickListener(new android.view.View.OnClickListener({
+    twoOptionPosButton = new Button(context);
+	twoOptionPosButton.setText(pos);
+	twoOptionPosButton.getBackground().setColorFilter(Color.parseColor("#C0C0C0"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	twoOptionPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (posCallback) {
 	    		posCallback();
 	    	}
-	        removeViews();
+	        exports.removeTwoOptionDialog();
 	    }
 	}));
-    windowManager.addView(posButton, posButtonParams);
+    windowManager.addView(twoOptionPosButton, posButtonParams);
 
     // add positive button
     var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
@@ -130,28 +135,114 @@ function showPosNegDialogOverlay(context, msg, pos, neg, posCallback, negCallbac
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var negButton = new Button(context);
-	negButton.setText(neg);
-	negButton.setOnClickListener(new android.view.View.OnClickListener({
+    twoOptionNegButton = new Button(context);
+	twoOptionNegButton.setText(neg);
+	twoOptionNegButton.getBackground().setColorFilter(Color.parseColor("#011627"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	twoOptionNegButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (negCallback) {
 	    		negCallback();
 	    	}
-	        removeViews();
+	        exports.removeTwoOptionDialog();
 	    }
 	}));
-    windowManager.addView(negButton, negButtonParams);
-
-    var removeViews = function () {
-    	windowManager.removeView(view);
-    	windowManager.removeView(textView);
-	    windowManager.removeView(posButton);
-	    windowManager.removeView(negButton);
-    }
+    windowManager.addView(twoOptionNegButton, negButtonParams);
 }
 
-module.exports = {
-	showPosNegDialogOverlay
-};
 
 
+exports.removeTwoOptionDialog = function () {
+	console.warn("here");
+	if (twoOptionView) {
+		windowManager.removeView(twoOptionView);
+		twoOptionView = undefined;
+	}
+	console.warn("here");
+	if (twoOptionText) {
+		windowManager.removeView(twoOptionText);
+		twoOptionText = undefined;
+	}
+	console.warn("here");
+	if (twoOptionPosButton) {
+		windowManager.removeView(twoOptionPosButton);
+		twoOptionPosButton = undefined;
+	}
+	console.warn("here");
+	if (twoOptionNegButton) {
+		windowManager.removeView(twoOptionNegButton);
+		twoOptionNegButton = undefined;
+	}
+	console.warn("here");
+}
+
+
+var oneOptionView;
+var oneOptionText;
+var oneOptionButton;
+exports.showOneOptionDialogOverlay = function (msg, buttonText) {
+	var color = changeIconColor();
+
+	// add whole screen view
+	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
+	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+    oneOptionView = new DialogView(context);
+    windowManager.addView(oneOptionView, viewParams);
+
+    // add text
+    var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.38 * SCREEN_HEIGHT, 
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    textParams.gravity = Gravity.LEFT | Gravity.TOP;
+    oneOptionText = new TextView(context);
+    oneOptionText.setText(msg);
+    oneOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    oneOptionText.setTextColor(Color.BLACK);
+    oneOptionText.setHorizontallyScrolling(false);
+    oneOptionText.setGravity(Gravity.CENTER);
+    windowManager.addView(oneOptionText, textParams);
+
+    // add positive button
+    var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
+    	0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
+    	0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+   	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+    oneOptionButton = new Button(context);
+    oneOptionButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
+	oneOptionButton.setText(buttonText);
+	oneOptionButton.setOnClickListener(new android.view.View.OnClickListener({
+	    onClick: function() {
+	        exports.removeOneOptionDialog();
+	    }
+	}));
+    windowManager.addView(oneOptionButton, posButtonParams);
+}
+
+
+exports.removeOneOptionDialog = function () {
+	if (oneOptionView) {
+		windowManager.removeView(oneOptionView);
+		oneOptionView = undefined;
+	}
+
+	if (oneOptionText) {
+		windowManager.removeView(oneOptionText);
+		oneOptionText = undefined;
+	}
+
+	if (oneOptionButton) {
+		windowManager.removeView(oneOptionButton);
+		oneOptionButton = undefined;
+	}
+}
+
+
+
+function changeIconColor() {
+	var index = Math.floor(Math.random() * 5);
+	var color = iconBackgrounds[index];
+	ICON_FILL.setColor(Color.parseColor(color));
+	return color;
+}

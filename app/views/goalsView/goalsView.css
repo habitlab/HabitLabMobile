@@ -2,8 +2,6 @@
   font-size: 23%;
   text-align: center;
   color: #FFA730;
-  padding-top: 10%;
-  padding-bottom: 8%;
 }
 
 .label-and-icon {
@@ -19,11 +17,12 @@
 }
 
 #scroll {
-  height: 83%;
+  height: 89%;
+  margin-top: 2%;
 }
 
 #button {
   background-color: #69BD68;
   color: white;
-  height: 17%;
+  height: 11%;
 }

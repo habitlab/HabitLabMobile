@@ -1,4 +1,4 @@
-var app = require("application");
+var application = require("application");
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -37,7 +37,8 @@ var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 var ICON_RADIUS = 0.075 * SCREEN_HEIGHT;
 
 
-var appCtx = app.android.context;
+var context = application.android.context;
+var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
 // Custom DialogView 
 var DialogView = android.view.View.extend({
@@ -53,8 +54,8 @@ var DialogView = android.view.View.extend({
 		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
 		// add icon
-		var icon_id = appCtx.getResources().getIdentifier("ic_habitlab_white", "drawable", appCtx.getPackageName());
-		var bitmap = appCtx.getResources().getDrawable(icon_id).getBitmap();
+		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
+		var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
@@ -68,44 +69,47 @@ var DialogView = android.view.View.extend({
 });
 
 
-
-function showOverlay(context, title, msg, pos, neg, posCallback, negCallback) {
-	var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
+var overlayView;
+var overlayTitle;
+var overlayText;
+var overlayPosButton;
+var overlayNegButton;
+exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
 
 	// add view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var view = new DialogView(context);
-    windowManager.addView(view, viewParams);
+    overlayView = new DialogView(context);
+    windowManager.addView(overlayView, viewParams);
 
 
     // add title
-    var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
+    var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
     	0.1 * SCREEN_WIDTH, 0.275 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var titleView = new TextView(context);
-    titleView.setText(title);
-    titleView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 14);
-    titleView.setTextColor(Color.BLACK);
-    titleView.setHorizontallyScrolling(false);
-    titleView.setGravity(Gravity.CENTER);
-    windowManager.addView(titleView, textParams);
+    titleParams.gravity = Gravity.LEFT | Gravity.TOP;
+    overlayTitle = new TextView(context);
+    overlayTitle.setText(title);
+    overlayTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 14);
+    overlayTitle.setTextColor(Color.BLACK);
+    overlayTitle.setHorizontallyScrolling(false);
+    overlayTitle.setGravity(Gravity.CENTER);
+    windowManager.addView(overlayTitle, titleParams);
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.4 * SCREEN_HEIGHT,
     	0.1 * SCREEN_WIDTH, 0.3 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var textView = new TextView(context);
-    textView.setText(msg);
-    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    textView.setTextColor(Color.BLACK);
-    textView.setHorizontallyScrolling(false);
-    textView.setGravity(Gravity.CENTER);
-    windowManager.addView(textView, textParams);
+    overlayText = new TextView(context);
+    overlayText.setText(msg);
+    overlayText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    overlayText.setTextColor(Color.BLACK);
+    overlayText.setHorizontallyScrolling(false);
+    overlayText.setGravity(Gravity.CENTER);
+    windowManager.addView(overlayText, textParams);
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.35 * SCREEN_WIDTH, 
@@ -113,17 +117,17 @@ function showOverlay(context, title, msg, pos, neg, posCallback, negCallback) {
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var posButton = new Button(context);
-	posButton.setText(pos);
-	posButton.setOnClickListener(new android.view.View.OnClickListener({
+    overlayPosButton = new Button(context);
+	overlayPosButton.setText(pos);
+	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (posCallback) {
 	    		posCallback();
 	    	}
-	        removeViews();
+	        exports.removeOverlay();
 	    }
 	}));
-    windowManager.addView(posButton, posButtonParams);
+    windowManager.addView(overlayPosButton, posButtonParams);
 
     // add positive button
     var negButtonParams = new WindowManager.LayoutParams(0.35 * SCREEN_WIDTH, 
@@ -131,29 +135,43 @@ function showOverlay(context, title, msg, pos, neg, posCallback, negCallback) {
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    var negButton = new Button(context);
-	negButton.setText(neg);
-	negButton.setOnClickListener(new android.view.View.OnClickListener({
+    overlayNegButton = new Button(context);
+	overlayNegButton.setText(neg);
+	overlayNegButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (negCallback) {
 	    		negCallback();
 	    	}
-	        removeViews();
+	        exports.removeOverlay();
 	    }
 	}));
-    windowManager.addView(negButton, negButtonParams);
-
-    var removeViews = function () {
-    	windowManager.removeView(view);
-    	windowManager.removeView(textView);
-    	windowManager.removeView(titleView);
-	    windowManager.removeView(posButton);
-	    windowManager.removeView(negButton);
-    }
+    windowManager.addView(overlayNegButton, negButtonParams);
 }
 
-module.exports = {
-	showOverlay
-};
+exports.removeOverlay = function () {
+	if (overlayView) {
+		windowManager.removeView(overlayView);
+		overlayView = undefined;
+	}
 
+	if (overlayTitle) {
+		windowManager.removeView(overlayTitle);
+		overlayTitle = undefined;
+	}
+
+	if (overlayText) {
+		windowManager.removeView(overlayText);
+		overlayText = undefined;
+	}
+
+	if (overlayPosButton) {
+		windowManager.removeView(overlayPosButton);
+		overlayPosButton = undefined;
+	}
+
+	if (overlayNegButton) {
+		windowManager.removeView(overlayNegButton);
+		overlayNegButton = undefined;
+	}
+}
 
