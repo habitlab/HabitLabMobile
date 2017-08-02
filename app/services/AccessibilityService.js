@@ -61,8 +61,6 @@ var currentApplication = {
  */
 android.accessibilityservice.AccessibilityService.extend("com.habitlab.AccessibilityService", {
     onAccessibilityEvent: function(event) {
-        console.warn(event.getPackageName());
-
         var activePackage = event.getPackageName();
         if (activePackage === "org.nativescript.HabitLabMobile") { return; } // overlays give habitlab the foreground...
 
@@ -107,7 +105,6 @@ function closeRecentVisit(now) {
     if (currentApplication.isBlacklisted) {
         var timeSpent = now - currentApplication.visitStart;
         storage.updateAppTime(currentApplication.packageName, timeSpent);
-        console.warn("Closed: " + currentApplication.packageName);
     }
 }
 
@@ -128,7 +125,6 @@ function openNewVisit(now, pkg) {
     } else {
         currentApplication.isBlacklisted = false;
     }
-    console.warn("Opened: " + currentApplication.packageName + " (blacklisted: " + currentApplication.isBlacklisted + ")");
 }
 
 
@@ -148,7 +144,6 @@ function setUpScreenReceiver() {
     context.registerReceiver(receiver, filterOn);
     context.registerReceiver(receiver, filterOff);
     context.registerReceiver(receiver, filterUnlocked);
-    console.warn("Started ScreenReceiver");
 }
 
 

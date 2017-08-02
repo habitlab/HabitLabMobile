@@ -290,7 +290,6 @@ var sendNotificationUsage = function (real, pkg) {
     return;
   }
 
-  console.warn("n");
   if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_NOTIFICATION, pkg)) {
     var minutes = StorageUtil.getAppTime(pkg);
     if (minutes >= THRESHOLD_USAGE_NTF) {
@@ -642,15 +641,12 @@ var nextOnLaunchIntervention = function(pkg) {
     var index;
     if (randomDifficulty < 0.1) {  // hard
       index = randBW(0, onLaunchInterventions.hard.length - 1);
-      console.warn("running hard: " + index);
       onLaunchInterventions.hard[index](true, pkg);
     }  else if (randomDifficulty < 0.4) { // medium
       index = randBW(0, onLaunchInterventions.medium.length - 1);
-      console.warn("running medium: " + index);
       onLaunchInterventions.medium[index](true, pkg);
     } else {  // easy
       index = randBW(0, onLaunchInterventions.easy.length - 1);
-      console.warn("running easy: " + index);
       onLaunchInterventions.easy[index](true, pkg);
     }
   }
