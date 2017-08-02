@@ -454,9 +454,6 @@ populateListViewMonth = function () {
 };
 
 
-
-
-
 /************************************
  *          HELPER FUNCTIONS        *
  ************************************/
@@ -473,8 +470,6 @@ checkAndStartService = function() {
     context.startService(dummyServiceIntent);
   }  
 }
-
-
 
 //Sets up the progress view 
 setUp = function() {
@@ -506,7 +501,6 @@ setUp = function() {
     }
 }
 
-
 //Allows the list to be pressable 
 exports.goToDetailApps = function(args) {
     var tappedItem = args.view.bindingContext;
@@ -519,14 +513,7 @@ exports.goToDetailApps = function(args) {
         }
       }
       frameModule.topmost().navigate(options);
-
-    console.dir(tappedItem)
 }
-
-
-
-
-
 
 //Returns the total time spent on an app in a month when passed in that app's object
 getTotalTimeAppMonth = function(array) {
@@ -536,10 +523,6 @@ getTotalTimeAppMonth = function(array) {
     }
     return sum;
 }
-
-
-
-
 
 //Returns the total time spent on an app in a week in ms when passed in an appStat
 getTotalTimeAppWeek = function(array, weeksAgo) {
@@ -552,8 +535,6 @@ getTotalTimeAppWeek = function(array, weeksAgo) {
     }
     return sum;
 }
-
-
 
 //Returns the total # of any value for any given week (0, 1, 2 or 3 weeks ago)
 totalTimeWeek = function(weeksAgo, value) {

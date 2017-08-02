@@ -53,7 +53,6 @@ var setCellInfo = function(cell, info) {
   image.src = info.iconSource;
   image.on(gestures.tap, function() {
     selector.visibility = selector.visibility === 'visible' ? 'hidden' : 'visible';
-    console.log(!undefined);
     toToggle[info.packageName] = !toToggle[info.packageName];
   });
 

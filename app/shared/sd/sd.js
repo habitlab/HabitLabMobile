@@ -14,7 +14,6 @@ var setOnTouches = function() {
       if (args.action === 'down') {
         opt.backgroundColor = '#DCDCDC';
       } else if (args.action === 'cancel') {
-        console.warn(menu.page.id);
         opt.backgroundColor = menu.page.id === item ? '#F5F5F5' : '#FFFFFF';
       } else if (args.action === 'up') {
         if (item === 'nudges') {

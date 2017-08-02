@@ -78,7 +78,6 @@ exports.getApplicationList = function() {
 	}
 
 	var daysBetween = (java.lang.System.currentTimeMillis() - earliestTimeStamp) / DAY_MS;
-	console.warn(daysBetween);
 
 	for (var z = 0; z < list.length; z++) {
 		var obj = list[z];
