@@ -40,7 +40,7 @@
   padding: 5%;
 }
 
-.iconLeft {
+.arrowLeft {
   height: 30%;
   margin-right: 90%;
   margin-top: 10;
@@ -49,7 +49,7 @@
   border-radius: 80%;
 }
 
-.iconRight {
+.arrowRight {
   height: 30%;
   margin-left:90%;
   margin-top: 10;

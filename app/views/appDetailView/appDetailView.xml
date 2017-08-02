@@ -34,13 +34,13 @@
                 <StackLayout>
                   <Label text="Week" class="app-detail-subtitle" horizontalAlignment="center"/>
                   <Placeholder creatingView="weekView"/>
-                  <Image class="iconRight" col="2" src="res://ic_arrow_right" tap="goToMonth"/>
+                  <Image class="arrowRight" col="2" src="res://ic_arrow_right" tap="goToMonth"/>
                 </StackLayout>
               </Slides:Slide>
               <Slides:Slide> 
                 <Label text="Month" class="app-detail-subtitle" horizontalAlignment="center"/>
                 <Placeholder creatingView="monthView"/>
-                <Image class="iconLeft" col="2" src="res://ic_arrow_left" tap ="goToWeek"/>
+                <Image class="arrowLeft" col="2" src="res://ic_arrow_left" tap ="goToWeek"/>
               </Slides:Slide>
             </Slides:SlideContainer>
             <Label text="App Goals" class='app-detail-subtitle top-padded' />
