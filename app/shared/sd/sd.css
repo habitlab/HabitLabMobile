@@ -27,23 +27,23 @@
   height: 70%;
 }
 
-#progress {
+#progress-icon {
   background-color: #FFA730;
 }
 
-#goals {
+#goals-icon {
   background-color: #E71D36;
 }
 
-#nudges {
+#nudges-icon {
   background-color: #2EC4B6;
 }
 
-#settings {
+#settings-icon {
   background-color: #72e500;
 }
 
-#feedback {
+#feedback-icon {
   background-color: #011627;
 }
 

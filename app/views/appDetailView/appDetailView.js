@@ -55,7 +55,7 @@ var appStats;
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
 
-  var newNum = parseInt(num) - 5
+  var newNum = parseInt(num) - 5;
   if (add) {
     newNum += 10;
   }
@@ -93,35 +93,36 @@ var setUpDetail = function() {
   goalChanger.className += ' goal-changer';
   goalChanger.getViewById('name').visibility = 'collapse';
   goalChanger.getViewById('icon').visibility = 'hidden';
+  goalChanger.getViewById('label').text = 'mins';
   
   var number = goalChanger.getViewById('number');
   number.text = StorageUtil.getMinutesGoal(pkg);
-  goalChanger.getViewById('label').text = 'mins';
+  number.on("unloaded", function(args) {
+    StorageUtil.changeAppGoal(pkg, parseInt(number.text.replace(/[^0-9]/g, '') || 0), 'minutes');
+  });
 
   goalChanger.getViewById('plus').on(gestures.tap, function() {
-    var newNum = getGoal(number.text, true);
-    number.text = newNum;
-    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
+    number.text = getGoal(number.text, true);
   });
 
   goalChanger.getViewById('minus').on(gestures.tap, function() {
-    var newNum = getGoal(number.text, false);
-    number.text = newNum;
-    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
+    number.text = getGoal(number.text, false);
   });
 
   var list = page.getViewById('list');
   list.removeChildren();
 
   var interventions = StorageUtil.getInterventionsForApp(pkg);
+  var first = true;
   interventions.forEach(function (enabled, id) {
     if (ID.interventionDetails[id].target === 'app' && IM.interventions[id]) {
-      list.addChild(createItem(enabled, id));
+      list.addChild(createItem(enabled, id, first));
+      first = false;
     }
   });
 };
 
-var createItem = function(enabled, id)  {
+var createItem = function(enabled, id, first)  {
   var item = builder.load({
     path: 'shared/detailelem',
     name: 'detailelem'
@@ -130,12 +131,18 @@ var createItem = function(enabled, id)  {
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
 
+  if (first) {
+    image2.visibility = 'hidden';
+    description.visibility = 'visible';
+    button.visibility = 'visible';
+  }
+
   var button = item.getViewById('button');
   button.text = 'DISABLE';
   button.className = 'app-detail-disable-button';
   button.on('tap', function() {
     dialogs.confirm({
-      title: "Disable this Nudge Completely?",
+      title: "Disable this Nudge?",
       message: "This means the nudge will no longer show up for any apps.",
       okButtonText: "Disable",
       cancelButtonText: "Cancel"

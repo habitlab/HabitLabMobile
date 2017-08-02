@@ -3,7 +3,6 @@ const UsageInformationUtil = require("~/util/UsageInformationUtil");
 const StorageUtil = require("~/util/StorageUtil");
 const DialogOverlay = require("~/overlays/DialogOverlay");
 const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
-const TopAndTailOverlay = require("~/overlays/TopAndTailOverlay");
 const Toast = require("nativescript-toast");
 const TimerOverlay = require("~/overlays/TimerOverlay");
 const DimmerOverlay = require("~/overlays/DimmerOverlay");

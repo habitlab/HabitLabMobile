@@ -1,6 +1,4 @@
-<Page 
-  loaded="pageLoaded"
-  navigatingTo="pageNavigating"
+<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="goals"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:Slides="nativescript-slides"
