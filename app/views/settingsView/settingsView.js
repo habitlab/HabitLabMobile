@@ -68,7 +68,11 @@ exports.startAccessibilityService = function() {
 
 
 exports.setHours = function() {
-	fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
+
+    var n = require("~/util/NotificationUtil");
+    n.sendNotification(application.android.context, "T", "M", 123, 5);
+
+	// fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
 };
 
 
