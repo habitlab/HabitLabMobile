@@ -460,15 +460,15 @@ populateListViewMonth = function () {
 
 //Service starter
 checkAndStartService = function() {
-  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-    context.startService(trackingServiceIntent);
-  }
-  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-    context.startService(unlockServiceIntent);
-  }
-  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-    context.startService(dummyServiceIntent);
-  }  
+  // if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+  //   context.startService(trackingServiceIntent);
+  // }
+  // if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+  //   context.startService(unlockServiceIntent);
+  // }
+  // if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+  //   context.startService(dummyServiceIntent);
+  // }  
 }
 
 //Sets up the progress view 

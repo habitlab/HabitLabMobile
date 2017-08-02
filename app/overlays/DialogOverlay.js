@@ -91,7 +91,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, 
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionView = new DialogView(context);
@@ -100,7 +100,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.36 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionText = new TextView(context);
     twoOptionText.setText(msg);
@@ -114,7 +114,9 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
     var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
     	0.3 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionPosButton = new Button(context);
 	twoOptionPosButton.setText(pos);
@@ -134,7 +136,9 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
     var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
     	0.3 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionNegButton = new Button(context);
 	twoOptionNegButton.setText(neg);
@@ -185,7 +189,9 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+        PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
     oneOptionView = new DialogView(context);
     windowManager.addView(oneOptionView, viewParams);
@@ -193,7 +199,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.38 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     oneOptionText = new TextView(context);
     oneOptionText.setText(msg);
@@ -207,7 +213,9 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
     var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
     	0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
     	0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+        PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     oneOptionButton = new Button(context);
     oneOptionButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);

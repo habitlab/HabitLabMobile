@@ -115,7 +115,7 @@ var trackUsage = function () {
             StorageUtil.visited(currentPackage); // log a visit
             InterventionManager.allowVideoBlocking(true);
             InterventionManager.logVisitStart();
-            InterventionManager.getNextOnLaunchIntervention(currentPackage); // TESTING
+            // InterventionManager.getNextOnLaunchIntervention(currentPackage); // TESTING
 
 
             // on-launch interventions

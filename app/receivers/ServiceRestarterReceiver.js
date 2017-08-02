@@ -11,12 +11,12 @@ android.content.BroadcastReceiver.extend("com.habitlab.ServiceRestarterReceiver"
 		var action = intent.getAction();
 		if (action === Intent.ACTION_BOOT_COMPLETED) {
 			// on phone reboot
-			context.startService(trackingServiceIntent);
-			context.startService(unlockServiceIntent);
+			// context.startService(trackingServiceIntent);
+			// context.startService(unlockServiceIntent);
 		} else if (action === Intent.ACTION_SHUTDOWN) {
 			// on phone shutdown
-			context.stopService(trackingServiceIntent);
-			context.stopService(unlockServiceIntent);
+			// context.stopService(trackingServiceIntent);
+			// context.stopService(unlockServiceIntent);
 		}
 	}
 });

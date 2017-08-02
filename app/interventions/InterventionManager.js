@@ -30,53 +30,37 @@ var notificationID = {
   USAGE: 5000
 };
 
-// // Intervention Intervals - Unlock/Glances
-// var UNLOCKS_TOAST_INTERVAL = 10; // unlocks
-// var UNLOCKS_NOTIF_INTERVAL = 15; // unlocks
-// var UNLOCKS_DIALOG_INTERVAL = 25; // unlocks
-// var GLANCES_NOTIF_INTERVAL = 35; // glances
-// var GLANCES_TOAST_INTERVAL = 1; // glances
+/*************************************************************
+ *             EFFECTIVE INTERVENTION THRESHOLDS             * 
+ *    (when it's ok to start showing each interventions)     *
+ *************************************************************/
 
+// visit interventions
+const THRESHOLD_VISIT_TST = 5;
+const THRESHOLD_VISIT_NTF = 7;
+const THRESHOLD_VISIT_DLG = 10;
 
-// // Intervention Intervals - On Launch
-// var VISITED_TOAST_INTERVAL = 5; // visits
-// var VISITED_NOTIF_INTERVAL = 10; // visits
-// var VISITED_DIALOG_INTERVAL = 15; // visits
-// var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
-// var COUNT_UP_TIMER_INTERVAL = 17;
-// var COUNT_DOWN_TIMER_INTERVAL = 23;
-// var DIMMER_OVERLAY_INTERVAL = 24;
+// glance/unlock interventions
+const THRESHOLD_GLANCES_NTF = 30;
+const THRESHOLD_UNLOCKS_TST = 15;
+const THRESHOLD_UNLOCKS_NTF = 17;
+const THRESHOLD_UNLOCKS_DLG = 20;
 
-// var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
-// var DURATION_NOTIF_INTERVAL = 600000; // 10 minutes (in ms)
-// var DURATION_DIALOG_INTERVAL = 900000; // 15 minutes (in ms)
+// usage interventions
+const THRESHOLD_USAGE_TST = 10;
+const THRESHOLD_USAGE_NTF = 15;
+const THRESHOLD_USAGE_DLG = 17;
 
-//Demo:
+// visit duration interventions
+const THRESHOLD_DURATION_TST = 300000;
+const THRESHOLD_DURATION_NTF = 600000;
+const THRESHOLD_DURATION_DLG = 900000;
 
-// Intervention Intervals - Unlock/Glances
-var UNLOCKS_TOAST_INTERVAL = 2; // unlocks
-var UNLOCKS_NOTIF_INTERVAL = 3; // unlocks
-var UNLOCKS_DIALOG_INTERVAL = 3; // unlocks
-var GLANCES_NOTIF_INTERVAL = 4; // glances
-var GLANCES_TOAST_INTERVAL = 1; // glances
-
-
-// Intervention Intervals - On Launch
-var VISITED_TOAST_INTERVAL = 3; // visits
-var VISITED_NOTIF_INTERVAL = 4; // visits
-var VISITED_DIALOG_INTERVAL = 7; // visits
-var FULL_SCREEN_OVERLAY_INTERVAL = 5; // visits
-var COUNT_UP_TIMER_INTERVAL = 6;
-var COUNT_DOWN_TIMER_INTERVAL = 9;
-var DIMMER_OVERLAY_INTERVAL = 2;
-
-var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
-var DURATION_NOTIF_INTERVAL = 600000; // 10 minutes (in ms)
-var DURATION_DIALOG_INTERVAL = 900000; // 15 minutes (in ms)
-
-
-
-
+// overlay interventions 
+const THRESHOLD_FULLSCREEN_OVR = 12;
+const THRESHOLD_COUNTUP_TMR = 12;
+const THRESHOLD_COUNTDOWN_TMR = 15;
+const THRESHOLD_DIMSCREEN_OVR = 15;
 
 
 var MIN_IN_MS = 60000;
@@ -92,8 +76,9 @@ var shouldPersonalize = function() {
 /**
  * popToastVisited
  * ---------------
- * Displays a toast after VISITED_TOAST_INTERVAL visits to the 
- * specified package.
+ * Displays a toast if there are an effective number 
+ * of visits (determined by THRESHOLD_VISIT_TST) to 
+ * the specified package.
  */
 var popToastVisited = function(real, pkg) {
   if (!real) {
@@ -103,8 +88,11 @@ var popToastVisited = function(real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_TOAST, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-    Toast.makeText("You've opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today").show(); 
+    if (visits >= THRESHOLD_VISIT_TST) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+      Toast.makeText(msg).show(); 
+    }
   }
 };
 
@@ -112,8 +100,9 @@ var popToastVisited = function(real, pkg) {
 /**
  * sendNotificationVisited
  * -----------------------
- * Displays a notification after VISITED_NOTIF_INTERVAL visits to the 
- * specified package.
+ * Sends a notification if there are an effective number 
+ * of visits (determined by THRESHOLD_VISIT_NTF) to 
+ * the specified package.
  */
 var sendNotificationVisited = function(real, pkg) {
   if (!real) {
@@ -123,11 +112,13 @@ var sendNotificationVisited = function(real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_NOTIFICATION, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-    var title = applicationName + " Visit Count";
-    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-    msg += " opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
-    NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
+    if (visits >= THRESHOLD_VISIT_NTF) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = app + " Visit Count";
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+      NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
+    }
   }
 };
 
@@ -135,8 +126,9 @@ var sendNotificationVisited = function(real, pkg) {
 /**
  * showDialogVisited
  * -----------------
- * Displays a notification after VISITED_DIALOG_INTERVAL visits to the 
- * specified package.
+ * Shows a dialog if there are an effective number 
+ * of visits (determined by THRESHOLD_VISIT_DLG) to 
+ * the specified package.
  */
 var showDialogVisited = function (real, pkg) {
   if (!real) {
@@ -146,10 +138,12 @@ var showDialogVisited = function (real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_DIALOG, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-    msg += " opened " + applicationName + " " + visits + (visits === 1 ? " time" : " times") + " today";
-    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    if (visits >= THRESHOLD_VISIT_DLG) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    }
   }
 }
 
@@ -160,75 +154,11 @@ var showDialogVisited = function (real, pkg) {
  *************************************/
 
 /**
- * sendUnlocksNotification
- * -----------------------
- * Displays a notification after UNLOCKS_NOTIF_INTERVAL device unlocks.
- */
-var sendUnlocksNotification = function(real) {
-  if (!real) {
-    NotificationUtil.sendNotification(context, "Unlock Alert", "You've unlocked your phone 7 times today", notificationID.VISIT);
-    return;
-  }
-
-  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_NOTIFICATION)) {
-    var unlocks = StorageUtil.getUnlocks();
-    if (unlocks % UNLOCKS_NOTIF_INTERVAL === 0) {
-      var title = 'Unlock Alert';
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-      NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
-    }
-  }
-};
-
-
-/**
- * popToastUnlocked
- * ----------------
- * Displays a toast after UNLOCKS_TOAST_INTERVAL device unlocks.
- */
-var popToastUnlocked = function(real) {
-  if (!real) {
-    Toast.makeText("You've unlocked your phone 7 times today").show();
-    return;
-  }
-
-  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_TOAST)) {
-    var unlocks = StorageUtil.getUnlocks();
-    if (unlocks % UNLOCKS_TOAST_INTERVAL === 0) {
-      Toast.makeText("You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today").show();
-    }
-  }
-};
-
-
-/**
- * showUnlocksDialog
- * -----------------
- * Displays a dialog after UNLOCKS_DIALOG_INTERVAL device unlocks.
- */
-var showUnlocksDialog = function (real) {
-  if (!real) {
-    DialogOverlay.showOneOptionDialogOverlay("You've unlocked your phone 18 times today", "Okay");
-    return;
-  }
-
-  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_DIALOG)) {
-    var unlocks = StorageUtil.getUnlocks();
-    if (unlocks % UNLOCKS_DIALOG_INTERVAL === 0) {
-      var title = 'Unlock Alert';
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-    }
-  }
-}
-
-
-/**
  * sendNotificationGlances
  * -----------------------
- * Displays a notification after GLANCES_NOTIF_INTERVAL device glances.
+ * Send a notification if the device has an effective 
+ * number of glances (determined by 
+ * THRESHOLD_GLANCES_NTF).
  */
 var sendNotificationGlances = function(real) {
   if (!real) {
@@ -238,7 +168,7 @@ var sendNotificationGlances = function(real) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.GLANCE_NOTIFICATION)) {
     var glances = StorageUtil.getGlances();
-    if (glances % GLANCES_NOTIF_INTERVAL === 0) {
+    if (glances >= THRESHOLD_GLANCES_NTF) {
       var title = 'Glance Alert';
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
@@ -249,27 +179,80 @@ var sendNotificationGlances = function(real) {
 
 
 /**
- * popToastGlanced
- * ---------------
- * Displays a toast after GLANCES_TOAST_INTERVAL device glances.
+ * popToastUnlocked
+ * ----------------
+ * Displays a toast if the device has an effective number 
+ * of unlocks (determined by THRESHOLD_UNLOCKS_TST).
  */
-var popToastGlanced = function(real) {
+var popToastUnlocked = function(real) {
   if (!real) {
-    Toast.makeText("You've glanced at your phone 14 times today").show();
+    Toast.makeText("You've unlocked your phone 7 times today").show();
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.GLANCE_TOAST)) {
-    var glances = StorageUtil.getGlances();
-    Toast.makeText("You've glanced at your phone " + glances + (glances === 1 ? " time" : " times") + " today").show();
+  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_TOAST)) {
+    var unlocks = StorageUtil.getUnlocks();
+    if (unlocks >= THRESHOLD_UNLOCKS_TST) {
+      Toast.makeText("You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today").show();
+    }
   }
 };
 
+
+/**
+ * sendUnlocksNotification
+ * -----------------------
+ * Send a notification if the device has an effective 
+ * number of unlocks (determined by 
+ * THRESHOLD_UNLOCKS_NTF).
+ */
+var sendUnlocksNotification = function(real) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "Unlock Alert", "You've unlocked your phone 7 times today", notificationID.VISIT);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_NOTIFICATION)) {
+    var unlocks = StorageUtil.getUnlocks();
+    if (unlocks >= THRESHOLD_UNLOCKS_NTF) {
+      var title = 'Unlock Alert';
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+      NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
+    }
+  }
+};
+
+
+/**
+ * showUnlocksDialog
+ * -----------------
+ * Show a dialog if the device has an effective 
+ * number of unlocks (determined by 
+ * THRESHOLD_UNLOCKS_DLG).
+ */
+var showUnlocksDialog = function (real) {
+  if (!real) {
+    DialogOverlay.showOneOptionDialogOverlay("You've unlocked your phone 18 times today", "Okay");
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_DIALOG)) {
+    var unlocks = StorageUtil.getUnlocks();
+    if (unlocks >= THRESHOLD_UNLOCKS_DLG) {
+      var title = 'Unlock Alert';
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    }
+  }
+}
 
 
 /*************************************
  *      APP USAGE INTERVENTIONS      *
  *************************************/
+
 
 /**
  * popToastUsage
@@ -284,18 +267,12 @@ var popToastUsage = function (real, pkg) {
   }
 
   if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_TOAST, pkg)) {
-    var minutesUsed = StorageUtil.getAppTime(pkg);
-    var minutesGoal = StorageUtil.getMinutesGoal(pkg);
-    var msg = "";
-
-    if (minutesUsed > minutesGoal) {
-      msg = "Uh oh! You've spent " + minutesUsed + " minutes here today! (Goal: " + minutesGoal + " minutes)";
-    } else {
-      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      msg = applicationName + " Usage: " + minutesUsed + " of " + minutesGoal + " goal minutes today";
+    var minutes = StorageUtil.getAppTime(pkg);
+    if (minutes >= THRESHOLD_USAGE_TST) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = "You've already spent " + minutes + " on " + app + " today!";
+      Toast.makeText(msg).show();
     }
-
-    Toast.makeText(msg).show();
   }
 };
 
@@ -313,22 +290,15 @@ var sendNotificationUsage = function (real, pkg) {
     return;
   }
 
-  console.warn("n");
   if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_NOTIFICATION, pkg)) {
-    var minutesUsed = StorageUtil.getAppTime(pkg);
-    var minutesGoal = StorageUtil.getMinutesGoal(pkg);
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-    var title = applicationName + " Usage Alert"
-    var msg = "";
-
-    if (minutesUsed > minutesGoal) {
-      msg = "Whoops! You've been here for " + minutesUsed + " minutes today! (Goal: " + minutesGoal + " minutes)"; 
-    } else {
-      msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += "used " + applicationName + " for " + minutesUsed + " minutes today. (Goal: " + minutesGoal + " minutes)"; 
-    }
-      
-    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE);    
+    var minutes = StorageUtil.getAppTime(pkg);
+    if (minutes >= THRESHOLD_USAGE_NTF) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = app + " Usage Alert"
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " already used " + app + " for " + minutes + " minutes today.";
+      NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE);
+    } 
   }
 };
 
@@ -346,20 +316,13 @@ var showDialogUsage = function (real, pkg) {
   }
 
   if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_DIALOG, pkg)) {
-    var minutesUsed = StorageUtil.getAppTime(pkg);
-    var minutesGoal = StorageUtil.getMinutesGoal(pkg);
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-    var msg = "";
-
-    if (minutesUsed > minutesGoal) {
-      msg = shouldPersonalize() ? "Slow down " + StorageUtil.getName() + "!" : "Slow down!"
-      msg += " That's " + minutesUsed + " minutes on " + applicationName + " today!"; 
-    } else {
-      msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += "used " + applicationName + " for " + minutesUsed + " minutes today. (Goal: " + minutesGoal + " minutes)"; 
+    var minutes = StorageUtil.getAppTime(pkg);
+    if (minutes >= THRESHOLD_USAGE_DLG) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", that's" : "That's"
+      msg += " already " + minutes + " minutes on " + app + " today!"; 
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
     }
-
-    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
   }
 };
 
@@ -389,7 +352,7 @@ var logVisitStart = function() {
 /**
  * popToastVisitLength
  * -------------------
- * Displays a toast after DURATION_TOAST_INTERVAL ms on the 
+ * Displays a toast after THRESHOLD_DURATION_TST ms on the 
  * specified package.
  */
 var popToastVisitLength = function (real, pkg, visitStart) {
@@ -400,9 +363,9 @@ var popToastVisitLength = function (real, pkg, visitStart) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_TOAST, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - visitStart) > DURATION_TOAST_INTERVAL && !sentToastDuration) {
+    if ((now - visitStart) > THRESHOLD_DURATION_TST && !sentToastDuration) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      Toast.makeText("You've been on " + applicationName + " for " + Math.ceil(DURATION_TOAST_INTERVAL / MIN_IN_MS) + " minutes this visit").show();
+      Toast.makeText("You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit").show();
       sentToastDuration = true;
     }
   }
@@ -411,7 +374,7 @@ var popToastVisitLength = function (real, pkg, visitStart) {
 /**
  * sendNotificationVisitLength
  * ---------------------------
- * Displays a notification after DURATION_TOAST_INTERVAL ms 
+ * Displays a notification after THRESHOLD_DURATION_NTF ms 
  * on the specified package.
  */
 var sendNotificationVisitLength = function (real, pkg, visitStart) {
@@ -422,11 +385,11 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - visitStart) > DURATION_NOTIF_INTERVAL && !sentNotificationDuration) {
+    if ((now - visitStart) > THRESHOLD_DURATION_NTF && !sentNotificationDuration) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = applicationName + " Visit Length";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil(DURATION_NOTIF_INTERVAL / MIN_IN_MS) + " minutes";
+      msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_NTF / MIN_IN_MS) + " minutes";
       NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION);
       sentNotificationDuration = true;
     }
@@ -437,7 +400,7 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
 /**
  * showDialogVisitLength
  * ---------------------
- * Displays a toast after DURATION_DIALOG_INTERVAL ms on the 
+ * Displays a toast after THRESHOLD_DURATION_DLG ms on the 
  * specified package.
  */
 var showDialogVisitLength = function (real, pkg, visitStart) {
@@ -448,10 +411,10 @@ var showDialogVisitLength = function (real, pkg, visitStart) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_DIALOG, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - visitStart) > DURATION_DIALOG_INTERVAL && !sentDialogDuration) {
+    if ((now - visitStart) > THRESHOLD_DURATION_DLG && !sentDialogDuration) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil(DURATION_DIALOG_INTERVAL / MIN_IN_MS) + " minutes";
+      msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_DLG / MIN_IN_MS) + " minutes";
       DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
       sentDialogDuration = true;
     }
@@ -535,7 +498,6 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  *        OVERLAY INTERVENTIONS        *
  ***************************************/
 
-
 /**
  * showFullScreenOverlay
  * ---------------------
@@ -552,12 +514,13 @@ var showFullScreenOverlay = function (real, pkg) {
   
   if (StorageUtil.canIntervene(ID.interventionIDs.FULL_SCREEN_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
-    var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-    var title = "Continue to " + applicationName + "?";
-    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-    msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
-    FullScreenOverlay.showOverlay(title, msg, 
-      "Continue", "Get me out of here!", null, exitToHome);
+    if (visits >= THRESHOLD_FULLSCREEN_OVR) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = "Continue to " + app + "?";
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
+      FullScreenOverlay.showOverlay(title, msg, "Continue", "Get me out of here!", null, exitToHome);
+    }
   }
 }
 
@@ -588,7 +551,10 @@ var showCountUpTimer = function (real, pkg) {
 
 
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTUP_TIMER_OVERLAY, pkg)) {
-    TimerOverlay.showCountUpTimer();
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits >= THRESHOLD_COUNTUP_TMR) {
+      TimerOverlay.showCountUpTimer();
+    }
   }
 }
 
@@ -608,7 +574,10 @@ var showCountDownTimer = function (real, pkg) {
   }
 
   if (StorageUtil.canIntervene(ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY, pkg)) {
-    TimerOverlay.showCountDownTimer(2, exitToHome);
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits >= THRESHOLD_COUNTDOWN_TMR) {
+      TimerOverlay.showCountDownTimer(2, exitToHome);
+    } 
   }
 }
 
@@ -631,14 +600,18 @@ var dimScreen = function (real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DIMMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
-    if (visits % DIMMER_OVERLAY_INTERVAL === 0) {
-      //Changed for testing
-    DimmerOverlay.dim(0.01);
-
+    if (visits > THRESHOLD_DIMSCREEN_OVR) {
+      DimmerOverlay.dim(0.01);
     }
   }
 }
 
+
+/*
+ * removeOverlays
+ * --------------
+ * Remove any left over overlays on the screen.
+ */
 var removeOverlays = function() {
   DimmerOverlay.removeDimmer();
   TimerOverlay.dismissTimer();
@@ -647,34 +620,72 @@ var removeOverlays = function() {
   FullScreenOverlay.removeOverlay();
 }
 
-
-
-
-var easyIndex = 0;
-var mediumIndex = 0;
-var hardIndex = 0;
+/***************************************
+ *       INTERVENTION RETREIVAL        *
+ ***************************************/
 var onLaunchInterventions = {
   easy: [popToastVisited, sendNotificationVisited, popToastUsage, sendNotificationUsage],
   medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer],
   hard: [showCountDownTimer, dimScreen]
 };
 
-var getNextOnLaunchIntervention = function (pkg) {
+var onScreenUnlockInterventions = {
+  easy: [sendUnlocksNotification, popToastUnlocked],
+  medium: [showUnlocksDialog]
+};
+
+var nextOnLaunchIntervention = function(pkg) {
   var run = Math.random();
-  console.warn(run);
-  if (run < 0.4) {
+  if (run < 0.6) {
     var randomDifficulty = Math.random();
+    var index;
     if (randomDifficulty < 0.1) {  // hard
-      onLaunchInterventions.hard[hardIndex % onLaunchInterventions.hard.length](true, pkg);
-      hardIndex++;
+      index = randBW(0, onLaunchInterventions.hard.length - 1);
+      onLaunchInterventions.hard[index](true, pkg);
     }  else if (randomDifficulty < 0.4) { // medium
-      onLaunchInterventions.medium[mediumIndex % onLaunchInterventions.medium.length](true, pkg);
-      mediumIndex++;
+      index = randBW(0, onLaunchInterventions.medium.length - 1);
+      onLaunchInterventions.medium[index](true, pkg);
     } else {  // easy
-      onLaunchInterventions.easy[easyIndex % onLaunchInterventions.easy.length](true, pkg);
-      easyIndex++;
+      index = randBW(0, onLaunchInterventions.easy.length - 1);
+      onLaunchInterventions.easy[index](true, pkg);
     }
   }
+};
+
+var nextScreenOnIntervention = function() {
+  var run = Math.random();
+  if (run < 0.05) {
+    sendNotificationGlances(true);
+  }
+}
+
+var nextScreenUnlockIntervention = function() {
+  var run = Math.random();
+  if (run < 0.15) {
+    var randomDifficulty = Math.random();
+    var index;
+    if (randomDifficulty < 0.4) {
+      index = randBW(0, onScreenUnlockInterventions.medium.length - 1);
+      onScreenUnlockInterventions.medium[index](true);
+    } else {
+      index = randBW(0, onScreenUnlockInterventions.easy.length - 1);
+      onScreenUnlockInterventions.easy[index](true);
+    }
+  }
+}
+
+
+var nextActiveIntervention = function(pkg, time) {
+  blockVideo(true, pkg);
+  popToastVisitLength(true, pkg, time);
+  sendNotificationVisitLength(true, pkg, time);
+  showDialogVisitLength(true, pkg, time);
+}
+
+
+
+var randBW = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 
@@ -703,7 +714,10 @@ module.exports = {
   allowVideoBlocking,
   logVisitStart,
   removeOverlays,
-  getNextOnLaunchIntervention
+  nextOnLaunchIntervention,
+  nextScreenOnIntervention,
+  nextScreenUnlockIntervention,
+  nextActiveIntervention
 };
 
 
