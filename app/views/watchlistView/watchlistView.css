@@ -1,5 +1,5 @@
 .manage-button {
-  background-color: #FFA730;
+  background-color: #69BD68;
   color: white;
   height: 10%;
 }
@@ -7,8 +7,8 @@
 .section-title {
   font-size: 23%;
   text-align: center;
-  padding: 5%;
-  padding-top: 10%;
+  padding-top: 13%;
+  padding-bottom: 5%;
   color: #FFA730;
 }
 
@@ -20,7 +20,7 @@
 
 .watchlist-icon {
   padding: 5%;
-  height: 80%;
+  width: 15%;
 }
 
 .watchlist-label {
@@ -34,5 +34,11 @@
 }
 
 .scrollable-stack {
-  padding: 10%;
+  padding-right: 10%;
+  padding-left: 10%;
+}
+
+.stack-container {
+  padding: 0;
+  margin: 0;
 }
