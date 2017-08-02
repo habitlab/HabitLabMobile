@@ -9,7 +9,7 @@
       <Label text="Goals" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
-    <ActionItem tap="onManageApps" icon="res://ic_manage_apps" />
+    <!-- <ActionItem tap="onManageApps" icon="res://ic_manage_apps" /> -->
 	</ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
@@ -26,12 +26,12 @@
             <Label text="Phone" class="section-title" />
             <StackLayout orientation="vertical" id="phoneGoals" />
             
-            <Label text="Watchlist" class="section-title" />
+            <Label text="Watchlist" class="section-title-watchlist" />
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
           </StackLayout>
         </ScrollView>
-
-        <Button text="done" onTap="onDone" id="button"/>
+        <Button text="Manage Watchlist" onTap="onManageApps" id="manageWatchlist" />
+        <Button text="done" onTap="onDone" id="done"/>
 
       </StackLayout>
     </sd:RadSideDrawer.mainContent>

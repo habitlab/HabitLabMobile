@@ -20,19 +20,17 @@ var onboarding = {};
 
 onboarding.texts = [
   'Design your time on your phone',
-  'Choose the apps you want to spend less time on.',
-  'Build better habits with personalized interventions.',
-  'Find what works for you and see how your habits improve over time.',
+  'Choose apps to spend less time on',
+  'Personalized nudges will help you meet your goals',
+  'See how your habits improve over time.',
   'First things first...',
-  'Last one!',
-  'Swipe to pick your apps.\n'
-
+  'Last one!'
   ];
 
 onboarding.titles = [
   'Welcome to HabitLab,',
-  'Set Your Goals',
-  'Stop Wasting Time',
+  'Create your watchlist',
+  'Stop wasting time',
   'Track Your Progress',
   'Let\'s Do It!'
   ];
@@ -48,11 +46,11 @@ onboarding.visuals = [
 
 exports.pageLoaded = function(args) {
 
-  if (StorageUtil.isOnboarded()) {
-    frameModule.topmost().navigate('views/progressView/progressView');
-  } else if (StorageUtil.isSetUp()) {
-    frameModule.topmost().navigate('views/appsView/appsView');
-  }
+  // if (StorageUtil.isOnboarded()) {
+  //   frameModule.topmost().navigate('views/progressView/progressView');
+  // } else if (StorageUtil.isSetUp()) {
+  //   frameModule.topmost().navigate('views/appsView/appsView');
+  // }
 
   var navigated = false;
   page = args.object;

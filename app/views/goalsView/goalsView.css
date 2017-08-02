@@ -1,8 +1,18 @@
 .section-title {
   font-size: 23%;
   text-align: center;
+  padding: 5%;
   color: #FFA730;
 }
+
+.section-title-watchlist {
+  font-size: 23%;
+  text-align: center;
+  padding: 5%;
+  padding-top: 15%;
+  color: #FFA730;
+}
+
 
 .label-and-icon {
   margin-top: 3%;
@@ -21,7 +31,7 @@
   margin-top: 2%;
 }
 
-#button {
+Button {
   background-color: #69BD68;
   color: white;
   height: 11%;
