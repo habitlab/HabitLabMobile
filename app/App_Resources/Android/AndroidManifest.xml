@@ -44,22 +44,22 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.tns.ErrorReportActivity"/>
-		<service 
+		<!-- <service 
 			android:name="com.habitlab.TrackingService"
 			android:exported="false">
-		</service>
+		</service> -->
 		<service 
 			android:name="com.habitlab.PermissionCheckerService"
 			android:exported="false">
 		</service>
-		<service 
+		<!-- <service 
 			android:name="com.habitlab.UnlockService"
 			android:exported="false" >
 		</service>
 		<service 
 			android:name="com.habitlab.DummyService"
 			android:exported="false" >
-		</service>
+		</service> -->
 		<service
 			android:name="com.habitlab.AccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -70,7 +70,7 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility"/>
 		 </service>
-		<receiver 
+		<!-- <receiver 
 			android:name="com.habitlab.NotificationActionReceiver"
 			android:enabled="true"
 			android:exported="false">
@@ -78,7 +78,7 @@
 				<action android:name="action.habitlab.NotificationPositive" />
 				<action android:name="action.habitlab.NotificationNegative" />
 		    </intent-filter>
-		</receiver>
+		</receiver> -->
 		<receiver 
 			android:name="com.habitlab.AlarmReceiver"
 			android:enabled="true"
@@ -87,7 +87,7 @@
 				<action android:name="action.habitlab.AlarmNotice" />
 		    </intent-filter>
 		</receiver>
-		<receiver 
+		<!-- <receiver 
 			android:name="com.habitlab.ServiceRestarterReceiver"
 			android:enabled="true"
 		    android:exported="false"
@@ -97,7 +97,7 @@
 		        <action android:name="android.intent.action.BOOT_COMPLETED" />
 		        <category android:name="android.intent.category.DEFAULT" />
 		    </intent-filter>
-		</receiver>
+		</receiver> -->
 		<receiver 
 			android:name="com.habitlab.NewPackageReceiver"
 			android:enabled="true"

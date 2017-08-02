@@ -79,7 +79,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 	// add view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayView = new DialogView(context);
     windowManager.addView(overlayView, viewParams);
@@ -88,7 +88,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     // add title
     var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
     	0.1 * SCREEN_WIDTH, 0.275 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     titleParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayTitle = new TextView(context);
     overlayTitle.setText(title);
@@ -101,7 +101,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.4 * SCREEN_HEIGHT,
     	0.1 * SCREEN_WIDTH, 0.3 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayText = new TextView(context);
     overlayText.setText(msg);
@@ -115,7 +115,9 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     var posButtonParams = new WindowManager.LayoutParams(0.35 * SCREEN_WIDTH, 
     	0.1 * SCREEN_HEIGHT, 0.1 * SCREEN_WIDTH, 0.65 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayPosButton = new Button(context);
 	overlayPosButton.setText(pos);
@@ -134,7 +136,9 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     var negButtonParams = new WindowManager.LayoutParams(0.35 * SCREEN_WIDTH, 
     	0.1 * SCREEN_HEIGHT, 0.55 * SCREEN_WIDTH, 0.65 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayNegButton = new Button(context);
 	overlayNegButton.setText(neg);

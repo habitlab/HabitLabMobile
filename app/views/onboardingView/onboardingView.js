@@ -71,7 +71,7 @@ exports.pageLoaded = function(args) {
 
 //go to next slide when the return button on the keyboard is pressed 
 exports.hideCursor = function(args) {
-  container.nextSlide();
+  // no longer used
 };
 
 //If swipe left, go to next slide, if swipe right, go to previous slide
@@ -95,7 +95,7 @@ exports.checkNameNextSlide = function(args) {
       fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "OK");
   } else {
     StorageUtil.setName(name);
-    exports.goToNextSlide(args);
+    container.nextSlide();
   }
 };
 

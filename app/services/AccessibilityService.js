@@ -25,13 +25,17 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
         var action = intent.getAction();
 
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
-            console.warn("Screen On");
+            screenOnTime = Date.now();
             storage.glanced();
+            interventionManager.nextScreenOnIntervention();
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
-            console.warn("Screen Unlocked");
             storage.unlocked();
+            interventionManager.nextScreenUnlockIntervention();
         } else if (action === android.content.Intent.ACTION_SCREEN_OFF) {
-            console.warn("Screen Off");
+            var now = Date.now();
+            closeRecentVisit(now);
+            var timeSpentOnPhone = now - screenOnTime;
+            storage.updateTotalTime(timeSpentOnPhone);
         }  
     }
 });
@@ -57,11 +61,27 @@ var currentApplication = {
  */
 android.accessibilityservice.AccessibilityService.extend("com.habitlab.AccessibilityService", {
     onAccessibilityEvent: function(event) {
+        console.warn(event.getPackageName());
+
         var activePackage = event.getPackageName();
+        if (activePackage === "org.nativescript.HabitLabMobile") { return; } // overlays give habitlab the foreground...
+
         if (currentApplication.packageName !== activePackage) {
+            interventionManager.removeOverlays();
+
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
+
+            if (currentApplication.isBlacklisted) {
+                interventionManager.allowVideoBlocking(true);
+                interventionManager.logVisitStart();
+                interventionManager.nextOnLaunchIntervention(currentApplication.packageName);
+            }
+        } else {
+            if (currentApplication.isBlacklisted) {
+                interventionManager.nextActiveIntervention(currentApplication.packageName, currentApplication.visitStart);
+            }
         }
     },
 
@@ -70,9 +90,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     },
 
     onServiceConnected: function() {   
-        // actions on service start-up     
         this.super.onServiceConnected();
-        setUpScreenReceiver();
+        setUpScreenReceiver(); // set up unlock receiver on startup
     }
 });
 
@@ -88,6 +107,7 @@ function closeRecentVisit(now) {
     if (currentApplication.isBlacklisted) {
         var timeSpent = now - currentApplication.visitStart;
         storage.updateAppTime(currentApplication.packageName, timeSpent);
+        console.warn("Closed: " + currentApplication.packageName);
     }
 }
 
@@ -108,6 +128,7 @@ function openNewVisit(now, pkg) {
     } else {
         currentApplication.isBlacklisted = false;
     }
+    console.warn("Opened: " + currentApplication.packageName + " (blacklisted: " + currentApplication.isBlacklisted + ")");
 }
 
 
@@ -127,6 +148,18 @@ function setUpScreenReceiver() {
     context.registerReceiver(receiver, filterOn);
     context.registerReceiver(receiver, filterOff);
     context.registerReceiver(receiver, filterUnlocked);
+    console.warn("Started ScreenReceiver");
 }
+
+
+/**
+ * markMidnight
+ * ------------
+ * Function to be called at midnight. Closes any visits that 
+ * are active at midnight (so that they are part of that day).
+ */
+ exports.markMidnight = function () {
+    closeRecentVisit(Date.now());
+ };
 
 
