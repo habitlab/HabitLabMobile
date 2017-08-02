@@ -46,6 +46,7 @@ onboarding.visuals = [
 
 exports.pageLoaded = function(args) {
 
+  // set also in app.js
   if (StorageUtil.isOnboarded()) {
     frameModule.topmost().navigate('views/progressView/progressView');
   } else if (StorageUtil.isSetUp()) {

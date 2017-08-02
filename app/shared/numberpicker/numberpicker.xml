@@ -1,5 +1,0 @@
-<FlexboxLayout flexDirection="row" class="np">
-  <Button text="-" id="minus" class="np-button" />
-  <TextField id="number" keyboardType="number" text="999" class="np-text" />
-  <Button text="+" id="plus" class="np-button" />
-</FlexboxLayout>

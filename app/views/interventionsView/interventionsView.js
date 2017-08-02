@@ -13,8 +13,8 @@ var interventionList;
 
 var createItem = function(info)  {
   var item = builder.load({
-    path: 'shared/detailelem',
-    name: 'detailelem'
+    path: 'shared/nudgeelem',
+    name: 'nudgeelem'
   });
 
   item.id = 'item' + item.id;
@@ -29,14 +29,16 @@ var createItem = function(info)  {
   label.text = info.name;
   label.className = 'intervention-label';
 
+  var description = item.getViewById("description");
+  description.text = info.summary;
+  description.className = 'intervention-description';
+
+  var options = {
+    moduleName: 'views/detailView/detailView',
+    context: { info: info }
+  };
   item.on("tap, touch", function(args) {
     if (args.eventName === 'tap') {
-      var options = {
-        moduleName: 'views/detailView/detailView',
-        context: {
-          info: info
-        }
-      };
       frame.topmost().navigate(options);
     } else {
       if (args.action === 'down') {
@@ -45,12 +47,6 @@ var createItem = function(info)  {
         item.backgroundColor = '#FFFFFF';
       }
     }
-  });
-
-  var sw = item.getViewById("switch");
-  sw.checked = StorageUtil.isEnabledForAll(info.id);
-  sw.on(gestures.tap, function() {
-    StorageUtil.toggleForAll(info.id);
   });
 
   return item;

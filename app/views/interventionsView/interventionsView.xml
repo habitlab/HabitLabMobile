@@ -24,7 +24,7 @@
           <StackLayout orientation="vertical" id="notification-interventions" />
           <Label class="nudges-section-title" text="Dialogs" />
           <StackLayout orientation="vertical" id="dialog-interventions" />
-          <Label class="nudges-section-title" text="Overlays" />
+          <Label class="nudges-section-title" text="Other" />
           <StackLayout orientation="vertical" id="overlay-interventions" />
         </StackLayout>
       </ScrollView>

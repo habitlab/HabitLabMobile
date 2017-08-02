@@ -63,17 +63,17 @@
 
 .easy-level {
   border-color: green;
-  border-left-width: 5px;
+  border-left-width: 10px;
 }
 
 .medium-level {
   border-color: orange;
-  border-left-width: 5px;
+  border-left-width: 10px;
 }
 
 .hard-level {
   border-color: red;
-  border-left-width: 5px;
+  border-left-width: 10px;
 }
 
 .app-detail-flex-layout {

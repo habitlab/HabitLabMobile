@@ -16,7 +16,7 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <StackLayout orientation="vertical" id="detail" >
+      <StackLayout orientation="vertical" id="detail" class="main-container">
         <Label id="title" class="detail-label" />
         <Label id="description" class="detail-label" />
         <FlexboxLayout orientation="horizontal" class="level-layout">
@@ -24,6 +24,10 @@
           <Label id="level" class="detail-label" />
         </FlexboxLayout>
         <Button id='button' text="Show Me a Demo" />
+        <FlexboxLayout orientation="horizontal" class="disable-layout" id="disable-toggle">
+          <Label id="disable-label" text="Disable All" class="detail-label small" />
+          <Switch id="disable-switch" class="detail-label" />
+        </FlexboxLayout>
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical" id="list" />
         </ScrollView>

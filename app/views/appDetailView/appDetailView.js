@@ -131,12 +131,6 @@ var createItem = function(enabled, id, first)  {
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
 
-  if (first) {
-    image2.visibility = 'hidden';
-    description.visibility = 'visible';
-    button.visibility = 'visible';
-  }
-
   var button = item.getViewById('button');
   button.text = 'DISABLE';
   button.className = 'app-detail-disable-button';
@@ -165,6 +159,12 @@ var createItem = function(enabled, id, first)  {
   var image2 = item.getViewById('icon2');
   image2.src = ID.interventionDetails[id].icon;
   image2.className = 'app-intervention-icon';
+
+  if (first) {
+    image2.visibility = 'hidden';
+    description.visibility = 'visible';
+    button.visibility = 'visible';
+  }
 
   var sw = item.getViewById("switch");
   sw.checked = enabled;
