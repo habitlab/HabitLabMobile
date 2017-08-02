@@ -106,7 +106,8 @@ var popToastVisited = function(real, pkg) {
  */
 var sendNotificationVisited = function(real, pkg) {
   if (!real) {
-    NotificationUtil.sendNotification(context, "Facebook Visit Count", "You've opened Facebook 7 times today", notificationID.VISIT);
+    NotificationUtil.sendNotification(context, "Facebook Visit Count", 
+      "You've opened Facebook 7 times today", notificationID.VISIT, 10);
     return;
   }
 
@@ -117,7 +118,7 @@ var sendNotificationVisited = function(real, pkg) {
       var title = app + " Visit Count";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT);
+      NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT, 10);
     }
   }
 };
@@ -162,7 +163,8 @@ var showDialogVisited = function (real, pkg) {
  */
 var sendNotificationGlances = function(real) {
   if (!real) {
-    NotificationUtil.sendNotification(context, "Glance Alert", "You've glanced at your phone 7 times today", notificationID.VISIT);
+    NotificationUtil.sendNotification(context, "Glance Alert", 
+      "You've glanced at your phone 7 times today", notificationID.VISIT, 10);
     return;
   }
 
@@ -172,7 +174,7 @@ var sendNotificationGlances = function(real) {
       var title = 'Glance Alert';
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
-      NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE);
+      NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE, 10);
     }
   }
 };
@@ -208,7 +210,8 @@ var popToastUnlocked = function(real) {
  */
 var sendUnlocksNotification = function(real) {
   if (!real) {
-    NotificationUtil.sendNotification(context, "Unlock Alert", "You've unlocked your phone 7 times today", notificationID.VISIT);
+    NotificationUtil.sendNotification(context, "Unlock Alert", 
+      "You've unlocked your phone 7 times today", notificationID.VISIT, 10);
     return;
   }
 
@@ -218,7 +221,7 @@ var sendUnlocksNotification = function(real) {
       var title = 'Unlock Alert';
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-      NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK);
+      NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK, 10);
     }
   }
 };
@@ -286,7 +289,7 @@ var popToastUsage = function (real, pkg) {
 var sendNotificationUsage = function (real, pkg) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Usage Alert", 
-      "You've already used Facebook for 27 minutes today!", notificationID.USAGE);
+      "You've already used Facebook for 27 minutes today!", notificationID.USAGE, 10);
     return;
   }
 
@@ -297,7 +300,7 @@ var sendNotificationUsage = function (real, pkg) {
       var title = app + " Usage Alert"
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " already used " + app + " for " + minutes + " minutes today.";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE);
+      NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
     } 
   }
 };
@@ -379,7 +382,8 @@ var popToastVisitLength = function (real, pkg, visitStart) {
  */
 var sendNotificationVisitLength = function (real, pkg, visitStart) {
   if (!real) {
-    NotificationUtil.sendNotification(context, "Facebook Visit Length", "You've been using Facebook for 10 minutes", notificationID.DURATION);
+    NotificationUtil.sendNotification(context, "Facebook Visit Length", 
+      "You've been using Facebook for 10 minutes", notificationID.DURATION, 10);
     return;
   }
 
@@ -390,7 +394,7 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
       var title = applicationName + " Visit Length";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_NTF / MIN_IN_MS) + " minutes";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION);
+      NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
       sentNotificationDuration = true;
     }
   }
