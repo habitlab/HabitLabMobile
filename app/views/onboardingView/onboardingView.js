@@ -20,19 +20,17 @@ var onboarding = {};
 
 onboarding.texts = [
   'Design your time on your phone',
-  'Choose the apps you want to spend less time on.',
-  'Build better habits with personalized interventions.',
-  'Find what works for you and see how your habits improve over time.',
+  'Choose apps to spend less time on',
+  'Personalized nudges will help you meet your goals',
+  'See how your habits improve over time.',
   'First things first...',
-  'Last one!',
-  'Swipe to pick your apps.\n'
-
+  'Last one!'
   ];
 
 onboarding.titles = [
   'Welcome to HabitLab,',
-  'Set Your Goals',
-  'Stop Wasting Time',
+  'Create your watchlist',
+  'Stop wasting time',
   'Track Your Progress',
   'Let\'s Do It!'
   ];
@@ -70,9 +68,9 @@ exports.pageLoaded = function(args) {
 };
 
 
-//hide cursor when the return button on the keyboard is pressed 
+//go to next slide when the return button on the keyboard is pressed 
 exports.hideCursor = function(args) {
-  var textField = args.object;
+  container.nextSlide();
 };
 
 //If swipe left, go to next slide, if swipe right, go to previous slide

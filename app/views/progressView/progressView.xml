@@ -37,7 +37,7 @@
 		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 		   			        </lv:RadListView.listViewLayout>
 		   			        <lv:RadListView.itemTemplate>
-		   			            <StackLayout class="list-buttons">
+		   			            <StackLayout class="list-buttons" tap="onDayTap">
 		   			                <Label text="{{ value }}" class="list-number" />
 		   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 		   			            </StackLayout>
@@ -84,7 +84,7 @@
 			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
-			   			            <StackLayout class="list-buttons">
+			   			            <StackLayout class="list-buttons" tap="onWeekTap">
 			   			                <Label text="{{ value }}" class="list-number" />
 			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 			   			            </StackLayout>
@@ -105,8 +105,11 @@
 	   			        	                <Label text="{{ name }}" class="list-group-item-heading"/>
 	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
-	   			        	            <Label row="0" col="2" text = "{{ percChange }}" class="percChange" horizontalAlignment="center"/>
-		   			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+	   			        	             <StackLayout row="0" col="2" >
+	   			        	            	<Label text = "{{ percChange }}" class="percChange" horizontalAlignment="center"/>
+	   			        	            	<Label text="from last week" class="small-text" />
+	   			        	        	</StackLayout>
+	   			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
 			   			        	</GridLayout>
 			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
@@ -132,7 +135,7 @@
 			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
-			   			            <StackLayout class="list-buttons">
+			   			            <StackLayout class="list-buttons" tap="onMonthTap">
 			   			                <Label text="{{ value }}" class="list-number" />
 			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 			   			            </StackLayout>

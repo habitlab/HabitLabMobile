@@ -152,8 +152,9 @@ exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
   if (StorageUtil.isOnboarded()) {
-    page.getViewById('button').visibility = 'collapse';
-    page.getViewById('scroll').height = '98%';
+    page.getViewById('done').visibility = 'collapse';
+  } else {
+    page.getViewById('manageWatchlist').visibility='collapse'
   }
   setUpPhoneGoals();
   setUpAppGoals();
