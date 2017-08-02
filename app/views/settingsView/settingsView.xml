@@ -49,7 +49,7 @@
           </StackLayout>
         </AbsoluteLayout>
       </GridLayout>
-        <Button text="Set fake data" onTap="setFakeData" />
+        <!-- <Button text="Set fake data" onTap="setFakeData" /> -->
      </StackLayout>
 
     </sd:RadSideDrawer.mainContent>

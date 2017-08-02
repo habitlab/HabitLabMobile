@@ -29,26 +29,54 @@ var notificationID = {
   DURATION: 4000
 };
 
+// // Intervention Intervals - Unlock/Glances
+// var UNLOCKS_TOAST_INTERVAL = 10; // unlocks
+// var UNLOCKS_NOTIF_INTERVAL = 15; // unlocks
+// var UNLOCKS_DIALOG_INTERVAL = 25; // unlocks
+// var GLANCES_NOTIF_INTERVAL = 35; // glances
+// var GLANCES_TOAST_INTERVAL = 1; // glances
+
+
+// // Intervention Intervals - On Launch
+// var VISITED_TOAST_INTERVAL = 5; // visits
+// var VISITED_NOTIF_INTERVAL = 10; // visits
+// var VISITED_DIALOG_INTERVAL = 15; // visits
+// var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
+// var COUNT_UP_TIMER_INTERVAL = 17;
+// var COUNT_DOWN_TIMER_INTERVAL = 23;
+// var DIMMER_OVERLAY_INTERVAL = 24;
+
+// var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
+// var DURATION_NOTIF_INTERVAL = 600000; // 10 minutes (in ms)
+// var DURATION_DIALOG_INTERVAL = 900000; // 15 minutes (in ms)
+
+//Demo:
+
 // Intervention Intervals - Unlock/Glances
-var UNLOCKS_TOAST_INTERVAL = 10; // unlocks
-var UNLOCKS_NOTIF_INTERVAL = 15; // unlocks
-var UNLOCKS_DIALOG_INTERVAL = 25; // unlocks
-var GLANCES_NOTIF_INTERVAL = 35; // glances
+var UNLOCKS_TOAST_INTERVAL = 2; // unlocks
+var UNLOCKS_NOTIF_INTERVAL = 3; // unlocks
+var UNLOCKS_DIALOG_INTERVAL = 3; // unlocks
+var GLANCES_NOTIF_INTERVAL = 4; // glances
 var GLANCES_TOAST_INTERVAL = 1; // glances
 
 
 // Intervention Intervals - On Launch
-var VISITED_TOAST_INTERVAL = 5; // visits
-var VISITED_NOTIF_INTERVAL = 10; // visits
-var VISITED_DIALOG_INTERVAL = 15; // visits
-var FULL_SCREEN_OVERLAY_INTERVAL = 20; // visits
-var COUNT_UP_TIMER_INTERVAL = 17;
-var COUNT_DOWN_TIMER_INTERVAL = 23;
-var DIMMER_OVERLAY_INTERVAL = 24;
+var VISITED_TOAST_INTERVAL = 3; // visits
+var VISITED_NOTIF_INTERVAL = 4; // visits
+var VISITED_DIALOG_INTERVAL = 7; // visits
+var FULL_SCREEN_OVERLAY_INTERVAL = 5; // visits
+var COUNT_UP_TIMER_INTERVAL = 6;
+var COUNT_DOWN_TIMER_INTERVAL = 9;
+var DIMMER_OVERLAY_INTERVAL = 2;
 
 var DURATION_TOAST_INTERVAL = 300000; // 5 minutes (in ms)
 var DURATION_NOTIF_INTERVAL = 600000; // 10 minutes (in ms)
 var DURATION_DIALOG_INTERVAL = 900000; // 15 minutes (in ms)
+
+
+
+
+
 
 var MIN_IN_MS = 60000;
 
@@ -520,7 +548,8 @@ var dimScreen = function (real, pkg) {
   if (StorageUtil.canIntervene(ID.interventionIDs.DIMMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits % DIMMER_OVERLAY_INTERVAL === 0) {
-      DimmerOverlay.dim(0.005);
+      //Changed for testing
+      DimmerOverlay.dim(0.05);
     }
   }
 }

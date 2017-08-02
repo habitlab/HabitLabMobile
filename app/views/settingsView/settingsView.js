@@ -52,9 +52,9 @@ exports.editName = function () {
     dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(onClickListener);
 };
 
-exports.setFakeData = function() {
-  StorageUtil.setUpFakeDB();
-};
+// exports.setFakeData = function() {
+//   StorageUtil.setUpFakeDB();
+// };
 
 
 exports.setHours = function () {

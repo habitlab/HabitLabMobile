@@ -165,6 +165,9 @@ exports.onDone = function() {
     fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up.", "Awesome!");
     StorageUtil.setOnboarded();
   } 
+  //Just for testing
+  // StorageUtil.setUpFakeDB();
+  
   frameModule.topmost().navigate("views/progressView/progressView");
 }
 

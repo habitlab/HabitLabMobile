@@ -16,6 +16,10 @@ exports.onUnloaded = function(args) {
   args.object.removeChildren();
 };
 
+var randBW = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
 var createGrid = function(args) {
   var list = UsageUtil.getApplicationList().sort(function compare(a, b) {
     return parseFloat(b.averageUsage) - parseFloat(a.averageUsage);
@@ -34,7 +38,9 @@ var setCellInfo = function(cell, info) {
   cell.getViewById("lbl").text = info.label;
 
   var usage = cell.getViewById("usg");
-  var mins = Math.ceil(info.averageUsage);
+  // var mins = Math.ceil(info.averageUsage);
+  //For testing:
+  var mins = Math.round(randBW(1, 40));
   usage.text = mins + ' min/day';
   if (mins >= 15) {
     usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
