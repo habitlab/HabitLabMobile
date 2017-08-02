@@ -57,13 +57,18 @@ exports.setFakeData = function() {
 };
 
 
-exports.setHours = function () {
+exports.startAccessibilityService = function() {
     var permission = require("~/util/PermissionUtil");
     if (!permission.checkAccessibilityPermission()) {
         permission.launchAccessibilityServiceIntent();
+    } else {
+        Toast.makeText("Already enabled").show();
     }
-    
-	// fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
+}
+
+
+exports.setHours = function() {
+	fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
 };
 
 
