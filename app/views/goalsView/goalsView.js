@@ -162,7 +162,7 @@ exports.pageLoaded = function(args) {
 
 exports.onDone = function() {
   if (!StorageUtil.isOnboarded()) {
-    fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up.", "Awesome!");
+    fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up. Continue using your phone as normal and we'll let you know when you're over your goal!", "Awesome!");
     StorageUtil.setOnboarded();
   } 
   //Just for testing
