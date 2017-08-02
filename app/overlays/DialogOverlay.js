@@ -118,6 +118,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionPosButton = new Button(context);
 	twoOptionPosButton.setText(pos);
+	twoOptionPosButton.setTextColor(Color.WHITE);
 	twoOptionPosButton.getBackground().setColorFilter(Color.parseColor("#C0C0C0"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	twoOptionPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
@@ -137,6 +138,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionNegButton = new Button(context);
 	twoOptionNegButton.setText(neg);
+	twoOptionNegButton.setTextColor(Color.WHITE);
 	twoOptionNegButton.getBackground().setColorFilter(Color.parseColor("#011627"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	twoOptionNegButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
@@ -210,6 +212,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
     oneOptionButton = new Button(context);
     oneOptionButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
 	oneOptionButton.setText(buttonText);
+	oneOptionButton.setTextColor(Color.WHITE);
 	oneOptionButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	        exports.removeOneOptionDialog();

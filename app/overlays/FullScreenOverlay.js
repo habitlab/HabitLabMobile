@@ -119,6 +119,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayPosButton = new Button(context);
 	overlayPosButton.setText(pos);
+	overlayPosButton.setTextColor(Color.WHITE);
 	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (posCallback) {
@@ -137,6 +138,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayNegButton = new Button(context);
 	overlayNegButton.setText(neg);
+	overlayNegButton.setTextColor(Color.WHITE);
 	overlayNegButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (negCallback) {

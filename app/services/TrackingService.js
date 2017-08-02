@@ -39,14 +39,7 @@ android.app.Service.extend("com.habitlab.TrackingService", {
 
     onDestroy: function() {
         // do nothing
-        // this.super.onDestroy();
     },
-
-    // onTaskRemoved: function(intent) {
-    //     // this.super.onTaskRemoved(intent);
-    //     // stopTimer();
-    //     // this.stopSelf();
-    // },
 
     onCreate: function() {
         // do nothing
@@ -120,17 +113,24 @@ var trackUsage = function () {
             startOfVisit = now;
             inBlacklistedApplication = true;
             StorageUtil.visited(currentPackage); // log a visit
-
-            // on-launch interventions
             InterventionManager.allowVideoBlocking(true);
             InterventionManager.logVisitStart();
-            InterventionManager.interventions[ID.interventionIDs.VISIT_TOAST](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.VISIT_NOTIFICATION](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.VISIT_DIALOG](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.FULL_SCREEN_OVERLAY](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.COUNTUP_TIMER_OVERLAY](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY](true, currentPackage);
-            InterventionManager.interventions[ID.interventionIDs.DIMMER_OVERLAY](true, currentPackage);
+            InterventionManager.getNextOnLaunchIntervention(currentPackage); // TESTING
+
+
+            // on-launch interventions
+            // InterventionManager.allowVideoBlocking(true);
+            // InterventionManager.logVisitStart();
+            // InterventionManager.interventions[ID.interventionIDs.VISIT_TOAST](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.VISIT_NOTIFICATION](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.VISIT_DIALOG](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.USAGE_TOAST](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.USAGE_NOTIFICATION](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.USAGE_DIALOG](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.FULL_SCREEN_OVERLAY](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.COUNTUP_TIMER_OVERLAY](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY](true, currentPackage);
+            // InterventionManager.interventions[ID.interventionIDs.DIMMER_OVERLAY](true, currentPackage);
         } else {
             // reset logging information
             startOfVisit = undefined;
@@ -236,10 +236,28 @@ var alertScreenOff = function () {
  }
 
 
+/**
+ * markMidnight
+ * ------------
+ * Function to be called at midnight. Closes any visits that 
+ * are active at midnight (so that they are part of that day).
+ */
+ var markMidnight = function () {
+    // close a visit if it is active at midnight (reset start of visit)
+    if (inBlacklistedApplication) {
+        var now = System.currentTimeMillis();
+        var timeSpent = now - startOfVisit || 0; // in case of concurrency issue w/ alertScreenOff
+        StorageUtil.updateAppTime(currentPackage, timeSpent);
+        startOfVisit = now;
+    }
+ };
+
+
 module.exports = {
     stopTimer,
     alertScreenOff,
-    alertScreenOn
+    alertScreenOn,
+    markMidnight
 };
 
 
