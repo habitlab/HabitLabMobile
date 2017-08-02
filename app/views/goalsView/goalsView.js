@@ -152,8 +152,9 @@ exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
   if (StorageUtil.isOnboarded()) {
-    page.getViewById('button').visibility = 'collapse';
-    page.getViewById('scroll').height = '98%';
+    page.getViewById('done').visibility = 'collapse';
+  } else {
+    page.getViewById('manageWatchlist').visibility='collapse'
   }
   setUpPhoneGoals();
   setUpAppGoals();
@@ -162,7 +163,7 @@ exports.pageLoaded = function(args) {
 
 exports.onDone = function() {
   if (!StorageUtil.isOnboarded()) {
-    fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up.", "Awesome!");
+    fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up. Continue using your phone as normal and we'll let you know when you're over your goal!", "Awesome!");
     StorageUtil.setOnboarded();
   } 
   //Just for testing

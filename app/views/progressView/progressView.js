@@ -527,6 +527,7 @@ exports.goToDetailApps = function(args) {
 
 
 
+
 //Returns the total time spent on an app in a month when passed in that app's object
 getTotalTimeAppMonth = function(array) {
     var sum = 0;
@@ -823,6 +824,18 @@ exports.toggleWeek = function() {
 
 exports.toggleMonth = function() {
     pageData.set("showMonthGraph", !pageData.get("showMonthGraph"));
+}
+
+exports.onDayTap = function(args) {
+    exports.toggle();
+}
+
+exports.onWeekTap = function(args) {
+    exports.toggleWeek()
+}
+
+exports.onMonthTap = function(args) {
+    exports.toggleMonth();
 }
 
 

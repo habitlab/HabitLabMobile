@@ -631,7 +631,11 @@ var dimScreen = function (real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DIMMER_OVERLAY, pkg)) {
     var visits = StorageUtil.getVisits(pkg);
+    if (visits % DIMMER_OVERLAY_INTERVAL === 0) {
+      //Changed for testing
     DimmerOverlay.dim(0.01);
+
+    }
   }
 }
 

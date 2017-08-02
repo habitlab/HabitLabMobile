@@ -22,7 +22,7 @@
 .small-text {
 	text-align: center;
 	font-size: 10%;
-	color: #E0696B;
+	color: #37879A;
 
 }
 
@@ -130,7 +130,6 @@
 }
 
 .titleStack {
-	/*text-align: center;*/
-		vertical-align: center;
+	vertical-align: center;
 
 }
