@@ -51,6 +51,7 @@ var pkg;
 var name;
 var icon;
 var appStats;
+var container;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -81,6 +82,7 @@ exports.pageNavigating = function(args) {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById('sideDrawer');
+  container = page.getViewById("slides");
   setUpDetail();
 };
 
@@ -285,6 +287,13 @@ exports.weekView = function(args) {
 };
 
 
+exports.goToMonth = function() {
+  container.nextSlide();
+}
+
+exports.goToWeek = function() {
+  container.previousSlide();
+}
 
 
 exports.monthView = function(args) {
