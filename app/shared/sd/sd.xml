@@ -7,21 +7,21 @@
 			<Image class="side-icon" src="res://ic_progress" id="progress-icon" />
 			<Label text="Progress" class="side-label" />
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="goals-option" >
-			<Image class="side-icon" src="res://ic_goals" id="goals-icon" />
-			<Label text="Goals" class="side-label" />
+		<StackLayout orientation="horizontal" class="side-option" id="watchlist-option" >
+			<Image class="side-icon" src="res://ic_watchlist" id="watchlist-icon" />
+			<Label text="Watchlist" class="side-label" />
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="nudges-option" >
 			<Image class="side-icon" src="res://ic_phone_lock" id="nudges-icon" />
 			<Label text="Nudges" class="side-label" id='lined-option'/>
 		</StackLayout>
+		<StackLayout orientation="horizontal" class="side-option" id="goals-option" >
+			<Image class="side-icon" src="res://ic_goals" id="goals-icon" />
+			<Label text="Goals" class="side-label" />
+		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="settings-option" >
 			<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
 			<Label text="Settings" class="side-label" />
-		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="feedback-option" >
-			<Image class="side-icon" src="res://ic_feedback" id="feedback-icon" />
-			<Label text="Feedback" class="side-label" />
 		</StackLayout>
 	</StackLayout>
 </StackLayout>

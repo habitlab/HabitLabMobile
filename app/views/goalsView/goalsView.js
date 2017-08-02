@@ -83,31 +83,10 @@ var createAppGoal = function(pkg) {
   });
 
   var basicInfo = UsageUtil.getBasicInfo(pkg);
-
   item.getViewById('name').text = basicInfo.name;
 
   var icon = item.getViewById('icon');
   icon.src = basicInfo.icon;
-  item.on("touch, tap", function(args) {
-    if (args.eventName === 'tap') {
-      var options = {
-        moduleName: 'views/appDetailView/appDetailView',
-        context: {
-          packageName: pkg,
-          name: basicInfo.name,
-          icon: basicInfo.icon
-        }
-      }
-      frameModule.topmost().navigate(options);
-    } else {
-      if (args.action === 'down') {
-        item.backgroundColor = '#F5F5F5';
-      } else if (args.action === 'up' || args.action === 'cancel') {
-        item.backgroundColor = '#FFFFFF';
-      }
-    }
-    
-  });
 
   var np = item.getViewById('np');
   np.id = pkg;
@@ -153,8 +132,7 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById("sideDrawer");
   if (StorageUtil.isOnboarded()) {
     page.getViewById('done').visibility = 'collapse';
-  } else {
-    page.getViewById('manageWatchlist').visibility='collapse'
+    page.getViewById('scroll').height = '100%';
   }
   setUpPhoneGoals();
   setUpAppGoals();

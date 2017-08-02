@@ -1,7 +1,7 @@
 var frameModule = require("ui/frame");
 var menu;
 var onClicksSet;
-var options = ['progress', 'goals', 'settings', 'nudges', 'feedback'];
+var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist'];
 
 var setOnTouches = function() {
 

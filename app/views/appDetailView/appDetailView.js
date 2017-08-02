@@ -113,12 +113,18 @@ var setUpDetail = function() {
   list.removeChildren();
 
   var interventions = StorageUtil.getInterventionsForApp(pkg);
+  var order = {easy: 0, medium: 1, hard: 2};
+  var interventionList = ID.interventionDetails.filter(function (item, id) {
+    return ID.interventionDetails[id].target === 'app' &&
+          (!ID.interventionDetails[id].apps || ID.interventionDetails[id].apps.includes(pkg)) && 
+          IM.interventions[id];
+  }).sort(function (a, b) {
+    return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
+  });
   var first = true;
-  interventions.forEach(function (enabled, id) {
-    if (ID.interventionDetails[id].target === 'app' && IM.interventions[id]) {
-      list.addChild(createItem(enabled, id, first));
-      first = false;
-    }
+  interventionList.forEach(function (item) {
+    list.addChild(createItem(interventions[item.id], item.id, first));
+    first = false;
   });
 };
 
