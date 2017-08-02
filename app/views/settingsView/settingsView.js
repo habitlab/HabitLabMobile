@@ -58,7 +58,12 @@ exports.editName = function () {
 
 
 exports.setHours = function () {
-	fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
+    var permission = require("~/util/PermissionUtil");
+    if (!permission.checkAccessibilityPermission()) {
+        permission.launchAccessibilityServiceIntent();
+    }
+    
+	// fancyAlert.TNSFancyAlert.showInfo("Coming Soon!", "This feature is not yet available, but it will be soon! Interested? Let us know in the feedback section!", "Got it");
 };
 
 
