@@ -30,8 +30,8 @@
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
           </StackLayout>
         </ScrollView>
-        <Button text="Manage Watchlist" onTap="onManageApps" id="manageWatchlist" />
-        <Button text="done" onTap="onDone" id="done"/>
+        <Button text="Manage Watchlist" onTap="onManageApps" id="manageWatchlist" class="endButtons"/>
+        <Button text="done" onTap="onDone" id="done" class="endButtons"/>
 
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
