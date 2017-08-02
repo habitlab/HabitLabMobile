@@ -1,0 +1,7 @@
+<StackLayout>
+  <GridLayout columns="auto,*,auto" rows="auto,auto" id="firstrow">
+    <Image id="icon" col="0" verticalAlignment="center" />
+    <Label id="name" col="1" />
+    <Image id="arrow" col="2" src="res://ic_arrow_right" />
+  </GridLayout>
+</StackLayout>

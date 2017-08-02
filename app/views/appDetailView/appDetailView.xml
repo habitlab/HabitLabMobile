@@ -1,4 +1,4 @@
-<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="goals"
+<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="watchlist"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:Slides="nativescript-slides"
@@ -31,12 +31,16 @@
             <Slides:SlideContainer id="slides" pageIndicators="false" height="50%">
 
               <Slides:Slide>
-                <Label text="Week" class="app-detail-subtitle" horizontalAlignment="center"/>
-                <Placeholder creatingView="weekView"/>
+                <StackLayout>
+                  <Label text="Week" class="app-detail-subtitle" horizontalAlignment="center"/>
+                  <Placeholder creatingView="weekView"/>
+                  <Image class="arrowRight" col="2" src="res://ic_arrow_right" tap="goToMonth"/>
+                </StackLayout>
               </Slides:Slide>
               <Slides:Slide> 
                 <Label text="Month" class="app-detail-subtitle" horizontalAlignment="center"/>
                 <Placeholder creatingView="monthView"/>
+                <Image class="arrowLeft" col="2" src="res://ic_arrow_left" tap ="goToWeek"/>
               </Slides:Slide>
             </Slides:SlideContainer>
             <Label text="App Goals" class='app-detail-subtitle top-padded' />

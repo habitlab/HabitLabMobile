@@ -26,21 +26,21 @@ var createGrid = function(args) {
   });
 
   var grid = args.object.getViewById('grid');
-  for (var i = 0; i < list.length; i++) {
+  list.forEach(function (item, i) {
     if (i % 3 === 0) {
       grid.addRow(new layout.ItemSpec(1, layout.GridUnitType.AUTO));
     }
     grid.addChild(createCell(list[i], Math.floor(i/3), i%3));
-  }
+  });
 };
 
 var setCellInfo = function(cell, info) {
   cell.getViewById("lbl").text = info.label;
 
   var usage = cell.getViewById("usg");
-  // var mins = Math.ceil(info.averageUsage);
+  var mins = Math.ceil(info.averageUsage);
   //For testing:
-  var mins = Math.round(randBW(1, 40));
+  // var mins = Math.round(randBW(1, 40));
   usage.text = mins + ' min/day';
   if (mins >= 15) {
     usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
@@ -96,21 +96,25 @@ exports.onDone = function() {
       wasChanged = true;
     }
   });
-  var options = {
-    moduleName: 'views/goalsView/goalsView',
-    context: {
-      updated: wasChanged
-    }
-  };
 
   if (!StorageUtil.getSelectedPackages().length) {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
     return;
   }
 
-  if (!StorageUtil.isOnboarded()) {
+  var onboarded = StorageUtil.isOnboarded();
+  if (!onboarded) {
     fancyAlert.TNSFancyAlert.showSuccess("Last step!", "Set goals for your phone and app usage.", "Got it!");
   } 
 
-  frame.topmost().navigate(options);
+  if (onboarded) {
+    frame.topmost().goBack();
+  } else {
+    frame.topmost().navigate({
+      moduleName: 'views/goalsView/goalsView',
+      context: {
+        updated: wasChanged
+      }
+    });
+  }
 };

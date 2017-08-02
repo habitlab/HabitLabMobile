@@ -1,0 +1,30 @@
+<Page loaded="pageLoaded" id="watchlist" navigatingTo="pageNavigating"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Watchlist" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center" >
+      <StackLayout class="main-container">
+        <Label class="section-title" text="Tracked Apps" />
+        <StackLayout >
+          <ScrollView orientation="vertical" class="watchlist-scroll" id="scroll-container">
+            <StackLayout orientation="vertical" id="watchlist-list" class="scrollable-stack" />
+          </ScrollView>
+          <Button text="Manage Watchlist" onTap="onManage" id="manage" class="manage-button"/>
+        </StackLayout>
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>

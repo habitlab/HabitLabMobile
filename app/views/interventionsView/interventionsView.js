@@ -65,7 +65,7 @@ var setUpList = function() {
 
   var order = {easy: 0, medium: 1, hard: 2};
   interventionList = ID.interventionDetails.sort(function (a, b) {
-    return order[a.level] - order[b.level];
+    return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
   });
 
   interventionList.forEach(function (item, index) {
