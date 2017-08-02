@@ -72,7 +72,7 @@ exports.pageLoaded = function(args) {
 
 //hide cursor when the return button on the keyboard is pressed 
 exports.hideCursor = function(args) {
-  var textField = args.object;
+  container.nextSlide();
 };
 
 //If swipe left, go to next slide, if swipe right, go to previous slide
