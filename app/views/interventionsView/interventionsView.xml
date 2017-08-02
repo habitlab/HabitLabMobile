@@ -18,11 +18,11 @@
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
       <ScrollView orientation="vertical">
         <StackLayout>
-          <Label class="nudges-section-title" text="Toasts" />
+          <Label class="nudges-section-title" text="Hints" />
        		<StackLayout orientation="vertical" id="toast-interventions" />
           <Label class="nudges-section-title" text="Notifications" />
           <StackLayout orientation="vertical" id="notification-interventions" />
-          <Label class="nudges-section-title" text="Dialogs" />
+          <Label class="nudges-section-title" text="Alerts" />
           <StackLayout orientation="vertical" id="dialog-interventions" />
           <Label class="nudges-section-title" text="Other" />
           <StackLayout orientation="vertical" id="overlay-interventions" />
