@@ -635,6 +635,7 @@ var dimScreen = function (real, pkg) {
       //Changed for testing
     DimmerOverlay.dim(0.01);
 
+    }
   }
 }
 
