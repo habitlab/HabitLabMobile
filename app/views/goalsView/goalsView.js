@@ -162,7 +162,7 @@ exports.pageLoaded = function(args) {
 
 exports.onDone = function() {
   if (!StorageUtil.isOnboarded()) {
-    fancyAlert.TNSFancyAlert.showSuccess("Success!", "You're all set up.", "Awesome!");
+    fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
     StorageUtil.setOnboarded();
   } 
   //Just for testing

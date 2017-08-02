@@ -563,6 +563,7 @@ exports.toggleForApp = function(id, packageName) {
     // make sure enabled is true overall
     var enabled = JSON.parse(appSettings.getString('enabled'));
     if (!enabled[id]) {
+      console.log('enabling overall because it was disabled')
       enabled[id] = true;
       appSettings.setString('enabled', JSON.stringify(enabled));
     }
@@ -577,10 +578,13 @@ exports.toggleForApp = function(id, packageName) {
       var currInfo = JSON.parse(appSettings.getString(item));
       if (currInfo.enabled[id]) {
         mustDisable = false;
+        console.log('still enabled for ', item)
+        console.log(JSON.parse(appSettings.getString('enabled'))[id])
       }
     });
 
     if (mustDisable) {
+      console.log('not enabled so must disable overall');
       var enabled = JSON.parse(appSettings.getString('enabled'));
       enabled[id] = false;
       appSettings.setString('enabled', JSON.stringify(enabled));
