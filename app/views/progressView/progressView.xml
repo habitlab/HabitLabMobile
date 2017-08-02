@@ -37,7 +37,7 @@
 		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 		   			        </lv:RadListView.listViewLayout>
 		   			        <lv:RadListView.itemTemplate>
-		   			            <StackLayout class="list-buttons">
+		   			            <StackLayout class="list-buttons" tap="onDayTap">
 		   			                <Label text="{{ value }}" class="list-number" />
 		   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 		   			            </StackLayout>
@@ -84,7 +84,7 @@
 			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
-			   			            <StackLayout class="list-buttons">
+			   			            <StackLayout class="list-buttons" tap="onWeekTap">
 			   			                <Label text="{{ value }}" class="list-number" />
 			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 			   			            </StackLayout>
@@ -135,7 +135,7 @@
 			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
-			   			            <StackLayout class="list-buttons">
+			   			            <StackLayout class="list-buttons" tap="onMonthTap">
 			   			                <Label text="{{ value }}" class="list-number" />
 			   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 			   			            </StackLayout>
