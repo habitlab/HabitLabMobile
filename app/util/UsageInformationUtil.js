@@ -37,12 +37,13 @@ exports.refreshApplicationList = function() {
  */
 exports.getApplicationList = function() {
  	// 4 weeks ago
-	var startOfTarget = getStartOfDay(13);
+	var startOfTarget = getStartOfDay(14);
     var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), 
     	java.lang.System.currentTimeMillis());
 
     // construct list
 	var list = [];
+	var earliestTimeStamp;
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
 		var packageName = getPackageName(info);
@@ -54,32 +55,34 @@ exports.getApplicationList = function() {
 		if (label === "Voice Search") { continue; }
 		
 		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
-		var installTime = getInstallationTime(packageName);
-		var differenceSinceInstall = java.lang.System.currentTimeMillis() - installTime;
-		var days = 14;
-
-		if (differenceSinceInstall < 14 * DAY_MS) {
-			days = Math.ceil(differenceSinceInstall / DAY_MS);
-		}
-
-		var stats = usageStatsMap.get(packageName);
 		var time = 0;
 
+		var stats = usageStatsMap.get(packageName);
 		if (stats) {
 			time = stats.getTotalTimeInForeground() / (60000);
+			var firstTimeStamp = stats.getFirstTimeStamp();
+			if (!earliestTimeStamp || firstTimeStamp < earliestTimeStamp) {
+				earliestTimeStamp = firstTimeStamp; // save the earliest time stamp
+			}
 		}
-
-		var averageUsage = time / days;
 		
 		// construct object
 		var applicationObj = {
 			packageName: packageName,
 			label: label, 
 			iconSource: iconSource, 
-			averageUsage: averageUsage
+			averageUsage: time
 		};
 
 		list.push(applicationObj);
+	}
+
+	var daysBetween = (java.lang.System.currentTimeMillis() - earliestTimeStamp) / DAY_MS;
+	console.warn(daysBetween);
+
+	for (var z = 0; z < list.length; z++) {
+		var obj = list[z];
+		obj.averageUsage = obj.averageUsage / daysBetween;
 	}
 
 	return list;
