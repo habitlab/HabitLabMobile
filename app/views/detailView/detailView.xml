@@ -23,7 +23,7 @@
           <Label text="Level: " class="detail-label" />
           <Label id="level" class="detail-label" />
         </FlexboxLayout>
-        <Button id='button' text="try" />
+        <Button id='button' text="Show Me a Demo" />
         <ScrollView orientation="vertical">
           <StackLayout orientation="vertical" id="list" />
         </ScrollView>

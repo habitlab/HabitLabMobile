@@ -12,7 +12,7 @@
 			<Label text="Goals" class="side-label" />
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="nudges-option" >
-			<Image class="side-icon" src="res://ic_nudges" id="nudges-icon" />
+			<Image class="side-icon" src="res://ic_phone_lock" id="nudges-icon" />
 			<Label text="Nudges" class="side-label" id='lined-option'/>
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="side-option" id="settings-option" >

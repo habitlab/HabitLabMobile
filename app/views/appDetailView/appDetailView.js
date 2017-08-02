@@ -113,14 +113,16 @@ var setUpDetail = function() {
   list.removeChildren();
 
   var interventions = StorageUtil.getInterventionsForApp(pkg);
+  var first = true;
   interventions.forEach(function (enabled, id) {
     if (ID.interventionDetails[id].target === 'app' && IM.interventions[id]) {
-      list.addChild(createItem(enabled, id));
+      list.addChild(createItem(enabled, id, first));
+      first = false;
     }
   });
 };
 
-var createItem = function(enabled, id)  {
+var createItem = function(enabled, id, first)  {
   var item = builder.load({
     path: 'shared/detailelem',
     name: 'detailelem'
@@ -128,6 +130,12 @@ var createItem = function(enabled, id)  {
 
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
+
+  if (first) {
+    image2.visibility = 'hidden';
+    description.visibility = 'visible';
+    button.visibility = 'visible';
+  }
 
   var button = item.getViewById('button');
   button.text = 'DISABLE';

@@ -13,13 +13,9 @@ var setOnTouches = function() {
     opt.on("touch", function (args) {
       if (args.action === 'down') {
         opt.backgroundColor = '#DCDCDC';
-
       } else if (args.action === 'cancel') {
-        if (item === menu.page.id) {
-          opt.backgroundColor = "#F5F5F5"
-        } else {
-          opt.backgroundColor = '#FFFFFF';
-        }
+        console.warn(menu.page.id);
+        opt.backgroundColor = menu.page.id === item ? '#F5F5F5' : '#FFFFFF';
       } else if (args.action === 'up') {
         if (item === 'nudges') {
           item = 'interventions';

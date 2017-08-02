@@ -151,7 +151,6 @@ exports.onManageApps = function() {
 exports.pageLoaded = function(args) {
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  page.id = 'loaded';
   if (StorageUtil.isOnboarded()) {
     page.getViewById('button').visibility = 'collapse';
     page.getViewById('scroll').height = '98%';
