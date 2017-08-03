@@ -19,17 +19,18 @@ var TypedValue = android.util.TypedValue;
  *          PAINTS            *                           
  ******************************/
 
-var iconBkgd = [34, 0.81, 1];
-var headerBkgd = [174, .77, .77];
+var fillPairs = [
+	{bkgd: "#FFA730", hdr: "#2EC4B6", pos: "#2EC4B6", neg: "#011627"}
+]
 
 var BACKGROUND = new Paint();
 BACKGROUND.setColor(Color.WHITE);
 
 var HEADER = new Paint();
-HEADER.setColor(Color.HSVToColor(headerBkgd));
+HEADER.setColor(Color.parseColor(fillPairs[0].hdr));
 
 var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.HSVToColor(iconBkgd));
+ICON_FILL.setColor(Color.parseColor(fillPairs[0].bkgd));
 
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -75,6 +76,9 @@ var overlayText;
 var overlayPosButton;
 var overlayNegButton;
 exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
+	var randomIndex = Math.floor(Math.random() * fillPairs.length);
+	HEADER.setColor(Color.parseColor(fillPairs[randomIndex].hdr));
+	ICON_FILL.setColor(Color.parseColor(fillPairs[randomIndex].bkgd));
 
 	// add view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
@@ -122,6 +126,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     overlayPosButton = new Button(context);
 	overlayPosButton.setText(pos);
 	overlayPosButton.setTextColor(Color.WHITE);
+	overlayPosButton.getBackground().setColorFilter(Color.parseColor(fillPairs[randomIndex].pos), android.graphics.PorterDuff.Mode.MULTIPLY);
 	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (posCallback) {
@@ -143,6 +148,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     overlayNegButton = new Button(context);
 	overlayNegButton.setText(neg);
 	overlayNegButton.setTextColor(Color.WHITE);
+	overlayNegButton.getBackground().setColorFilter(Color.parseColor(fillPairs[randomIndex].neg), android.graphics.PorterDuff.Mode.MULTIPLY);
 	overlayNegButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (negCallback) {
