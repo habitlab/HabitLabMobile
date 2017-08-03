@@ -32,12 +32,15 @@
 
 }
 
+.graph {
+	margin-bottom: 5;
+}
+
 
 .header {
 	/*text-align: center;*/
 	display: inline-block;
-	margin-left: 12%;
-	margin-top:2%;
+	margin-top:5;
 	font-size:20%;
 	color: #747F89;
 }
