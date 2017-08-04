@@ -107,7 +107,7 @@
    			        	            </StackLayout>
    			        	             <StackLayout row="0" col="2" >
    			        	            	<Label text = "{{ percChange }}" class="percChange" horizontalAlignment="center"/>
-   			        	            	<Label text="from last week" class="small-text" />
+   			        	            	<Label text="{{ percDesc }}" class="small-text" />
    			        	        	</StackLayout>
    			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
 		   			        	</GridLayout>

@@ -388,10 +388,8 @@ populateListViewsDay = function() {
 	)
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
-    console.warn("added day buttons")
     dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
-    console.warn("added day list")
 
 };
 
@@ -421,10 +419,8 @@ populateListViewsWeek = function() {
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
 	weekButtons.items = weekStats; 
-    console.warn("added week buttons")
     var weekApps = getAppsWeek();
 	pageData.set("weekItems", weekApps);
-    console.warn("added week list")
  }
 
 //Creates a list view for the month view, with name, avg min/day and total mintues
@@ -618,13 +614,14 @@ getAppsWeek = function () {
         var icon = basic[i].icon;
         var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
+        var percDesc = (percChange === "" ? "" : "from last week");
         weekApps.push({
             name: name,
             avgMins: avgMins,
             image: icon,
             percChange: percChange,
-            totalMins: totalMins
-
+            totalMins: totalMins,
+            percDesc: percDesc
         })
     }
     weekApps.sort(function compare(a, b) {
