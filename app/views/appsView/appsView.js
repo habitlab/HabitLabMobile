@@ -7,6 +7,7 @@ var frame = require('ui/frame');
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
+var timer = require("timer");
 
 var drawer;
 var pkgs;
@@ -21,9 +22,7 @@ var randBW = function(min, max) {
 };
 
 var createGrid = function(args) {
-  var list = UsageUtil.getApplicationList().sort(function compare(a, b) {
-    return parseFloat(b.averageUsage) - parseFloat(a.averageUsage);
-  });
+  var list = UsageUtil.getApplicationList();
 
   var grid = args.object.getViewById('grid');
   list.forEach(function (item, i) {
@@ -32,19 +31,18 @@ var createGrid = function(args) {
     }
     grid.addChild(createCell(list[i], Math.floor(i/3), i%3));
   });
+  console.warn(Date.now());
 };
 
 var setCellInfo = function(cell, info) {
   cell.getViewById("lbl").text = info.label;
 
-  var usage = cell.getViewById("usg");
-  var mins = Math.ceil(info.averageUsage);
-  //For testing:
-  // var mins = Math.round(randBW(1, 40));
-  usage.text = mins + ' min/day';
-  if (mins >= 15) {
-    usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
-  }
+  // var usage = cell.getViewById("usg");
+  // var mins = Math.ceil(0);
+  // usage.text = mins + ' min/day';
+  // if (mins >= 15) {
+  //   usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
+  // }
 
   var selector = cell.getViewById("slctr");
   selector.visibility = pkgs.includes(info.packageName) ? 'visible' : 'hidden';
@@ -74,7 +72,11 @@ exports.pageLoaded = function(args) {
   toToggle = {};
   drawer = args.object.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
-  createGrid(args);
+
+  timer.setTimeout(() => {
+    createGrid(args);
+    console.warn("Done!");
+  }, 300);
 };
 
 exports.toggleDrawer = function() {

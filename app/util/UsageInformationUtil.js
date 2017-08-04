@@ -4,14 +4,13 @@ var imageSource = require("image-source");
 // global vars 
 const DAY_MS = 86400000;
 var context = application.android.context;
-var usageStatsManager = context.getSystemService(android.content.Context.USAGE_STATS_SERVICE);
 
 
 /****** LIST OF ALL LAUNCHABLE APPLICATIONS *****/
 var pm = context.getPackageManager();	
 var mainIntent = new android.content.Intent(android.content.Intent.ACTION_MAIN, null);
 mainIntent.addCategory(android.content.Intent.CATEGORY_LAUNCHER);
-var applications = pm.queryIntentActivities(mainIntent, 0);
+var applications = pm.queryIntentActivities(mainIntent, 0); // all launchable packages
 
 
 /* refreshApplicationList
@@ -36,52 +35,27 @@ exports.refreshApplicationList = function() {
  * for every application in the system.
  */
 exports.getApplicationList = function() {
- 	// 4 weeks ago
-	var startOfTarget = getStartOfDay(14);
-    var usageStatsMap  = usageStatsManager.queryAndAggregateUsageStats(startOfTarget.getTimeInMillis(), 
-    	java.lang.System.currentTimeMillis());
-
-    // construct list
 	var list = [];
-	var earliestTimeStamp;
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
-		var packageName = getPackageName(info);
+		var packageName = info.activityInfo.packageName;
 		
 		// filter out habitlab and duplicates
-		if (packageName === "org.nativescript.HabitLabMobile") { continue };
+		if (packageName === "org.nativescript.HabitLabMobile") { continue; }
 		
 		var label = info.loadLabel(pm).toString();
 		if (label === "Voice Search") { continue; }
 		
 		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
-		var time = 0;
-
-		var stats = usageStatsMap.get(packageName);
-		if (stats) {
-			time = stats.getTotalTimeInForeground() / (60000);
-			var firstTimeStamp = stats.getFirstTimeStamp();
-			if (!earliestTimeStamp || firstTimeStamp < earliestTimeStamp) {
-				earliestTimeStamp = firstTimeStamp; // save the earliest time stamp
-			}
-		}
 		
 		// construct object
 		var applicationObj = {
 			packageName: packageName,
 			label: label, 
-			iconSource: iconSource, 
-			averageUsage: time
+			iconSource: iconSource
 		};
 
 		list.push(applicationObj);
-	}
-
-	var daysBetween = (java.lang.System.currentTimeMillis() - earliestTimeStamp) / DAY_MS;
-
-	for (var z = 0; z < list.length; z++) {
-		var obj = list[z];
-		obj.averageUsage = obj.averageUsage / daysBetween;
 	}
 
 	return list;
@@ -132,7 +106,7 @@ exports.getInstalledPresets = function() {
 
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
-		var packageName = getPackageName(info);
+		var packageName = info.activityInfo.packageName;
 		if (presets.includes(packageName)) {
 			installedPresets.push(packageName);
 		}
@@ -140,54 +114,5 @@ exports.getInstalledPresets = function() {
 
 	return installedPresets;
 }
-
-
-/*
- * getPackageName
- * --------------
- * Returns the package name of the passed-in ResolveInfo
- * object. Returns null if there is no packageName.
- */
- function getPackageName(info) {
-	if (info.activityInfo) {
-		return info.activityInfo.packageName;
-	} else if (info.serviceInfo) {
-		return info.serviceInfo.packageName;
-	} else if (info.providerInfo) {
-		return info.providerInfo.packageName;
-	} else {
-		return null;
-	}
-}
-
-/*
- * getInstallationTime
- * -------------------
- * Returns the first install date of the passed-in
- * package.
- */
- function getInstallationTime(packageName) {
-	try {
-        return pm.getPackageInfo(packageName, 0).firstInstallTime;
-    } catch (error) {
-        return null;
-    }
- }
-
-
-/*
- * getStartOfDay
- * -------------
- * Returns Calendar object set to 12:00:00 AM of the 
- * day that occurred the specified number of daysAgo
- */
-function getStartOfDay(daysAgo) {
-	var startOfTarget = java.util.Calendar.getInstance();
-	startOfTarget.set(java.util.Calendar.HOUR_OF_DAY, 0);
-	startOfTarget.set(java.util.Calendar.MINUTE, 0);
-	startOfTarget.set(java.util.Calendar.SECOND, 0);
-	startOfTarget.setTimeInMillis(startOfTarget.getTimeInMillis() - (86400 * 1000 * daysAgo));
-	return startOfTarget;
-};
 
 
