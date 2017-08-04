@@ -19,7 +19,7 @@ var TypedValue = android.util.TypedValue;
  *          PAINTS            *                           
  ******************************/
 
-var iconBackgrounds = ["#FFA730", "#E71D36", "#2EC4B6", "#72e500", "#011627"];
+var iconBackgrounds = ["#FFA730", "#E71D36", "#2EC4B6", "#4ce500", "#011627"];
 
 var DIALOG_FILL = new Paint();
 DIALOG_FILL.setColor(Color.WHITE); // default
@@ -85,7 +85,7 @@ var twoOptionText;
 var twoOptionPosButton;
 var twoOptionNegButton;
 exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCallback) {
-	var color = changeIconColor();
+	var color = changeIconColor(4);
 
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
@@ -99,12 +99,12 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.36 * SCREEN_HEIGHT, 
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionText = new TextView(context);
     twoOptionText.setText(msg);
-    twoOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 12);
+    twoOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
     twoOptionText.setTextColor(Color.BLACK);
     twoOptionText.setHorizontallyScrolling(false);
     twoOptionText.setGravity(Gravity.CENTER);
@@ -121,7 +121,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
     twoOptionPosButton = new Button(context);
 	twoOptionPosButton.setText(pos);
 	twoOptionPosButton.setTextColor(Color.WHITE);
-	twoOptionPosButton.getBackground().setColorFilter(Color.parseColor("#C0C0C0"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	twoOptionPosButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
 	twoOptionPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (posCallback) {
@@ -184,7 +184,7 @@ var oneOptionView;
 var oneOptionText;
 var oneOptionButton;
 exports.showOneOptionDialogOverlay = function (msg, buttonText) {
-	var color = changeIconColor();
+	var color = changeIconColor(5);
 
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
@@ -198,7 +198,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.38 * SCREEN_HEIGHT, 
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     oneOptionText = new TextView(context);
@@ -249,8 +249,8 @@ exports.removeOneOptionDialog = function () {
 
 
 
-function changeIconColor() {
-	var index = Math.floor(Math.random() * 5);
+function changeIconColor(num) {
+	var index = Math.floor(Math.random() * num);
 	var color = iconBackgrounds[index];
 	ICON_FILL.setColor(Color.parseColor(color));
 	return color;

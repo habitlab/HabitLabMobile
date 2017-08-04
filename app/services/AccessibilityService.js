@@ -5,6 +5,12 @@ var context = application.android.context;
 const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
 
+// native APIs
+const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
+
+// packages to ignore (might need to compile a list as time goes on)
+const ignore = ["com.sec.android.inputmethod"];
+
 
 
 /***************************************
@@ -62,9 +68,11 @@ var currentApplication = {
 android.accessibilityservice.AccessibilityService.extend("com.habitlab.AccessibilityService", {
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
-        if (activePackage === "org.nativescript.HabitLabMobile") { return; } // overlays give habitlab the foreground...
+        var eventType = event.getEventType();
 
-        if (currentApplication.packageName !== activePackage) {
+        if (activePackage === "org.nativescript.HabitLabMobile" || ignore.includes(activePackage)) { return; } // skip over
+       
+        if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
 
             var now = Date.now();
@@ -89,6 +97,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
     onServiceConnected: function() {   
         this.super.onServiceConnected();
+        console.warn("Started AccessibilityService");
         setUpScreenReceiver(); // set up unlock receiver on startup
     }
 });
@@ -105,6 +114,7 @@ function closeRecentVisit(now) {
     if (currentApplication.isBlacklisted) {
         var timeSpent = now - currentApplication.visitStart;
         storage.updateAppTime(currentApplication.packageName, timeSpent);
+        console.warn("CLOSING visit to: " + currentApplication.packageName);
     }
 }
 
@@ -122,6 +132,7 @@ function openNewVisit(now, pkg) {
     if (storage.isPackageSelected(pkg)) {
         currentApplication.isBlacklisted = true;
         storage.visited(pkg);
+        console.warn("OPENING visit to: " + currentApplication.packageName);
     } else {
         currentApplication.isBlacklisted = false;
     }
@@ -157,4 +168,18 @@ function setUpScreenReceiver() {
     closeRecentVisit(Date.now());
  };
 
+
+/**
+ * enteredHabitlab
+ * ---------------
+ * Function to be called by the progressView when Habitlab is opened.
+ * Allows AccessibilityService to update the current time spent on
+ * phone, displayed by the progressView
+ */
+exports.enteredHabitlab = function () {
+    var now = Date.now();
+    var timeSpentOnPhone = now - screenOnTime;
+    storage.updateTotalTime(timeSpentOnPhone);
+    screenOnTime = now;
+}
 

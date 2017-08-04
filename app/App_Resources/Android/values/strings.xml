@@ -2,4 +2,5 @@
 <resources>
   <string name="app_name">HabitLab</string>
   <string name="title_activity_kimera">HabitLab</string>
+  <string name="accessibility_service_description">HabitLab is here to help shape your device usage habits!</string>
 </resources>
