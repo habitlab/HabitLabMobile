@@ -68,12 +68,28 @@ exports.startAccessibilityService = function() {
 
 
 exports.setHours = function() {
-    frame.topmost().navigate("views/hoursView/hoursView");
+    frame.topmost().navigate({
+        moduleName: "views/hoursView/hoursView",
+        animated: true,
+        transition: {
+          name: "slide",
+          duration: 380,
+          curve: "easeIn"
+        }
+    });
 };
 
 
 exports.goToFAQ = function () {
-	frame.topmost().navigate("views/faqView/faqView");
+	frame.topmost().navigate({
+        moduleName: "views/faqView/faqView",
+        animated: true,
+        transition: {
+          name: "slide",
+          duration: 380,
+          curve: "easeIn"
+        }
+    });
 };
 
 
@@ -98,6 +114,15 @@ exports.eraseData = function() {
 
 exports.pageLoaded = function(args) {
 	drawer = args.object.getViewById("sideDrawer"); 
+    args.object.getViewById('main-layout').eachChild(function (child) {
+        child.on("touch", function(args) {
+            if (args.action === 'down') {
+                child.backgroundColor = "#F5F5F5";
+            } else if (args.action === 'up' || args.action === 'cancel') {
+                child.backgroundColor = "#FFFFFF";
+            }
+        });
+    });
 };
 
 exports.onInfo = function() {

@@ -64,7 +64,7 @@ var setUpList = function() {
   layouts['overlay'].removeChildren();
 
   var order = {easy: 0, medium: 1, hard: 2};
-  interventionList = ID.interventionDetails.sort(function (a, b) {
+  interventionList = ID.interventionDetails.slice(0).sort(function (a, b) {
     return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
   });
 

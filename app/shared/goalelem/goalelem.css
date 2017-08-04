@@ -44,3 +44,11 @@
   align-items: center;
   padding: 3%;
 }
+
+/*NB: Change to percentage*/
+.info {
+  height: 25;
+  margin: 1%;
+  background-color: #A0E4DD;
+  border-radius: 50%
+}

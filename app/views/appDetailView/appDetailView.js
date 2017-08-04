@@ -117,12 +117,11 @@ var setUpDetail = function() {
   var interventions = StorageUtil.getInterventionsForApp(pkg);
   var order = {easy: 0, medium: 1, hard: 2};
   var interventionList = ID.interventionDetails.filter(function (item, id) {
-    return ID.interventionDetails[id].target === 'app' &&
-          (!ID.interventionDetails[id].apps || ID.interventionDetails[id].apps.includes(pkg)) && 
-          IM.interventions[id];
+    return item.target === 'app' && (!item.apps || item.apps.includes(pkg)) && IM.interventions[item.id];
   }).sort(function (a, b) {
     return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
   });
+  
   var first = true;
   interventionList.forEach(function (item) {
     list.addChild(createItem(interventions[item.id], item.id, first));
