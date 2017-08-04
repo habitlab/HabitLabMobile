@@ -34,14 +34,14 @@
 
       </Slides:Slide>
 
-      <Slides:Slide id="slide-usage" class="slide"  swipe="checkUsagePermission">
+      <Slides:Slide id="slide-usage" class="slide"  swipe="checkAccessibilityPermission">
         <StackLayout>
           <Label text="{{texts[4]}}" textWrap='true' class="onboarding-label header"/>
           <VideoPlayer:Video class="firstVideo"
             controls="false" 
             loop="true" autoplay="true"
-            src="~/videos/UsageExample.mp4" />
-          <Button text="Give Usage Permission" tap="giveUsagePermission"/>
+            src="~/videos/AccessibilityPermission.mp4" />
+          <Button text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>
         </StackLayout>
       </Slides:Slide>
 
@@ -51,7 +51,7 @@
             <VideoPlayer:Video class="firstVideo"
                 controls="false" 
                 loop="true" autoplay="true" 
-                src="~/videos/DrawOverExample.mp4" />
+                src="~/videos/OverlayPermission.mp4" />
               <Button text="Give Overlay Permission" tap="giveDrawPermission"/>
         </StackLayout>
       </Slides:Slide>

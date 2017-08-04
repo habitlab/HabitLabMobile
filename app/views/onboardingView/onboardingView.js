@@ -53,6 +53,8 @@ exports.pageLoaded = function(args) {
     frameModule.topmost().navigate('views/appsView/appsView');
   }
 
+  StorageUtil.setUpDB();
+
   var navigated = false;
   page = args.object;
   page.bindingContext = onboarding;
@@ -100,9 +102,9 @@ exports.checkNameNextSlide = function(args) {
 };
 
 //Ensures that usage permissions are given before allowing user to swipe to next slide
-exports.checkUsagePermission = function(args) {
-  if (!PermissionUtil.checkActionUsagePermission()) {
-      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please permit usage access to continue", "OK");
+exports.checkAccessibilityPermission = function(args) {
+  if (!PermissionUtil.checkAccessibilityPermission()) {
+      fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please permit accessibility service to continue", "OK");
   } else {
     exports.goToNextSlide(args);
   }
@@ -118,10 +120,10 @@ exports.checkDrawPermission = function(args) {
 }
 
 //When the user taps the 'give permission' button - If the user hasn't already given permission, open settings
-exports.giveUsagePermission = function(args) {
+exports.giveAccessibilityPermission = function(args) {
 
-  if (!PermissionUtil.checkActionUsagePermission()) {
-    PermissionUtil.launchActionUsageIntent();
+  if (!PermissionUtil.checkAccessibilityPermission()) {
+    PermissionUtil.launchAccessibilityServiceIntent();
  } else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the Game", "You've already authorized HabitLab. Swipe to continue!", "Sweet!");
  }
@@ -140,7 +142,7 @@ exports.giveDrawPermission = function(args) {
 //Takes the user to the apps view to select their apps 
 exports.goToAppsView = function(args) {
   if (!StorageUtil.isSetUp()) {
-    StorageUtil.setUpDB();
+    StorageUtil.setSetUp();
 
     /** SET UP ALARM **/
     const DAY = 86400 * 1000;
