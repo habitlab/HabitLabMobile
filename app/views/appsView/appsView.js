@@ -13,6 +13,7 @@ var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicato
 var drawer;
 var pkgs;
 var toToggle;
+var page;
 
 exports.onUnloaded = function(args) {
   args.object.removeChildren();
@@ -69,7 +70,7 @@ var createCell = function(info, r, c)  {
 };
 
 exports.pageLoaded = function(args) { 
-  var page = args.object;
+  page = args.object;
   toToggle = {};
   drawer = page.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
