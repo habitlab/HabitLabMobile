@@ -129,6 +129,14 @@ var startOfDay = function() {
   return startOfTarget.getTimeInMillis();
 };
 
+var ActiveHours = function() {
+  return {
+    start: {h: 0, m: 0},
+    end: {h: 0, m: 0},
+    days: Array(7).fill(true)
+  };
+};
+
 
 /************************************
  *           SETTING UP             *
@@ -148,12 +156,12 @@ exports.setUpDB = function() {
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
   appSettings.setBoolean('setup', true);
+  appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   preset.forEach(function (item) {
     createPackageData(item);
   });
   createPhoneData();
-
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
 };
 
@@ -161,11 +169,13 @@ exports.setUpFakeDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setBoolean('setup', true);
+  appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   preset.forEach(function (item) {
     createFakePackageData(item);
   });
   createFakePhoneData();
+  appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
 }
 
 exports.setOnboarded = function() {
@@ -604,17 +614,63 @@ exports.isEnabledForAll = function(id) {
   return JSON.parse(appSettings.getString('enabled'))[id];
 };
 
+var withinActiveHours = function() {
+  var hours = JSON.parse(appSettings.getString('activeHours'));
+
+  if (!hours.days[Date.now().getDay()]) {
+    return false;
+  }
+
+  var start = hours.start;
+  var end = hours.end;
+
+  if (start.h === end.h && start.m === end.m) {
+    return true;
+  }
+
+  var now = new Date();
+  var h = now.getHours();
+  var m = now.getMinutes();
+
+  // first check if end < start (wraps through a midnight)
+  if (start.h > end.h || (start.h === end.h && start.m > end.m)) {
+    if (!(h > start.h || h === start.h && m >= start.m || h < end.h || h === end.h && m < end.m)) return false;
+  } else { // then check normal
+    if (h < start.h || h === start.h && m < start.m || h > end.h || h === end.h && m >= end.m) return false;
+  }
+
+  return true;
+};
+
 /* export: canIntervene
  * --------------------
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
+  if (!withinActiveHours()) {
+    return false;
+  }
+
   if (ID.interventionDetails[id].target === 'phone') {
     return JSON.parse(appSettings.getString('enabled'))[id];;
   } else  { // target === 'app'
     var specified = ID.interventionDetails[id].apps;
     return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id];
   }
+};
+
+exports.setActiveDays = function(days) {
+  var hours = JSON.parse(appSettings.getString('activeHours'));
+  hours.days = days;
+  appSettings.setString('activeHours', JSON.stringify(hours));
+}
+
+exports.setActiveHours = function(activeHours) {
+  appSettings.setString('activeHours', JSON.stringify(activeHours));
+};
+
+exports.getActiveHours = function() {
+  return JSON.parse(appSettings.getString('activeHours'));
 };
 
 /*****************************
