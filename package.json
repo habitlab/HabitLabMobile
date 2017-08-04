@@ -10,6 +10,7 @@
     }
   },
   "dependencies": {
+    "nativescript-coachmarks": "^1.0.2",
     "nativescript-effects": "^0.5.0",
     "nativescript-fancyalert": "^1.1.2",
     "nativescript-loading-indicator": "^2.3.2",
@@ -20,6 +21,7 @@
     "nativescript-telerik-ui": "^3.0.1",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toast": "^1.4.5",
+    "nativescript-tooltip": "^2.1.0",
     "nativescript-videoplayer": "^3.0.9",
     "tns-core-modules": "~3.0.0"
   },

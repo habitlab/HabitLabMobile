@@ -7,6 +7,8 @@ var Grid = require("ui/layouts/grid-layout").GridLayout;
 var StackLayout = require("ui/layouts/stack-layout").StackLayout;
 var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
 var fancyAlert = require("nativescript-fancyalert");
+var ToolTip = require("nativescript-tooltip").ToolTip;
+var view = require("ui/core/view");
 
 
 var drawer;
@@ -64,6 +66,14 @@ var createPhoneGoal = function(goal, value) {
 
   return item;
 }; 
+
+
+// exports.moreInfoPhone = function() {
+//   console.warn("show tip")
+//   const tip = new ToolTip(view,{text:"The number of times your screen lights up when you glance at it"});
+//   console.warn(tip);
+//   tip.show();  
+// }
 
 var setUpPhoneGoals = function() {
   var phoneGoals = StorageUtil.getPhoneGoals();

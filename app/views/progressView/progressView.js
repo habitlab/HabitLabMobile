@@ -363,14 +363,13 @@ getMonthEntries = function() {
 
 //Creates a list view for the dayView, showing name, #times opened, and minutes 
 populateListViewsDay = function() {   
-     var unlocks = progressInfo.phoneStats[TODAY].unlocks
-     var glances = progressInfo.phoneStats[TODAY].glances
+    console.warn("populate day")
+     var unlocks = progressInfo.phoneStats[TODAY].unlocks;
+     var glances = progressInfo.phoneStats[TODAY].glances;
      var total = (progressInfo.phoneStats[TODAY].totalTime === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].totalTime));
      var targetTime = (progressInfo.phoneStats[TODAY].time === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].time));
      var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
-    dayApps = getAppsToday();
-    pageData.set("dayItems", dayApps);
-
+    
 	//'buttons' that show the usage daily overall phone usage 
     var hrsTotal = Math.round(total/6)/10;
 	var stats = [];
@@ -390,16 +389,22 @@ populateListViewsDay = function() {
 	)
 	var listButtons = view.getViewById(page, "listButtons");
 	listButtons.items = stats;
+    console.warn("added day buttons")
+    dayApps = getAppsToday();
+    pageData.set("dayItems", dayApps);
+    console.warn("added day list")
+
 };
 
 
 //Creates list view for week, showing name, avg min.day and total minutes
 populateListViewsWeek = function() {
+    console.warn("populate week")
     var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")))
     var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")));
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
     var unlocks = totalTimeWeek(0, "unlocks");
-    var hrsOnWatchlistWeek = Math.round(timeOnTargetAppsWeek/6)/10;
+    var hrsOnWatchlistWeek = (timeOnTargetAppsWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/6)/10);
 
 	var weekStats = [];
 	weekStats.push(
@@ -418,18 +423,19 @@ populateListViewsWeek = function() {
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
 	weekButtons.items = weekStats;
-
+    console.warn("added week buttons")
     var weekApps = getAppsWeek();
 	pageData.set("weekItems", weekApps);
+    console.warn("added week list")
  }
 
 //Creates a list view for the month view, with name, avg min/day and total mintues
 populateListViewMonth = function () {
 	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")));
     var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")));
-    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTarget/totalTimePhoneMonth*100)); 
+    var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round((totalTarget/totalTimePhoneMonth)*100)); 
     var avgUnlocks = (totalTimeMonth("unlocks") === 0 ? 0 : Math.round(totalTimeMonth("unlocks")/28));
-    var avgHrs = Math.round(totalTimePhoneMonth/(28*6))/10
+    var avgHrs = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTimePhoneMonth/(28*6))/10);
 
 	var monthStats = [];
 	monthStats.push(
