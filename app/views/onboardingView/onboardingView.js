@@ -119,6 +119,7 @@ exports.checkDrawPermission = function(args) {
 
 //When the user taps the 'give permission' button - If the user hasn't already given permission, open settings
 exports.giveUsagePermission = function(args) {
+
   if (!PermissionUtil.checkActionUsagePermission()) {
     PermissionUtil.launchActionUsageIntent();
  } else {
