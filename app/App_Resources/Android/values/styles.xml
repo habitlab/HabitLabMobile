@@ -44,8 +44,8 @@
 
    <!--  Custom toolTip -->
        <style name="CustomToolTipLayoutStyle" parent="ToolTipLayoutDefaultStyle">
-        <item name="ttlm_backgroundColor">#FFA730</item>
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="ttlm_backgroundColor">@color/ns_pink</item>
+        <item name="android:textColor">@color/ns_white</item>
     </style>
 
     <style name="NativeScriptToolbarStyle" parent="NativeScriptToolbarStyleBase">

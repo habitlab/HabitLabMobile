@@ -23,7 +23,6 @@
         <ScrollView orientation="vertical" id="scroll">
           <StackLayout orientation="vertical">
             <Label text="Phone" class="section-title" />
-            <!-- <Button text="test" tap="moreInfoPhone"/> -->
             <StackLayout orientation="vertical" id="phoneGoals" />
             <Label text="Watchlist" class="section-title-watchlist" />
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />

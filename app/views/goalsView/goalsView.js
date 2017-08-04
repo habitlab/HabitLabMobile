@@ -9,6 +9,9 @@ var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
 var fancyAlert = require("nativescript-fancyalert");
 var ToolTip = require("nativescript-tooltip").ToolTip;
 var view = require("ui/core/view");
+var Resources = android.content.res.Resources;
+var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
+
 
 
 var drawer;
@@ -36,7 +39,6 @@ var createPhoneGoal = function(goal, value) {
     name: 'goalelem',
     page: page
   });
-
   var icon = item.getViewById('icon');
   icon.visibility = 'collapsed';
 
@@ -47,7 +49,21 @@ var createPhoneGoal = function(goal, value) {
 
   var label = item.getViewById('label');
   label.text = goal;
+  label.id = goal;
   label.className = "goal-label-nowidth";
+  
+  var info = item.getViewById('infoButton');
+  if (goal === "glances") {
+      info.visibility = 'visible';
+      info.on(gestures.tap, function() {
+        const tip = new ToolTip(info,{text:"The number of times your screen lights up when you glance at it", width: 0.43*SCREEN_WIDTH});;
+        tip.show(); 
+      });
+  } else {
+      info.visibility = 'hidden'; 
+  }
+
+
 
   var number = np.getViewById('number');
   number.text = value;
@@ -67,13 +83,6 @@ var createPhoneGoal = function(goal, value) {
   return item;
 }; 
 
-
-// exports.moreInfoPhone = function() {
-//   console.warn("show tip")
-//   const tip = new ToolTip(view,{text:"The number of times your screen lights up when you glance at it"});
-//   console.warn(tip);
-//   tip.show();  
-// }
 
 var setUpPhoneGoals = function() {
   var phoneGoals = StorageUtil.getPhoneGoals();
@@ -106,6 +115,9 @@ var createAppGoal = function(pkg) {
   item.getViewById('label').text = 'mins';
   var number = np.getViewById('number');
   number.text = goal;
+
+  var info = item.getViewById('infoButton');
+  info.visibility = 'collapse';
 
   number.on("unloaded", function (args) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
