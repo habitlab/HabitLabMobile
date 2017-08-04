@@ -420,7 +420,7 @@ populateListViewsWeek = function() {
     }
 	)
 	var weekButtons = view.getViewById(page, "weekButtons");
-	weekButtons.items = weekStats;
+	weekButtons.items = weekStats; 
     console.warn("added week buttons")
     var weekApps = getAppsWeek();
 	pageData.set("weekItems", weekApps);
@@ -464,15 +464,15 @@ populateListViewMonth = function () {
 
 //Service starter
 checkAndStartService = function() {
-  // if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-  //   context.startService(trackingServiceIntent);
-  // }
-  // if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-  //   context.startService(unlockServiceIntent);
-  // }
-  // if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-  //   context.startService(dummyServiceIntent);
-  // }  
+  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
+    context.startService(trackingServiceIntent);
+  }
+  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
+    context.startService(unlockServiceIntent);
+  }
+  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
+    context.startService(dummyServiceIntent);
+  }  
 }
 
 //Sets up the progress view 

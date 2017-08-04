@@ -30,7 +30,7 @@
  			   				<Button text="{{ showDayGraph ? 'Hide' : 'Show'}}" tap="toggle" class="shide" row="0" col="1"/>
  			   			</GridLayout>
 			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}" id="dayViewGraph" class="graph"/>
-			   			<ScrollView direction="vertical">
+
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="listButtons" class="list-group"  tap="onDayTap">
 		   					<lv:RadListView.listViewLayout>
@@ -64,8 +64,7 @@
 			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
-			   			
-			   			    </ScrollView>
+			   		
 				   		</StackLayout>
 				   	
 					</TabViewItem.view>
@@ -127,7 +126,7 @@
 					     <StackLayout>
 					   		 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
  				   				<Label text="Mins on Watchlist This Month" row="0" col="0" class="header" horizontalAlignment="center"/>
- 					   				<Button text="{{ showMonthGraph ? 'Hide' : 'Show'}}" tap="toggleMonth" class="shide" row="0" col="1"/>
+ 					   			<Button text="{{ showMonthGraph ? 'Hide' : 'Show'}}" tap="toggleMonth" class="shide" row="0" col="1"/>
  				   			</GridLayout>
 						 	<Placeholder creatingView="monthView" visibility = "{{ showMonthGraph ? 'visible' : 'collapsed'}}" class="graph"/>
 
