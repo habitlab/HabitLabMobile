@@ -16,14 +16,11 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center" >
-      <StackLayout class="main-container">
-        <Label class="section-title" text="Tracked Apps" />
-        <StackLayout class="stack-container">
-          <ScrollView orientation="vertical" class="watchlist-scroll" id="scroll-container">
-            <StackLayout orientation="vertical" id="watchlist-list" class="scrollable-stack" />
-          </ScrollView>
-          <Button text="Manage Watchlist" onTap="onManage" id="manage" class="manage-button"/>
-        </StackLayout>
+      <StackLayout class="stack-container">
+        <ScrollView orientation="vertical" class="watchlist-scroll" id="scroll-container">
+          <StackLayout orientation="vertical" id="watchlist-list" class="scrollable-stack" />
+        </ScrollView>
+        <Button text="Manage Watchlist" onTap="onManage" id="manage" class="manage-button"/>
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>

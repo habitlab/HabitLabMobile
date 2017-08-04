@@ -23,7 +23,6 @@ var randBW = function(min, max) {
 
 var createGrid = function(args) {
   var list = UsageUtil.getApplicationList();
-
   var grid = args.object.getViewById('grid');
   list.forEach(function (item, i) {
     if (i % 3 === 0) {
@@ -31,7 +30,6 @@ var createGrid = function(args) {
     }
     grid.addChild(createCell(list[i], Math.floor(i/3), i%3));
   });
-  console.warn(Date.now());
 };
 
 var setCellInfo = function(cell, info) {
@@ -75,7 +73,6 @@ exports.pageLoaded = function(args) {
 
   timer.setTimeout(() => {
     createGrid(args);
-    console.warn("Done!");
   }, 300);
 };
 

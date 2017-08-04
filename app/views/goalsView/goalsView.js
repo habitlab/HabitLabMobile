@@ -65,15 +65,7 @@ var createPhoneGoal = function(goal, value) {
   });
 
   return item;
-}; 
-
-
-// exports.moreInfoPhone = function() {
-//   console.warn("show tip")
-//   const tip = new ToolTip(view,{text:"The number of times your screen lights up when you glance at it"});
-//   console.warn(tip);
-//   tip.show();  
-// }
+};
 
 var setUpPhoneGoals = function() {
   var phoneGoals = StorageUtil.getPhoneGoals();

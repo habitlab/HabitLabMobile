@@ -500,7 +500,7 @@ exports.toggleForAll = function(id) {
   var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
   pkgs.forEach(function (item) {
     var appInfo = JSON.parse(appSettings.getString(item));
-    if (appInfo.enabled[id] !== enabled[id]) {
+    if (appInfo.enabled[id] && !enabled[id] || !appInfo.enabled[id] && enabled[id]) {
       appInfo.enabled[id] = enabled[id];
       appSettings.setString(item, JSON.stringify(appInfo));
     }
@@ -571,29 +571,27 @@ exports.toggleForApp = function(id, packageName) {
   // if intervention just enabled for app
   if (appInfo.enabled[id]) {
     // make sure enabled is true overall
-    var enabled = JSON.parse(appSettings.getString('enabled'));
-    if (!enabled[id]) {
-      enabled[id] = true;
-      appSettings.setString('enabled', JSON.stringify(enabled));
+    var enabled1 = JSON.parse(appSettings.getString('enabled'));
+    if (!enabled1[id]) {
+      enabled1[id] = true;
+      appSettings.setString('enabled', JSON.stringify(enabled1));
     }
   } else { // intervention just disabled for app
     // check if overall disable is necessary
     var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
-    var mustDisable = true;
+    var foundEnabled = false;
     pkgs.forEach(function (item) {
-      if (item === packageName || !mustDisable) {
+      if (item === packageName || foundEnabled) {
         return;
       }
       var currInfo = JSON.parse(appSettings.getString(item));
-      if (currInfo.enabled[id]) {
-        mustDisable = false;
-      }
+      foundEnabled = currInfo.enabled[id];
     });
 
-    if (mustDisable) {
-      var enabled = JSON.parse(appSettings.getString('enabled'));
-      enabled[id] = false;
-      appSettings.setString('enabled', JSON.stringify(enabled));
+    if (!foundEnabled) {
+      var enabled2 = JSON.parse(appSettings.getString('enabled'));
+      enabled2[id] = false;
+      appSettings.setString('enabled', JSON.stringify(enabled2));
     } 
   }
 };
