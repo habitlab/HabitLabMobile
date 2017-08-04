@@ -17,11 +17,11 @@
     "nativescript-loading-indicator-new": "^2.1.0",
     "nativescript-localstorage": "^1.1.5",
     "nativescript-ripple": "^2.0.0",
-    "nativescript-sentry": "^1.2.0",
     "nativescript-slides": "^2.2.11",
     "nativescript-telerik-ui": "^3.0.1",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toast": "^1.4.5",
+    "nativescript-trace-raven": "^1.0.0",
     "nativescript-videoplayer": "^3.0.9",
     "tns-core-modules": "~3.0.0"
   },
