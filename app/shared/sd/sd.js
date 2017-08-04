@@ -1,6 +1,8 @@
 var frameModule = require("ui/frame");
 var menu;
 var onClicksSet;
+var StorageUtil = require('~/util/StorageUtil');
+var dialogs = require("ui/dialogs");
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist'];
 
 var setOnTouches = function() {
@@ -23,6 +25,28 @@ var setOnTouches = function() {
       }
     });
   });
+};
+
+exports.setSnooze = function() {
+  if (StorageUtil.inSnoozeMode()) {
+
+  } else {
+    dialogs.action({
+      message: "How long would you like to snooze HabitLab for?",
+      cancelButtonText: "Cancel text",
+      actions: ["15 minutes", "1 hour", "8 hours", "Today", ]
+    }).then(function (result) {
+      if (result === "15 minutes"){
+        
+      } else if (result === "1 hour"){
+          //Do action2
+      } else if (result === "8 hours"){
+          //Do action2
+      } else if (result === "Today"){
+          //Do action2
+      }
+    });
+  }
 };
 
 exports.onLoaded = function(args) {

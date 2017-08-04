@@ -128,3 +128,7 @@ exports.pageLoaded = function(args) {
 exports.onInfo = function() {
     frame.topmost().navigate('views/infoView/infoView');
 };
+
+exports.onTimer = function() {
+    StorageUtil.setSnooze();
+};

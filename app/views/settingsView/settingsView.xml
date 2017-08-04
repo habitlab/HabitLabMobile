@@ -39,6 +39,7 @@
         </GridLayout>
         <Button text="Set fake data" onTap="setFakeData" />
         <Button text="Start Accessibility Service" onTap="startAccessibilityService" />
+        <Button text="Timer" onTap="onTimer" />
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
