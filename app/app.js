@@ -1,7 +1,7 @@
 var applicationModule = require("application");
 var StorageUtil = require('~/util/StorageUtil');
 var Toast = require("nativescript-toast");
-var {Sentry} = require("nativescript-sentry");
+var http = require("http");
 
 var view = 'onboardingView';
 
@@ -11,52 +11,74 @@ if (StorageUtil.isOnboarded()) {
   view = "appsView";
 }
 
-// ATTEMPT AT LOGGING STUFF
 
-// var getErrorDetails = function (args) {
-// 	if (typeof args === 'string') {
-//         return args;
-//     }
+var getErrorDetails = function (args) {
+	if (typeof args === 'string') {
+        return args;
+    }
 
-//     let error = args.android;
+    let error = args.android;
 
-//     return {
-//         name: error.name || 'Error',
-//         nativeException: error.nativeException,
-//         message: error.message || JSON.stringify(error),
-//         stackTrace: error.stackTrace || null,
-//         stack: error.stack || null
-//     };
+    return {
+        name: error.name || 'Error',
+        nativeException: error.nativeException,
+        message: error.message || JSON.stringify(error),
+        stackTrace: error.stackTrace || null,
+        stack: error.stack || null
+    };
+}
+
+// async function sleep(milliseconds) {
+//   return new Promise(function(callback) {
+//   	setTimeout(callback, milliseconds)
+//   })
 // }
-// 
-// var sentry;
-// applicationModule.on(applicationModule.launchEvent, function (args) {
-// 	let sentryDsn = "https://c9945730aba341e9b66d522ddffe8f4c:b076bf39d2444a939324a7b0fae8d765@sentry.io/199451";
-// 	Sentry.init(sentryDsn);
-// });
 
-// applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
-// 	if (sentry) {
-// 	    let event = new io.sentry.event.EventBuilder();
-// 	    let errordetails = getErrorDetails(args)
-// 	    let errordetails_stringified = JSON.stringify(errordetails)
-// 	    errordetails_stringified = errordetails_stringified.replace('NativeScriptException', 'NativeScriptException' + Math.floor(Math.random() * 99999999))
-// 	    event.withMessage(errordetails_stringified)
-// 	    event.withLevel(io.sentry.event.Event.Level.ERROR);
-// 	    io.sentry.Sentry.capture(event);	   
-// 	}
-// });
+function send_error(error) {
+  var now = new Date();
+  var time = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+  return send_log({error: error, time: time});
+}
 
-// setTimeout(function() {
-// 	try {
-// 		new java.util.ArrayList().get(2);
-// 	} catch (error) {
-// 		Sentry.capture(error);
-// 	}
-// }, 5000)
+function send_log(data) {
+  return http.request({
+    url: "http://logs-01.loggly.com/inputs/d453baa2-3722-4855-afca-1298682eb290/tag/http/",
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    content: JSON.stringify(data)
+  })
+}
+
+// (async function() {
+//   while (true) {
+//   	let logs_to_send = StorageUtil.getErrorQueue();
+//   	for (let log_data of logs_to_send) {
+//   	  await send_error(log_data);
+//   	}
+//   	StorageUtil.clearErrorQueue();
+//   	await sleep(1000);
+//   }
+// })();
+
+applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
+	let errordetails = getErrorDetails(args);
+	let errordetails_stringified = JSON.stringify(errordetails);
+	StorageUtil.addError(errordetails_stringified);
+});
+
+// send any errors that have accumulated
+applicationModule.on(applicationModule.launchEvent, function(args) {
+	let logs_to_send = StorageUtil.getErrorQueue();
+  	for (let log_data of logs_to_send) {
+  	  send_error(log_data);
+  	}
+  	StorageUtil.clearErrorQueue();
+});
 
 applicationModule.start({ 
   moduleName: "views/" + view + "/" + view, 
   backstackVisible: view === 'progressView'
 });
 applicationModule.setCssFileName("app.css");
+
+

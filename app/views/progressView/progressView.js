@@ -62,13 +62,6 @@ var barchartMade = false;
 var piechartMade = false;
 var monthchartMade = false;
 
-const ServiceManager = require("~/services/ServiceManager");
-var trackingServiceIntent = new android.content.Intent(context, com.habitlab.TrackingService.class);
-var unlockServiceIntent = new android.content.Intent(context, com.habitlab.UnlockService.class);
-var dummyServiceIntent = new android.content.Intent(context, com.habitlab.DummyService.class);
-
-
-
 exports.pageNavigating = function(args) {
     page = args.object;
     //Progress info is the array of objects containing all info needed for progress view
@@ -79,10 +72,11 @@ exports.pageNavigating = function(args) {
 
 
 exports.pageLoaded = function(args) {
-    checkAndStartService();
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
+
+
     setUp();
 };
 
@@ -470,19 +464,6 @@ populateListViewMonth = function () {
 /************************************
  *          HELPER FUNCTIONS        *
  ************************************/
-
-//Service starter
-checkAndStartService = function() {
-  if (!ServiceManager.isRunning(com.habitlab.TrackingService.class.getName())) {
-    context.startService(trackingServiceIntent);
-  }
-  if (!ServiceManager.isRunning(com.habitlab.UnlockService.class.getName())) {
-    context.startService(unlockServiceIntent);
-  }
-  if (!ServiceManager.isRunning(com.habitlab.DummyService.class.getName())) {
-    context.startService(dummyServiceIntent);
-  }  
-}
 
 //Sets up the progress view 
 setUp = function() {

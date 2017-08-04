@@ -8,6 +8,7 @@ var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
 var timer = require("timer");
+var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
 
 var drawer;
 var pkgs;
@@ -73,9 +74,26 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
 
+  var loader = new LoadingIndicator();
+  var options = {
+    message: 'Retrieving installed applications...',
+    progress: 0.65,
+    android: {
+      indeterminate: true,
+      cancelable: false,
+      max: 100,
+      progressNumberFormat: "%1d/%2d",
+      progressPercentFormat: 0.53,
+      progressStyle: 1,
+      secondaryProgress: 1
+    }
+  };
+  loader.show(options);
+
   timer.setTimeout(() => {
     createGrid(args);
-  }, 300);
+    loader.hide();
+  }, 1000);
 };
 
 exports.toggleDrawer = function() {

@@ -767,7 +767,6 @@ exports.getProgressViewInfo = function() {
   return retObj;
 };
 
-
 //To be used for app detail view -- returns an appStats object when passed a package name
 exports.getAppStats = function(packageName) {
   var obj = JSON.parse(appSettings.getString(packageName));
@@ -775,3 +774,20 @@ exports.getAppStats = function(packageName) {
   arr.goals = obj.goals;
   return arr;
 };
+
+exports.getErrorQueue = function() {
+  var queue = appSettings.getString('errorQueue');
+  return queue && JSON.parse(queue) || [];
+}
+
+exports.addError = function(error) {
+  var queue = appSettings.getString('errorQueue');
+  queue = queue && JSON.parse(queue) || [];
+  queue.push(error);
+  appSettings.setString('errorQueue', JSON.stringify(queue));
+}
+
+exports.clearErrorQueue = function() {
+  appSettings.setString('errorQueue', JSON.stringify([]));
+}
+
