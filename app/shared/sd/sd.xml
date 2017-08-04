@@ -3,25 +3,31 @@
 		<Image src="res://ic_inline_logo_text" class="sd-icon" row="1"/>
 	</GridLayout>
 	<StackLayout class="sidedrawer-content">
-		<StackLayout orientation="horizontal" class="side-option" id="progress-option" >
-			<Image class="side-icon" src="res://ic_progress" id="progress-icon" />
-			<Label text="Progress" class="side-label" />
+		<StackLayout class="subdrawer-content">
+			<StackLayout orientation="horizontal" class="side-option" id="progress-option" >
+				<Image class="side-icon" src="res://ic_progress" id="progress-icon" />
+				<Label text="Progress" class="side-label" />
+			</StackLayout>
+			<StackLayout orientation="horizontal" class="side-option" id="watchlist-option" >
+				<Image class="side-icon" src="res://ic_watchlist" id="watchlist-icon" />
+				<Label text="Watchlist" class="side-label" />
+			</StackLayout>
+			<StackLayout orientation="horizontal" class="side-option" id="nudges-option" >
+				<Image class="side-icon" src="res://ic_phone_lock" id="nudges-icon" />
+				<Label text="Nudges" class="side-label" id='lined-option'/>
+			</StackLayout>
+			<StackLayout orientation="horizontal" class="side-option" id="goals-option" >
+				<Image class="side-icon" src="res://ic_goals" id="goals-icon" />
+				<Label text="Goals" class="side-label" />
+			</StackLayout>
+			<StackLayout orientation="horizontal" class="side-option" id="settings-option" >
+				<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
+				<Label text="Settings" class="side-label" />
+			</StackLayout>
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="watchlist-option" >
-			<Image class="side-icon" src="res://ic_watchlist" id="watchlist-icon" />
-			<Label text="Watchlist" class="side-label" />
-		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="nudges-option" >
-			<Image class="side-icon" src="res://ic_phone_lock" id="nudges-icon" />
-			<Label text="Nudges" class="side-label" id='lined-option'/>
-		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="goals-option" >
-			<Image class="side-icon" src="res://ic_goals" id="goals-icon" />
-			<Label text="Goals" class="side-label" />
-		</StackLayout>
-		<StackLayout orientation="horizontal" class="side-option" id="settings-option" >
-			<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
-			<Label text="Settings" class="side-label" />
+		<StackLayout orientation="horizontal" class="snooze-option" id="snooze-option" tap="setSnooze">
+			<Image class="snooze-icon" src="res://ic_alarm" id="snooze-icon" />
+			<Label text="snooze HabitLab" class="snooze-label" />
 		</StackLayout>
 	</StackLayout>
 </StackLayout>

@@ -612,10 +612,24 @@ exports.isEnabledForAll = function(id) {
   return JSON.parse(appSettings.getString('enabled'))[id];
 };
 
+exports.setSnooze = function(duration) {
+  appSettings.setNumber('snoozeEnd', Date.now() + duration * 60000);
+};
+
+exports.getSnooze = function() {
+  return appSettings.getNumber('snoozeEnd');
+};
+
+var inSnoozeMode = function() {
+  return Date.now() - appSettings.getNumber('snoozeEnd') < 0;
+};
+
+exports.inSnoozeMode = inSnoozeMode;
+
 var withinActiveHours = function() {
   var hours = JSON.parse(appSettings.getString('activeHours'));
-
-  if (!hours.days[Date.now().getDay()]) {
+  var now = new Date();
+  if (!hours.days[now.getDay()]) {
     return false;
   }
 
@@ -626,7 +640,6 @@ var withinActiveHours = function() {
     return true;
   }
 
-  var now = new Date();
   var h = now.getHours();
   var m = now.getMinutes();
 
@@ -645,7 +658,7 @@ var withinActiveHours = function() {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  if (!withinActiveHours()) {
+  if (!withinActiveHours() || inSnoozeMode()) {
     return false;
   }
 
@@ -790,4 +803,3 @@ exports.addError = function(error) {
 exports.clearErrorQueue = function() {
   appSettings.setString('errorQueue', JSON.stringify([]));
 }
-
