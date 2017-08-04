@@ -14,7 +14,8 @@ var interventionList;
 var createItem = function(info)  {
   var item = builder.load({
     path: 'shared/nudgeelem',
-    name: 'nudgeelem'
+    name: 'nudgeelem',
+    page: page
   });
 
   item.id = 'item' + item.id;
@@ -35,7 +36,13 @@ var createItem = function(info)  {
 
   var options = {
     moduleName: 'views/detailView/detailView',
-    context: { info: info }
+    context: { info: info },
+    animated: true,
+    transition: {
+      name: "slide",
+      duration: 380,
+      curve: "easeIn"
+    }
   };
   item.on("tap, touch", function(args) {
     if (args.eventName === 'tap') {

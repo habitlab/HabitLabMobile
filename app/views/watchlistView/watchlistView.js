@@ -11,7 +11,8 @@ var page;
 var createItem = function(packageName)  {
   var item = builder.load({
     path: 'shared/watchlistelem',
-    name: 'watchlistelem'
+    name: 'watchlistelem',
+    page: page
   });
 
   item.id = packageName;

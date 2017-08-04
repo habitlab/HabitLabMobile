@@ -15,7 +15,8 @@ var mainSwitchLabel;
 var createItem = function(pkg)  {
   var item = builder.load({
     path: 'shared/detailelem',
-    name: 'detailelem'
+    name: 'detailelem',
+    page: page
   });
 
   item.id = pkg;

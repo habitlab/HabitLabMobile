@@ -2,6 +2,7 @@ var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 
 var drawer;
+var page;
 var list;
 
 var QandA = [{
@@ -139,7 +140,8 @@ var classes = [' orange', ' red', ' blue', ' green', ' black'];
 var createFAQitem = function(info, id) {
   var item = builder.load({
     path: 'shared/faqelem',
-    name: 'faqelem'
+    name: 'faqelem',
+    page: page
   });
   item.id = 'faq' + id;
   item.className = 'faq-item';
@@ -177,8 +179,9 @@ var createFAQitem = function(info, id) {
 };
 
 exports.pageLoaded = function(args) {
-  drawer = args.object.getViewById('sideDrawer');
-  list = args.object.getViewById('faq-list');
+  page = args.object;
+  drawer = page.getViewById('sideDrawer');
+  list = page.getViewById('faq-list');
   QandA.forEach(function (elem, index) {
     if (!list.getViewById('faq' + index)) {
       list.addChild(createFAQitem(elem, index));

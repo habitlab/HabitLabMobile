@@ -61,7 +61,8 @@
 .app-detail-disable-button {
   font-size: 11%;
   height: 12%;
-  width: 20%;
+  width: 30%;
+  margin-left: 2%;
   text-transform: none;
   background-color: #E71D36;
   color: white;

@@ -57,7 +57,8 @@ var setCellInfo = function(cell, info) {
 var createCell = function(info, r, c)  {
   var cell = builder.load({
     path: 'shared/appgridcell',
-    name: 'appgridcell'
+    name: 'appgridcell',
+    page: page
   });
 
   setCellInfo(cell, info);
@@ -67,8 +68,9 @@ var createCell = function(info, r, c)  {
 };
 
 exports.pageLoaded = function(args) { 
+  var page = args.object;
   toToggle = {};
-  drawer = args.object.getViewById('sideDrawer');
+  drawer = page.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
 
   timer.setTimeout(() => {

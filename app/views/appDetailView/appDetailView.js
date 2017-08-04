@@ -132,14 +132,15 @@ var setUpDetail = function() {
 var createItem = function(enabled, id, first)  {
   var item = builder.load({
     path: 'shared/detailelem',
-    name: 'detailelem'
+    name: 'detailelem',
+    page: page
   });
 
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
 
   var button = item.getViewById('button');
-  button.text = 'DISABLE';
+  button.text = 'DISABLE ALL';
   button.className = 'app-detail-disable-button';
   button.on('tap', function() {
     dialogs.confirm({
@@ -198,7 +199,6 @@ var createItem = function(enabled, id, first)  {
         item.backgroundColor = '#FFFFFF';
       }
     }
-    
   });
   
   return item;
