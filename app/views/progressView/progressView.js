@@ -363,7 +363,6 @@ getMonthEntries = function() {
 
 //Creates a list view for the dayView, showing name, #times opened, and minutes 
 populateListViewsDay = function() {   
-    console.warn("populate day")
      var unlocks = progressInfo.phoneStats[TODAY].unlocks;
      var glances = progressInfo.phoneStats[TODAY].glances;
      var total = (progressInfo.phoneStats[TODAY].totalTime === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].totalTime));
@@ -399,7 +398,6 @@ populateListViewsDay = function() {
 
 //Creates list view for week, showing name, avg min.day and total minutes
 populateListViewsWeek = function() {
-    console.warn("populate week")
     var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")))
     var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")));
     var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
