@@ -21,7 +21,7 @@ var onboarding = {};
 onboarding.texts = [
   'Design your time on your phone',
   'Choose apps to spend less time on',
-  'Personalized nudges will help you meet your goals',
+  'Stick to your goals with custom alerts',
   'See how your habits improve over time.',
   'First things first...',
   'Last one!'
@@ -30,7 +30,7 @@ onboarding.texts = [
 onboarding.titles = [
   'Welcome to HabitLab,',
   'Create your watchlist',
-  'Stop wasting time',
+  'A Nudge in the Right Direction',
   'Track Your Progress',
   'Let\'s Do It!'
   ];
