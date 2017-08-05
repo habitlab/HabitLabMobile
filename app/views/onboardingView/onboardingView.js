@@ -53,7 +53,9 @@ exports.pageLoaded = function(args) {
     frameModule.topmost().navigate('views/appsView/appsView');
   }
 
-  StorageUtil.setUpDB();
+  if (!StorageUtil.isSetUp()) {
+    StorageUtil.setUpDB();
+  }
 
   var navigated = false;
   page = args.object;
