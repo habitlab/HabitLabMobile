@@ -146,6 +146,10 @@ exports.eraseData = function() {
   appSettings.clear();
 };
 
+exports.setSetUp = function() {
+  appSettings.setBoolean('setup', true);
+};
+
 /* export: setUp
  * -------------
  * Clears storage and resets everything to defaults.
@@ -155,7 +159,6 @@ exports.setUpDB = function() {
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setNumber('lastDateActive', startOfDay());
-  appSettings.setBoolean('setup', true);
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   preset.forEach(function (item) {
