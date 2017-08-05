@@ -629,6 +629,10 @@ var inSnoozeMode = function() {
 
 exports.inSnoozeMode = inSnoozeMode;
 
+exports.removeSnooze = function() {
+  appSettings.setNumber('snoozeEnd', Date.now());
+};
+
 var withinActiveHours = function() {
   var hours = JSON.parse(appSettings.getString('activeHours'));
   var now = new Date();
