@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating"  actionBarHidden="true" >
 	<StackLayout>
-		<Label text="Introducing: Nudges" class="title"/>
+		<Label text="Change your habits with Nudges" class="title"/>
 		<Label text= "Custom alerts to help you meet your goals" class="subtitle" />	
 		<Image class = "mainImage" id="image"/>
 		<GridLayout rows="auto" columns="*,*,*,*,*" id="selector" class="icons"> 

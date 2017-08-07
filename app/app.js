@@ -3,13 +3,13 @@ var StorageUtil = require('~/util/StorageUtil');
 var Toast = require("nativescript-toast");
 var http = require("http");
 
-var view = 'onboardingView';
+var view = 'watchlistOnboardingView';
 
-if (StorageUtil.isOnboarded()) {
-  view = 'progressView';
-} else if (StorageUtil.isSetUp()) {
-  view = "appsView";
-}
+// if (StorageUtil.isOnboarded()) {
+//   view = 'progressView';
+// } else if (StorageUtil.isSetUp()) {
+//   view = "appsView";
+// }
 
 
 var getErrorDetails = function (args) {

@@ -1,7 +1,20 @@
-<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating" actionBarHidden="true" >
+<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating" actionBarHidden="true" xmlns:Slides="nativescript-slides">
 	<StackLayout>
 		<Label text="Create your watchlist" class="title"/>
 		<Label text= "Which apps would you like to spend less time on?" class="subtitle" />
+		<StackLayout>
+
+		<Slides:SlideContainer id="slides" pageIndicators="true">
+			<Slides:Slide class="slide">
+		<!-- <ScrollView orientation="vertical" class="app-list-scroll"> -->
+            <GridLayout id="grid" columns="*,*,*" unloaded="onUnloaded" />
+        	</Slides:Slide>
+        	<Slides:Slide class="slide">
+		<!-- <ScrollView orientation="vertical" class="app-list-scroll"> -->
+            <GridLayout id="grid-2" columns="*,*,*" unloaded="onUnloaded" />
+        	</Slides:Slide>
+     	</Slides:SlideContainer>
 		<Button text="Done" class="done-button" tap="onDone"/>
+	</StackLayout>
 	</StackLayout>
 </Page>
