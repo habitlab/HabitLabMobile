@@ -1,0 +1,15 @@
+<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating"  actionBarHidden="true" >
+	<StackLayout>
+		<Label text="Introducing: Nudges" class="title"/>
+		<Label text= "Custom alerts to help you meet your goals" class="subtitle" />	
+		<Image class = "mainImage" id="image"/>
+		<GridLayout rows="auto" columns="*,*,*,*,*" id="selector" class="icons"> 
+			<Image row="0" col="0" class="icon" id="{{ names[0] }}" src="{{ images[0] }}" tap="tapIcon"/>
+			<Image row="0" col="1" class="icon" id="{{ names[1] }}" src="{{ images[1] }}" tap="tapIcon"/>
+			<Image row="0" col="2" class="icon" id="{{ names[2] }}" src="{{ images[2] }}" tap="tapIcon"/>
+			<Image row="0" col="3" class="icon"  id="{{ names[3] }}" src="{{ images[3] }}" tap="tapIcon"/>
+			<Image row="0" col="4" class="icon"  id="{{ names[4] }}" src="{{ images[4] }}" tap="tapIcon"/>
+		</GridLayout>
+		<Label text="Next" onTap="goToPermissions" class="next"/>
+	</StackLayout>
+</Page>

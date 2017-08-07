@@ -1,0 +1,7 @@
+<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating">
+	<StackLayout>
+		<Label text="Create your watchlist" class="title"/>
+		<Label text= "Which apps would you like to spend less time on?" class="subtitle" />
+		<Button text="Done" class="done-button" tap="onDone"/>
+	</StackLayout>
+</Page>
