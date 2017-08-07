@@ -6,6 +6,7 @@ var System = java.lang.System;
 
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
+var SEC_IN_MS = 1000;
 
 /************************************
  *             HELPERS              *
@@ -30,7 +31,7 @@ var PkgGoal = function() {
 };
 
 var PhStat = function() {
-  return {glances: 0, unlocks: 0, totalTime: 0, time: 0};
+  return {glances: 0, unlocks: 0, totalTime: 0};
 };
 
 var PhGoal = function() {
@@ -42,7 +43,7 @@ var randBW = function(min, max) {
 };
 
 var FakePkgStat = function() {
-  return {visits: randBW(5, 30), time: randBW(3, 20)};
+  return {visits: randBW(3, 20), time: randBW(5, 30)};
 };
 
 var FakePkgGoal = function() {
@@ -67,8 +68,7 @@ var FakePhStats = function() {
     phStats.push({
       glances: randBW(numUnlocks, numUnlocks*2), 
       unlocks: numUnlocks,
-      totalTime: randBW(total, total + 30), 
-      time: total
+      totalTime: randBW(total, total + 30)
     });
   }
   return phStats;
@@ -151,7 +151,7 @@ exports.setUpDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setString('lastActive', daysSinceEpoch() - 4 + '');
+  appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
   appSettings.setString('snoozeEnd', Date.now() + '');
 
@@ -166,7 +166,7 @@ exports.setUpFakeDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setString('lastActive', daysSinceEpoch() - 4 + '');
+  appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
   appSettings.setString('snoozeEnd', Date.now() + '');
 
@@ -393,15 +393,9 @@ exports.glanced = function() {
  * day (time is in minutes).
  */
 exports.updateAppTime = function(packageName, time) {
-
-  var i = index();
   var appInfo = JSON.parse(appSettings.getString(packageName));
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  time = Math.round(time / MIN_IN_MS);
-  appInfo['stats'][i]['time'] += time;
-  phoneInfo['stats'][i]['time'] += time;
+  appInfo['stats'][index()]['time'] += time / MIN_IN_MS;
   appSettings.setString(packageName, JSON.stringify(appInfo));
-  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* export: getAppTime
@@ -416,8 +410,13 @@ exports.getAppTime = function(packageName) {
  * ---------------------
  * Returns total time on target apps so far today (in minutes).
  */
-exports.getTargetTime = function() {
-  return JSON.parse(appSettings.getString('phone')).stats[index()]['time'];
+var getTargetTime = function() {
+  var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+  var time = 0;
+  pkgs.forEach(function (pkg) {
+    time += Math.ceil(JSON.parse(appSettings.getString(pkg)).stats[index()]['time']);
+  });
+  return time;
 };
 
 /* export: updateTotalTime
@@ -426,7 +425,7 @@ exports.getTargetTime = function() {
  */
 exports.updateTotalTime = function(time) {  
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()]['totalTime'] += Math.round(time / MIN_IN_MS);
+  phoneInfo['stats'][index()]['totalTime'] += time / MIN_IN_MS;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -435,7 +434,7 @@ exports.updateTotalTime = function(time) {
  * Returns total time on phone so far today (in minutes).
  */
 exports.getTotalTime = function() {
-  return JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime'];
+  return Math.ceil(JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime']);
 };
 
 
@@ -786,12 +785,28 @@ exports.getMinutesGoal = function(packageName) {
 exports.getProgressViewInfo = function() {
   var retObj = {}
   retObj.phoneStats = arrangeData(JSON.parse(appSettings.getString('phone')).stats);
+  retObj.phoneStats.forEach(function (phoneStat) {
+    phoneStat.totalTime = Math.ceil(phoneStat.totalTime);
+  });
   
   var list = JSON.parse(appSettings.getString('selectedPackages'));
   retObj.appStats = [];
-  list.forEach(function (item) {
-    var appStat = arrangeData(JSON.parse(appSettings.getString(item)).stats);
-    appStat.packageName = item;
+  var targetTime = 0;
+  list.forEach(function (pkg, pkgIndex) {
+    var appStat = arrangeData(JSON.parse(appSettings.getString(pkg, pkgIndex)).stats);
+
+    // total the target times
+    appStat.forEach(function (item, index) {
+      if (pkgIndex === 0) {
+        retObj.phoneStats[index].time = 0;
+      }
+
+      var toAdd = Math.ceil(item.time);
+      retObj.phoneStats[index].time += toAdd;
+      seconds = toAdd;
+    });
+
+    appStat.packageName = pkg;
     retObj.appStats.push(appStat);
   });
   return retObj;
