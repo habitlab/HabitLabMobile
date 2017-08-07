@@ -42,38 +42,40 @@ var randBW = function(min, max) {
 };
 
 var FakePkgStat = function() {
-  return {
-    visits: randBW(10, 40), 
-    time: randBW(10, 45)
-  };
+  return {visits: randBW(5, 30), time: randBW(3, 20)};
 };
 
 var FakePkgGoal = function() {
   return {minutes: 15};
 };
 
-var FakePhStat = function() {
-  var numGlances = randBW(50, 120);
+var FakePhStats = function() {
+  var phStats = [];
+  var appStats = [];
   var list = JSON.parse(appSettings.getString('selectedPackages'));
-  var total = 0;
-  list.forEach(function(item) {
-    total += exports.getAppTime(item);
+  list.forEach(function (pkg) {
+    appStats.push(JSON.parse(appSettings.getString(pkg)).stats);
   });
 
-  return {
-    glances: numGlances, 
-    unlocks: randBW(numGlances, numGlances*2), 
-    totalTime: randBW(total, total + 90), 
-    time: total
-  };
+  for (var i = 0; i < 28; i++) {
+    var numUnlocks = randBW(30, 70);
+    var total = 0;
+    appStats.forEach(function(pkgData) {
+      total += pkgData[i]['time'];
+    });
+
+    phStats.push({
+      glances: randBW(numUnlocks, numUnlocks*2), 
+      unlocks: numUnlocks,
+      totalTime: randBW(total, total + 30), 
+      time: total
+    });
+  }
+  return phStats;
 };
 
 var FakePhGoal = function() {
-  return {
-    glances: 75, 
-    unlocks: 50, 
-    minutes: 120
-  };
+  return {glances: 75, unlocks: 50, minutes: 120};
 };
 
 /* helper: createPackageData
@@ -115,18 +117,9 @@ var createFakePackageData = function(packageName) {
 var createFakePhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
       goals: FakePhGoal(), 
-      stats: Array(28).fill(FakePhStat()),
+      stats: FakePhStats(),
       enabled: Array(ID.interventionDetails.length).fill(true)
     }));
-};
-
-var startOfDay = function() {
-  var startOfTarget = Calendar.getInstance();
-  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-  startOfTarget.set(Calendar.MINUTE, 0);
-  startOfTarget.set(Calendar.SECOND, 0);
-  startOfTarget.set(Calendar.MILLISECOND, 0);
-  return startOfTarget.getTimeInMillis();
 };
 
 var ActiveHours = function() {
@@ -158,8 +151,9 @@ exports.setUpDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setNumber('lastDateActive', startOfDay());
+  appSettings.setString('lastActive', daysSinceEpoch() - 4 + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
+  appSettings.setString('snoozeEnd', Date.now() + '');
 
   preset.forEach(function (item) {
     createPackageData(item);
@@ -170,9 +164,11 @@ exports.setUpDB = function() {
 
 exports.setUpFakeDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
+
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setBoolean('setup', true);
+  appSettings.setString('lastActive', daysSinceEpoch() - 4 + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
+  appSettings.setString('snoozeEnd', Date.now() + '');
 
   preset.forEach(function (item) {
     createFakePackageData(item);
@@ -187,12 +183,16 @@ exports.setOnboarded = function() {
 
 /* export: isSetUp
  * ---------------
- * Checks if the user has been onboarded yet.
+ * Checks if the user has a database yet.
  */
 exports.isSetUp = function() {
   return appSettings.getBoolean('setup');
 };
 
+/* export: isOnboarded
+ * -------------------
+ * Checks if the user has finished the onboarding yet.
+ */
 exports.isOnboarded = function() {
   return appSettings.getBoolean('onboarded');
 };
@@ -350,14 +350,41 @@ exports.getGlances = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['glances']; 
 };
 
+// called on every glance to determine whether to start a new day of data
+var eraseExpiredData = function() {
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  var today = daysSinceEpoch();
+  var diff = today - Number(appSettings.getString('lastActive'));
+  if (diff) {
+
+    appSettings.setString('lastActive', today + '');
+
+    for (var i = 0; i < diff; i++) {
+      phoneInfo.stats[(today - i + 28) % 28] = PhStat();
+    }
+
+    var list = JSON.parse(appSettings.getString('selectedPackages'));
+    list.forEach(function (packageName) {
+      var appInfo = JSON.parse(appSettings.getString(packageName));
+      for (var i = 0; i < diff; i++) {
+        appInfo.stats[(today - i + 28) % 28] = PkgStat();
+      }
+      appSettings.setString(packageName, JSON.stringify(appInfo));
+    });
+  }
+
+  return phoneInfo;
+};
+
 /* export: glanced
  * ---------------
  * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  var phoneInfo = eraseExpiredData();
   phoneInfo['stats'][index()]['glances']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
+  console.warn(appSettings.getString('phone'));
 };
 
 /* export: updateAppTime
@@ -411,21 +438,6 @@ exports.getTotalTime = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime'];
 };
 
-exports.midnightReset = function() {
-  var today = index();
-  appSettings.setNumber('lastDateActive', startOfDay());
-
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo.stats[today] = PhStat();
-  appSettings.setString('phone', JSON.stringify(phoneInfo));
-
-  var list = JSON.parse(appSettings.getString('selectedPackages'));
-  list.forEach(function (packageName) {
-    var appInfo = JSON.parse(appSettings.getString(packageName));
-    appInfo.stats[today] = PkgStat();
-    appSettings.setString(packageName, JSON.stringify(appInfo));
-  });
-};
 
 /************************************
  *           INTERVENTIONS          *
@@ -616,21 +628,19 @@ exports.isEnabledForAll = function(id) {
 };
 
 exports.setSnooze = function(duration) {
-  appSettings.setNumber('snoozeEnd', Date.now() + duration * 60000);
+  appSettings.setString('snoozeEnd', JSON.stringify(Date.now() + duration * 60000));
 };
 
 exports.getSnooze = function() {
-  return appSettings.getNumber('snoozeEnd');
+  return Number(appSettings.getString('snoozeEnd'));
 };
 
-var inSnoozeMode = function() {
-  return Date.now() - appSettings.getNumber('snoozeEnd') < 0;
+exports.inSnoozeMode = function() {
+  return  Date.now() - Number(appSettings.getString('snoozeEnd')) < 0;
 };
-
-exports.inSnoozeMode = inSnoozeMode;
 
 exports.removeSnooze = function() {
-  appSettings.setNumber('snoozeEnd', Date.now());
+  appSettings.setString('snoozeEnd', "" + Date.now());
 };
 
 var withinActiveHours = function() {
@@ -665,7 +675,7 @@ var withinActiveHours = function() {
  * Returns whether the given intervention is should run.
  */
 exports.canIntervene = function(id, packageName) {
-  if (!withinActiveHours() || inSnoozeMode()) {
+  if (!withinActiveHours() || exports.inSnoozeMode()) {
     return false;
   }
 

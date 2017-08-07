@@ -49,10 +49,9 @@ var createSnoozeDialog = function() {
 };
 
 exports.setSnooze = function() {
-  var wantsNewSnooze = false;
   if (StorageUtil.inSnoozeMode()) {
     dialogs.confirm({
-      title: "Remove Current Snooze?",
+      title: "Edit Snooze",
       message: "You are already in snooze mode. What would you like to do?",
       okButtonText: "Remove Snooze",
       cancelButtonText: "Set New Snooze",
