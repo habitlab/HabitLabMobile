@@ -17,9 +17,6 @@ exports.pageLoaded = function(args) {
 }
 
 
-exports.onDone = function() {
-  frame.topmost().navigate('views/nudgesOnboardingView/nudgesOnboardingView');
-};
 
 var createGrid = function() {
   var list = UsageUtil.getApplicationList();
@@ -57,4 +54,31 @@ var createCell = function(info, r, c)  {
   layout.GridLayout.setRow(cell, r);
   layout.GridLayout.setColumn(cell, c);
   return cell;
+};
+
+
+exports.onDone = function() {
+  var wasChanged = false;
+  Object.keys(toToggle).forEach(function(key) {
+    if (toToggle[key]) {
+      StorageUtil.togglePackage(key);
+      wasChanged = true;
+    }
+  });
+
+  if (!StorageUtil.getSelectedPackages().length) {
+    fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
+    return;
+  }
+
+ frame.topmost().navigate('views/nudgesOnboardingView/nudgesOnboardingView');
+
+
+    // frame.topmost().navigate({
+    //   moduleName: 'views/goalsView/goalsView',
+    //   context: {
+    //     updated: wasChanged
+    //   }
+    // });
+  
 };

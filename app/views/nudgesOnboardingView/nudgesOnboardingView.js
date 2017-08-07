@@ -49,10 +49,8 @@ redrawAndSelect = function(selectId, selectIndex) {
 	var selected = page.getViewById(selectId);
 	selected.backgroundColor = '#FFA730';
 	image.src = nudgeImage[selectIndex];
-	if (previousId !== null) {
-		var unselected = page.getViewById(previousId);
-		unselected.backgroundColor = "#DCDCDC";
-	}
+	var unselected = page.getViewById(previousId);
+	unselected.backgroundColor = "#DCDCDC";
 	previousId = selectId;
 	
 }
@@ -66,5 +64,9 @@ initializeIcons = function() {
 	console.warn("initializeIcons");
 }
 
+
+exports.goToAccessibilityPermission = function() {
+	frame.topmost().navigate('views/accessibilityPermissionView/accessibilityPermissionView');
+}
 
 

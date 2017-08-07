@@ -17,8 +17,10 @@ Label {
 }
 
 .subtitle {
-	margin-top:1%;
+	margin-top: 1%;
+	margin-bottom: 2%;
 	font-size: 15%;
+
 }
 
 .icon {
@@ -33,7 +35,7 @@ Label {
 
 .mainImage {
 	height: 50%;
-	margin: 5%;
+	margin-bottom: 5%;
 }
 
 .next {
