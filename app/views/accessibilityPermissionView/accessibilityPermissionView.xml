@@ -1,0 +1,13 @@
+<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
+  actionBarHidden="true">
+		<StackLayout>
+          <Label text="First things first..." textWrap='true' class="onboarding-label header"/>
+          <Label text="Your data will never be given to third parties" />
+          <VideoPlayer:Video class="firstVideo"
+            controls="false" 
+            loop="true" autoplay="true"
+            src="~/videos/AccessibilityPermission.mp4" />
+          <Button text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>
+        </StackLayout>
+
+</Page>

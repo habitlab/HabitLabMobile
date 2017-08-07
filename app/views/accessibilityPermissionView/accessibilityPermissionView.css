@@ -1,0 +1,29 @@
+Page{
+  background-color: #67D4C9;
+}
+
+Label {
+	text-align: center;
+	width: 90%;
+	color: white;
+}
+
+Button {
+	padding: 5%;
+	width: 70%;
+	margin: 5%;
+	background-color: #FF9F1C;
+	color: white;
+}
+
+
+
+.title {
+	font-size: 28%;
+	margin-top: 5%;
+	padding: 5%;
+}
+
+.firstVideo {
+	height: 60%;
+}
