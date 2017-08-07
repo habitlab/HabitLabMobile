@@ -58,6 +58,7 @@ var setUpDetail = function() {
   levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {
+    console.warn(StorageUtil.canIntervene(info.id, 'com.instagram.android'));
     IM.interventions[info.id]();
   });
 
