@@ -81,8 +81,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
 
-            console.warn(activePackage);
-
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
@@ -101,25 +99,9 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
     onServiceConnected: function() {   
         this.super.onServiceConnected();
-        console.warn("Started AccessibilityService");
         setUpScreenReceiver(); // set up unlock receiver on startup
     }
 });
-
-
-var findChildren = function(node) {
-    if (!node) { return; }
-
-    if (node.getContentDescription() === "News Feed" || node.getContentDescription() === "Videos" 
-        || node.getContentDescription() === "Marketplace") {
-        console.warn(node.getContentDescription());
-    }
-
-    for (var i = 0; i < node.getChildCount(); i++) {
-        return findChildren(node.getChild(i));
-    }
-}
-
 
 
 /*
@@ -133,7 +115,6 @@ function closeRecentVisit(now) {
     if (currentApplication.isBlacklisted) {
         var timeSpent = now - currentApplication.visitStart;
         storage.updateAppTime(currentApplication.packageName, timeSpent);
-        console.warn("CLOSING visit to: " + currentApplication.packageName);
     }
 }
 
@@ -151,7 +132,6 @@ function openNewVisit(now, pkg) {
     if (storage.isPackageSelected(pkg)) {
         currentApplication.isBlacklisted = true;
         storage.visited(pkg);
-        console.warn("OPENING visit to: " + currentApplication.packageName);
     } else {
         currentApplication.isBlacklisted = false;
     }
