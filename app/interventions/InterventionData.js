@@ -116,10 +116,10 @@ exports.interventionDetails = [
   name: 'Block-Buster', 
   icon: 'res://ic_videocam', 
   functionality: "Video Pause Overlay", 
-  description: "Pauses YouTube and Facebook videos until you confirm that you would like to continue watching", 
+  description: "Pauses YouTube videos until you confirm that you would like to continue watching", 
   target: 'app', 
   level: 'medium', 
-  apps: ['com.facebook.katana', 'com.google.android.youtube'],
+  apps: ['com.google.android.youtube'],
   summary: 'Asks for confirmation before playing videos',
   style: 'overlay'
 }, {

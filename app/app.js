@@ -63,6 +63,7 @@ function send_log(data) {
 applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 	let errordetails = getErrorDetails(args);
 	let errordetails_stringified = JSON.stringify(errordetails);
+  console.warn(errordetails_stringified);
 	StorageUtil.addError(errordetails_stringified);
 });
 
