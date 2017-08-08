@@ -4,9 +4,11 @@
 		<Label text= "Which apps would you like to spend less time on?" class="subtitle" />
 		<StackLayout id="container">
           <ScrollView orientation="vertical" class="app-list-scroll">
-            <GridLayout id="grid" columns="*,*,*" unloaded="onUnloaded" />
+          	<StackLayout>
+	            <GridLayout id="grid" columns="*,*,*" unloaded="onUnloaded" />
+	            <Button text="done" id="done-button" tap="onDone"/>
+            </StackLayout>
           </ScrollView>
         </StackLayout>
-         <Button text="done" id="done-button" tap="onDone"/>
       </StackLayout>
 </Page>

@@ -24,7 +24,7 @@ Label {
 
 Button {
 	padding: 5%;
-	width: 30%;
+	width: 100%;
 	background-color: #FF9F1C;
 	color: white;
 }
