@@ -187,15 +187,6 @@ exports.eraseData = function() {
   appSettings.clear();
 };
 
-/* export: setSetUp
- * ----------------
- * Sets the boolean 'setUp' to true which means the user doesn't need to go through pre-app
- * onboarding anymore.
- */
-exports.setSetUp = function() {
-  appSettings.setBoolean('setup', true);
-};
-
 /* export: setUp
  * -------------
  * Resets all data to defaults. Does not get rid of onboarded, setUp, or name
@@ -234,29 +225,38 @@ exports.setUpFakeDB = function() {
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
 }
 
-/* export: setOnboarded
- * --------------------
- * Sets the boolean 'onboarded' to true which means the user doesn't need to go through in-app
- * onboarding anymore.
- */
-exports.setOnboarded = function() {
-  appSettings.setBoolean('onboarded', true);
-};
-
 /* export: isSetUp
  * ---------------
  * Checks if the user has a database and has finished pre-app onboarding yet.
  */
-exports.isSetUp = function() {
-  return appSettings.getBoolean('setup');
+exports.isOnboardingComplete = function() {
+  return appSettings.getBoolean('onboardingComplete');
+};
+
+/* export: setSetUp
+ * ----------------
+ * Sets the boolean 'setUp' to true which means the user doesn't need to go through pre-app
+ * onboarding anymore.
+ */
+exports.setOnboardingComplete = function() {
+  appSettings.setBoolean('onboardingComplete', true);
 };
 
 /* export: isOnboarded
  * -------------------
  * Checks if the user has finished the in-app onboarding yet.
  */
-exports.isOnboarded = function() {
-  return appSettings.getBoolean('onboarded');
+exports.isTutorialComplete = function() {
+  return appSettings.getBoolean('tutorialComplete');
+};
+
+/* export: setOnboarded
+ * --------------------
+ * Sets the boolean 'onboarded' to true which means the user doesn't need to go through in-app
+ * onboarding anymore.
+ */
+exports.setTutorialComplete = function() {
+  appSettings.setBoolean('tutorialComplete', true);
 };
 
 /* export: setName

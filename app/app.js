@@ -4,11 +4,12 @@ var Toast = require("nativescript-toast");
 var http = require("http");
 
 var view = 'nameView';
-// if (StorageUtil.isOnboarded()) {
-//   view = 'progressView';
-// } else if (StorageUtil.isSetUp()) {
-//   view = "appsView";
-// }
+if (StorageUtil.isOnboardingComplete()) {
+  view = 'goalsView';
+}
+if (StorageUtil.isTutorialComplete()) {
+  view = "progressView";
+}
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {
