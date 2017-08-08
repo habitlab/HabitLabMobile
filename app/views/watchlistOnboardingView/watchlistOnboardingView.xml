@@ -2,13 +2,11 @@
 	<StackLayout>
 		<Label text="Create your watchlist" class="title"/>
 		<Label text= "Which apps would you like to spend less time on?" class="subtitle" />
-		<StackLayout id="container">
-          <ScrollView orientation="vertical" class="app-list-scroll">
-          	<StackLayout>
-	            <GridLayout id="grid" columns="*,*,*" unloaded="onUnloaded" />
-	            <Button text="done" id="done-button" tap="onDone"/>
-            </StackLayout>
-          </ScrollView>
-        </StackLayout>
-      </StackLayout>
+		<StackLayout class="scroll-button-container">
+      <ScrollView orientation="vertical" class="app-list-scroll">
+        <GridLayout id="grid" columns="*,*,*" unloaded="onUnloaded" class="apps-grid" />
+      </ScrollView>
+      <Button text="done" id="done-button" tap="onDone"/>
+    </StackLayout>
+  </StackLayout>
 </Page>

@@ -14,9 +14,7 @@ exports.pageLoaded = function(args) {
 	pkgs = StorageUtil.getSelectedPackages();
 	toToggle = {};
 	createGrid();
-}
-
-
+};
 
 var createGrid = function() {
   var list = UsageUtil.getApplicationList();
@@ -56,13 +54,10 @@ var createCell = function(info, r, c)  {
   return cell;
 };
 
-
 exports.onDone = function() {
-  var wasChanged = false;
   Object.keys(toToggle).forEach(function(key) {
     if (toToggle[key]) {
       StorageUtil.togglePackage(key);
-      wasChanged = true;
     }
   });
 
@@ -71,14 +66,5 @@ exports.onDone = function() {
     return;
   }
 
- frame.topmost().navigate('views/nudgesOnboardingView/nudgesOnboardingView');
-
-
-    // frame.topmost().navigate({
-    //   moduleName: 'views/goalsView/goalsView',
-    //   context: {
-    //     updated: wasChanged
-    //   }
-    // });
-  
+ frame.topmost().navigate('views/nudgesOnboardingView/nudgesOnboardingView');  
 };

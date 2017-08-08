@@ -21,26 +21,16 @@ Label {
 	margin-bottom: 3%;
 }
 
-
 Button {
-	padding: 5%;
 	width: 100%;
+  height: 10%;
 	background-color: #FF9F1C;
 	color: white;
 }
 
-#container{
-	height: 80%;
-	margin:auto;
-	background-color: rgba(255,255,255,0.4);
-	border-radius: 30%;
-}
-	
-
-
 .app-cell-img {
-  width: 40%;
-  left: 40%;
+  width: 50%;
+  left: 28%;
 }
 
 .app-cell-lbl {
@@ -49,16 +39,10 @@ Button {
   font-size: 10%;
 }
 
-.app-cell-usg {
-  text-align: center;
-  color: green;
-}
-
 .app-cell-selector {
   width: 30%;
-  transform: translate(80%, -5%);
+  transform: translate(68%, -7%);
 }
-
 
 .app-cell {
   align-contents: middle;
@@ -67,4 +51,17 @@ Button {
 .grid-cell-layout {
   padding-bottom: 10%;
   padding-top: 10%;
+}
+
+.app-list-scroll {
+  height: 90%;
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 20%;
+  padding-top: 10%;
+  padding-bottom: 10%;
+}
+
+.scroll-button-container {
+  padding-right: 10%;
+  padding-left: 10%;
 }
