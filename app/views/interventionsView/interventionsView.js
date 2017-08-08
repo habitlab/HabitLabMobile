@@ -5,7 +5,7 @@ var Toast = require('nativescript-toast');
 var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
-var frame = require('ui/frame');
+var frameModule = require('ui/frame');
 
 var drawer;
 var page;
@@ -48,7 +48,7 @@ var createItem = function(info)  {
   };
   item.on("tap, touch", function(args) {
     if (args.eventName === 'tap') {
-      frame.topmost().navigate(options);
+      frameModule.topmost().navigate(options);
     } else {
       if (args.action === 'down') {
         item.backgroundColor = '#F5F5F5';
@@ -85,13 +85,18 @@ var setUpList = function() {
 
 };
 
+var visited = false;
+
 exports.pageLoaded = function(args) {
   events = [{category: "navigation", index: "menu"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
    if (!StorageUtil.isTutorialComplete()) {
+    if (!visited) {
+      fancyAlert.TNSFancyAlert.showSuccess("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+      visited = true;
+    }
     page.getViewById('finish').visibility = 'visible';
-    fancyAlert.TNSFancyAlert.showSuccess("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Gotcha");
   }
   setUpList();
 };
