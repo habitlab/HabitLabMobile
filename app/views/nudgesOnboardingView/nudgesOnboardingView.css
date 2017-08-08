@@ -9,6 +9,13 @@ Label {
 }
 
 
+Button {
+	padding: 5%;
+	width: 100%;
+/*	margin: 3%;*/
+	background-color: #FF9F1C;
+	color: white;
+}
 
 .title {
 	font-size: 28%;
@@ -29,8 +36,6 @@ Label {
   padding-top: 0;
   padding-bottom: 0;
   text-align: center;
-  /*height: 25%;*/
-
   vertical-align: middle;
   border-radius: 50%;
 }
@@ -42,4 +47,8 @@ Label {
 
 .next {
 	margin-top: 3%;
+}
+
+.smallText {
+	font-size: 14%;
 }

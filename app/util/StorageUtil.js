@@ -543,7 +543,7 @@ exports.updateAppTime = function(packageName, time) {
  * Returns time on the app so far today (in minutes).
  */
 exports.getAppTime = function(packageName) {
-  return JSON.parse(appSettings.getString(packageName)).stats[index()]['time'];
+  return Math.ceil(JSON.parse(appSettings.getString(packageName)).stats[index()]['time']);
 };
 
 /* export: getTargetTime
