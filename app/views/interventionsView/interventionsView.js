@@ -86,12 +86,17 @@ var setUpList = function() {
 };
 
 exports.pageLoaded = function(args) {
-  StorageUtil.addLogEvents([{category: 'page_visits', index: 'total_visits'}]);
+  events = [{category: "navigation", index: "menu"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
   setUpList();
 };
 
+exports.pageUnloaded = function(args) {
+  StorageUtil.addLogEvents(events);
+};
+
 exports.toggleDrawer = function() {
+  events.push({category: "navigation", index: "menu"});
   drawer.toggleDrawerState();
 };

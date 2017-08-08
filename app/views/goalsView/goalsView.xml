@@ -1,4 +1,4 @@
-<Page loaded="pageLoaded" id="goals"
+<Page loaded="pageLoaded" id="goals" unloaded="pageUnloaded"
   xmlns:sidedrawer="shared/sd"
   xmlns="http://schemas.nativescript.org/tns.xsd"
   xmlns:sd="nativescript-telerik-ui/sidedrawer"

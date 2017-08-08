@@ -53,6 +53,7 @@ var icon;
 var appStats;
 var container;
 var events;
+var goalChanged;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -102,13 +103,18 @@ var setUpDetail = function() {
   number.text = StorageUtil.getMinutesGoal(pkg);
   number.on("unloaded", function(args) {
     StorageUtil.changeAppGoal(pkg, parseInt(number.text.replace(/[^0-9]/g, '') || 0), 'minutes');
+    if (goalChanged) {
+      events.push({category: "features", index: "watchlist_detail_appgoal_changed"});
+    }
   });
 
   goalChanger.getViewById('plus').on(gestures.tap, function() {
+    goalChanged = true;
     number.text = getGoal(number.text, true);
   });
 
   goalChanger.getViewById('minus').on(gestures.tap, function() {
+    goalChanged = true;
     number.text = getGoal(number.text, false);
   });
 
@@ -456,8 +462,8 @@ function getDayLabels() {
 }
 
 exports.toggleDrawer = function() {
-    drawer.toggleDrawerState();
     events.push({category: 'navigation', index: 'menu'});
+    drawer.toggleDrawerState();
 };
 
 exports.pageUnloaded = function(args) {

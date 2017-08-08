@@ -1,5 +1,6 @@
 var appSettings = require("application-settings");
 var ID = require('~/interventions/InterventionData');
+var http = require('http');
 
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
@@ -217,6 +218,7 @@ var setUpLogging = function() {
       settings_main: 0,
       settings_hours: 0,
       settings_faq: 0,
+      settings_feedback: 0,
       settings_info: 0
     },
     navigation: {
@@ -225,21 +227,33 @@ var setUpLogging = function() {
       menu: 0
     },
     features: {
-      menu: 0,
+      active_days_changed: 0,
+      active_hours_changed: 0,
       snooze: 0,
       remove_snooze: 0,
       editname: 0,
+      editname_changed: 0,
       erase_data: 0,
+      erase_data_confirm: 0,
       progress_toggle: 0,
       nudge_detail_demo: 0,
       nudge_detail_toggle: 0,
       nudge_detail_toggle_all: 0,
+      progress_toggle_graph: 0,
       watchlist_detail_expand: 0,
       watchlist_detail_toggle: 0,
       watchlist_detail_disable_all: 0,
       watchlist_detail_disable_all_confirm: 0,
-      watchlist_detail_arrow: 0,
+      watchlist_detail_arrow: 0, 
+      watchlist_detail_appgoal_change: 0,
       watchlist_manage_change: 0,
+      goals_appgoal_change: 0,
+      goals_phonegoal_change: 0,
+      feedback_wiki: 0,
+      feedback_email: 0,
+      feedback_survey: 0,
+      feedback_extension: 0,
+      faq_item: 0,
       tooltips: 0
     },
     nudges: Array(ID.interventionDetails.length).fill(0),
@@ -255,7 +269,7 @@ exports.setUpDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setString('lastActive', daysSinceEpoch() + '');
+  appSettings.setString('lastActive', daysSinceEpoch() - 1 + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
   appSettings.setString('snoozeEnd', Date.now() + '');
 
@@ -483,6 +497,8 @@ var eraseExpiredData = function() {
   if (diff) {
 
     appSettings.setString('lastActive', today + '');
+    sendLog();
+    clearLog();
 
     for (var i = 0; i < diff; i++) {
       phoneInfo.stats[(today - i + 28) % 28] = PhStat();
@@ -509,7 +525,6 @@ exports.glanced = function() {
   var phoneInfo = eraseExpiredData();
   phoneInfo['stats'][index()]['glances']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
-  console.warn(appSettings.getString('phone'));
 };
 
 /* export: updateAppTime
@@ -1025,4 +1040,41 @@ exports.addLogEvents = function(events) {
     log[e.category][e.index]++;
   });
   appSettings.setString('log', JSON.stringify(log));
+};
+
+/* exports: sendLog
+ * ----------------
+ * Sends the log to Loggly whenever the day is changed
+ */
+ var sendLog = function() {
+  var log = JSON.parse(appSettings.getString('log'));
+
+  var data = {};
+  data['name'] = appSettings.getString('name');
+  data['lastActive'] = appSettings.getString('lastActive');
+
+  var list = JSON.parse(appSettings.getString('selectedPackages'));
+  list.push('phone');
+  list.push('enabled');
+  list.push('activeHours');
+  list.forEach(function (pkg) {
+    data[pkg] = JSON.parse(appSettings.getString(pkg));
+  });
+
+  log.data = data;
+  http.request({
+    url: "http://logs-01.loggly.com/inputs/d453baa2-3722-4855-afca-1298682eb290/tag/http/",
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    content: JSON.stringify(log)
+  });
+};
+
+/* exports: addLogEvent
+ * --------------------
+ * Adds one to a log event by category and index (object within an object).
+ * Pass an array of events to add (to limit database read and writes).
+ */
+var clearLog = function() {
+  setUpLogging();
 };

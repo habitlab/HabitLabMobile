@@ -1,4 +1,4 @@
-<Page loaded="pageLoaded" id="progress"	navigatingTo="pageNavigating"
+<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="progress" unloaded="pageUnloaded"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:sd="nativescript-telerik-ui/sidedrawer" 
@@ -20,10 +20,10 @@
     
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 
-		<TabView androidSelectedTabHighlightColor="#FFA730">
+		<TabView androidSelectedTabHighlightColor="#FFA730" selectedIndexChanged="onIndexChange">
 		 <TabView.items>
-			<TabViewItem title="Day" >
-			   <TabViewItem.view>   
+			<TabViewItem title="Day">
+			   <TabViewItem.view >   
 			   		<StackLayout>
 		   				<GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
  			   				<Label text="Mins on Watchlist Today" row="0" col="0" class="header" horizontalAlignment="center"/>

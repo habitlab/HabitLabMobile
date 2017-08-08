@@ -4,14 +4,16 @@ var fancyAlert = require("nativescript-fancyalert");
 const StorageUtil = require("~/util/StorageUtil");
 const Toast = require("nativescript-toast");
 
-// expose native APIs
 var drawer;
+var events;
+
 exports.toggleDrawer = function() {
+    events.push({category: "navigation", index: "menu"});
 	drawer.toggleDrawerState();
 };
 
-
 exports.editName = function () {
+    events.push({category: "features", index: "editname"});
 	var layout = new android.widget.LinearLayout(application.android.context);
     var parms = new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 
     	android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -41,6 +43,7 @@ exports.editName = function () {
 	    onClick: function (view) {
 	    	var newName = editText.getText().toString();
 	    	if (newName) {
+                events.push({category: "features", index: "editname_changed"});
 	    		StorageUtil.setName(newName);
 	    		dialog.dismiss();
 	    	} else {
@@ -94,6 +97,7 @@ exports.goToFAQ = function () {
 
 
 exports.eraseData = function() {
+    events.push({category: "features", index: "erase_data"});
 	var alert = new android.app.AlertDialog.Builder(application.android.foregroundActivity);
     alert.setTitle("Destroy All Data?");
     alert.setMessage("HabitLab will lose track of all your progress! Would you still like to continue?");
@@ -103,6 +107,7 @@ exports.eraseData = function() {
 
     var onClickListener = new android.view.View.OnClickListener({
 	    onClick: function (view) {
+            events.push({category: "features", index: "erase_data_confirm"});
 	    	StorageUtil.setUpDB();
 	    	dialog.dismiss();
 	    }
@@ -113,6 +118,7 @@ exports.eraseData = function() {
 
 
 exports.pageLoaded = function(args) {
+    events = [{category: "page_visits", index: "settings_main"}];
 	drawer = args.object.getViewById("sideDrawer"); 
     args.object.getViewById('main-layout').eachChild(function (child) {
         child.on("touch", function(args) {
@@ -124,11 +130,11 @@ exports.pageLoaded = function(args) {
         });
     });
 };
+ 
+exports.pageUnloaded = function(args) {
+    StorageUtil.addLogEvents(events);
+};
 
 exports.onInfo = function() {
     frame.topmost().navigate('views/infoView/infoView');
-};
-
-exports.onTimer = function() {
-    StorageUtil.setSnooze();
 };

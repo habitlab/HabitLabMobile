@@ -38,7 +38,7 @@ function send_log(data) {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     content: JSON.stringify(data)
-  })
+  });
 }
 
 applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
