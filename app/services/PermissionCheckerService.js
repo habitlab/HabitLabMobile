@@ -22,11 +22,13 @@ android.app.Service.extend("com.habitlab.PermissionCheckerService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
+        console.warn("started permission checker");
 		return android.app.Service.START_STICKY; 
 	}, 
 
     onDestroy: function() {
         // do nothing
+        console.warn("killed permission checker");
     },
 
     onCreate: function() {
@@ -50,7 +52,7 @@ var startTimer = function() {
 	if (!timerID) {
 		timerID = Timer.setInterval(() => {
 			checkPermission();
-		}, 500);
+		}, 300);
 	}
 };
 

@@ -18,6 +18,21 @@ exports.pageLoaded = function(args) {
 
 var createGrid = function() {
   var list = UsageUtil.getApplicationList();
+   var selectedPackages = StorageUtil.getSelectedPackages();
+
+  list.sort(function(a, b){
+    var aIsSelected = selectedPackages.includes(a.packageName);
+    var bIsSelected = selectedPackages.includes(b.packageName);
+
+    if (aIsSelected && !bIsSelected) {
+      return -1;
+    } else if (!aIsSelected && bIsSelected) {
+      return 1;
+    }  else {
+      return a.label < b.label ? -1 : 1;
+    }
+  });
+
   var grid = page.getViewById('grid');
   list.forEach(function (item, i) {
     if (i % 3 === 0) {

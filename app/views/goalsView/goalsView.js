@@ -157,7 +157,7 @@ exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "goals"}];
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (StorageUtil.isOnboarded()) {
+  if (StorageUtil.isTutorialComplete()) {
     page.getViewById('done').visibility = 'collapse';
     page.getViewById('scroll').height = '100%';
   }
@@ -167,7 +167,7 @@ exports.pageLoaded = function(args) {
 
 exports.onDone = function() {
   fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-  StorageUtil.setOnboarded();
+  StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate("views/progressView/progressView");
 };
 
@@ -176,7 +176,7 @@ exports.pageUnloaded = function(args) {
 };
 
 exports.toggleDrawer = function() {
-  if (!StorageUtil.isOnboarded()) {
+  if (!StorageUtil.isTutorialComplete()) {
     fancyAlert.TNSFancyAlert.showError("Last Step!", "Click done to finish setting up HabitLab!", "Got It!");
   } else {
     events.push({category: "navigation", index: "menu"});

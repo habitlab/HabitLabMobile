@@ -188,15 +188,6 @@ exports.eraseData = function() {
   appSettings.clear();
 };
 
-/* export: setSetUp
- * ----------------
- * Sets the boolean 'setUp' to true which means the user doesn't need to go through pre-app
- * onboarding anymore.
- */
-exports.setSetUp = function() {
-  appSettings.setBoolean('setup', true);
-};
-
 /* export: setUpLogging
  * --------------------
  * Set up logging part of DB (sorry it's gross).
@@ -303,29 +294,38 @@ exports.setUpFakeDB = function() {
   setUpLogging();
 }
 
-/* export: setOnboarded
- * --------------------
- * Sets the boolean 'onboarded' to true which means the user doesn't need to go through in-app
- * onboarding anymore.
- */
-exports.setOnboarded = function() {
-  appSettings.setBoolean('onboarded', true);
-};
-
 /* export: isSetUp
  * ---------------
  * Checks if the user has a database and has finished pre-app onboarding yet.
  */
-exports.isSetUp = function() {
-  return appSettings.getBoolean('setup');
+exports.isOnboardingComplete = function() {
+  return appSettings.getBoolean('onboardingComplete');
+};
+
+/* export: setSetUp
+ * ----------------
+ * Sets the boolean 'setUp' to true which means the user doesn't need to go through pre-app
+ * onboarding anymore.
+ */
+exports.setOnboardingComplete = function() {
+  appSettings.setBoolean('onboardingComplete', true);
 };
 
 /* export: isOnboarded
  * -------------------
  * Checks if the user has finished the in-app onboarding yet.
  */
-exports.isOnboarded = function() {
-  return appSettings.getBoolean('onboarded');
+exports.isTutorialComplete = function() {
+  return appSettings.getBoolean('tutorialComplete');
+};
+
+/* export: setOnboarded
+ * --------------------
+ * Sets the boolean 'onboarded' to true which means the user doesn't need to go through in-app
+ * onboarding anymore.
+ */
+exports.setTutorialComplete = function() {
+  appSettings.setBoolean('tutorialComplete', true);
 };
 
 /* export: setName
@@ -543,7 +543,7 @@ exports.updateAppTime = function(packageName, time) {
  * Returns time on the app so far today (in minutes).
  */
 exports.getAppTime = function(packageName) {
-  return JSON.parse(appSettings.getString(packageName)).stats[index()]['time'];
+  return Math.ceil(JSON.parse(appSettings.getString(packageName)).stats[index()]['time']);
 };
 
 /* export: getTargetTime

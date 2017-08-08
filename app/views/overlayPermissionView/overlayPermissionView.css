@@ -21,7 +21,8 @@ Button {
 .title {
 	font-size: 28%;
 	margin: 5%;
-	padding: 5%;
+	padding-top: 28%;
+
 }
 
 .subtitle {

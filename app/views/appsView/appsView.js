@@ -106,12 +106,8 @@ exports.pageLoaded = function(args) {
 };
 
 exports.toggleDrawer = function() {
-  if (!StorageUtil.isOnboarded()) {
-    fancyAlert.TNSFancyAlert.showError("Almost done!", "Click done to set up your watchlist!", "Got It!");
-  } else {
-    events.push({category: 'navigation', index: 'menu'});
-    drawer.toggleDrawerState();
-  }
+  events.push({category: 'navigation', index: 'menu'});
+  drawer.toggleDrawerState();
 };
 
 exports.onDone = function() {
@@ -130,21 +126,7 @@ exports.onDone = function() {
     return;
   }
 
-  var onboarded = StorageUtil.isOnboarded();
-  if (!onboarded) {
-    fancyAlert.TNSFancyAlert.showSuccess("Last step!", "Set goals for your phone and app usage.", "Got it!");
-  } 
-
-  if (onboarded) {
-    frame.topmost().goBack();
-  } else {
-    frame.topmost().navigate({
-      moduleName: 'views/goalsView/goalsView',
-      context: {
-        updated: wasChanged
-      }
-    });
-  }
+  frame.topmost().goBack();
 };
 
 exports.pageUnloaded = function(args) {

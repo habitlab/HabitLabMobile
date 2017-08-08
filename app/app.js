@@ -4,11 +4,11 @@ var Toast = require("nativescript-toast");
 var http = require("http");
 
 var view = 'nameView';
-// if (StorageUtil.isOnboarded()) {
-//   view = 'progressView';
-// } else if (StorageUtil.isSetUp()) {
-//   view = "appsView";
-// }
+if (StorageUtil.isTutorialComplete()) {
+  view = "progressView";
+} else if (StorageUtil.isOnboardingComplete()) {
+  view = 'goalsView';
+}
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {
@@ -50,7 +50,7 @@ applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 
 // send any errors that have accumulated
 applicationModule.on(applicationModule.launchEvent, function(args) {
-  if (StorageUtil.isSetUp()) {
+  if (StorageUtil.isOnboardingComplete()) {
     StorageUtil.addLogEvents([{category: 'page_visits', index: 'total_visits'}]);
   }
 	let logs_to_send = StorageUtil.getErrorQueue();
