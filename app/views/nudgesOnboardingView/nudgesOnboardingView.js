@@ -66,7 +66,7 @@ initializeIcons = function() {
 
 
 exports.goToAccessibilityPermission = function() {
-	frame.topmost().navigate('views/accessibilityPermissionView/accessibilityPermissionView');
+	frame.topmost().navigate('views/overlayPermissionView/overlayPermissionView');
 }
 
 
