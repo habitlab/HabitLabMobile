@@ -8,6 +8,7 @@
       <Label text="Nudge Details" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem tap="goToProgress" text="Finish tutorial" visibility="collapsed" id="finish"/>
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
