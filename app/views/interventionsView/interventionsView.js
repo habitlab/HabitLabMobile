@@ -2,7 +2,7 @@ var StorageUtil = require("~/util/StorageUtil");
 var IM = require('~/interventions/InterventionManager');
 var ID = require('~/interventions/InterventionData');
 var Toast = require('nativescript-toast');
-
+var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var frame = require('ui/frame');
@@ -89,8 +89,24 @@ exports.pageLoaded = function(args) {
   events = [{category: "navigation", index: "menu"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
+   if (!StorageUtil.isTutorialComplete()) {
+    page.getViewById('finish').visibility = 'visible';
+    fancyAlert.TNSFancyAlert.showSuccess("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Gotcha");
+  }
   setUpList();
 };
+
+
+exports.goToProgress = function() {
+  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  StorageUtil.setTutorialComplete();
+  frameModule.topmost().navigate("views/progressView/progressView");
+}
+
+
+
+
+
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
