@@ -69,20 +69,19 @@ var stopTimer = function() {
 };
 
 
-var usagePermission = false;
+var accessibilityPermission = false;
 var overlayPermission = false;
 
 var checkPermission = function () {
-    if (!usagePermission && PermissionUtil.checkActionUsagePermission()) {
-        usagePermission = true;
-        var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
-        foregroundActivity.startActivity(intent);        
-    } else if (!overlayPermission && PermissionUtil.checkSystemOverlayPermission()) {
-
+    if (!overlayPermission && PermissionUtil.checkSystemOverlayPermission()) {
         overlayPermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
-        foregroundActivity.startActivity(intent);        
-    } else if (usagePermission && overlayPermission) {
+        foregroundActivity.startActivity(intent);
+    } else if (!accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
+        accessibilityPermission = true;
+        var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
+        foregroundActivity.startActivity(intent);
+    } else if (accessibilityPermission && overlayPermission) {
         stopTimer();
         context.stopService(new android.content.Intent(context, com.habitlab.PermissionCheckerService.class));
     }

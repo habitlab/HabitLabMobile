@@ -14,6 +14,6 @@ exports.giveDrawPermission = function(args) {
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
   } else {
-    fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab. Swipe to continue!", "Sweet!");
+    fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab.", "Sweet!");
   }
 };

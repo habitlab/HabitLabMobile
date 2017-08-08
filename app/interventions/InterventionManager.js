@@ -6,6 +6,7 @@ const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 const Toast = require("nativescript-toast");
 const TimerOverlay = require("~/overlays/TimerOverlay");
 const DimmerOverlay = require("~/overlays/DimmerOverlay");
+const VideoOverlay = require("~/overlays/VideoOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -273,7 +274,7 @@ var popToastUsage = function (real, pkg) {
     var minutes = StorageUtil.getAppTime(pkg);
     if (minutes >= THRESHOLD_USAGE_TST) {
       var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = "You've already spent " + minutes + " on " + app + " today!";
+      var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
       Toast.makeText(msg).show();
     }
   }
@@ -335,9 +336,9 @@ var showDialogUsage = function (real, pkg) {
  *    VISIT DURATION INTERVENTIONS    *
  **************************************/
 // logging vars
-var sentToastDuration = false;
-var sentNotificationDuration = false;
-var sentDialogDuration = false;
+var durationToastID = 0;
+var durationNotifID = 0;
+var durationDialogID = 0;
 
 /**
  * logVisitStart
@@ -345,10 +346,21 @@ var sentDialogDuration = false;
  * Takes note of the time a given application is opened and 
  * resets necessary logging variables.
  */
-var logVisitStart = function() {
-  sentToastDuration = false;
-  sentNotificationDuration = false;
-  sentDialogDuration = false;
+var resetDurationInterventions = function() {
+  if (durationToastID) {
+    Timer.clearTimeout(durationToastID);
+    durationToastID = 0;
+  }
+
+  if (durationNotifID) {
+    Timer.clearTimeout(durationNotifID);
+    durationNotifID = 0;
+  }
+
+  if (durationDialogID) {
+    Timer.clearTimeout(durationDialogID);
+    durationDialogID = 0;
+  }
 };
 
 
@@ -358,7 +370,7 @@ var logVisitStart = function() {
  * Displays a toast after THRESHOLD_DURATION_TST ms on the 
  * specified package.
  */
-var popToastVisitLength = function (real, pkg, visitStart) {
+var popToastVisitLength = function (real, pkg) {
   if (!real) {
     Toast.makeText("You've been on Facebook for 5 minutes this visit").show();
     return;
@@ -366,10 +378,12 @@ var popToastVisitLength = function (real, pkg, visitStart) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_TOAST, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - visitStart) > THRESHOLD_DURATION_TST && !sentToastDuration) {
-      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      Toast.makeText("You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit").show();
-      sentToastDuration = true;
+    if (!durationToastID) {
+      durationToastID = Timer.setTimeout(() => {
+        var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+        Toast.makeText("You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit").show();
+        durationToastID = 0;
+      }, THRESHOLD_DURATION_TST);
     }
   }
 };
@@ -380,7 +394,7 @@ var popToastVisitLength = function (real, pkg, visitStart) {
  * Displays a notification after THRESHOLD_DURATION_NTF ms 
  * on the specified package.
  */
-var sendNotificationVisitLength = function (real, pkg, visitStart) {
+var sendNotificationVisitLength = function (real, pkg) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Visit Length", 
       "You've been using Facebook for 10 minutes", notificationID.DURATION, 10);
@@ -389,13 +403,15 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_NOTIFICATION, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - visitStart) > THRESHOLD_DURATION_NTF && !sentNotificationDuration) {
-      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      var title = applicationName + " Visit Length";
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_NTF / MIN_IN_MS) + " minutes";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
-      sentNotificationDuration = true;
+    if (!durationNotifID) {
+      durationNotifID = Timer.setTimeout(() => {
+        var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+        var title = applicationName + " Visit Length";
+        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+        msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_NTF / MIN_IN_MS) + " minutes";
+        NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
+        durationNotifID = 0;
+      }, THRESHOLD_DURATION_NTF);
     }
   }
 };
@@ -407,7 +423,7 @@ var sendNotificationVisitLength = function (real, pkg, visitStart) {
  * Displays a toast after THRESHOLD_DURATION_DLG ms on the 
  * specified package.
  */
-var showDialogVisitLength = function (real, pkg, visitStart) {
+var showDialogVisitLength = function (real, pkg) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay");
     return;
@@ -415,12 +431,14 @@ var showDialogVisitLength = function (real, pkg, visitStart) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_DIALOG, pkg)) {
     var now = System.currentTimeMillis();
-    if ((now - visitStart) > THRESHOLD_DURATION_DLG && !sentDialogDuration) {
-      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_DLG / MIN_IN_MS) + " minutes";
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-      sentDialogDuration = true;
+    if (!durationDialogID) {
+      durationDialogID = Timer.setTimeout(() => {
+        var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+        msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_DLG / MIN_IN_MS) + " minutes";
+        DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+        durationDialogID = 0;
+      }, THRESHOLD_DURATION_DLG);
     }
   }
 }
@@ -429,7 +447,7 @@ var showDialogVisitLength = function (real, pkg, visitStart) {
 /*************************************
  *    VIDEO BLOCKING INTERVENTION    *
  *************************************/
-var shouldBlockVideo = true;
+// var shouldBlockVideo = true;
 
 
 /**
@@ -438,9 +456,9 @@ var shouldBlockVideo = true;
  * Sets shouldBlockVideo variable to either permit video blocking on 
  * the current package (true) or disable it (false)
  */
-var allowVideoBlocking = function (bool) {
-  shouldBlockVideo = bool;
-};
+// var allowVideoBlocking = function (bool) {
+//   shouldBlockVideo = bool;
+// };
 
 
 /**
@@ -449,22 +467,22 @@ var allowVideoBlocking = function (bool) {
  * Blocks all videos from the current package by constantly 
  * requesting audio focus.
  */
-var blockVideo = function (real, pkg) {
-  if (!real) {
-    DialogOverlay.showTwoOptionDialogOverlay("Would you like to continue watching?", "Yes", "No", null, null);
-    return;
-  }
+// var blockVideo = function (real, pkg) {
+//   if (!real) {
+//     DialogOverlay.showTwoOptionDialogOverlay("Would you like to continue watching?", "Yes", "No", null, null);
+//     return;
+//   }
 
-  if (shouldBlockVideo && StorageUtil.canIntervene(ID.interventionIDs.VIDEO_BLOCKER, pkg)) {
-    audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
-  }
-};
+//   if (shouldBlockVideo && StorageUtil.canIntervene(ID.interventionIDs.VIDEO_BLOCKER, pkg)) {
+//     audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
+//   }
+// };
 
 
-// callback function for audioFocusListener
-var stopVideoBlocking = function () {
-  allowVideoBlocking(false);
-};
+// // callback function for audioFocusListener
+// var stopVideoBlocking = function () {
+//   allowVideoBlocking(false);
+// };
 
 
 // callback function for audioFocusListener
@@ -479,6 +497,37 @@ var exitToHome = function () {
 };
 
 
+/*
+ * youTubeVideoBlocker
+ * -------------------
+ * Looks for pause/play button on YouTube Videos and 
+ * pauses the video (by requesting audio focus) if it 
+ * finds them. Displays overlay covering the video 
+ * player in YouTube.
+ */
+var pausedThisVisit = false;
+var playNode;
+var youTubeVideoBlocker = function (node, pkg) {
+  if (!node) { return; }
+
+  if (node.isFocusable() && (node.getContentDescription() === "Play video" 
+    || node.getContentDescription() === "Pause video") && !pausedThisVisit) {
+
+    var videoContainer = node.getParent();
+    var videoRect = new android.graphics.Rect();
+    if (videoContainer) { videoContainer.getBoundsInScreen(videoRect); }
+
+    if (StorageUtil.canIntervene(ID.interventionIDs.VIDEO_BLOCKER, pkg)) {
+      audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
+      VideoOverlay.showYoutube(videoRect.width(), videoRect.height(), null, exitToHome);
+      pausedThisVisit = true;
+    }
+  }
+}
+
+
+
+
 /**
  * audioFocusListener
  * ------------------
@@ -488,11 +537,12 @@ var exitToHome = function () {
  */
 var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListener({
     onAudioFocusChange: function (change) {
-      if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
-        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", would" : "Would";
-        msg += " you like to continue watching?";
-        DialogOverlay.showTwoOptionDialogOverlay(msg, "Yes", "No", stopVideoBlocking, exitToHome);
-      }
+      // DO NOTHING
+      // if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
+      //   var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", would" : "Would";
+      //   msg += " you like to continue watching?";
+      //   DialogOverlay.showTwoOptionDialogOverlay(msg, "Yes", "No", stopVideoBlocking, exitToHome);
+      // }
     }
 });
 
@@ -622,6 +672,8 @@ var removeOverlays = function() {
   DialogOverlay.removeOneOptionDialog();
   DialogOverlay.removeTwoOptionDialog();
   FullScreenOverlay.removeOverlay();
+  VideoOverlay.removeVideoBlocker();
+  pausedThisVisit = false;
 }
 
 /***************************************
@@ -639,6 +691,12 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
+  // set up duration interventions
+  popToastVisitLength(true, pkg);
+  sendNotificationVisitLength(true, pkg);
+  showDialogVisitLength(true, pkg);
+
+  // decide whether or not to run an on-launch intervention
   var run = Math.random();
   if (run < 0.6) {
     var randomDifficulty = Math.random();
@@ -678,16 +736,6 @@ var nextScreenUnlockIntervention = function() {
   }
 }
 
-
-var nextActiveIntervention = function(pkg, time) {
-  blockVideo(true, pkg);
-  popToastVisitLength(true, pkg, time);
-  sendNotificationVisitLength(true, pkg, time);
-  showDialogVisitLength(true, pkg, time);
-}
-
-
-
 var randBW = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
@@ -705,7 +753,7 @@ module.exports = {
     sendNotificationVisitLength,
     popToastVisited,
     sendNotificationVisited,
-    blockVideo,
+    youTubeVideoBlocker,
     showFullScreenOverlay,
     showCountUpTimer,
     showCountDownTimer,
@@ -715,13 +763,12 @@ module.exports = {
     showDialogVisited,
     dimScreen
   ], 
-  allowVideoBlocking,
-  logVisitStart,
+  resetDurationInterventions,
   removeOverlays,
   nextOnLaunchIntervention,
   nextScreenOnIntervention,
   nextScreenUnlockIntervention,
-  nextActiveIntervention
+  youTubeVideoBlocker
 };
 
 

@@ -24,11 +24,13 @@ Label {
 }
 
 .icon {
-  margin: 1%;
-  padding: 20%;
+  margin: 3%;
+  padding: 15%;
   padding-top: 0;
   padding-bottom: 0;
   text-align: center;
+  /*height: 25%;*/
+
   vertical-align: middle;
   border-radius: 50%;
 }

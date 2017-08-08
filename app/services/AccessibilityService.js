@@ -4,6 +4,7 @@ var context = application.android.context;
 // utils 
 const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
+const videoBlocker = require("~/overlays/VideoOverlay");
 
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
@@ -42,6 +43,7 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             closeRecentVisit(now);
             var timeSpentOnPhone = now - screenOnTime;
             storage.updateTotalTime(timeSpentOnPhone);
+            interventionManager.removeOverlays();
         }  
     }
 });
@@ -57,6 +59,9 @@ var currentApplication = {
     isBlacklisted: false,
     visitStart: 0
 };
+
+var paused = false;
+var playNode;
 
 /*
  * AccessibilityService
@@ -74,20 +79,19 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
        
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
+            interventionManager.resetDurationInterventions();
+
+            console.warn(activePackage);
 
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
 
             if (currentApplication.isBlacklisted) {
-                interventionManager.allowVideoBlocking(true);
-                interventionManager.logVisitStart();
                 interventionManager.nextOnLaunchIntervention(currentApplication.packageName);
             }
-        } else {
-            if (currentApplication.isBlacklisted) {
-                interventionManager.nextActiveIntervention(currentApplication.packageName, currentApplication.visitStart);
-            }
+        } else if (currentApplication.isBlacklisted) {
+            interventionManager.youTubeVideoBlocker(event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 
@@ -101,6 +105,21 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         setUpScreenReceiver(); // set up unlock receiver on startup
     }
 });
+
+
+var findChildren = function(node) {
+    if (!node) { return; }
+
+    if (node.getContentDescription() === "News Feed" || node.getContentDescription() === "Videos" 
+        || node.getContentDescription() === "Marketplace") {
+        console.warn(node.getContentDescription());
+    }
+
+    for (var i = 0; i < node.getChildCount(); i++) {
+        return findChildren(node.getChild(i));
+    }
+}
+
 
 
 /*

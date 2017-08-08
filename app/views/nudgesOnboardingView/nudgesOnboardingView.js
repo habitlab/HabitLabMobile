@@ -11,7 +11,7 @@ var nudgeImage = [
 ];
 
 
-var previousId = "timer";
+var previousId;
 var page;
 var image;
 
@@ -51,8 +51,7 @@ redrawAndSelect = function(selectId, selectIndex) {
 	image.src = nudgeImage[selectIndex];
 	var unselected = page.getViewById(previousId);
 	unselected.backgroundColor = "#DCDCDC";
-	previousId = selectId;
-	
+	previousId = selectId;	
 }
 
 initializeIcons = function() {
@@ -61,12 +60,13 @@ initializeIcons = function() {
 		icon.backgroundColor = (i === 2 ? '#FFA730' :"#DCDCDC");
 	}
 	image.src = nudgeImage[2];
+	previousId = "timer";
 	console.warn("initializeIcons");
 }
 
 
 exports.goToAccessibilityPermission = function() {
-	frame.topmost().navigate('views/accessibilityPermissionView/accessibilityPermissionView');
+	frame.topmost().navigate('views/overlayPermissionView/overlayPermissionView');
 }
 
 

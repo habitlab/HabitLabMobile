@@ -3,12 +3,12 @@ var StorageUtil = require('~/util/StorageUtil');
 var Toast = require("nativescript-toast");
 var http = require("http");
 
-var view = 'onboardingView';
-if (StorageUtil.isOnboarded()) {
-  view = 'progressView';
-} else if (StorageUtil.isSetUp()) {
-  view = "appsView";
-}
+var view = 'nameView';
+// if (StorageUtil.isOnboarded()) {
+//   view = 'progressView';
+// } else if (StorageUtil.isSetUp()) {
+//   view = "appsView";
+// }
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {
@@ -44,6 +44,7 @@ function send_log(data) {
 applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 	let errordetails = getErrorDetails(args);
 	let errordetails_stringified = JSON.stringify(errordetails);
+  console.warn(errordetails_stringified);
 	StorageUtil.addError(errordetails_stringified);
 });
 

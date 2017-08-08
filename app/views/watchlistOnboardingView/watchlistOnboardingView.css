@@ -17,20 +17,19 @@ Label {
 .subtitle {
 	margin-top:1%;
 	font-size: 15%;
-	padding:5%;
-	margin-bottom: 5%;
+	padding-top:5%;
+	margin-bottom: 3%;
 }
 
 
 Button {
 	padding: 5%;
-	width: 30%;
-	/*margin: 10%;*/
+	width: 100%;
 	background-color: #FF9F1C;
 	color: white;
 }
 
-#slides{
+#container{
 	height: 80%;
 	margin:auto;
 	background-color: rgba(255,255,255,0.4);
