@@ -3,11 +3,11 @@ var layout = require('ui/layouts/grid-layout');
 var frame = require('ui/frame');
 
 var nudgeImage = [
-  '~/images/onboarding_goals.png',
-  '~/images/onboarding_applock.png',
-  '~/images/onboarding_progress.png',
-  '~/images/onboarding_applock.png',
-  '~/images/onboarding_goals.png'
+  '~/images/onboarding_hint.png',
+  '~/images/onboarding_alert.png',
+  '~/images/onboarding_timer.png',
+  '~/images/onboarding_blockbuster.png',
+  '~/images/onboarding_glances.png'
 ];
 
 
@@ -27,6 +27,7 @@ icons.images = [
 
 icons.selected = [false, false, false, false, false];
 icons.names = ["hint", "alert", "timer", "blockbuster", "glance"];
+icons.label = ["hintLabel", "alertLabel", "timerLabel", "blockbusterLabel", "glanceLabel"];
 
 
 exports.pageLoaded = function(args) {
@@ -48,8 +49,12 @@ redrawAndSelect = function(selectId, selectIndex) {
 	if (selectId === previousId) return;
 	var selected = page.getViewById(selectId);
 	selected.backgroundColor = '#FFA730';
+	var selectedLabel = page.getViewById(selectId + "Label");
+	selectedLabel.visibility="visible";
 	image.src = nudgeImage[selectIndex];
 	var unselected = page.getViewById(previousId);
+	var unselectedLabel = page.getViewById(previousId + "Label");
+	unselectedLabel.visibility="hidden";
 	unselected.backgroundColor = "#DCDCDC";
 	previousId = selectId;	
 }
@@ -61,7 +66,8 @@ initializeIcons = function() {
 	}
 	image.src = nudgeImage[2];
 	previousId = "timer";
-	console.warn("initializeIcons");
+	var unselectedLabel = page.getViewById("timerLabel");
+	unselectedLabel.visibility="visible";
 }
 
 
