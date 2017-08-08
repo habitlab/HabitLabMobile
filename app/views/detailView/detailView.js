@@ -11,6 +11,7 @@ var info;
 var switchArr;
 var mainSwitch;
 var mainSwitchLabel;
+var events;
 
 var createItem = function(pkg)  {
   var item = builder.load({
@@ -35,6 +36,7 @@ var createItem = function(pkg)  {
   var sw = item.getViewById("switch");
   sw.checked = StorageUtil.isEnabledForApp(info.id, pkg);
   sw.on(gestures.tap, function() {
+    events.push({category: 'features', index: 'nudge_detail_toggle'});
     StorageUtil.toggleForApp(info.id, pkg);
     mainSwitch.checked = StorageUtil.isEnabledForAll(info.id);
     mainSwitchLabel.text = mainSwitch.checked ? 'Disable All' : 'Enable All';
@@ -58,8 +60,8 @@ var setUpDetail = function() {
   levelLabel.className += " " + level;
 
   page.getViewById("button").on(gestures.tap, function() {
-    console.warn(StorageUtil.canIntervene(info.id, 'com.instagram.android'));
     IM.interventions[info.id]();
+    events.push({category: 'features', index: 'nudge_detail_demo'});
   });
 
   mainSwitch = page.getViewById("disable-switch");
@@ -70,6 +72,7 @@ var setUpDetail = function() {
     page.getViewById('disable-toggle').className = 'level-layout';
     mainSwitchLabel.text = mainSwitch.checked ? 'Disable' : 'Enable';
     mainSwitch.on(gestures.tap, function() {
+      events.push({category: 'features', index: 'nudge_detail_toggle_all'});
       mainSwitchLabel.text = mainSwitch.checked ? 'Enable' : 'Disable';
       StorageUtil.toggleForAll(info.id);
     });
@@ -78,6 +81,7 @@ var setUpDetail = function() {
 
   mainSwitchLabel.text = mainSwitch.checked ? 'Disable All' : 'Enable All';
   mainSwitch.on(gestures.tap, function() {
+    events.push({category: 'features', index: 'nudge_detail_toggle_all'});
     mainSwitchLabel.text = mainSwitch.checked ? 'Enable All' : 'Disable All';
     StorageUtil.toggleForAll(info.id);
     switchArr.forEach(function(swtch) {
@@ -100,16 +104,15 @@ var setUpDetail = function() {
       layout.addChild(createItem(pkg));
     }
   });
-
-  
-
 };
 
 exports.toggleDrawer = function() {
+    events.push({category: 'navigation', index: 'menu'});
     drawer.toggleDrawerState();
 };
 
 exports.pageLoaded = function(args) {
+  events = [{category: 'page_visits', index: 'nudges_detail'}];
   switchArr = [];
   page = args.object;
   drawer = page.getViewById("sideDrawer");
@@ -117,6 +120,10 @@ exports.pageLoaded = function(args) {
     info = page.navigationContext.info;
   }
   setUpDetail();
+};
+
+exports.pageUnloaded = function(args) {
+  StorageUtil.addLogEvents(events);
 };
 
 var application = require("application");

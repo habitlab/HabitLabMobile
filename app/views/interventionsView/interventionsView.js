@@ -11,6 +11,8 @@ var drawer;
 var page;
 var interventionList;
 
+var events;
+
 var createItem = function(info)  {
   var item = builder.load({
     path: 'shared/nudgeelem',
@@ -84,6 +86,7 @@ var setUpList = function() {
 };
 
 exports.pageLoaded = function(args) {
+  StorageUtil.addLogEvents([{category: 'page_visits', index: 'total_visits'}]);
   page = args.object;
   drawer = page.getViewById('sideDrawer');
   setUpList();

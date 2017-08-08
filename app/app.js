@@ -41,17 +41,6 @@ function send_log(data) {
   })
 }
 
-// (async function() {
-//   while (true) {
-//   	let logs_to_send = StorageUtil.getErrorQueue();
-//   	for (let log_data of logs_to_send) {
-//   	  await send_error(log_data);
-//   	}
-//   	StorageUtil.clearErrorQueue();
-//   	await sleep(1000);
-//   }
-// })();
-
 applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 	let errordetails = getErrorDetails(args);
 	let errordetails_stringified = JSON.stringify(errordetails);
@@ -60,11 +49,14 @@ applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 
 // send any errors that have accumulated
 applicationModule.on(applicationModule.launchEvent, function(args) {
+  if (StorageUtil.isSetUp()) {
+    StorageUtil.addLogEvents([{category: 'page_visits', index: 'total_visits'}]);
+  }
 	let logs_to_send = StorageUtil.getErrorQueue();
-  	for (let log_data of logs_to_send) {
-  	  send_error(log_data);
-  	}
-  	StorageUtil.clearErrorQueue();
+	for (let log_data of logs_to_send) {
+	  send_error(log_data);
+	}
+	StorageUtil.clearErrorQueue();
 });
 
 applicationModule.start({ 

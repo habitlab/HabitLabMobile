@@ -52,6 +52,7 @@ var name;
 var icon;
 var appStats;
 var container;
+var events;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -80,7 +81,7 @@ exports.pageNavigating = function(args) {
 };
 
 exports.pageLoaded = function(args) {
-  page = args.object;
+  events = [{category: 'page_visits', index: 'watchlist_detail'}];
   drawer = page.getViewById('sideDrawer');
   container = page.getViewById("slides");
   setUpDetail();
@@ -143,6 +144,7 @@ var createItem = function(enabled, id, first)  {
   button.text = 'DISABLE ALL';
   button.className = 'app-detail-disable-button';
   button.on('tap', function() {
+    events.push({category: 'features', index: 'watchlist_detail_disable_all'});
     dialogs.confirm({
       title: "Disable this Nudge?",
       message: "This means the nudge will no longer show up for any apps.",
@@ -151,6 +153,7 @@ var createItem = function(enabled, id, first)  {
     }).then(function (result) {
       if (result) {
         StorageUtil.disableForAll(id);
+        events.push({category: 'features', index: 'watchlist_detail_disable_all_confirm'});
       }
     });
   });
@@ -178,6 +181,7 @@ var createItem = function(enabled, id, first)  {
   sw.checked = enabled;
   sw.on(gestures.tap, function() {
     StorageUtil.toggleForApp(id, pkg);
+    events.push({category: 'features', index: 'watchlist_detail_toggle'});
   });
 
   var label = item.getViewById("name");
@@ -192,6 +196,7 @@ var createItem = function(enabled, id, first)  {
       image2.visibility = image2.visibility === 'hidden' ? 'collapse' : 'hidden';
       description.visibility = description.visibility === 'visible' ? 'collapse' : 'visible';
       button.visibility = description.visibility;
+      events.push({category: 'features', index: 'watchlist_detail_expand'});
     } else {
       if (args.action === 'down') {
         item.backgroundColor = '#F5F5F5';
@@ -288,10 +293,12 @@ exports.weekView = function(args) {
 
 exports.goToMonth = function() {
   container.nextSlide();
+  events.push({category: 'features', index: 'watchlist_detail_arrow'});
 }
 
 exports.goToWeek = function() {
   container.previousSlide();
+  events.push({category: 'features', index: 'watchlist_detail_arrow'});
 }
 
 
@@ -450,9 +457,9 @@ function getDayLabels() {
 
 exports.toggleDrawer = function() {
     drawer.toggleDrawerState();
+    events.push({category: 'navigation', index: 'menu'});
 };
 
-
-
-
-
+exports.pageUnloaded = function(args) {
+  StorageUtil.addLogEvents(events);
+};

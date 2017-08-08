@@ -14,13 +14,10 @@ var drawer;
 var pkgs;
 var toToggle;
 var page;
+var events;
 
 exports.onUnloaded = function(args) {
   args.object.removeChildren();
-};
-
-var randBW = function(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 var createGrid = function(args) {
@@ -37,19 +34,13 @@ var createGrid = function(args) {
 var setCellInfo = function(cell, info) {
   cell.getViewById("lbl").text = info.label;
 
-  // var usage = cell.getViewById("usg");
-  // var mins = Math.ceil(0);
-  // usage.text = mins + ' min/day';
-  // if (mins >= 15) {
-  //   usage.className = mins >= 30 ? 'app-cell-usg red' : 'app-cell-usg yellow';
-  // }
-
   var selector = cell.getViewById("slctr");
   selector.visibility = pkgs.includes(info.packageName) ? 'visible' : 'hidden';
 
   var image = cell.getViewById("img");
   image.src = info.iconSource;
   image.on(gestures.tap, function() {
+    events.push({category: 'features', index: 'watchlist_manage_change'});
     selector.visibility = selector.visibility === 'visible' ? 'hidden' : 'visible';
     toToggle[info.packageName] = !toToggle[info.packageName];
   });
@@ -70,6 +61,7 @@ var createCell = function(info, r, c)  {
 };
 
 exports.pageLoaded = function(args) { 
+  events = [{category: 'page_visits', index: 'watchlist_manage'}];
   page = args.object;
   toToggle = {};
   drawer = page.getViewById('sideDrawer');
@@ -101,6 +93,7 @@ exports.toggleDrawer = function() {
   if (!StorageUtil.isOnboarded()) {
     fancyAlert.TNSFancyAlert.showError("Almost done!", "Click done to set up your watchlist!", "Got It!");
   } else {
+    events.push({category: 'navigation', index: 'menu'});
     drawer.toggleDrawerState();
   }
 };
@@ -136,4 +129,8 @@ exports.onDone = function() {
       }
     });
   }
+};
+
+exports.pageUnloaded = function(args) {
+  StorageUtil.addLogEvents(events);
 };

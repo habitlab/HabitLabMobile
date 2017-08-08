@@ -1,4 +1,4 @@
-<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="watchlist"
+<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="watchlist" unloaded="pageUnloaded"
   xmlns:sidedrawer="shared/sd" 
   xmlns="http://schemas.nativescript.org/tns.xsd" 
   xmlns:Slides="nativescript-slides"

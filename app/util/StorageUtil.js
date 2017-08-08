@@ -196,6 +196,57 @@ exports.setSetUp = function() {
   appSettings.setBoolean('setup', true);
 };
 
+/* export: setUpLogging
+ * --------------------
+ * Set up logging part of DB (sorry it's gross).
+ */
+var setUpLogging = function() {
+  appSettings.setString('log', JSON.stringify({
+    page_visits: {
+      total_visits: 0,
+      onboarding: 0,
+      progress_day: 0,
+      progress_week: 0,
+      progress_month: 0,
+      watchlist_main: 0,
+      watchlist_manage: 0,
+      watchlist_detail: 0,
+      nudges_main: 0,
+      nudges_detail: 0,
+      goals: 0,
+      settings_main: 0,
+      settings_hours: 0,
+      settings_faq: 0,
+      settings_info: 0
+    },
+    navigation: {
+      progress_to_detail: 0,
+      watchlist_to_detail: 0,
+      menu: 0
+    },
+    features: {
+      menu: 0,
+      snooze: 0,
+      remove_snooze: 0,
+      editname: 0,
+      erase_data: 0,
+      progress_toggle: 0,
+      nudge_detail_demo: 0,
+      nudge_detail_toggle: 0,
+      nudge_detail_toggle_all: 0,
+      watchlist_detail_expand: 0,
+      watchlist_detail_toggle: 0,
+      watchlist_detail_disable_all: 0,
+      watchlist_detail_disable_all_confirm: 0,
+      watchlist_detail_arrow: 0,
+      watchlist_manage_change: 0,
+      tooltips: 0
+    },
+    nudges: Array(ID.interventionDetails.length).fill(0),
+    data: {}
+  }));
+};
+
 /* export: setUp
  * -------------
  * Resets all data to defaults. Does not get rid of onboarded, setUp, or name
@@ -213,6 +264,8 @@ exports.setUpDB = function() {
   });
   createPhoneData();
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
+
+  setUpLogging();
 };
 
 /* export: setUpFakeDB
@@ -232,6 +285,8 @@ exports.setUpFakeDB = function() {
   });
   createFakePhoneData();
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
+
+  setUpLogging();
 }
 
 /* export: setOnboarded
@@ -938,7 +993,7 @@ exports.getAppStats = function(packageName) {
 exports.getErrorQueue = function() {
   var queue = appSettings.getString('errorQueue');
   return queue && JSON.parse(queue) || [];
-}
+};
 
 /* exports: addError
  * -----------------
@@ -949,7 +1004,7 @@ exports.addError = function(error) {
   queue = queue && JSON.parse(queue) || [];
   queue.push(error);
   appSettings.setString('errorQueue', JSON.stringify(queue));
-}
+};
 
 /* exports: clearErrorQueue
  * ------------------------
@@ -957,4 +1012,17 @@ exports.addError = function(error) {
  */
 exports.clearErrorQueue = function() {
   appSettings.setString('errorQueue', JSON.stringify([]));
-}
+};
+
+/* exports: addLogEvent
+ * --------------------
+ * Adds one to a log event by category and index (object within an object).
+ * Pass an array of events to add (to limit database read and writes).
+ */
+exports.addLogEvents = function(events) {
+  var log = JSON.parse(appSettings.getString('log'));
+  events.forEach(function (e) {
+    log[e.category][e.index]++;
+  });
+  appSettings.setString('log', JSON.stringify(log));
+};
