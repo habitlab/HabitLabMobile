@@ -772,7 +772,12 @@ function getDayLabels() {
 function getSpannableString() {
     var total = (Math.round(progressInfo.phoneStats[TODAY].time));
     if (total === 0) {
-        var myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
+        var myString;
+        if (!StorageUtil.isTutorialComplete()) {
+            myString = new SpannableString("This is where your daily progress will show up.\n Happy habit building!")
+            storageUtil.setTutorialComplete();
+        }
+        myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
         myString.setSpan(new RelativeSizeSpan(1.2), 0, myString.length(), 0);
         myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, myString.length(), 0);
         myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);

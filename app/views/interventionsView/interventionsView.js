@@ -93,7 +93,7 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById('sideDrawer');
    if (!StorageUtil.isTutorialComplete()) {
     if (!visited) {
-      fancyAlert.TNSFancyAlert.showSuccess("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+      fancyAlert.TNSFancyAlert.showInfo("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
@@ -104,7 +104,6 @@ exports.pageLoaded = function(args) {
 
 exports.goToProgress = function() {
   fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-  StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate("views/progressView/progressView");
 }
 
@@ -118,6 +117,10 @@ exports.pageUnloaded = function(args) {
 };
 
 exports.toggleDrawer = function() {
-  events.push({category: "navigation", index: "menu"});
-  drawer.toggleDrawerState();
+ if (!StorageUtil.isTutorialComplete()) {
+    fancyAlert.TNSFancyAlert.showError("Almost done!", "Click finish tutorial to finish setting up HabitLab!", "Got It!");
+  } else {
+    events.push({category: "navigation", index: "menu"});
+    drawer.toggleDrawerState();
+  }
 };
