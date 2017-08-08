@@ -24,3 +24,7 @@ exports.checkNameNextPage = function(args) {
     StorageUtil.setName(name);
     frameModule.topmost().navigate('views/watchlistOnboardingView/watchlistOnboardingView');
 };
+
+exports.onStart = function() {
+	 frameModule.topmost().navigate('views/watchlistOnboardingView/watchlistOnboardingView');
+}
