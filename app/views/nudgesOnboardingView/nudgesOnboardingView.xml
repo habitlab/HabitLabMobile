@@ -1,7 +1,8 @@
 <Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating"  actionBarHidden="true" >
 	<StackLayout>
-		<Label text="Change your habits with Nudges" class="title" textWrap="true"/>
-		<Label text= "Let custom alerts help you meet your goals" class="subtitle" />	
+	<StackLayout id="main">
+		<Label text="Stay productive with a variety of helpful nudges" class="title" textWrap="true"/>
+		<!-- <Label text= "Let custom alerts help you meet your goals" class="subtitle" />	 -->
 		<Image class = "mainImage" id="image"/>
 		<GridLayout rows="auto, auto" columns="*,*,*,*,*" id="selector" class="icons"> 
 			<Image row="0" col="0" class="icon" id="{{ names[0] }}" src="{{ images[0] }}" tap="tapIcon"/>
@@ -15,6 +16,9 @@
 			<Image row="0" col="4" class="icon"  id="{{ names[4] }}" src="{{ images[4] }}" tap="tapIcon"/>
 			<Label text="Curtain" row="1" col="4" class="smallText" id="{{ label[4] }}" visibility="hidden"/> 
 		</GridLayout>
-		<Button text="Next" onTap="goToPermissions" class="next" tap="goToAccessibilityPermission"/>
 	</StackLayout>
+	<StackLayout id="button">
+		<Button id="next" text="Next" onTap="goToPermissions" class="next" tap="goToAccessibilityPermission"/>
+	</StackLayout>
+</StackLayout>
 </Page>
