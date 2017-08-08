@@ -6,74 +6,105 @@ var System = java.lang.System;
 
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
+var SEC_IN_MS = 1000;
 
 /************************************
  *             HELPERS              *
  ************************************/
 
+/* helper: daysSinceEpoch
+ * ----------------------
+ * Returns the number of days since UTC time began (THIS IS COORDINATED TO 
+ * LOCAL TIME). To be used for indexing.
+ */
 var daysSinceEpoch = function() {
   var offset = new Date().getTimezoneOffset();
   var now = Date.now() - (offset * MIN_IN_MS);
   return Math.floor(now / DAY_IN_MS);
 };
 
+/* helper: index
+ * -------------
+ * Gives the index that should be used to get today's data from a database stat array.
+ */
 var index = function() {
   return daysSinceEpoch() % 28;
 };
 
+/* helpers: PkgStat, PkgGoal, PhStat, PhGoal
+ * -----------------------------------------
+ * To be used for setting up empty data in the database. Each app and the phone get a
+ * object in the database which includes a stat array, goal object, and enabled array.
+ */
 var PkgStat = function() {
   return {visits: 0, time: 0};
 };
 
+// see comment above PkgStat
 var PkgGoal = function() {
   return {minutes: 15};
 };
 
+// see comment above PkgStat
 var PhStat = function() {
-  return {glances: 0, unlocks: 0, totalTime: 0, time: 0};
+  return {glances: 0, unlocks: 0, totalTime: 0};
 };
 
+// see comment above PkgStat
 var PhGoal = function() {
   return {glances: 75, unlocks: 50, minutes: 120};
 };
 
+/* helper: randBW
+ * --------------
+ * Helper which returns a random integer between min and max inclusive.
+ */
 var randBW = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+/* helpers: FakePkgStat, FakePkgGoal, FakePhStats, FakePhGoal
+ * ----------------------------------------------------------
+ * To be used for setting up fake data in the database. Each app and the phone get a
+ * object in the database which includes a stat array, goal object, and enabled array.
+ */
 var FakePkgStat = function() {
-  return {
-    visits: randBW(10, 40), 
-    time: randBW(10, 45)
-  };
+  return {visits: randBW(3, 20), time: randBW(5, 30)};
 };
 
+// see comment above FakePkgStat
 var FakePkgGoal = function() {
   return {minutes: 15};
 };
 
-var FakePhStat = function() {
-  var numGlances = randBW(50, 120);
+// see comment above FakePkgStat
+var FakePhStats = function() {
+  var phStats = [];
+  var appStats = [];
   var list = JSON.parse(appSettings.getString('selectedPackages'));
-  var total = 0;
-  list.forEach(function(item) {
-    total += exports.getAppTime(item);
+  list.forEach(function (pkg) {
+    appStats.push(JSON.parse(appSettings.getString(pkg)).stats);
   });
 
-  return {
-    glances: numGlances, 
-    unlocks: randBW(numGlances, numGlances*2), 
-    totalTime: randBW(total, total + 90), 
-    time: total
-  };
+  for (var i = 0; i < 28; i++) {
+    var numUnlocks = randBW(30, 70);
+    var total = 0;
+    appStats.forEach(function(pkgData) {
+      total += pkgData[i]['time'];
+    });
+
+    phStats.push({
+      glances: randBW(numUnlocks, numUnlocks*2), 
+      unlocks: numUnlocks,
+      totalTime: randBW(total, total + 30)
+    });
+  }
+  return phStats;
 };
 
+// see comment above FakePkgStat
 var FakePhGoal = function() {
-  return {
-    glances: 75, 
-    unlocks: 50, 
-    minutes: 120
-  };
+  return {glances: 75, unlocks: 50, minutes: 120};
 };
 
 /* helper: createPackageData
@@ -100,6 +131,10 @@ var createPhoneData = function() {
     }));
 };
 
+/* helper: createFakePackageData
+ * -----------------------------
+ * Updates storage to include FAKE data for newly added packages.
+ */
 var createFakePackageData = function(packageName) {
   var stats = []
   for (var i = 0; i < 28; i++) {
@@ -112,23 +147,24 @@ var createFakePackageData = function(packageName) {
     }));
 };
 
+/* helper: createFakePhoneData
+ * ---------------------------
+ * Updates storage to include FAKE data for general phone.
+ */
 var createFakePhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
       goals: FakePhGoal(), 
-      stats: Array(28).fill(FakePhStat()),
+      stats: FakePhStats(),
       enabled: Array(ID.interventionDetails.length).fill(true)
     }));
 };
 
-var startOfDay = function() {
-  var startOfTarget = Calendar.getInstance();
-  startOfTarget.set(Calendar.HOUR_OF_DAY, 0);
-  startOfTarget.set(Calendar.MINUTE, 0);
-  startOfTarget.set(Calendar.SECOND, 0);
-  startOfTarget.set(Calendar.MILLISECOND, 0);
-  return startOfTarget.getTimeInMillis();
-};
-
+/* helper: ActiveHours
+ * -------------------
+ * Returns an object to be used for managing active hours. If the start and end 
+ * are the same, interventions are active all the time (as long as the day is a
+ * selected day).
+ */
 var ActiveHours = function() {
   return {
     start: {h: 0, m: 0},
@@ -142,24 +178,35 @@ var ActiveHours = function() {
  *           SETTING UP             *
  ************************************/
 
+/* export: eraseData
+ * -----------------
+ * FOR DEVELOPMENT ONLY
+ * Erases entire database.
+ */
 exports.eraseData = function() {
   appSettings.clear();
 };
 
+/* export: setSetUp
+ * ----------------
+ * Sets the boolean 'setUp' to true which means the user doesn't need to go through pre-app
+ * onboarding anymore.
+ */
 exports.setSetUp = function() {
   appSettings.setBoolean('setup', true);
 };
 
 /* export: setUp
  * -------------
- * Clears storage and resets everything to defaults.
+ * Resets all data to defaults. Does not get rid of onboarded, setUp, or name
  */
 exports.setUpDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setNumber('lastDateActive', startOfDay());
+  appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
+  appSettings.setString('snoozeEnd', Date.now() + '');
 
   preset.forEach(function (item) {
     createPackageData(item);
@@ -168,11 +215,17 @@ exports.setUpDB = function() {
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
 };
 
+/* export: setUpFakeDB
+ * -------------------
+ * Puts in completely fake data. Does not get rid of onboarded, setUp, or name.
+ */
 exports.setUpFakeDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
+
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setBoolean('setup', true);
+  appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
+  appSettings.setString('snoozeEnd', Date.now() + '');
 
   preset.forEach(function (item) {
     createFakePackageData(item);
@@ -181,34 +234,51 @@ exports.setUpFakeDB = function() {
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
 }
 
+/* export: setOnboarded
+ * --------------------
+ * Sets the boolean 'onboarded' to true which means the user doesn't need to go through in-app
+ * onboarding anymore.
+ */
 exports.setOnboarded = function() {
   appSettings.setBoolean('onboarded', true);
 };
 
 /* export: isSetUp
  * ---------------
- * Checks if the user has been onboarded yet.
+ * Checks if the user has a database and has finished pre-app onboarding yet.
  */
 exports.isSetUp = function() {
   return appSettings.getBoolean('setup');
 };
 
+/* export: isOnboarded
+ * -------------------
+ * Checks if the user has finished the in-app onboarding yet.
+ */
 exports.isOnboarded = function() {
   return appSettings.getBoolean('onboarded');
 };
 
+/* export: setName
+ * ---------------
+ * Sets the personalized name.
+ */
 exports.setName = function(newName) {
   appSettings.setString('name', newName);
 };
 
+/* export: getName
+ * ---------------
+ * Gets the personalized name.
+ */
 exports.getName = function() {
   return appSettings.getString('name');
 };
 
 
-/************************************
- *           MANAGEMENT             *
- ************************************/
+/***********************************
+ *           WATCHLIST             *
+ ***********************************/
 
 
 /* export: getSelectedPackages
@@ -350,14 +420,41 @@ exports.getGlances = function() {
   return JSON.parse(appSettings.getString('phone')).stats[index()]['glances']; 
 };
 
+// called on every glance to determine whether to start a new day of data
+var eraseExpiredData = function() {
+  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  var today = daysSinceEpoch();
+  var diff = today - Number(appSettings.getString('lastActive'));
+  if (diff) {
+
+    appSettings.setString('lastActive', today + '');
+
+    for (var i = 0; i < diff; i++) {
+      phoneInfo.stats[(today - i + 28) % 28] = PhStat();
+    }
+
+    var list = JSON.parse(appSettings.getString('selectedPackages'));
+    list.forEach(function (packageName) {
+      var appInfo = JSON.parse(appSettings.getString(packageName));
+      for (var i = 0; i < diff; i++) {
+        appInfo.stats[(today - i + 28) % 28] = PkgStat();
+      }
+      appSettings.setString(packageName, JSON.stringify(appInfo));
+    });
+  }
+
+  return phoneInfo;
+};
+
 /* export: glanced
  * ---------------
  * Adds one to the glances for today. Also erases any old data that needs to be overridden
  */
 exports.glanced = function() {
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
+  var phoneInfo = eraseExpiredData();
   phoneInfo['stats'][index()]['glances']++;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
+  console.warn(appSettings.getString('phone'));
 };
 
 /* export: updateAppTime
@@ -366,15 +463,9 @@ exports.glanced = function() {
  * day (time is in minutes).
  */
 exports.updateAppTime = function(packageName, time) {
-
-  var i = index();
   var appInfo = JSON.parse(appSettings.getString(packageName));
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  time = Math.round(time / MIN_IN_MS);
-  appInfo['stats'][i]['time'] += time;
-  phoneInfo['stats'][i]['time'] += time;
+  appInfo['stats'][index()]['time'] += time / MIN_IN_MS;
   appSettings.setString(packageName, JSON.stringify(appInfo));
-  appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
 /* export: getAppTime
@@ -389,8 +480,13 @@ exports.getAppTime = function(packageName) {
  * ---------------------
  * Returns total time on target apps so far today (in minutes).
  */
-exports.getTargetTime = function() {
-  return JSON.parse(appSettings.getString('phone')).stats[index()]['time'];
+var getTargetTime = function() {
+  var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+  var time = 0;
+  pkgs.forEach(function (pkg) {
+    time += Math.ceil(JSON.parse(appSettings.getString(pkg)).stats[index()]['time']);
+  });
+  return time;
 };
 
 /* export: updateTotalTime
@@ -399,7 +495,7 @@ exports.getTargetTime = function() {
  */
 exports.updateTotalTime = function(time) {  
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()]['totalTime'] += Math.round(time / MIN_IN_MS);
+  phoneInfo['stats'][index()]['totalTime'] += time / MIN_IN_MS;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -408,24 +504,9 @@ exports.updateTotalTime = function(time) {
  * Returns total time on phone so far today (in minutes).
  */
 exports.getTotalTime = function() {
-  return JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime'];
+  return Math.ceil(JSON.parse(appSettings.getString('phone')).stats[index()]['totalTime']);
 };
 
-exports.midnightReset = function() {
-  var today = index();
-  appSettings.setNumber('lastDateActive', startOfDay());
-
-  var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo.stats[today] = PhStat();
-  appSettings.setString('phone', JSON.stringify(phoneInfo));
-
-  var list = JSON.parse(appSettings.getString('selectedPackages'));
-  list.forEach(function (packageName) {
-    var appInfo = JSON.parse(appSettings.getString(packageName));
-    appInfo.stats[today] = PkgStat();
-    appSettings.setString(packageName, JSON.stringify(appInfo));
-  });
-};
 
 /************************************
  *           INTERVENTIONS          *
@@ -510,8 +591,8 @@ exports.toggleForAll = function(id) {
   });
 };
 
-/* export: enable
- * ---------------
+/* export: enableForApp
+ * --------------------
  * Enables the given intervention for a specific package (by id).
  */
 exports.enableForApp = function(id, packageName) {
@@ -528,8 +609,8 @@ exports.enableForApp = function(id, packageName) {
   }
 };
 
-/* export: disable
- * ----------------
+/* export: disableForApp
+ * ---------------------
  * Disables the given intervention for a specific package (by id).
  */
 exports.disableForApp = function(id, packageName) {
@@ -562,8 +643,8 @@ exports.disableForApp = function(id, packageName) {
   }
 };
 
-/* export: toggle
- * ----------------
+/* export: toggleForApp
+ * --------------------
  * Toggles the given intervention for a specific package (by id).
  */
 exports.toggleForApp = function(id, packageName) {
@@ -615,24 +696,43 @@ exports.isEnabledForAll = function(id) {
   return JSON.parse(appSettings.getString('enabled'))[id];
 };
 
+/* export: setSnooze
+ * -----------------
+ * Sets the snooze for 'duration' minutes. Snooze is implemented by setting the UTC time in
+ * milliseconds when HabitLab can send inteverventions again.
+ */
 exports.setSnooze = function(duration) {
-  appSettings.setNumber('snoozeEnd', Date.now() + duration * 60000);
+  appSettings.setString('snoozeEnd', JSON.stringify(Date.now() + duration * 60000));
 };
 
+/* export: getSnooze
+ * -----------------
+ * Returns the time in milliseconds (UTC) when the snooze will end.
+ */
 exports.getSnooze = function() {
-  return appSettings.getNumber('snoozeEnd');
+  return Number(appSettings.getString('snoozeEnd'));
 };
 
-var inSnoozeMode = function() {
-  return Date.now() - appSettings.getNumber('snoozeEnd') < 0;
+/* export: inSnoozeMode
+ * --------------------
+ * Returns whether HabitLab is currently snoozed
+ */
+exports.inSnoozeMode = function() {
+  return  Date.now() - Number(appSettings.getString('snoozeEnd')) < 0;
 };
 
-exports.inSnoozeMode = inSnoozeMode;
-
+/* export: removeSnooze
+ * --------------------
+ * Removes the snooze from HabitLab
+ */
 exports.removeSnooze = function() {
-  appSettings.setNumber('snoozeEnd', Date.now());
+  appSettings.setString('snoozeEnd', "" + Date.now());
 };
 
+/* export: withinActiveHours
+ * -------------------------
+ * Returns whether the current time is within the user's active hours settings.
+ */
 var withinActiveHours = function() {
   var hours = JSON.parse(appSettings.getString('activeHours'));
   var now = new Date();
@@ -660,12 +760,29 @@ var withinActiveHours = function() {
   return true;
 };
 
+/* export: setActiveHours
+ * ----------------------
+ * Updates the user's active hours settings.
+ */
+exports.setActiveHours = function(activeHours) {
+  appSettings.setString('activeHours', JSON.stringify(activeHours));
+};
+
+/* export: getActiveHours
+ * ----------------------
+ * Returns the user's active hours settings.
+ */
+exports.getActiveHours = function() {
+  return JSON.parse(appSettings.getString('activeHours'));
+};
+
 /* export: canIntervene
  * --------------------
- * Returns whether the given intervention is should run.
+ * Returns whether the given intervention is should run. Based on active hours, snooze,
+ * intervention target, and package name / intervention id.
  */
 exports.canIntervene = function(id, packageName) {
-  if (!withinActiveHours() || inSnoozeMode()) {
+  if (!withinActiveHours() || exports.inSnoozeMode()) {
     return false;
   }
 
@@ -675,20 +792,6 @@ exports.canIntervene = function(id, packageName) {
     var specified = ID.interventionDetails[id].apps;
     return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id];
   }
-};
-
-exports.setActiveDays = function(days) {
-  var hours = JSON.parse(appSettings.getString('activeHours'));
-  hours.days = days;
-  appSettings.setString('activeHours', JSON.stringify(hours));
-}
-
-exports.setActiveHours = function(activeHours) {
-  appSettings.setString('activeHours', JSON.stringify(activeHours));
-};
-
-exports.getActiveHours = function() {
-  return JSON.parse(appSettings.getString('activeHours'));
 };
 
 /*****************************
@@ -773,21 +876,50 @@ exports.getMinutesGoal = function(packageName) {
   return JSON.parse(appSettings.getString(packageName)).goals.minutes;
 };
 
+/* export: getProgressViewInfo
+ * ---------------------------
+ * Gets all the details for progress view (to minimize the number of database reads).
+ * 
+ * returns: {
+ *   phoneStats: [] // array of 28 objects --> {glances, unlocks, time, totalTime}
+ *   appStats: [[]] // array of arrays
+ *              ^^ the inner array corresponds to a single app and contains 28 objects --> {time, visits}
+ * }
+ */
 exports.getProgressViewInfo = function() {
   var retObj = {}
   retObj.phoneStats = arrangeData(JSON.parse(appSettings.getString('phone')).stats);
+  retObj.phoneStats.forEach(function (phoneStat) {
+    phoneStat.totalTime = Math.ceil(phoneStat.totalTime);
+  });
   
   var list = JSON.parse(appSettings.getString('selectedPackages'));
   retObj.appStats = [];
-  list.forEach(function (item) {
-    var appStat = arrangeData(JSON.parse(appSettings.getString(item)).stats);
-    appStat.packageName = item;
+  var targetTime = 0;
+  list.forEach(function (pkg, pkgIndex) {
+    var appStat = arrangeData(JSON.parse(appSettings.getString(pkg, pkgIndex)).stats);
+
+    // total the target times
+    appStat.forEach(function (item, index) {
+      if (pkgIndex === 0) {
+        retObj.phoneStats[index].time = 0;
+      }
+
+      var toAdd = Math.ceil(item.time);
+      retObj.phoneStats[index].time += toAdd;
+      seconds = toAdd;
+    });
+
+    appStat.packageName = pkg;
     retObj.appStats.push(appStat);
   });
   return retObj;
 };
 
-//To be used for app detail view -- returns an appStats object when passed a package name
+/* export: getAppStats
+ * -------------------
+ * For the app detail view. Gets all the appstats of an object at once.
+ */
 exports.getAppStats = function(packageName) {
   var obj = JSON.parse(appSettings.getString(packageName));
   var arr = arrangeData(obj.stats);
@@ -795,11 +927,23 @@ exports.getAppStats = function(packageName) {
   return arr;
 };
 
+/*******************************
+ *           LOGGING           *
+ *******************************/
+
+/* exports: getErrorQueue
+ * ----------------------
+ * Returns the current error queue (an array).
+ */
 exports.getErrorQueue = function() {
   var queue = appSettings.getString('errorQueue');
   return queue && JSON.parse(queue) || [];
 }
 
+/* exports: addError
+ * -----------------
+ * Adds an error to the queue.
+ */
 exports.addError = function(error) {
   var queue = appSettings.getString('errorQueue');
   queue = queue && JSON.parse(queue) || [];
@@ -807,6 +951,10 @@ exports.addError = function(error) {
   appSettings.setString('errorQueue', JSON.stringify(queue));
 }
 
+/* exports: clearErrorQueue
+ * ------------------------
+ * Removes all errors from the queue.
+ */
 exports.clearErrorQueue = function() {
   appSettings.setString('errorQueue', JSON.stringify([]));
 }

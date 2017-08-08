@@ -4,13 +4,11 @@ var Toast = require("nativescript-toast");
 var http = require("http");
 
 var view = 'onboardingView';
-
 if (StorageUtil.isOnboarded()) {
   view = 'progressView';
 } else if (StorageUtil.isSetUp()) {
   view = "appsView";
 }
-
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {
@@ -27,12 +25,6 @@ var getErrorDetails = function (args) {
         stack: error.stack || null
     };
 }
-
-// async function sleep(milliseconds) {
-//   return new Promise(function(callback) {
-//   	setTimeout(callback, milliseconds)
-//   })
-// }
 
 function send_error(error) {
   var now = new Date();

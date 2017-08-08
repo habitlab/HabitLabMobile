@@ -10,8 +10,7 @@ const InterventionManager = require("~/interventions/InterventionManager");
 
 android.content.BroadcastReceiver.extend("com.habitlab.AlarmReceiver", {
 	onReceive: function(context, intent) {
-		NotificationUtil.sendNotification(context, "HabitLab", "Daily Midnight Notification", 98765);
-		StorageUtil.midnightReset();
+		NotificationUtil.sendNotification(context, "HabitLab", "Daily Midnight Notification", 12936273);
 		AccessibilityService.markMidnight();
 	}
 });
