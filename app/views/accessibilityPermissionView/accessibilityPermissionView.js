@@ -6,6 +6,7 @@ var page;
 
 exports.pageLoaded = function(args) {
 	page = args.object;
+	fancyAlert.TNSFancyAlert.showSuccess("One more to go!", "Awesome, just one last permission to authorize.", "Let's do it")
 }
 
 

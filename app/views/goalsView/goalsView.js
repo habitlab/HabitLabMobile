@@ -9,6 +9,8 @@ var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
 var fancyAlert = require("nativescript-fancyalert");
 var ToolTip = require("nativescript-tooltip").ToolTip;
 var view = require("ui/core/view");
+var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
+var timer = require("timer");
 var Resources = android.content.res.Resources;
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -161,8 +163,28 @@ exports.pageLoaded = function(args) {
     page.getViewById('done').visibility = 'collapse';
     page.getViewById('scroll').height = '100%';
   }
-  setUpPhoneGoals();
-  setUpAppGoals();
+
+  var loader = new LoadingIndicator();
+  var options = {
+    message: 'Loading...',
+    progress: 0.65,
+    android: {
+      indeterminate: true,
+      cancelable: false,
+      max: 100,
+      progressNumberFormat: "%1d/%2d",
+      progressPercentFormat: 0.53,
+      progressStyle: 1,
+      secondaryProgress: 1
+    }
+  };
+  loader.show(options);
+
+  timer.setTimeout(() => {
+    setUpPhoneGoals();
+    setUpAppGoals();
+    loader.hide();
+  }, 1000);  
 };
 
 exports.onDone = function() {

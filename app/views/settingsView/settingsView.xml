@@ -37,8 +37,8 @@
           <Label text="FAQ" col="1" class="settings-label" />
           <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" />
         </GridLayout>
-        <Button text="Set fake data" onTap="setFakeData" />
-        <Button text="Start Accessibility Service" onTap="startAccessibilityService" />
+        <!-- <Button text="Set fake data" onTap="setFakeData" />
+        <Button text="Start Accessibility Service" onTap="startAccessibilityService" /> -->
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
