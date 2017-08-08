@@ -1,4 +1,4 @@
-
+var frame = require('ui/frame')
 var fancyAlert = require("nativescript-fancyalert");
 var PermissionUtil = require("~/util/PermissionUtil");
 var page;
@@ -15,5 +15,6 @@ exports.giveDrawPermission = function(args) {
     PermissionUtil.launchSystemOverlayIntent();
   } else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab.", "Sweet!");
+    frame.topmost().navigate('views/accessibilityPermissionView/accessibilityPermissionView');
   }
 };
