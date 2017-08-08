@@ -7,6 +7,7 @@ var layout = require('ui/layouts/stack-layout');
 
 var drawer;
 var page;
+var events;
 
 var createItem = function(packageName)  {
   var item = builder.load({
@@ -30,6 +31,7 @@ var createItem = function(packageName)  {
 
   item.on("tap, touch", function(args) {
     if (args.eventName === 'tap') {
+      events.push({category: "navigation", index: "watchlist_to_detail"});
       frame.topmost().navigate({
         moduleName: 'views/appDetailView/appDetailView',
         context: { 
@@ -67,12 +69,18 @@ var setUpList = function() {
 };
 
 exports.pageLoaded = function(args) {
+  events = [{category: "page_visits", index: "watchlist_main"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
   setUpList();
 };
 
+exports.pageUnloaded = function(args) {
+  StorageUtil.addLogEvents(events);
+};
+
 exports.toggleDrawer = function() {
+  events.push({category: "navigation", index: "menu"});
   drawer.toggleDrawerState();
 };
 

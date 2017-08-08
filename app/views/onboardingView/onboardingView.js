@@ -47,15 +47,13 @@ onboarding.visuals = [
 exports.pageLoaded = function(args) {
 
   // set also in app.js
-  if (StorageUtil.isOnboarded()) {
+  if (StorageUtil.isTutorialComplete()) {
     frameModule.topmost().navigate('views/progressView/progressView');
-  } else if (StorageUtil.isSetUp()) {
+  } else if (StorageUtil.isOnboardingComplete()) {
     frameModule.topmost().navigate('views/appsView/appsView');
   }
 
-  if (!StorageUtil.isSetUp()) {
-    StorageUtil.setUpDB();
-  }
+  StorageUtil.setUpDB();
 
   var navigated = false;
   page = args.object;
@@ -143,8 +141,8 @@ exports.giveDrawPermission = function(args) {
 
 //Takes the user to the apps view to select their apps 
 exports.goToAppsView = function(args) {
-  if (!StorageUtil.isSetUp()) {
-    StorageUtil.setSetUp();
+  if (!StorageUtil.isOnboardingComplete()) {
+    StorageUtil.setOnboardingComplete();
 
     /** SET UP ALARM **/
     const DAY = 86400 * 1000;

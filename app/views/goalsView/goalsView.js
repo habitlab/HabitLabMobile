@@ -12,10 +12,11 @@ var view = require("ui/core/view");
 var Resources = android.content.res.Resources;
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-
-
 var drawer;
 var page;
+var events;
+var appChanged;
+var phoneChanged;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -68,13 +69,18 @@ var createPhoneGoal = function(goal, value) {
   number.on("unloaded", function (args) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changePhoneGoal(newNum, goal);
+    if (phoneChanged) {
+      events.push({category: "features", index: "goals_phonegoal_changed"});
+    }
   });
 
   np.getViewById('plus').on(gestures.tap, function() {
+    phoneChanged = true;
     number.text = getGoal(number.text, true);
   });
 
   np.getViewById('minus').on(gestures.tap, function() {
+    phoneChanged = true;
     number.text = getGoal(number.text, false);
   });
 
@@ -119,13 +125,18 @@ var createAppGoal = function(pkg) {
   number.on("unloaded", function (args) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
+    if (appChanged) {
+      events.push({category: "features", index: "goals_appgoal_changed"});
+    }
   });
 
   np.getViewById('plus').on(gestures.tap, function() {
+    appChanged = true;
     number.text = getGoal(number.text, true);
   });
 
   np.getViewById('minus').on(gestures.tap, function() {
+    appChanged = true;
     number.text = getGoal(number.text, false);
   });
 
@@ -142,14 +153,11 @@ var setUpAppGoals = function() {
   });
 };
 
-exports.onManageApps = function() {
-  frameModule.topmost().navigate("views/appsView/appsView");
-};
-
 exports.pageLoaded = function(args) {
+  events = [{category: "page_visits", index: "goals"}];
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (StorageUtil.isOnboarded()) {
+  if (StorageUtil.isTutorialComplete()) {
     page.getViewById('done').visibility = 'collapse';
     page.getViewById('scroll').height = '100%';
   }
@@ -157,24 +165,21 @@ exports.pageLoaded = function(args) {
   setUpAppGoals();
 };
 
-
 exports.onDone = function() {
-  if (!StorageUtil.isOnboarded()) {
-    fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-    StorageUtil.setOnboarded();
-  } 
-  //Just for testing
-  // StorageUtil.setUpFakeDB();
-  
+  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate("views/progressView/progressView");
-}
+};
 
-
+exports.pageUnloaded = function(args) {
+  StorageUtil.addLogEvents(events);
+};
 
 exports.toggleDrawer = function() {
-  if (!StorageUtil.isOnboarded()) {
+  if (!StorageUtil.isTutorialComplete()) {
     fancyAlert.TNSFancyAlert.showError("Last Step!", "Click done to finish setting up HabitLab!", "Got It!");
   } else {
+    events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();
   }
 };

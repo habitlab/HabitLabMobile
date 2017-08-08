@@ -62,6 +62,8 @@ var barchartMade = false;
 var piechartMade = false;
 var monthchartMade = false;
 
+var events;
+
 exports.pageNavigating = function(args) {
     page = args.object;
     //Progress info is the array of objects containing all info needed for progress view
@@ -75,12 +77,20 @@ exports.pageLoaded = function(args) {
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
-
-
     setUp();
 };
 
+exports.pageUnloaded = function(args) {
+    storageUtil.addLogEvents(events);
+};
 
+var pages = ['day', 'week', 'month'];
+exports.onIndexChange = function(args) {
+    if (!events) {
+        events = [];
+    }
+    events.push({category: "page_visits", index: "progress_" + pages[args.newIndex]});
+};
 
 /************************************
  *           DAY GRAPH             *
@@ -498,6 +508,7 @@ setUp = function() {
 //Allows the list to be pressable 
 exports.goToDetailApps = function(args) {
     var tappedItem = args.view.bindingContext;
+    events.push({category: "navigation", index: "progress_to_detail"});
     var options = {
         moduleName: 'views/appDetailView/appDetailView',
         context: {
@@ -803,18 +814,22 @@ exports.toggleMonth = function() {
 }
 
 exports.onDayTap = function(args) {
+    events.push({category: "features", index: "progress_toggle_graph"});
     exports.toggle();
 }
 
 exports.onWeekTap = function(args) {
-    exports.toggleWeek()
+    events.push({category: "features", index: "progress_toggle_graph"});
+    exports.toggleWeek();
 }
 
 exports.onMonthTap = function(args) {
+    events.push({category: "features", index: "progress_toggle_graph"});
     exports.toggleMonth();
 }
 
 
 exports.toggleDrawer = function() {
-  drawer.toggleDrawerState();
+    events.push({category: "navigation", index: "menu"});
+    drawer.toggleDrawerState();
 };
