@@ -1,4 +1,4 @@
-
+var frame = require('ui/frame')
 var fancyAlert = require("nativescript-fancyalert");
 var PermissionUtil = require("~/util/PermissionUtil");
 var page;
@@ -15,6 +15,7 @@ exports.giveAccessibilityPermission = function(args) {
   	if (!PermissionUtil.checkAccessibilityPermission()) {
    		PermissionUtil.launchAccessibilityServiceIntent();
  	} else {
-    	fancyAlert.TNSFancyAlert.showInfo("Ahead of the Game", "You've already authorized HabitLab.", "Sweet!");
+    	fancyAlert.TNSFancyAlert.showInfo("Good job!", "You've already authorized HabitLab.", "Sweet!");
+    	frame.topmost().navigate('views/goalView/goalView');
 	}
 }

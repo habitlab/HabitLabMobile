@@ -43,9 +43,19 @@
 
 
    <!--  Custom toolTip -->
-       <style name="CustomToolTipLayoutStyle" parent="ToolTipLayoutDefaultStyle">
+<!--     <style name="CustomToolTipLayoutStyle" parent="ToolTipLayoutDefaultStyle">
         <item name="ttlm_backgroundColor">@color/ns_pink</item>
         <item name="android:textColor">@color/ns_white</item>
+    </style> -->
+
+    <!-- Custom ToolTip -->
+    <style name="TooltipLayoutStyle" parent="ToolTipLayoutDefaultStyle">
+        <item name="ttlm_backgroundColor">#F18391</item>
+        <item name="android:textAppearance">@style/TooltipFont</item>
+    </style>
+
+    <style name="TooltipFont" parent="@android:style/TextAppearance.Small">
+        <item name="android:textColor">#38414B</item>
     </style>
 
     <style name="NativeScriptToolbarStyle" parent="NativeScriptToolbarStyleBase">

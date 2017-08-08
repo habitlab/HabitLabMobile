@@ -162,6 +162,8 @@ exports.pageLoaded = function(args) {
   if (StorageUtil.isTutorialComplete()) {
     page.getViewById('done').visibility = 'collapse';
     page.getViewById('scroll').height = '100%';
+  } else {
+    fancyAlert.TNSFancyAlert.showSuccess("Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!");
   }
 
   var loader = new LoadingIndicator();
@@ -188,9 +190,9 @@ exports.pageLoaded = function(args) {
 };
 
 exports.onDone = function() {
-  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-  StorageUtil.setTutorialComplete();
-  frameModule.topmost().navigate("views/progressView/progressView");
+  // fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  // StorageUtil.setTutorialComplete();
+  frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
 exports.pageUnloaded = function(args) {

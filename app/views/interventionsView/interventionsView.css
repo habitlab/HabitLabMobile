@@ -40,3 +40,7 @@
   border-color: red;
   border-left-width: 10px;
 }
+
+#finish {
+  color: red;
+}
