@@ -6,7 +6,7 @@ var page;
 
 exports.pageLoaded = function(args) {
 	page = args.object;
-}
+};
 
 
 //When the user taps the 'give permission' button - If the user hasn't already given permission, open settings
@@ -15,6 +15,8 @@ exports.giveDrawPermission = function(args) {
     PermissionUtil.launchSystemOverlayIntent();
   } else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab.", "Sweet!");
-    frame.topmost().navigate('views/accessibilityPermissionView/accessibilityPermissionView');
+    frame.topmost().navigate({
+      moduleName: 'views/accessibilityPermissionView/accessibilityPermissionView',
+    });
   }
 };

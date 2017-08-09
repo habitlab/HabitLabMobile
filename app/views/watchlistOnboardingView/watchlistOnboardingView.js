@@ -108,5 +108,5 @@ exports.onDone = function() {
     return;
   }
 
- frame.topmost().navigate('views/nudgesOnboardingView/nudgesOnboardingView');  
+  frame.topmost().navigate('views/nudgesOnboardingView/nudgesOnboardingView');  
 };
