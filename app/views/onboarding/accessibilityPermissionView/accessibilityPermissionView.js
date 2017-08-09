@@ -17,7 +17,8 @@ exports.giveAccessibilityPermission = function(args) {
  	} else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the Game", "You've already authorized HabitLab.", "Sweet!");
     frameModule.topmost().navigate({
-      moduleName: 'views/goalsView/goalsView'
+      moduleName: 'views/goalsView/goalsView',
+      clearHistory: true
     });
 	}
 }
