@@ -100,7 +100,7 @@ exports.pageLoaded = function(args) {
 };
 
 exports.goToProgress = function() {
-  StorageUtil.addLogEvents([{setValue: new Date(), category: 'navigation', index: 'finished_tutorial'}]);
+  StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_tutorial'}]);
   FancyAlert.show(FancyAlert.type.SUCCESS, "You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   frameModule.topmost().navigate("views/progressView/progressView");
 }

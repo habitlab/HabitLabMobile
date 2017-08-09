@@ -43,8 +43,8 @@ exports.pageLoaded = function(args) {
     });
   }
 
-  StorageUtil.addLogEvents([{setValue: new Date(), category: 'navigation', index: 'started_onboarding'}]);
   StorageUtil.setUpDB();
+  StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'started_onboarding'}]);
 };
 
 //Only lets the user continue past the first slide if a name is entered 

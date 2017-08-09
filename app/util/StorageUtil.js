@@ -260,7 +260,7 @@ exports.setUpDB = function(erasingData) {
   }
 
   if (!appSettings.getString('userID')) {
-    appSettings.setString('userID', Date.now() + appSettings.getString('name'));
+    appSettings.setString('userID', 'U' + Date.now() + '' + randBW(100, 999));
   }
 
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
@@ -1042,7 +1042,7 @@ exports.addLogEvents = function(events) {
   var log = JSON.parse(appSettings.getString('log'));
   events.forEach(function (e) {
     if (e.setValue) {
-      log[e.category][e.index] = e.setValue
+      log[e.category][e.index] = e.setValue;
     } else {
       log[e.category][e.index]++;
     }
@@ -1079,5 +1079,8 @@ exports.addLogEvents = function(events) {
   }).then(function() {
     setUpLogging();
   });
+};
 
+exports.getUserID = function() {
+  return appSettings.getString('userID') || 'noIDFound';
 };

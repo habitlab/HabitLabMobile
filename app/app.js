@@ -16,19 +16,19 @@ if (StorageUtil.isTutorialComplete()) {
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {
-        return args;
-    }
+    return args;
+  }
 
-    let error = args.android;
+  let error = args.android;
 
-    return {
-        userID: appSettings.getString('userID') || 'noIDFound',
-        name: error.name || 'Error',
-        nativeException: error.nativeException,
-        message: error.message || JSON.stringify(error),
-        stackTrace: error.stackTrace || null,
-        stack: error.stack || null
-    };
+  return {
+      userID: StorageUtil.getUserID(),
+      name: error.name || 'Error',
+      nativeException: error.nativeException,
+      message: error.message || JSON.stringify(error),
+      stackTrace: error.stackTrace || null,
+      stack: error.stack || null
+  };
 }
 
 function send_error(error) {
@@ -76,7 +76,6 @@ function backEvent(args) {
          currentPage.exports.backEvent(args);
    }   
 }
-
 
 applicationModule.start("views/" + viewFile + "/" + view);
 applicationModule.setCssFileName("app.css");

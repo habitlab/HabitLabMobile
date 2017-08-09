@@ -180,8 +180,11 @@ exports.pageLoaded = function(args) {
     setUpAppGoals();
     loader.hide();
     if (StorageUtil.isTutorialComplete()) {
-      page.getViewById('done').visibility = 'collapse';
-      page.getViewById('scroll').height = '100%';
+      var btn = page.getViewById('done');
+      btn.text = 'save';
+      btn.on('tap', function() {
+        frameModule.topmost().navigate('views/progressView/progressView');
+      });
     } else {
       FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
     }
