@@ -260,7 +260,7 @@ exports.setUpDB = function() {
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
-  appSettings.setString('lastActive', daysSinceEpoch() - 1 + '');
+  appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
   appSettings.setString('snoozeEnd', Date.now() + '');
 
