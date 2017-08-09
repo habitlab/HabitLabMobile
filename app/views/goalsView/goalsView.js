@@ -158,6 +158,8 @@ exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "goals"}];
   page = args.object;
   drawer = page.getViewById("sideDrawer");
+  console.warn("storage util: ")
+  console.warn(StorageUtil.getSelectedPackages().length);
 
   var loader = new LoadingIndicator();
   var options = {

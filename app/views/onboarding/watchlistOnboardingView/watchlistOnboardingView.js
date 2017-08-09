@@ -108,6 +108,7 @@ exports.onDone = function() {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
     return;
   }
-
+  var arr = StorageUtil.getSelectedPackages().length;
+  console.warn(arr);
   frame.topmost().navigate('views/onboarding/nudgesOnboardingView/nudgesOnboardingView');  
 };
