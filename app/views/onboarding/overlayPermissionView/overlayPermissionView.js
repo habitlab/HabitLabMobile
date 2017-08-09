@@ -16,7 +16,11 @@ exports.giveDrawPermission = function(args) {
   } else {
     fancyAlert.TNSFancyAlert.showInfo("Ahead of the game", "You've already authorized HabitLab.", "Sweet!");
     frame.topmost().navigate({
-      moduleName: 'views/accessibilityPermissionView/accessibilityPermissionView',
+      moduleName: 'views/onboarding/accessibilityPermissionView/accessibilityPermissionView',
     });
   }
 };
+
+exports.backEvent = function(args) {
+   args.cancel = true; 
+}

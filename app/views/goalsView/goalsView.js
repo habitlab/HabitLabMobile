@@ -64,7 +64,7 @@ var createPhoneGoal = function(goal, value) {
         tip.show(); 
       });
   } else {
-      info.visibility = 'hidden'; 
+    info.visibility="hidden";
   }
   
   var number = np.getViewById('number');
@@ -121,9 +121,6 @@ var createAppGoal = function(pkg) {
   item.getViewById('label').text = 'mins';
   var number = np.getViewById('number');
   number.text = goal;
-
-  var info = item.getViewById('infoButton');
-  info.visibility = 'collapse';
 
   number.on("unloaded", function (args) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
@@ -191,8 +188,6 @@ exports.pageLoaded = function(args) {
 };
 
 exports.onDone = function() {
-  // fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-  // StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
