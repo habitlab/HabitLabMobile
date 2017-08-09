@@ -11,6 +11,7 @@ var ToolTip = require("nativescript-tooltip").ToolTip;
 var view = require("ui/core/view");
 var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
 var timer = require("timer");
+var FancyAlert = require("~/util/FancyAlert");
 var Resources = android.content.res.Resources;
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -59,7 +60,8 @@ var createPhoneGoal = function(goal, value) {
   if (goal === "glances") {
       info.visibility = 'visible';
       info.on(gestures.tap, function() {
-        const tip = new ToolTip(info,{text:"The number of times your screen lights up when you glance at it", width: 0.43*SCREEN_WIDTH});;
+        events.push({category: 'features', index: 'tooltips'});
+        const tip = new ToolTip(info, {text:"The number of times you check your phone's lock screen", width: 0.43*SCREEN_WIDTH});;
         tip.show(); 
       });
   } else {
@@ -72,7 +74,7 @@ var createPhoneGoal = function(goal, value) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changePhoneGoal(newNum, goal);
     if (phoneChanged) {
-      events.push({category: "features", index: "goals_phonegoal_changed"});
+      events.push({category: "features", index: "goals_phonegoal_change"});
     }
   });
 
@@ -125,7 +127,7 @@ var createAppGoal = function(pkg) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
     if (appChanged) {
-      events.push({category: "features", index: "goals_appgoal_changed"});
+      events.push({category: "features", index: "goals_appgoal_change"});
     }
   });
 
@@ -156,12 +158,6 @@ exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "goals"}];
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (StorageUtil.isTutorialComplete()) {
-    page.getViewById('done').visibility = 'collapse';
-    page.getViewById('scroll').height = '100%';
-  } else {
-    fancyAlert.TNSFancyAlert.showSuccess("Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!");
-  }
 
   var loader = new LoadingIndicator();
   var options = {
@@ -183,11 +179,19 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
     loader.hide();
+    var btn = page.getViewById('done');
+    if (StorageUtil.isTutorialComplete()) {
+      btn.text = 'save';
+      btn.on('tap', function() {
+        frameModule.topmost().navigate('views/progressView/progressView');
+      });
+    } else {
+      btn.on('tap', function() {
+        frameModule.topmost().navigate('views/interventionsView/interventionsView');
+      });
+      FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
+    }
   }, 1000);  
-};
-
-exports.onDone = function() {
-  frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
 exports.pageUnloaded = function(args) {

@@ -5,7 +5,6 @@ var Timer = require("timer");
 // utils
 const ServiceManager = require("./ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");
-const StorageUtil = require("~/util/StorageUtil");
 
 // global vars
 var context = application.android.context.getApplicationContext();
@@ -19,7 +18,7 @@ var timerID;
  * of Service class to start timer that continuously runs in
  * background to perform some task.
  */
-android.app.Service.extend("com.habitlab.PermissionCheckerService", {
+android.app.Service.extend("com.habitlab.AccessibilityCheckerService", {
 	onStartCommand: function(intent, flags, startId) {
 		this.super.onStartCommand(intent, flags, startId);
         startTimer();
@@ -71,21 +70,15 @@ var stopTimer = function() {
 
 
 var accessibilityPermission = false;
-var overlayPermission = false;
 
 var checkPermission = function () {
-    if (!overlayPermission && PermissionUtil.checkSystemOverlayPermission()) {
-        overlayPermission = true;
-        var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
-        foregroundActivity.startActivity(intent);
-    } else if (!accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
+   if (!accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         accessibilityPermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
         foregroundActivity.startActivity(intent);
-    } else if (accessibilityPermission && overlayPermission) {
-        StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
+    } else if (accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         stopTimer();
-        context.stopService(new android.content.Intent(context, com.habitlab.PermissionCheckerService.class));
+        context.stopService(new android.content.Intent(context, com.habitlab.AccessibilityCheckerService.class));
     }
 }
 

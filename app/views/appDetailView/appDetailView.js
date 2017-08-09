@@ -4,6 +4,7 @@ var ID = require('~/interventions/InterventionData');
 var dialogs = require("ui/dialogs");
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
+
 var frameModule = require("ui/frame");
 var view = require("ui/core/view");
 var imageSource = require("image-source");
@@ -104,7 +105,7 @@ var setUpDetail = function() {
   number.on("unloaded", function(args) {
     StorageUtil.changeAppGoal(pkg, parseInt(number.text.replace(/[^0-9]/g, '') || 0), 'minutes');
     if (goalChanged) {
-      events.push({category: "features", index: "watchlist_detail_appgoal_changed"});
+      events.push({category: "features", index: "watchlist_detail_appgoal_change"});
     }
   });
 

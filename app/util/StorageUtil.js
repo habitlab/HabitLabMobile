@@ -196,7 +196,6 @@ var setUpLogging = function() {
   appSettings.setString('log', JSON.stringify({
     page_visits: {
       total_visits: 0,
-      onboarding: 0,
       progress_day: 0,
       progress_week: 0,
       progress_month: 0,
@@ -220,13 +219,13 @@ var setUpLogging = function() {
     features: {
       active_days_changed: 0,
       active_hours_changed: 0,
-      snooze: 0,
+      snooze_opened: 0,
+      snooze_set: 0,
       remove_snooze: 0,
       editname: 0,
       editname_changed: 0,
       erase_data: 0,
       erase_data_confirm: 0,
-      progress_toggle: 0,
       nudge_detail_demo: 0,
       nudge_detail_toggle: 0,
       nudge_detail_toggle_all: 0,
@@ -235,7 +234,7 @@ var setUpLogging = function() {
       watchlist_detail_toggle: 0,
       watchlist_detail_disable_all: 0,
       watchlist_detail_disable_all_confirm: 0,
-      watchlist_detail_arrow: 0, 
+      watchlist_detail_arrow: 0,
       watchlist_detail_appgoal_change: 0,
       watchlist_manage_change: 0,
       goals_appgoal_change: 0,
@@ -247,8 +246,7 @@ var setUpLogging = function() {
       faq_item: 0,
       tooltips: 0
     },
-    nudges: Array(ID.interventionDetails.length).fill(0),
-    data: {}
+    nudges: Array(ID.interventionDetails.length).fill(0)
   }));
 };
 
@@ -256,7 +254,15 @@ var setUpLogging = function() {
  * -------------
  * Resets all data to defaults. Does not get rid of onboarded, setUp, or name
  */
-exports.setUpDB = function() {
+exports.setUpDB = function(erasingData) {
+  if (erasingData) {
+    sendLog();
+  }
+
+  if (!appSettings.getString('userID')) {
+    appSettings.setString('userID', 'U' + Date.now() + '' + randBW(100, 999));
+  }
+
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
@@ -498,7 +504,6 @@ var eraseExpiredData = function() {
 
     appSettings.setString('lastActive', today + '');
     sendLog();
-    clearLog();
 
     for (var i = 0; i < diff; i++) {
       phoneInfo.stats[(today - i + 28) % 28] = PhStat();
@@ -1036,7 +1041,11 @@ exports.clearErrorQueue = function() {
 exports.addLogEvents = function(events) {
   var log = JSON.parse(appSettings.getString('log'));
   events.forEach(function (e) {
-    log[e.category][e.index]++;
+    if (e.setValue) {
+      log[e.category][e.index] = e.setValue;
+    } else {
+      log[e.category][e.index]++;
+    }
   });
   appSettings.setString('log', JSON.stringify(log));
 };
@@ -1047,6 +1056,7 @@ exports.addLogEvents = function(events) {
  */
  var sendLog = function() {
   var log = JSON.parse(appSettings.getString('log'));
+  log['userID'] = appSettings.getString('userID');
 
   var data = {};
   data['name'] = appSettings.getString('name');
@@ -1066,14 +1076,11 @@ exports.addLogEvents = function(events) {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     content: JSON.stringify(log)
+  }).then(function() {
+    setUpLogging();
   });
 };
 
-/* exports: addLogEvent
- * --------------------
- * Adds one to a log event by category and index (object within an object).
- * Pass an array of events to add (to limit database read and writes).
- */
-var clearLog = function() {
-  setUpLogging();
+exports.getUserID = function() {
+  return appSettings.getString('userID') || 'noIDFound';
 };

@@ -6,7 +6,7 @@ var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var frameModule = require('ui/frame');
-
+var FancyAlert = require("~/util/FancyAlert");
 var drawer;
 var page;
 var interventionList;
@@ -82,18 +82,16 @@ var setUpList = function() {
       layouts[item.style].addChild(createItem(item));
     }
   });
-
 };
 
 var visited = false;
-
 exports.pageLoaded = function(args) {
-  events = [{category: "navigation", index: "menu"}];
+  events = [{category: "page_visits", index: "nudges_main"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
    if (!StorageUtil.isTutorialComplete()) {
     if (!visited) {
-      fancyAlert.TNSFancyAlert.showInfo("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+      FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
@@ -101,8 +99,8 @@ exports.pageLoaded = function(args) {
   setUpList();
 };
 
-
 exports.goToProgress = function() {
+  StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_tutorial'}]);
   fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate({
@@ -110,12 +108,6 @@ exports.goToProgress = function() {
     context: { fromTutorial: true }
     });
 }
-
-
-
-
-
-
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);

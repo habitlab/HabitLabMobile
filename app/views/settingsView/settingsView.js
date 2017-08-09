@@ -108,7 +108,7 @@ exports.eraseData = function() {
     var onClickListener = new android.view.View.OnClickListener({
 	    onClick: function (view) {
             events.push({category: "features", index: "erase_data_confirm"});
-	    	StorageUtil.setUpDB();
+	    	StorageUtil.setUpDB(true);
 	    	dialog.dismiss();
 	    }
 	});

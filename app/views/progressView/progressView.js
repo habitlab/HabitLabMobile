@@ -46,6 +46,7 @@ var RelativeSizeSpan = android.text.style.RelativeSizeSpan;
 var Typeface = android.graphics.Typeface;
 var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
+var FancyAlert = require("~/util/FancyAlert");
 
 var TODAY = 27;
 var page;
@@ -82,7 +83,12 @@ var cb = function() {
 
 exports.pageLoaded = function(args) {
     if (!permissionUtil.checkAccessibilityPermission()) {
-        showFancyAlert(alertTypes.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!", 
+        if (!permissionServiceIsRunning()) {
+            var trackingServiceIntent = new android.content.Intent(app.android.context, com.habitlab.AccessibilityCheckerService.class); 
+            app.android.context.startService(trackingServiceIntent)
+        }
+
+        FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!", 
             "Take me there!", cb);
     }
 
@@ -850,23 +856,6 @@ exports.toggleDrawer = function() {
     drawer.toggleDrawerState();
 };
 
-var alertTypes = {INFO: 0, HELP: 1, WRONG: 2, SUCCESS: 3, WARNING: 4};
-var PromptDialog = cn.refactor.lib.colordialog.PromptDialog;
-function showFancyAlert(type, title, content, closeMsg, callback) {
-    var alert = new PromptDialog(app.android.currentContext);
-    alert.setDialogType(type);
-    alert.setTitleText(title);
-    alert.setContentText(content);
-    alert.setAnimationEnable(true);
-    alert.setCanceledOnTouchOutside(false);
-    alert.setPositiveListener(closeMsg, new PromptDialog.OnPositiveListener({
-        onClick: (function (dialog) {
-            callback();
-            dialog.dismiss();
-        })
-    }));
-    alert.show();
-};
 
 
 exports.backEvent = function(args) {
@@ -878,6 +867,21 @@ exports.backEvent = function(args) {
         frameModule.topmost().goBack();
    }
 }
+
+
+var permissionServiceIsRunning = function () {
+    var manager = app.android.context.getSystemService(android.content.Context.ACTIVITY_SERVICE);
+    var services = manager.getRunningServices(java.lang.Integer.MAX_VALUE);
+    for (var i = 0; i < services.size(); i++) {
+        var service = services.get(i);
+        if (service.service.getClassName() === com.habitlab.AccessibilityCheckerService.class.getName()) {
+            return true;
+        }
+    }
+    return false;
+};
+
+
 
 
 

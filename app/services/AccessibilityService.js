@@ -10,7 +10,7 @@ const videoBlocker = require("~/overlays/VideoOverlay");
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
 
 // packages to ignore (might need to compile a list as time goes on)
-const ignore = ["com.sec.android.inputmethod"];
+const ignore = ["com.sec.android.inputmethod", "com.android.systemui"];
 
 
 
@@ -74,8 +74,18 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
         var eventType = event.getEventType();
+        
+        if (ignore.includes(activePackage)) {
+            return; // ignore certain pacakges
+        }
 
-        if (activePackage === "org.nativescript.HabitLabMobile" || ignore.includes(activePackage)) { return; } // skip over
+        if (activePackage === "org.nativescript.HabitLabMobile") { 
+            var now = Date.now();
+            var timeSpentOnPhone = now - screenOnTime;
+            storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
+            screenOnTime = now;
+            return; // skip over habitlab
+        } 
        
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();

@@ -7,6 +7,7 @@ var page;
 var nameField;
 
 exports.pageLoaded = function(args) {
+  
 	page = args.object;
 	nameField = page.getViewById("name");
 	nameField.text = StorageUtil.getName() || "";
@@ -43,6 +44,7 @@ exports.pageLoaded = function(args) {
   }
 
   StorageUtil.setUpDB();
+  StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'started_onboarding'}]);
 };
 
 //Only lets the user continue past the first slide if a name is entered 
