@@ -44,6 +44,9 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             var timeSpentOnPhone = now - screenOnTime;
             storage.updateTotalTime(timeSpentOnPhone);
             interventionManager.removeOverlays();
+            currentApplication.packageName = "";
+            currentApplication.isBlacklisted = false;
+            currentApplication.visitStart = 0;
         }  
     }
 });
