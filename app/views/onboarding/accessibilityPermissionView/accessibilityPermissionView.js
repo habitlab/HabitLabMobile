@@ -7,7 +7,7 @@ var page;
 
 exports.pageLoaded = function(args) {
 	page = args.object;
-	fancyAlert.TNSFancyAlert.showSuccess("One more to go!", "Awesome, just one last permission to authorize.", "Let's do it");
+	fancyAlert.TNSFancyAlert.showSuccess("One more!", "Awesome, just one last thing to authorize. We need to be able to monitor the apps you've selected so we can help you build better habits! Please enable the service for HabitLab!", "I'm on it!");
 };
 
 //When the user taps the 'give permission' button - If the user hasn't already given permission, open settings

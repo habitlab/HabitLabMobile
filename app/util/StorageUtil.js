@@ -361,7 +361,7 @@ exports.getName = function() {
  * Returns array of package names (strings) that are currently 'blacklisted'.
  */
 exports.getSelectedPackages = function() {
-  return JSON.parse(appSettings.getString('selectedPackages'));
+  return JSON.parse(appSettings.getString('selectedPackages')) || [];
 };
 
 /* export: addPackage

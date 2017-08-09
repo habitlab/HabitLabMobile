@@ -6,6 +6,7 @@ var page;
 
 exports.pageLoaded = function(args) {
 	page = args.object;
+  fancyAlert.TNSFancyAlert.showInfo("Let us nudge you!", "Some of our nudges need to be able to show you alerts while you are in other apps. Please enable the overlay permission for us!", "Gotcha!");
 };
 
 

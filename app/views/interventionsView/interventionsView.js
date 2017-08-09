@@ -101,13 +101,15 @@ exports.pageLoaded = function(args) {
 
 exports.goToProgress = function() {
   StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_tutorial'}]);
-  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  fancyAlert.TNSFancyAlert.showSuccess("All set!", "HabitLab can now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate({
     moduleName: "views/progressView/progressView",
-    context: { fromTutorial: true }
-    });
-}
+    context: { 
+      fromTutorial: true
+    }
+  });
+};
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
