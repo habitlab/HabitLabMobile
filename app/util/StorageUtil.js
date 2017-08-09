@@ -975,9 +975,8 @@ exports.getProgressViewInfo = function() {
         retObj.phoneStats[index].time = 0;
       }
 
-      var toAdd = Math.ceil(item.time);
-      retObj.phoneStats[index].time += toAdd;
-      seconds = toAdd;
+      item.time = Math.ceil(item.time);
+      retObj.phoneStats[index].time += item.time;
     });
 
     appStat.packageName = pkg;
