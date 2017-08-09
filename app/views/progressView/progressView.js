@@ -278,7 +278,7 @@ getWeekEntries = function() {
         //array of values for each week
         var appValues = [];
         for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeDay = Math.round(progressInfo.appStats[app][TODAY-day].time)
+            var totalTimeDay = progressInfo.appStats[app][TODAY-day].time
             appValues.push(new java.lang.Integer(totalTimeDay));
         }
         //now have an array of values for a week
@@ -366,7 +366,7 @@ getMonthEntries = function() {
         //array of values for each week
         var appValues = [];
         for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeWeekApp = (getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo)));
+            var totalTimeWeekApp = getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo;
             appValues.push(new java.lang.Integer(totalTimeWeekApp));
         }
         entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
@@ -387,8 +387,8 @@ getMonthEntries = function() {
 populateListViewsDay = function() {   
      var unlocks = progressInfo.phoneStats[TODAY].unlocks;
      var glances = progressInfo.phoneStats[TODAY].glances;
-     var total = (progressInfo.phoneStats[TODAY].totalTime === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].totalTime));
-     var targetTime = (progressInfo.phoneStats[TODAY].time === 0 ? 0 : Math.round(progressInfo.phoneStats[TODAY].time));
+     var total = progressInfo.phoneStats[TODAY].totalTime;
+     var targetTime = progressInfo.phoneStats[TODAY].time;
      // var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
     
 	//'buttons' that show the usage daily overall phone usage 
@@ -420,8 +420,8 @@ populateListViewsDay = function() {
 
 //Creates list view for week, showing name, avg min.day and total minutes
 populateListViewsWeek = function() {
-    var timeOnPhoneWeek = ((totalTimeWeek(0, "total") === 0) ? 0 : Math.round(totalTimeWeek(0, "total")))
-    var timeOnTargetAppsWeek = ((totalTimeWeek(0, "target") === 0) ? 0 : Math.round(totalTimeWeek(0, "target")));
+    var timeOnPhoneWeek = totalTimeWeek(0, "total")
+    var timeOnTargetAppsWeek = totalTimeWeek(0, "target");
     // var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
     var unlocks = totalTimeWeek(0, "unlocks");
     var hrsOnWatchlistWeek = (timeOnTargetAppsWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/60));
@@ -454,8 +454,8 @@ populateListViewsWeek = function() {
 
 //Creates a list view for the month view, with name, avg min/day and total mintues
 populateListViewMonth = function () {
-	var totalTimePhoneMonth = (totalTimeMonth("total") === 0 ? 0 : Math.round(totalTimeMonth("total")));
-    var totalTarget = (totalTimeMonth("target") === 0 ? 0 : Math.round(totalTimeMonth("target")));
+	var totalTimePhoneMonth = totalTimeMonth("total");
+    var totalTarget = totalTimeMonth("target");
     var unlocks = totalTimeMonth("unlocks"); 
     var hrs = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTimePhoneMonth/60));
     var watchHrs = (totalTarget === 0 ? 0 : Math.round(totalTarget/60));
@@ -603,7 +603,7 @@ totalTimeMonth = function(value) {
 getAppsToday = function() {
     var list = [];
     for (i = 0; i < progressInfo.appStats.length; i++) {
-        var mins = Math.round(progressInfo.appStats[i][TODAY].time);
+        var mins = progressInfo.appStats[i][TODAY].time;
         var visits = progressInfo.appStats[i][TODAY].visits;
         var name = basic[i].name;
         var icon = basic[i].icon;
@@ -632,7 +632,7 @@ getAppsWeek = function () {
     var weekApps = [];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var name = basic[i].name;
-        var totalMins = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppWeek(progressInfo.appStats[i], 0)));
+        var totalMins = getTotalTimeAppWeek(progressInfo.appStats[i], 0;
         var avgMins = Math.round(totalMins/7);
         var icon = basic[i].icon;
         var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
@@ -663,7 +663,7 @@ getAppsMonth = function() {
     var monthApps = [];
      for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var icon = basic[i].icon;
-        var totalMins = (getTotalTimeAppMonth(progressInfo.appStats[i], 0) === 0 ? 0 : Math.round(getTotalTimeAppMonth(progressInfo.appStats[i], 0)));
+        var totalMins = getTotalTimeAppMonth(progressInfo.appStats[i], 0;
         var avgMins = Math.round(totalMins/28);
         var name = basic[i].name;
         monthApps.push({
@@ -788,7 +788,7 @@ function getDayLabels() {
 
 //Returns the spannable string for the center of the pie chart
 function getSpannableString() {
-    var total = (Math.round(progressInfo.phoneStats[TODAY].time));
+    var total = progressInfo.phoneStats[TODAY].time;
     if (total === 0) {
         var myString;
         if (fromTutorial) {
@@ -796,7 +796,6 @@ function getSpannableString() {
         } else {
              myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
         }
-       
         myString.setSpan(new RelativeSizeSpan(1.2), 0, myString.length(), 0);
         myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, myString.length(), 0);
         myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);
