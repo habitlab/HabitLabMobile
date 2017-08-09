@@ -1,7 +1,7 @@
 <Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
   actionBarHidden="true" xmlns:VideoPlayer="nativescript-videoplayer">
 		<StackLayout>
-        <Label text="Last one!" textWrap='true' class="title"/>
+        <Label text="Enable Services" textWrap='true' class="title"/>
         <VideoPlayer:Video class="firstVideo"
           controls="false" 
           loop="true" autoplay="true"

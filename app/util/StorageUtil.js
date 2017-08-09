@@ -539,7 +539,7 @@ exports.glanced = function() {
  */
 exports.updateAppTime = function(packageName, time) {
   var appInfo = JSON.parse(appSettings.getString(packageName));
-  appInfo['stats'][index()]['time'] += time / MIN_IN_MS;
+  appInfo['stats'][index()]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
@@ -570,7 +570,7 @@ var getTargetTime = function() {
  */
 exports.updateTotalTime = function(time) {  
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
-  phoneInfo['stats'][index()]['totalTime'] += time / MIN_IN_MS;
+  phoneInfo['stats'][index()]['totalTime'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 

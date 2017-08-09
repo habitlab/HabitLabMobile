@@ -70,7 +70,6 @@ exports.pageNavigating = function(args) {
      if (page.navigationContext) {
         fromTutorial = page.navigationContext.fromTutorial;
     }
-    console.warn(fromTutorial);
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
     //Gets arrays for the 'basic' info of the apps - names and icons
@@ -860,7 +859,6 @@ exports.toggleDrawer = function() {
 
 
 exports.backEvent = function(args) {
-    console.warn(fromTutorial);
    if(fromTutorial) {
         var activity = app.android.foregroundActivity;
         activity.finish();

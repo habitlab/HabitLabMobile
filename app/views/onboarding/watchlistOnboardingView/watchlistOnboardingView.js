@@ -98,17 +98,28 @@ var createCell = function(info, r, c)  {
 };
 
 exports.onDone = function() {
+  var numToRemove = 0;
+  var hasAddedPkg = false;
   Object.keys(toToggle).forEach(function(key) {
-    if (toToggle[key]) {
-      StorageUtil.togglePackage(key);
+    if (!hasAddedPkg && toToggle[key]) {
+      if (pkgs.includes(key)) {
+        numToRemove++;
+      } else {
+        hasAddedPkg = true;
+      }
     }
   });
 
-  if (!StorageUtil.getSelectedPackages().length) {
+  if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
+    Object.keys(toToggle).forEach(function(key) {
+      if (toToggle[key]) {
+        StorageUtil.togglePackage(key);
+      }
+    });
+    frame.topmost().navigate('views/onboarding/nudgesOnboardingView/nudgesOnboardingView');  
+  } else {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
-    return;
   }
-  var arr = StorageUtil.getSelectedPackages().length;
-  console.warn(arr);
   frame.topmost().navigate('views/onboarding/nudgesOnboardingView/nudgesOnboardingView');  
+
 };

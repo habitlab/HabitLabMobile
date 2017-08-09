@@ -111,22 +111,32 @@ exports.toggleDrawer = function() {
 };
 
 exports.onDone = function() {
-  //notification on done (first time only)
 
-  var wasChanged = false;
+  var numToRemove = 0;
+  var hasAddedPkg = false;
   Object.keys(toToggle).forEach(function(key) {
-    if (toToggle[key]) {
-      StorageUtil.togglePackage(key);
-      wasChanged = true;
+    if (!hasAddedPkg && toToggle[key]) {
+      if (pkgs.includes(key)) {
+        numToRemove++;
+      } else {
+        hasAddedPkg = true;
+      }
     }
   });
 
-  if (!StorageUtil.getSelectedPackages().length) {
+  if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
+    var wasChanged = false;
+    Object.keys(toToggle).forEach(function(key) {
+      if (toToggle[key]) {
+        StorageUtil.togglePackage(key);
+        wasChanged = true;
+      }
+    });
+    frame.topmost().goBack();
+  } else {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
-    return;
   }
 
-  frame.topmost().goBack();
 };
 
 exports.pageUnloaded = function(args) {
