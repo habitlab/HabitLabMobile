@@ -46,7 +46,7 @@ exports.checkNameNextPage = function(args) {
 	if (name === "") {
 	  fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "OK");
 	} else {
-		StorageUtil.setName(name);
+		StorageUtil.setName(name.trim());
 		frameModule.topmost().navigate('views/watchlistOnboardingView/watchlistOnboardingView');
 	}	
 };

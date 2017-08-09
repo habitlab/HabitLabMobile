@@ -5,20 +5,47 @@ var frame = require('ui/frame');
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
+var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
+var timer = require("timer");
 var page;
 var toToggle;
 var pkgs;
 
+exports.gridUnloaded = function(args) {
+  args.object.removeChildren();
+};
+
 exports.pageLoaded = function(args) {
 	page = args.object;
 	pkgs = StorageUtil.getSelectedPackages();
-	toToggle = {};
-	createGrid();
+  toToggle = {};
+
+
+  var loader = new LoadingIndicator();
+  var options = {
+    message: 'Loading...',
+    progress: 0.65,
+    android: {
+      indeterminate: true,
+      cancelable: false,
+      max: 100,
+      progressNumberFormat: "%1d/%2d",
+      progressPercentFormat: 0.53,
+      progressStyle: 1,
+      secondaryProgress: 1
+    }
+  };
+  loader.show(options);
+
+  timer.setTimeout(() => {
+    createGrid();
+    loader.hide();
+  }, 1000);
 };
 
 var createGrid = function() {
   var list = UsageUtil.getApplicationList();
-   var selectedPackages = StorageUtil.getSelectedPackages();
+  var selectedPackages = StorageUtil.getSelectedPackages();
 
   list.sort(function(a, b){
     var aIsSelected = selectedPackages.includes(a.packageName);
@@ -29,7 +56,7 @@ var createGrid = function() {
     } else if (!aIsSelected && bIsSelected) {
       return 1;
     }  else {
-      return a.label < b.label ? -1 : 1;
+      return a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1;
     }
   });
 

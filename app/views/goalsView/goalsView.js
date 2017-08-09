@@ -9,6 +9,8 @@ var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
 var fancyAlert = require("nativescript-fancyalert");
 var ToolTip = require("nativescript-tooltip").ToolTip;
 var view = require("ui/core/view");
+var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
+var timer = require("timer");
 var Resources = android.content.res.Resources;
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -160,15 +162,37 @@ exports.pageLoaded = function(args) {
   if (StorageUtil.isTutorialComplete()) {
     page.getViewById('done').visibility = 'collapse';
     page.getViewById('scroll').height = '100%';
+  } else {
+    fancyAlert.TNSFancyAlert.showSuccess("Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!");
   }
-  setUpPhoneGoals();
-  setUpAppGoals();
+
+  var loader = new LoadingIndicator();
+  var options = {
+    message: 'Loading...',
+    progress: 0.65,
+    android: {
+      indeterminate: true,
+      cancelable: false,
+      max: 100,
+      progressNumberFormat: "%1d/%2d",
+      progressPercentFormat: 0.53,
+      progressStyle: 1,
+      secondaryProgress: 1
+    }
+  };
+  loader.show(options);
+
+  timer.setTimeout(() => {
+    setUpPhoneGoals();
+    setUpAppGoals();
+    loader.hide();
+  }, 1000);  
 };
 
 exports.onDone = function() {
-  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-  StorageUtil.setTutorialComplete();
-  frameModule.topmost().navigate("views/progressView/progressView");
+  // fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  // StorageUtil.setTutorialComplete();
+  frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
 exports.pageUnloaded = function(args) {

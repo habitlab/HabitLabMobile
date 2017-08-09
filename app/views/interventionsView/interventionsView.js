@@ -2,10 +2,10 @@ var StorageUtil = require("~/util/StorageUtil");
 var IM = require('~/interventions/InterventionManager');
 var ID = require('~/interventions/InterventionData');
 var Toast = require('nativescript-toast');
-
+var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
-var frame = require('ui/frame');
+var frameModule = require('ui/frame');
 
 var drawer;
 var page;
@@ -48,7 +48,7 @@ var createItem = function(info)  {
   };
   item.on("tap, touch", function(args) {
     if (args.eventName === 'tap') {
-      frame.topmost().navigate(options);
+      frameModule.topmost().navigate(options);
     } else {
       if (args.action === 'down') {
         item.backgroundColor = '#F5F5F5';
@@ -85,18 +85,42 @@ var setUpList = function() {
 
 };
 
+var visited = false;
+
 exports.pageLoaded = function(args) {
   events = [{category: "navigation", index: "menu"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
+   if (!StorageUtil.isTutorialComplete()) {
+    if (!visited) {
+      fancyAlert.TNSFancyAlert.showInfo("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+      visited = true;
+    }
+    page.getViewById('finish').visibility = 'visible';
+  }
   setUpList();
 };
+
+
+exports.goToProgress = function() {
+  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  frameModule.topmost().navigate("views/progressView/progressView");
+}
+
+
+
+
+
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
 };
 
 exports.toggleDrawer = function() {
-  events.push({category: "navigation", index: "menu"});
-  drawer.toggleDrawerState();
+ if (!StorageUtil.isTutorialComplete()) {
+    fancyAlert.TNSFancyAlert.showError("Almost done!", "Click finish tutorial to finish setting up HabitLab!", "Got It!");
+  } else {
+    events.push({category: "navigation", index: "menu"});
+    drawer.toggleDrawerState();
+  }
 };

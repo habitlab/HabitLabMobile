@@ -1,7 +1,8 @@
 var StorageUtil = require('~/util/StorageUtil');
 var UsageUtil = require('~/util/UsageInformationUtil');
 var IM = require('~/interventions/InterventionManager');
-
+var fancyAlert = require("nativescript-fancyalert");
+var frameModule = require('ui/frame');
 var builder = require('ui/builder');
 var gestures = require('ui/gestures').GestureTypes;
 
@@ -119,8 +120,18 @@ exports.pageLoaded = function(args) {
   if (page.navigationContext) {
     info = page.navigationContext.info;
   }
+  if (!StorageUtil.isTutorialComplete()) {
+    page.getViewById('finish').visibility = 'visible';
+  }
   setUpDetail();
 };
+
+
+exports.goToProgress = function() {
+  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  frameModule.topmost().navigate("views/progressView/progressView");
+}
+
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);

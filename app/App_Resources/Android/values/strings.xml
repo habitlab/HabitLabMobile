@@ -2,5 +2,5 @@
 <resources>
   <string name="app_name">HabitLab</string>
   <string name="title_activity_kimera">HabitLab</string>
-  <string name="accessibility_service_description">HabitLab is here to help shape your device usage habits!</string>
+  <string name="accessibility_service_description">Allow HabitLab to see what applications are running so that we can help improve your mobile habits! We will always keep your data private and never expose it to third parties.</string>
 </resources>

@@ -41,7 +41,6 @@ var setTimes = function(start, end) {
 };
 
 exports.onTimeChange = function(args) {
-  console.log(args.action);
   if (args.action === 'move') {
     hourChanged = true;
   }
