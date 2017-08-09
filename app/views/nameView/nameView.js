@@ -17,19 +17,27 @@ exports.pageLoaded = function(args) {
   	application.android.context.startService(trackingServiceIntent)
   }
 
+  var view = "";
   if (StorageUtil.isTutorialComplete()) {
-    frameModule.topmost().navigate('views/progressView/progressView');
+    view = 'progressView';
   } else if (StorageUtil.isOnboardingComplete()) {
-    frameModule.topmost().navigate('views/goalsView/goalsView');
+    view = 'goalsView';
   } else if (PermissionUtil.checkAccessibilityPermission()) {
-    frameModule.topmost().navigate('views/goalsView/goalsView');
+    view = 'goalsView';
     StorageUtil.setOnboardingComplete();
   } else if (PermissionUtil.checkSystemOverlayPermission()) {
-    frameModule.topmost().navigate('views/accessibilityPermissionView/accessibilityPermissionView');
+    view = "accessibilityPermissionView"
+  }
+
+  if (view) {
+    frameModule.topmost().navigate({
+      moduleName: 'views/' + view + '/' + view,
+      clearHistory: view === 'progressView' || view === 'goalsView'
+    });
   }
 
   StorageUtil.setUpDB();
-}
+};
 
 //Only lets the user continue past the first slide if a name is entered 
 // else, a dialog appears

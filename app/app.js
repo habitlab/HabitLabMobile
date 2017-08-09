@@ -60,10 +60,7 @@ applicationModule.on(applicationModule.launchEvent, function(args) {
 	StorageUtil.clearErrorQueue();
 });
 
-applicationModule.start({ 
-  moduleName: "views/" + view + "/" + view, 
-  backstackVisible: view === 'progressView'
-});
+applicationModule.start("views/" + view + "/" + view);
 applicationModule.setCssFileName("app.css");
 
 
