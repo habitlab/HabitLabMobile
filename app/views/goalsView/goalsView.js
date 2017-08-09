@@ -179,20 +179,19 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
     loader.hide();
+    var btn = page.getViewById('done');
     if (StorageUtil.isTutorialComplete()) {
-      var btn = page.getViewById('done');
       btn.text = 'save';
       btn.on('tap', function() {
         frameModule.topmost().navigate('views/progressView/progressView');
       });
     } else {
+      btn.on('tap', function() {
+        frameModule.topmost().navigate('views/interventionsView/interventionsView');
+      });
       FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
     }
   }, 1000);  
-};
-
-exports.onDone = function() {
-  frameModule.topmost().navigate("views/interventionsView/interventionsView");
 };
 
 exports.pageUnloaded = function(args) {

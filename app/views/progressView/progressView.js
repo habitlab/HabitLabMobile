@@ -62,11 +62,15 @@ var monthchart;
 var barchartMade = false;
 var piechartMade = false;
 var monthchartMade = false;
-
+var fromTutorial = false;
 var events;
 
 exports.pageNavigating = function(args) {
     page = args.object;
+     if (page.navigationContext) {
+        fromTutorial = page.navigationContext.fromTutorial;
+    }
+    console.warn(fromTutorial);
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
     //Gets arrays for the 'basic' info of the apps - names and icons
@@ -159,7 +163,7 @@ function rerender_dayview() {
 //Entries for the pie chart
 getDayEntries = function() {
     var appsToday = getAppsToday(); //gets the target apps used today
-    var total = Math.round((progressInfo.phoneStats[TODAY].time));
+    var total = progressInfo.phoneStats[TODAY].time;
     var entries = new ArrayList();
     var main = 0;
     var min;
@@ -787,11 +791,12 @@ function getSpannableString() {
     var total = (Math.round(progressInfo.phoneStats[TODAY].time));
     if (total === 0) {
         var myString;
-        if (!storageUtil.isTutorialComplete()) {
+        if (fromTutorial) {
             myString = new SpannableString("This is where your daily progress will show up.\n Happy habit building!")
-            storageUtil.setTutorialComplete();
+        } else {
+             myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
         }
-        myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
+       
         myString.setSpan(new RelativeSizeSpan(1.2), 0, myString.length(), 0);
         myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, myString.length(), 0);
         myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);
@@ -855,6 +860,17 @@ exports.toggleDrawer = function() {
 
 
 
+exports.backEvent = function(args) {
+    console.warn(fromTutorial);
+   if(fromTutorial) {
+        var activity = app.android.foregroundActivity;
+        activity.finish();
+   } else {
+        frameModule.topmost().goBack();
+   }
+}
+
+
 var permissionServiceIsRunning = function () {
     var manager = app.android.context.getSystemService(android.content.Context.ACTIVITY_SERVICE);
     var services = manager.getRunningServices(java.lang.Integer.MAX_VALUE);
@@ -866,6 +882,7 @@ var permissionServiceIsRunning = function () {
     }
     return false;
 };
+
 
 
 
