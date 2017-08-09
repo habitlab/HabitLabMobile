@@ -5,6 +5,7 @@ var Timer = require("timer");
 // utils
 const ServiceManager = require("./ServiceManager");
 const PermissionUtil = require("~/util/PermissionUtil");
+const StorageUtil = require("~/util/StorageUtil");
 
 // global vars
 var context = application.android.context.getApplicationContext();
@@ -82,6 +83,7 @@ var checkPermission = function () {
         var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
         foregroundActivity.startActivity(intent);
     } else if (accessibilityPermission && overlayPermission) {
+        StorageUtil.addLogEvents([{setValue: new Date(), category: 'navigation', index: 'finished_onboarding'}]);
         stopTimer();
         context.stopService(new android.content.Intent(context, com.habitlab.PermissionCheckerService.class));
     }

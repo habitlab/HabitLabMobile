@@ -59,7 +59,8 @@ var createPhoneGoal = function(goal, value) {
   if (goal === "glances") {
       info.visibility = 'visible';
       info.on(gestures.tap, function() {
-        const tip = new ToolTip(info,{text:"The number of times your screen lights up when you glance at it", width: 0.43*SCREEN_WIDTH});;
+        events.push({category: 'features', index: 'tooltips'});
+        const tip = new ToolTip(info, {text:"The number of times you check your phone's lock screen", width: 0.43*SCREEN_WIDTH});;
         tip.show(); 
       });
   } else {
@@ -72,7 +73,7 @@ var createPhoneGoal = function(goal, value) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changePhoneGoal(newNum, goal);
     if (phoneChanged) {
-      events.push({category: "features", index: "goals_phonegoal_changed"});
+      events.push({category: "features", index: "goals_phonegoal_change"});
     }
   });
 
@@ -128,7 +129,7 @@ var createAppGoal = function(pkg) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
     if (appChanged) {
-      events.push({category: "features", index: "goals_appgoal_changed"});
+      events.push({category: "features", index: "goals_appgoal_change"});
     }
   });
 

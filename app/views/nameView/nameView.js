@@ -7,6 +7,7 @@ var page;
 var nameField;
 
 exports.pageLoaded = function(args) {
+  
 	page = args.object;
 	nameField = page.getViewById("name");
 	nameField.text = StorageUtil.getName() || "";
@@ -36,6 +37,7 @@ exports.pageLoaded = function(args) {
     });
   }
 
+  StorageUtil.addLogEvents([{setValue: new Date(), category: 'navigation', index: 'started_onboarding'}]);
   StorageUtil.setUpDB();
 };
 

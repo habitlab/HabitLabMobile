@@ -82,13 +82,11 @@ var setUpList = function() {
       layouts[item.style].addChild(createItem(item));
     }
   });
-
 };
 
 var visited = false;
-
 exports.pageLoaded = function(args) {
-  events = [{category: "navigation", index: "menu"}];
+  events = [{category: "page_visits", index: "nudges_main"}];
   page = args.object;
   drawer = page.getViewById('sideDrawer');
    if (!StorageUtil.isTutorialComplete()) {
@@ -101,16 +99,11 @@ exports.pageLoaded = function(args) {
   setUpList();
 };
 
-
 exports.goToProgress = function() {
+  StorageUtil.addLogEvents([{setValue: new Date(), category: 'navigation', index: 'finished_tutorial'}]);
   fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   frameModule.topmost().navigate("views/progressView/progressView");
 }
-
-
-
-
-
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);

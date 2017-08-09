@@ -18,6 +18,7 @@ var getErrorDetails = function (args) {
     let error = args.android;
 
     return {
+        userID: appSettings.getString('userID') || 'noIDFound';
         name: error.name || 'Error',
         nativeException: error.nativeException,
         message: error.message || JSON.stringify(error),

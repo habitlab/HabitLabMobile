@@ -1,4 +1,4 @@
-<StackLayout class="sidedrawer-left" loaded="onLoaded" >
+<StackLayout class="sidedrawer-left" loaded="onLoaded" unloaded="menuUnloaded">
 	<GridLayout rows="*,auto" columns="auto" class="sidedrawer-header" backgroundImage="~/images/flipped_background.png">
 		<Image src="res://ic_inline_logo_text" class="sd-icon" row="1"/>
 	</GridLayout>
