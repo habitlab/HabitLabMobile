@@ -11,6 +11,7 @@ var ToolTip = require("nativescript-tooltip").ToolTip;
 var view = require("ui/core/view");
 var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
 var timer = require("timer");
+var FancyAlert = require("~/util/FancyAlert");
 var Resources = android.content.res.Resources;
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -159,12 +160,6 @@ exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "goals"}];
   page = args.object;
   drawer = page.getViewById("sideDrawer");
-  if (StorageUtil.isTutorialComplete()) {
-    page.getViewById('done').visibility = 'collapse';
-    page.getViewById('scroll').height = '100%';
-  } else {
-    fancyAlert.TNSFancyAlert.showSuccess("Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!");
-  }
 
   var loader = new LoadingIndicator();
   var options = {
@@ -186,6 +181,12 @@ exports.pageLoaded = function(args) {
     setUpPhoneGoals();
     setUpAppGoals();
     loader.hide();
+    if (StorageUtil.isTutorialComplete()) {
+      page.getViewById('done').visibility = 'collapse';
+      page.getViewById('scroll').height = '100%';
+    } else {
+      FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
+    }
   }, 1000);  
 };
 
