@@ -773,7 +773,7 @@ function getSpannableString() {
     var total = (Math.round(progressInfo.phoneStats[TODAY].time));
     if (total === 0) {
         var myString;
-        if (!StorageUtil.isTutorialComplete()) {
+        if (!storageUtil.isTutorialComplete()) {
             myString = new SpannableString("This is where your daily progress will show up.\n Happy habit building!")
             storageUtil.setTutorialComplete();
         }

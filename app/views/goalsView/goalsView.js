@@ -201,7 +201,7 @@ exports.pageUnloaded = function(args) {
 
 exports.toggleDrawer = function() {
   if (!StorageUtil.isTutorialComplete()) {
-    fancyAlert.TNSFancyAlert.showError("Last Step!", "Click done to finish setting up HabitLab!", "Got It!");
+    fancyAlert.TNSFancyAlert.showError("Complete Tutorial First", "Click done to continue with the tutorial, then you'll be ready to start exploring!", "Got It!");
   } else {
     events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();

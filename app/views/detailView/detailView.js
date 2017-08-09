@@ -108,8 +108,12 @@ var setUpDetail = function() {
 };
 
 exports.toggleDrawer = function() {
-    events.push({category: 'navigation', index: 'menu'});
+  if (!StorageUtil.isTutorialComplete()) {
+    fancyAlert.TNSFancyAlert.showError("Almost there!", "Finish up the tutorial to begin exploring the app!", "Got It!");
+  } else {
+    events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();
+  }
 };
 
 exports.pageLoaded = function(args) {
