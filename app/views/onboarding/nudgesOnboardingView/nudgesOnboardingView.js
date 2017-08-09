@@ -73,7 +73,7 @@ initializeIcons = function() {
 
 exports.goToAccessibilityPermission = function() {
 	frame.topmost().navigate({
-    moduleName: 'views/overlayPermissionView/overlayPermissionView',
+    moduleName: 'views/onboarding/overlayPermissionView/overlayPermissionView',
   });
 }
 

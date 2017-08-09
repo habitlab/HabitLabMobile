@@ -3,10 +3,14 @@ var StorageUtil = require('~/util/StorageUtil');
 var Toast = require("nativescript-toast");
 var http = require("http");
 
+var viewFile = 'onboarding/nameView';
 var view = 'nameView';
+
 if (StorageUtil.isTutorialComplete()) {
+  viewFile = "progressView";
   view = "progressView";
 } else if (StorageUtil.isOnboardingComplete()) {
+  viewFile = "goalsView";
   view = 'goalsView';
 }
 
@@ -60,7 +64,7 @@ applicationModule.on(applicationModule.launchEvent, function(args) {
 	StorageUtil.clearErrorQueue();
 });
 
-applicationModule.start("views/" + view + "/" + view);
+applicationModule.start("views/" + viewFile + "/" + view);
 applicationModule.setCssFileName("app.css");
 
 

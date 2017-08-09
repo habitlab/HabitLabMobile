@@ -17,21 +17,27 @@ exports.pageLoaded = function(args) {
   	application.android.context.startService(trackingServiceIntent)
   }
 
+  var viewFile = "";
   var view = "";
+
   if (StorageUtil.isTutorialComplete()) {
+    viewFile = 'progressView';
     view = 'progressView';
   } else if (StorageUtil.isOnboardingComplete()) {
+    viewFile = 'goalsView';
     view = 'goalsView';
   } else if (PermissionUtil.checkAccessibilityPermission()) {
+     viewFile = 'goalsView';
     view = 'goalsView';
     StorageUtil.setOnboardingComplete();
   } else if (PermissionUtil.checkSystemOverlayPermission()) {
+    viewFile = 'onboarding/accessibilityPermissionView';
     view = "accessibilityPermissionView"
   }
 
   if (view) {
     frameModule.topmost().navigate({
-      moduleName: 'views/' + view + '/' + view,
+      moduleName: 'views/' + viewFile + '/' + view,
       clearHistory: view === 'progressView' || view === 'goalsView'
     });
   }
@@ -47,7 +53,7 @@ exports.checkNameNextPage = function(args) {
 	  fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "OK");
 	} else {
 		StorageUtil.setName(name.trim());
-		frameModule.topmost().navigate('views/watchlistOnboardingView/watchlistOnboardingView');
+		frameModule.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
 	}	
 };
 
