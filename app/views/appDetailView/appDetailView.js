@@ -146,9 +146,6 @@ var createItem = function(enabled, id, first)  {
 
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
-  var icon = item.getViewById('icon');
-  icon.visibility = 'collapsed';
-
   var button = item.getViewById('button');
   button.text = 'DISABLE ALL';
   button.className = 'app-detail-disable-button';

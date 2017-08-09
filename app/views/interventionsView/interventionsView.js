@@ -6,7 +6,7 @@ var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var frameModule = require('ui/frame');
-
+var FancyAlert = require("~/util/FancyAlert");
 var drawer;
 var page;
 var interventionList;
@@ -91,7 +91,7 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById('sideDrawer');
    if (!StorageUtil.isTutorialComplete()) {
     if (!visited) {
-      fancyAlert.TNSFancyAlert.showInfo("Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+      FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
@@ -101,7 +101,7 @@ exports.pageLoaded = function(args) {
 
 exports.goToProgress = function() {
   StorageUtil.addLogEvents([{setValue: new Date(), category: 'navigation', index: 'finished_tutorial'}]);
-  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  FancyAlert.show(FancyAlert.type.SUCCESS, "You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   frameModule.topmost().navigate("views/progressView/progressView");
 }
 

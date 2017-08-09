@@ -2,11 +2,15 @@ var applicationModule = require("application");
 var StorageUtil = require('~/util/StorageUtil');
 var Toast = require("nativescript-toast");
 var http = require("http");
-
+var frame = require('ui/frame');
+var viewFile = 'onboarding/nameView';
 var view = 'nameView';
+
 if (StorageUtil.isTutorialComplete()) {
+  viewFile = "progressView";
   view = "progressView";
 } else if (StorageUtil.isOnboardingComplete()) {
+  viewFile = "goalsView";
   view = 'goalsView';
 }
 
@@ -45,7 +49,7 @@ function send_log(data) {
 applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 	let errordetails = getErrorDetails(args);
 	let errordetails_stringified = JSON.stringify(errordetails);
-  // console.warn(errordetails_stringified);
+  console.warn(errordetails_stringified);
 	StorageUtil.addError(errordetails_stringified);
 });
 
@@ -61,7 +65,20 @@ applicationModule.on(applicationModule.launchEvent, function(args) {
 	StorageUtil.clearErrorQueue();
 });
 
-applicationModule.start("views/" + view + "/" + view);
+
+//Global event handler to disable back button pressed on onboarding
+if (applicationModule.android) {
+    applicationModule.android.on(applicationModule.AndroidApplication.activityBackPressedEvent, backEvent);
+}
+function backEvent(args) {
+    var currentPage = frame.topmost().currentPage;
+    if (currentPage && currentPage.exports && typeof currentPage.exports.backEvent === "function") {
+         currentPage.exports.backEvent(args);
+   }   
+}
+
+
+applicationModule.start("views/" + viewFile + "/" + view);
 applicationModule.setCssFileName("app.css");
 
 

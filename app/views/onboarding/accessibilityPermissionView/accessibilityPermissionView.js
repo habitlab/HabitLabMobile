@@ -19,3 +19,7 @@ exports.giveAccessibilityPermission = function(args) {
     frameModule.topmost().navigate('views/goalsView/goalsView');
 	}
 }
+
+exports.backEvent = function(args) {
+   args.cancel = true; 
+}
