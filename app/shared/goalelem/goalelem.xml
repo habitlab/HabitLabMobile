@@ -7,5 +7,5 @@
     <Button text="+" id="plus" class="np-button" />
   </FlexboxLayout>
   <Label id="label" class="goal-label" />
-  <Image id="infoButton" class="info" src="res://ic_info_outline"/>
+  <Image id="infoButton" class="info" src="res://ic_info_outline" visibility="collapsed"/>
 </FlexboxLayout>

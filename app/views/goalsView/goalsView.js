@@ -63,7 +63,7 @@ var createPhoneGoal = function(goal, value) {
         tip.show(); 
       });
   } else {
-      info.visibility = 'hidden'; 
+    info.visibility="hidden";
   }
   
   var number = np.getViewById('number');
@@ -120,9 +120,6 @@ var createAppGoal = function(pkg) {
   item.getViewById('label').text = 'mins';
   var number = np.getViewById('number');
   number.text = goal;
-
-  var info = item.getViewById('infoButton');
-  info.visibility = 'collapse';
 
   number.on("unloaded", function (args) {
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
