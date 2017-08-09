@@ -793,8 +793,10 @@ function getSpannableString() {
         var myString;
         if (fromTutorial) {
             myString = new SpannableString("This is where your daily progress will show up.\n Happy habit building!")
+        } else {
+             myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
         }
-        myString = new SpannableString("You have not spent any time on your watchlist apps today!\n Keep up the good work!" );
+       
         myString.setSpan(new RelativeSizeSpan(1.2), 0, myString.length(), 0);
         myString.setSpan(new ForegroundColorSpan(Color.GRAY), 0, myString.length(), 0);
         myString.setSpan(new StyleSpan(Typeface.ITALIC),0, myString.length(), 0);

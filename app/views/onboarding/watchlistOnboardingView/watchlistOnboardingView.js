@@ -6,6 +6,7 @@ var gestures = require("ui/gestures").GestureTypes;
 var builder = require('ui/builder');
 var layout = require("ui/layouts/grid-layout");
 var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
+var fancyAlert = require("nativescript-fancyalert");
 var timer = require("timer");
 var page;
 var toToggle;

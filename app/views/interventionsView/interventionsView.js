@@ -105,6 +105,7 @@ exports.goToProgress = function() {
   StorageUtil.setTutorialComplete();
   frameModule.topmost().navigate({
     moduleName: "views/progressView/progressView",
+    clearHistory: true,
     context: { fromTutorial: true }
     });
 }
