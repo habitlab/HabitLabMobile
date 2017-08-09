@@ -41,10 +41,10 @@ exports.pageLoaded = function(args) {
       moduleName: 'views/' + viewFile + '/' + view,
       clearHistory: view === 'progressView' || view === 'goalsView'
     });
+  } else {
+    StorageUtil.setUpDB();
+    StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'started_onboarding'}]);
   }
-
-  StorageUtil.setUpDB();
-  StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'started_onboarding'}]);
 };
 
 //Only lets the user continue past the first slide if a name is entered 
