@@ -77,4 +77,7 @@ exports.goToAccessibilityPermission = function() {
   });
 }
 
+exports.backEvent = function(args) {
+  args.cancel = true; 
+}
 

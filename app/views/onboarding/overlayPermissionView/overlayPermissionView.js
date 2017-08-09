@@ -20,3 +20,7 @@ exports.giveDrawPermission = function(args) {
     });
   }
 };
+
+exports.backEvent = function(args) {
+   args.cancel = true; 
+}
