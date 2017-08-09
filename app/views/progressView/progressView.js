@@ -72,8 +72,16 @@ exports.pageNavigating = function(args) {
     basic = getBasic();
 }
 
+var cb = function() {
+    permissionUtil.launchAccessibilityServiceIntent();
+};
 
 exports.pageLoaded = function(args) {
+    if (!permissionUtil.checkAccessibilityPermission()) {
+        showFancyAlert(alertTypes.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!", 
+            "Take me there!", cb);
+    }
+
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
@@ -838,3 +846,28 @@ exports.toggleDrawer = function() {
     events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();
 };
+
+var alertTypes = {INFO: 0, HELP: 1, WRONG: 2, SUCCESS: 3, WARNING: 4};
+var PromptDialog = cn.refactor.lib.colordialog.PromptDialog;
+function showFancyAlert(type, title, content, closeMsg, callback) {
+    var alert = new PromptDialog(app.android.currentContext);
+    alert.setDialogType(type);
+    alert.setTitleText(title);
+    alert.setContentText(content);
+    alert.setAnimationEnable(true);
+    alert.setCanceledOnTouchOutside(false);
+    alert.setPositiveListener(closeMsg, new PromptDialog.OnPositiveListener({
+        onClick: (function (dialog) {
+            callback();
+            dialog.dismiss();
+        })
+    }));
+    alert.show();
+};
+
+
+
+
+
+
+
