@@ -444,7 +444,7 @@ populateListViewsWeek = function() {
         // desc: "time on watchlist"
     }
 	)
-	pageData.set("weekStats", weekButtons);
+	pageData.set("weekButtons", weekStats);
     var weekApps = getAppsWeek();
 	pageData.set("weekItems", weekApps);
  }
@@ -478,7 +478,7 @@ populateListViewMonth = function () {
         // desc: "time on watchlist"
     }
 	)
-	pageData.set("monthStats", monthButtons);
+	pageData.set("monthButtons", monthStats);
     var monthApps = getAppsMonth();
     pageData.set("monthItems", monthApps);
 };
