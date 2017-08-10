@@ -28,7 +28,7 @@ exports.pageLoaded = function(args) {
     viewFile = 'goalsView';
     view = 'goalsView';
   } else if (PermissionUtil.checkAccessibilityPermission()) {
-     viewFile = 'goalsView';
+    viewFile = 'goalsView';
     view = 'goalsView';
     StorageUtil.setOnboardingComplete();
   } else if (PermissionUtil.checkSystemOverlayPermission()) {

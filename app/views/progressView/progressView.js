@@ -365,7 +365,7 @@ getMonthEntries = function() {
         //array of values for each week
         var appValues = [];
         for (var app = 0; app < progressInfo.appStats.length; app++) {
-            var totalTimeWeekApp = getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo;
+            var totalTimeWeekApp = getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo);
             appValues.push(new java.lang.Integer(totalTimeWeekApp));
         }
         entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
@@ -631,7 +631,7 @@ getAppsWeek = function () {
     var weekApps = [];
     for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var name = basic[i].name;
-        var totalMins = getTotalTimeAppWeek(progressInfo.appStats[i], 0;
+        var totalMins = getTotalTimeAppWeek(progressInfo.appStats[i], 0);
         var avgMins = Math.round(totalMins/7);
         var icon = basic[i].icon;
         var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
@@ -662,7 +662,7 @@ getAppsMonth = function() {
     var monthApps = [];
      for(var i = 0; i < progressInfo.appStats.length; ++i) {
         var icon = basic[i].icon;
-        var totalMins = getTotalTimeAppMonth(progressInfo.appStats[i], 0;
+        var totalMins = getTotalTimeAppMonth(progressInfo.appStats[i], 0);
         var avgMins = Math.round(totalMins/28);
         var name = basic[i].name;
         monthApps.push({

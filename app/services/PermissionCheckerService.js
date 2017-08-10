@@ -51,7 +51,7 @@ var startTimer = function() {
 	if (!timerID) {
 		timerID = Timer.setInterval(() => {
 			checkPermission();
-		}, 300);
+		}, 1000);
 	}
 };
 
