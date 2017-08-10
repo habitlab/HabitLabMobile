@@ -392,8 +392,8 @@ populateListViewsDay = function() {
     
 	//'buttons' that show the usage daily overall phone usage 
     var hrsTotal = Math.round(total/6)/10;
-	var stats = [];
-	stats.push(
+	var dayStats = [];
+	dayStats.push(
 	{
 		value: unlocks,
 		desc: "unlocks"
@@ -409,8 +409,7 @@ populateListViewsDay = function() {
         // desc: "time on watchlist"
     }
 	)
-	var listButtons = view.getViewById(page, "listButtons");
-	listButtons.items = stats;
+    pageData.set("dayButtons", dayStats);
     dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
 
@@ -445,8 +444,7 @@ populateListViewsWeek = function() {
         // desc: "time on watchlist"
     }
 	)
-	var weekButtons = view.getViewById(page, "weekButtons");
-	weekButtons.items = weekStats; 
+	pageData.set("weekStats", weekButtons);
     var weekApps = getAppsWeek();
 	pageData.set("weekItems", weekApps);
  }
@@ -480,9 +478,7 @@ populateListViewMonth = function () {
         // desc: "time on watchlist"
     }
 	)
-	var monthButtons = view.getViewById(page, "monthButtons");
-	monthButtons.items = monthStats;
-
+	pageData.set("monthStats", monthButtons);
     var monthApps = getAppsMonth();
     pageData.set("monthItems", monthApps);
 };
