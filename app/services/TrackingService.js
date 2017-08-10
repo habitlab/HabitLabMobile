@@ -90,7 +90,7 @@ var stopTimer = function() {
 var inBlacklistedApplication;
 var startOfVisit;
 var screenOff = false;
-var currentPackage = "org.nativescript.HabitLabMobile";
+var currentPackage = "com.stanfordhci.habitlab";
 var trackUsage = function () {
     if (screenOff) return;
     var newPackage = getActivePackage();

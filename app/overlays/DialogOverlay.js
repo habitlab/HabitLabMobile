@@ -100,7 +100,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     twoOptionText = new TextView(context);
     twoOptionText.setText(msg);
@@ -199,7 +199,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     oneOptionText = new TextView(context);
     oneOptionText.setText(msg);

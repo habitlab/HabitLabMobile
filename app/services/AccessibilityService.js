@@ -82,7 +82,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             return; // ignore certain pacakges
         }
 
-        if (activePackage === "org.nativescript.HabitLabMobile") { 
+        if (activePackage === "com.stanfordhci.habitlab") { 
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
             storage.updateTotalTime(timeSpentOnPhone); // update time for progress view

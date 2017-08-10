@@ -92,7 +92,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     // add title
     var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
     	0.1 * SCREEN_WIDTH, 0.275 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     titleParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayTitle = new TextView(context);
     overlayTitle.setText(title);
@@ -105,7 +105,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.4 * SCREEN_HEIGHT,
     	0.1 * SCREEN_WIDTH, 0.3 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayText = new TextView(context);
     overlayText.setText(msg);

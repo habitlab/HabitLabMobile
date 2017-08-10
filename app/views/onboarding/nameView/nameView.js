@@ -12,12 +12,6 @@ exports.pageLoaded = function(args) {
 	nameField = page.getViewById("name");
 	nameField.text = StorageUtil.getName() || "";
 
-  // start permission-checking service
-  if (!permissionServiceIsRunning()) {
-  	var trackingServiceIntent = new android.content.Intent(application.android.context, com.habitlab.PermissionCheckerService.class); 
-  	application.android.context.startService(trackingServiceIntent)
-  }
-
   var viewFile = "";
   var view = "";
 
@@ -31,10 +25,7 @@ exports.pageLoaded = function(args) {
     viewFile = 'goalsView';
     view = 'goalsView';
     StorageUtil.setOnboardingComplete();
-  } else if (PermissionUtil.checkSystemOverlayPermission()) {
-    viewFile = 'onboarding/accessibilityPermissionView';
-    view = "accessibilityPermissionView"
-  }
+  } 
 
   if (view) {
     frameModule.topmost().navigate({
@@ -57,16 +48,4 @@ exports.checkNameNextPage = function(args) {
 		StorageUtil.setName(name.trim());
 		frameModule.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
 	}	
-};
-
-var permissionServiceIsRunning = function () {
-    var manager = application.android.context.getSystemService(android.content.Context.ACTIVITY_SERVICE);
-    var services = manager.getRunningServices(java.lang.Integer.MAX_VALUE);
-    for (var i = 0; i < services.size(); i++) {
-        var service = services.get(i);
-        if (service.service.getClassName() === com.habitlab.PermissionCheckerService.class.getName()) {
-            return true;
-        }
-    }
-    return false;
 };

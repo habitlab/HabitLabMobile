@@ -41,7 +41,7 @@ exports.getApplicationList = function() {
 		var packageName = info.activityInfo.packageName;
 		
 		// filter out habitlab and duplicates
-		if (packageName === "org.nativescript.HabitLabMobile") { continue; }
+		if (packageName === "com.stanfordhci.habitlab") { continue; }
 		
 		var label = info.loadLabel(pm).toString();
 		if (label === "Voice Search") { continue; }

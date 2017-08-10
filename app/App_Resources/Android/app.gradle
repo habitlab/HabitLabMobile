@@ -8,7 +8,7 @@
 android {  
   defaultConfig {  
     generatedDensities = []
-    applicationId = "org.nativescript.HabitLabMobile" 
+    applicationId = "com.stanfordhci.habitlab" 
     
     //override supported platforms
     // ndk {

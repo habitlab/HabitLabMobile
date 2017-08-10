@@ -74,7 +74,7 @@ var accessibilityPermission = false;
 var checkPermission = function () {
    if (!accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         accessibilityPermission = true;
-        var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
+        var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
         foregroundActivity.startActivity(intent);
     } else if (accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         stopTimer();

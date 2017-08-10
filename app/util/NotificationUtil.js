@@ -16,7 +16,7 @@ exports.sendNotification = function(context, title, msg, id, timeout) {
     var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
 
-    var notificationIntent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
+    var notificationIntent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
     notificationBuilder.setContentIntent(PendingIntent.getActivity(context, 14, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK));
     
     notificationBuilder.setSmallIcon(icon_id);

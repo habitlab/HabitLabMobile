@@ -80,7 +80,7 @@ exports.showYoutube = function(width, height, pos, neg) {
 
 	// add text
 	var textParams = new WindowManager.LayoutParams(0.8 * width, 0.2 * height, 0.1 * width, 0.1 * height, 
-		WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
 	textParams.gravity = Gravity.LEFT | Gravity.TOP;
 	text = new TextView(context);
     text.setText("Keep Watching?");
