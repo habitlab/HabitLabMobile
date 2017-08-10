@@ -857,7 +857,7 @@ exports.getActiveHours = function() {
  * intervention target, and package name / intervention id.
  */
 exports.canIntervene = function(id, packageName) {
-  if (!withinActiveHours() || exports.inSnoozeMode()) {
+  if (!withinActiveHours() || exports.inSnoozeMode() || !appSettings.getBoolean('tutorialComplete')) {
     return false;
   }
 
