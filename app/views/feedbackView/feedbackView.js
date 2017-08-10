@@ -34,7 +34,10 @@ exports.composeEmail = function() {
   var intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
   intent.putExtra(Intent.EXTRA_EMAIL, arr);          
   intent.putExtra(Intent.EXTRA_SUBJECT, "HabitLab Mobile App Feedback");
-  application.android.foregroundActivity.startActivity(Intent.createChooser(intent, "Send Email"));
+  var foreground = application.android.foregroundActivity;
+  if (foreground) {
+    foreground.startActivity(Intent.createChooser(intent, "Send Email"));
+  }
 };
 
 exports.goToChromeExtension = function() {

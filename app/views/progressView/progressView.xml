@@ -32,7 +32,7 @@
 			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}" id="dayViewGraph" class="graph"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
-		   				<lv:RadListView id="listButtons" class="list-group"  tap="onDayTap">
+		   				<lv:RadListView id="dayButtons" class="list-group"  tap="onDayTap" items="{{ dayButtons }}">
 		   					<lv:RadListView.listViewLayout>
 		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 		   			        </lv:RadListView.listViewLayout>
@@ -78,8 +78,9 @@
  					   				<Button text="{{ showWeekGraph ? 'Hide' : 'Show'}}" tap="toggleWeek" class="shide" row="0" col="1"/>
  				   			</GridLayout>
 					 	<Placeholder creatingView="weekView" visibility = "{{ showWeekGraph ? 'visible' : 'collapsed'}}" class="graph"/>
+
 					 <!-- 	For the horizontal button like displays  -->
-					 		<lv:RadListView id="weekButtons" class="list-group"  tap="onWeekTap">
+					 		<lv:RadListView id="weekButtons" class="list-group"  tap="onWeekTap" items="{{ weekButtons }}">
 		   					<lv:RadListView.listViewLayout>
 		   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 		   			        </lv:RadListView.listViewLayout>
@@ -130,7 +131,7 @@
  				   			</GridLayout>
 						 	<Placeholder creatingView="monthView" visibility = "{{ showMonthGraph ? 'visible' : 'collapsed'}}" class="graph"/>
 
-					     	<lv:RadListView id="monthButtons" class="list-group"  tap="onMonthTap">
+					     	<lv:RadListView id="monthButtons" class="list-group"  tap="onMonthTap" items="{{ monthButtons }}">
 			   					<lv:RadListView.listViewLayout>
 			   			            <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 			   			        </lv:RadListView.listViewLayout>

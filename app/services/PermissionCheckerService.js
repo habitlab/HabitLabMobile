@@ -77,11 +77,15 @@ var checkPermission = function () {
     if (!overlayPermission && PermissionUtil.checkSystemOverlayPermission()) {
         overlayPermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
-        foregroundActivity.startActivity(intent);
+        if (foregroundActivity) {
+            foregroundActivity.startActivity(intent);
+        }
     } else if (!accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         accessibilityPermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
-        foregroundActivity.startActivity(intent);
+        if (foregroundActivity) {
+            foregroundActivity.startActivity(intent);
+        }
     } else if (accessibilityPermission && overlayPermission) {
         StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
         stopTimer();

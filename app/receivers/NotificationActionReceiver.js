@@ -18,8 +18,10 @@ android.content.BroadcastReceiver.extend("com.habitlab.NotificationActionReceive
 			var toHome = new Intent(Intent.ACTION_MAIN);
 	        toHome.addCategory(Intent.CATEGORY_HOME);
 
-	        var foregroundActivity = application.android.foregroundActivity;
-			foregroundActivity.startActivity(toHome);	
+	    var foregroundActivity = application.android.foregroundActivity;
+	    if (foregroundActivity) {
+	    	foregroundActivity.startActivity(toHome);	
+	    }
 		}
 	}
 });
