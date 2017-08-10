@@ -33,7 +33,10 @@ exports.checkActionUsagePermission = function () {
  */
 exports.launchActionUsageIntent = function () {
 	var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-	application.android.foregroundActivity.startActivity(int);
+	var foreground = application.android.foregroundActivity;
+	if (foreground) {
+		foreground.startActivity(int);
+	}
 }
 
 
@@ -61,7 +64,10 @@ exports.checkSystemOverlayPermission = function () {
  */
 exports.launchSystemOverlayIntent = function () {
 	var int = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-	application.android.foregroundActivity.startActivity(int);
+	var foreground = application.android.foregroundActivity;
+	if (foreground) {
+		foreground.startActivity(int);
+	}
 }
 
 
@@ -96,7 +102,10 @@ exports.checkAccessibilityPermission = function () {
  */
 exports.launchAccessibilityServiceIntent = function () {
 	var int = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-	application.android.foregroundActivity.startActivity(int);
+	var foreground = application.android.foregroundActivity;
+	if (foreground) {
+		foreground.startActivity(int);
+	}
 }
 
 

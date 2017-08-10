@@ -860,8 +860,10 @@ exports.toggleDrawer = function() {
 
 exports.backEvent = function(args) {
    if(fromTutorial) {
-        var activity = app.android.foregroundActivity;
-        activity.finish();
+        var foreground = app.android.foregroundActivity;
+        if (foreground) {
+            foreground.finish();
+        }
    } else {
         frameModule.topmost().goBack();
    }

@@ -75,7 +75,9 @@ var checkPermission = function () {
    if (!accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         accessibilityPermission = true;
         var intent = context.getPackageManager().getLaunchIntentForPackage("org.nativescript.HabitLabMobile");
-        foregroundActivity.startActivity(intent);
+        if (foregroundActivity) {
+            foregroundActivity.startActivity(intent);
+        }
     } else if (accessibilityPermission && PermissionUtil.checkAccessibilityPermission()) {
         stopTimer();
         context.stopService(new android.content.Intent(context, com.habitlab.AccessibilityCheckerService.class));
