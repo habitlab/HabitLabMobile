@@ -70,7 +70,6 @@ exports.pageNavigating = function(args) {
      if (page.navigationContext) {
         fromTutorial = page.navigationContext.fromTutorial;
     }
-    // storageUtil.setUpFakeDB();
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
     //Gets arrays for the 'basic' info of the apps - names and icons
@@ -162,37 +161,15 @@ function rerender_dayview() {
 
 //Entries for the pie chart
 getDayEntries = function() {
-    // var appsToday = getAppsToday(); //gets the target apps used today
     var appsToday = getTrackableApps();
     var total = progressInfo.phoneStats[TODAY].time;
     var entries = new ArrayList();
-    // var main = 0;
-    // var min;
-    
-     // if (appsToday.length <= 4) {
-     //    min = appsToday.length;
-     //    useOther = false;
-     // } else if (appsToday.length === 5) {
-     //    useOther = false;
-     //    min = 5
-     // } else if (appsToday.length > 5) {
-     //    min = 4;
-     //    useOther = true
-     // }
      for(var i = 0; i < appsToday.length; i++) {
             if (appsToday[i].mins === 0) continue;
             entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
-            // main += appsToday[i].mins;
      }
-    // if (useOther) {
-    //      var leftover = total - main;
-    //     if (leftover > 1){
-    //         entries.add(new PieEntry(leftover, "Other"));
-    //     }
-    // }
     piechart.notifyDataSetChanged();
     piechart.invalidate();
-    console.log("Day entries done")
     return entries;
 }
 
@@ -201,7 +178,6 @@ getDayEntries = function() {
 getTrackableApps = function() {
     var appsToday = getAppsToday();
     if (appsToday.length <= 5) {
-        console.log("returned apps todya of length " + appsToday.length);
         return appsToday;
      } else if (appsToday.length > 5) {
         //If there are more than 4 entries in the pie chart, use 'other' for the 5th label
@@ -213,9 +189,6 @@ getTrackableApps = function() {
             mins: other[TODAY]
         })
     }
-    console.log("trackable done")
-    console.log(trackApps.length);
-    console.dir(trackApps);
     return trackApps;
 }
 
@@ -300,7 +273,6 @@ getWeekEntries = function() {
     var entries = new ArrayList();
     var trackableApps = getTrackableApps();
     var other = getOther();
-    console.log("trying to add week...")
     for (var day = 6; day >=0; day--) {
         //array of values for each week
         var appValues = [];
@@ -312,15 +284,9 @@ getWeekEntries = function() {
                 appValues.push(new java.lang.Integer(totalTimeDay));
             }
         }
-        // var appValues = [];
-        // for (var app = 0; app < progressInfo.appStats.length; app++) {
-        //     var totalTimeDay = progressInfo.appStats[app][TODAY-day].time
-        //     appValues.push(new java.lang.Integer(totalTimeDay));
-        // }
         //now have an array of values for a week
         entries.add(new BarEntry(6-day, toJavaFloatArray(appValues)));
    }
-   console.log("week entries done");
    return entries;
 }
 
@@ -411,42 +377,24 @@ rerender_monthchart = function() {
 
 //Returns an array of barentries
 getMonthEntries = function() {
-    console.log("Trying month...")
     var entries = new ArrayList();
     var trackApps = getTrackableApps();
-    console.dir(trackApps);
-    console.log("Track apps.length: " + trackApps.length)
     var other = getOther();
-    console.log("month 1")
    for (var weeksAgo = 3; weeksAgo >=0; weeksAgo--) {
-    console.log("month 2")
         //array of values for each week
         var appValues = [];
-        console.log("crashed before month loop")
         for (var app = 0; app < trackApps.length; app++) {
-            console.log("month loop")
             if (trackApps[app].name === "Other") {
-                console.log("tried other")
                 var timeOther = getTotalTimeOtherWeek(other, weeksAgo);
-                console.log("other added")
-                console.log(timeOther)
                 appValues.push(new java.lang.Integer(timeOther));
             } else {
-                console.log("tried normal")
                 var totalTimeWeekApp = getTotalTimeAppWeek(progressInfo.appStats[trackApps[app].index], weeksAgo);
-                 console.log(totalTimeWeekApp);
                 appValues.push(new java.lang.Integer(totalTimeWeekApp));
             }
         }
-        // for (var app = 0; app < progressInfo.appStats.length; app++) {
-        //     var totalTimeWeekApp = getTotalTimeAppWeek(progressInfo.appStats[app], weeksAgo);
-        //     appValues.push(new java.lang.Integer(totalTimeWeekApp));
-        // }
-        console.log("Add to entries")
         entries.add(new BarEntry(4-weeksAgo, toJavaFloatArray(appValues)));
    }
    return entries;
-   console.log("month view done")
 }
 
 
@@ -728,7 +676,7 @@ getAppsWeek = function () {
         var totalMins = getTotalTimeAppWeek(progressInfo.appStats[i], 0);
         var avgMins = Math.round(totalMins/7);
         var icon = basic[i].icon;
-        var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
+        var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 1) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
         var percDesc = (percChange === "" ? "" : "from last week");
         weekApps.push({
@@ -847,7 +795,6 @@ function getAppNames() {
     var names = Array.create(java.lang.String, 5);
     var trackApps = getTrackableApps();
     for (let i = 0; i < trackApps.length; ++i) {
-        console.log(trackApps[i].name);
         names[i] = trackApps[i].name;
     }
 

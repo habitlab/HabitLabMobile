@@ -38,17 +38,13 @@
           <Label text="FAQ" col="1" class="settings-label" />
           <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" />
         </GridLayout>
-<<<<<<< HEAD
-        <Button text="Set fake data" onTap="setFakeData" />
-        <Button text="Start Accessibility Service" onTap="startAccessibilityService" />
-=======
         <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" tap="eraseData" >
           <Image class="settings-button-img" src="res://ic_trash" id="erase-data" />
           <Label text="Erase Data" col="1" class="settings-label" />
         </GridLayout>
-        <!-- <Button text="Set fake data" onTap="setFakeData" />
-        <Button text="Start Accessibility Service" onTap="startAccessibilityService" /> -->
->>>>>>> origin/master
+
+        <Button text="Set fake data" onTap="setFakeData" />
+        <Button text="Start Accessibility Service" onTap="startAccessibilityService" />
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
