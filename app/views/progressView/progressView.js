@@ -676,7 +676,7 @@ getAppsWeek = function () {
         var totalMins = getTotalTimeAppWeek(progressInfo.appStats[i], 0);
         var avgMins = Math.round(totalMins/7);
         var icon = basic[i].icon;
-        var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 1) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
+        var change = (getTotalTimeAppWeek(progressInfo.appStats[i], 1) === 0  || getTotalTimeAppWeek(progressInfo.appStats[i],0) === 0 ? 0.1 : Math.round(((getTotalTimeAppWeek(progressInfo.appStats[i], 0) - getTotalTimeAppWeek(progressInfo.appStats[i], 1))/getTotalTimeAppWeek(progressInfo.appStats[i], 0))*100));
         var percChange = (change ===  0.1 ? "" : (change > 0 ? "+" : "") + change + "%");
         var percDesc = (percChange === "" ? "" : "from last week");
         weekApps.push({
