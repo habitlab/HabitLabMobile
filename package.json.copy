@@ -4,7 +4,7 @@
   "readme": "NativeScript Application",
   "repository": "<fill-your-repository-here>",
   "nativescript": {
-    "id": "org.nativescript.HabitLabMobile",
+    "id": "com.stanfordhci.habitlab",
     "tns-android": {
       "version": "3.1.1"
     }

@@ -263,6 +263,12 @@ exports.setUpDB = function(erasingData) {
     appSettings.setString('userID', 'U' + Date.now() + '' + randBW(100, 999));
   }
 
+  if (!appSettings.getString('deviceID')) {
+    var application = require("application");
+    var deviceId = android.provider.Settings.Secure.getString(application.android.context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+    appSettings.setString('deviceID', '' + deviceId);
+  }
+
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
@@ -1072,7 +1078,7 @@ exports.addLogEvents = function(events) {
 
   log.data = data;
   http.request({
-    url: "http://logs-01.loggly.com/inputs/d453baa2-3722-4855-afca-1298682eb290/tag/http/",
+    url: "http://logs-01.loggly.com/inputs/3d9631e9-46be-4afc-b721-af42ad5e18af/tag/http/",
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     content: JSON.stringify(log)

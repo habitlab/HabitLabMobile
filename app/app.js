@@ -39,7 +39,7 @@ function send_error(error) {
 
 function send_log(data) {
   return http.request({
-    url: "http://logs-01.loggly.com/inputs/d453baa2-3722-4855-afca-1298682eb290/tag/http/",
+    url: "http://logs-01.loggly.com/inputs/3d9631e9-46be-4afc-b721-af42ad5e18af/tag/http/",
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     content: JSON.stringify(data)
