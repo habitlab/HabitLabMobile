@@ -43,8 +43,8 @@
           <Label text="Erase Data" col="1" class="settings-label" />
         </GridLayout>
 
-        <Button text="Set fake data" onTap="setFakeData" />
-        <Button text="Start Accessibility Service" onTap="startAccessibilityService" />
+       <!--  <Button text="Set fake data" onTap="setFakeData" />
+        <Button text="Start Accessibility Service" onTap="startAccessibilityService" /> -->
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
