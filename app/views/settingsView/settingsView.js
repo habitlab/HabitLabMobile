@@ -138,3 +138,15 @@ exports.pageUnloaded = function(args) {
 exports.onInfo = function() {
     frame.topmost().navigate('views/infoView/infoView');
 };
+
+exports.goToFeedback = function() {
+    frame.topmost().navigate({
+        moduleName: "views/feedbackView/feedbackView",
+        animated: true,
+        transition: {
+          name: "slide",
+          duration: 380,
+          curve: "easeIn"
+        }
+    });
+};

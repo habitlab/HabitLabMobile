@@ -1,5 +1,7 @@
 var application = require("application");
 var context = application.android.context;
+var foregroundActivity = application.android.foregroundActivity;
+var toast = require("nativescript-toast");
 
 // utils 
 const storage = require("~/util/StorageUtil");
@@ -11,7 +13,6 @@ const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
 
 // packages to ignore (might need to compile a list as time goes on)
 const ignore = ["com.sec.android.inputmethod", "com.android.systemui"];
-
 
 
 /***************************************
@@ -113,6 +114,16 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onServiceConnected: function() {   
         this.super.onServiceConnected();
         setUpScreenReceiver(); // set up unlock receiver on startup
+        if (!storage.isOnboardingComplete()) {
+            storage.setOnboardingComplete();
+            var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
+            if (foregroundActivity) {
+                foregroundActivity.startActivity(intent);
+            } else {
+                toast.makeText("Service enabled. Please hit the back button to get back to HabitLab!").show();
+            }
+        }
+
     }
 });
 

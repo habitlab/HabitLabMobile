@@ -7,6 +7,6 @@
           loop="true" autoplay="true"
           src="~/videos/AccessibilityPermission.mp4" />
            <Label text="Your data will never be given to third parties" class="subtitle"/>
-        <Button text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>
+        <Button id="accessibilityButton" text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>
     </StackLayout>
 </Page>
