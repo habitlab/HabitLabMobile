@@ -12,6 +12,7 @@ var view = require("ui/core/view");
 var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
 var timer = require("timer");
 var FancyAlert = require("~/util/FancyAlert");
+var Toast = require("nativescript-toast");
 var Resources = android.content.res.Resources;
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 
@@ -20,6 +21,7 @@ var page;
 var events;
 var appChanged;
 var phoneChanged;
+var toSave;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -71,6 +73,7 @@ var createPhoneGoal = function(goal, value) {
   var number = np.getViewById('number');
   number.text = value;
   number.on("unloaded", function (args) {
+    if (!toSave) return;
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changePhoneGoal(newNum, goal);
     if (phoneChanged) {
@@ -124,6 +127,7 @@ var createAppGoal = function(pkg) {
   number.text = goal;
 
   number.on("unloaded", function (args) {
+    if (!toSave) return;
     var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
     StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
     if (appChanged) {
@@ -183,7 +187,8 @@ exports.pageLoaded = function(args) {
     if (StorageUtil.isTutorialComplete()) {
       btn.text = 'save';
       btn.on('tap', function() {
-        frameModule.topmost().navigate('views/progressView/progressView');
+        toSave = true;
+        Toast.makeText('Goals Saved').show();
       });
     } else {
       btn.on('tap', function() {

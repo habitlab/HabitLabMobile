@@ -5,6 +5,7 @@ var StorageUtil = require('~/util/StorageUtil');
 var dialogs = require("ui/dialogs");
 var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'snooze'];
+var Toast = require("nativescript-toast");
 
 var setOnTouches = function() {
 
@@ -50,6 +51,10 @@ var createSnoozeDialog = function() {
       menuEvents.push({category: "features", index: "snooze_set"});
       StorageUtil.setSnooze(1440);
     }
+
+    if (result !== 'Cancel') {
+      Toast.makeText('HabitLab snoozed for ' + result).show();
+    }
   });
 };
 
@@ -65,6 +70,7 @@ exports.setSnooze = function() {
     }).then(function (result) {
       if (result === true) {
         menuEvents.push({category: "features", index: "remove_snooze"});
+        Toast.makeText('Snooze Removed').show();
         StorageUtil.removeSnooze();
       } else if (result === false) {
         createSnoozeDialog();

@@ -29,7 +29,7 @@ exports.goToSurvey = function() {
 exports.composeEmail = function() {
   events.push({category: "features", index: "feedback_email"});
   var arr = Array.create(java.lang.String, 1);
-  arr[0] = "habitlabmobile@gmail.com";
+  arr[0] = "habitlab-support@cs.stanford.edu";
 
   var intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:"));
   intent.putExtra(Intent.EXTRA_EMAIL, arr);          

@@ -28,7 +28,7 @@
             <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
           </StackLayout>
         </ScrollView>
-        <Button text="done" onTap="onDone" id="done" class="done-button"/>
+        <Button text="done" id="done" class="done-button"/>
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
