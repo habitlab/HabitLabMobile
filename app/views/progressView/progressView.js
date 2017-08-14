@@ -73,16 +73,9 @@ exports.pageNavigating = function(args) {
     }
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
-<<<<<<< HEAD
-    //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
     trackApps = getTrackableApps();
-=======
-    basic = getBasic();
-    trackApps = getTrackableApps();
-    //Gets arrays for the 'basic' info of the apps - names and icons
->>>>>>> origin/master
-    
+    //Gets arrays for the 'basic' info of the apps - names and icons    
 }
 
 var cb = function() {
