@@ -32,3 +32,9 @@
   background-color: #69BD68;
   color: white;
 }
+
+.active-label {
+  text-align: center;
+  font-size: 15%;
+  color: #E71D36;
+}

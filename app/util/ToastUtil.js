@@ -10,7 +10,8 @@ exports.show = function(context, msg, length, bkgdColorHex, textColorHex) {
  	
  	var toastText = customToast.getView().findViewById(android.R.id.message);
  	toastText.setGravity(android.view.Gravity.CENTER);
- 	toastText.setTextSize(20);
+ 	toastText.setTextSize(18);
+ 	toastText.setShadowLayer(0, 0, 0, 0);
 
 	if (textColorHex) {
 		toastText.setTextColor(android.graphics.Color.parseColor(textColorHex));
