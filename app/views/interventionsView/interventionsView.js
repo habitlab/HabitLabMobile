@@ -77,8 +77,17 @@ var setUpList = function() {
     return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
   });
 
-  interventionList.forEach(function (item, index) {
-    if (IM.interventions[item.id]) {
+  interventionList.forEach(function (item) {
+    var canIntervene = !ID.interventionDetails[item.id].apps;
+    if (!canIntervene) {
+      var appList = StorageUtil.getSelectedPackages();
+      ID.interventionDetails[item.id].apps.forEach(function (specifiedApp) {
+        if (!canIntervene && appList.includes(specifiedApp)) {
+          canIntervene = true;
+        }
+      });
+    }
+    if (IM.interventions[item.id] && canIntervene) {
       layouts[item.style].addChild(createItem(item));
     }
   });
