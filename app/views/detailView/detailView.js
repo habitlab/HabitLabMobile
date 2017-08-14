@@ -130,13 +130,6 @@ exports.pageLoaded = function(args) {
   setUpDetail();
 };
 
-
-exports.goToProgress = function() {
-  fancyAlert.TNSFancyAlert.showSuccess("You're all set up!", "HabitLab will now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
-  frameModule.topmost().navigate("views/progressView/progressView");
-};
-
-
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
 };
