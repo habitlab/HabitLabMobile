@@ -171,6 +171,56 @@ exports.showCountUpTimer = function() {
 		}
 	})); 
 
+	textView.setOnTouchListener(new android.view.View.OnTouchListener({
+		onTouch: function (v, event) {
+			var action = event.getAction();
+			var currentX = event.getX();
+			var currentY = event.getY();
+
+			if (action === android.view.MotionEvent.ACTION_DOWN) {
+				lastX = currentX;
+				lastY = currentY;
+			} else if (action === android.view.MotionEvent.ACTION_UP) {
+				if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
+					&& currentY > 0 && currentY < TIMER_HEIGHT) {
+					if (timerOpen) {
+						textView.setVisibility(android.view.View.INVISIBLE);
+						startParams.width = TIMER_HEIGHT;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
+						timerOpen = false;
+					} else {
+						startParams.width = TIMER_WIDTH;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
+						timerOpen = true;
+						textView.setVisibility(android.view.View.VISIBLE);
+					}
+				} else {
+					// swipe
+					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
+						startParams.x = 0; 
+						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
+					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+						startParams.x = SCREEN_WIDTH - startParams.width;
+						textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+					}
+
+					if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
+						startParams.y = 0;
+						textParams.y = 0;
+					} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
+						startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+						textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+					}
+				}
+
+				windowManager.updateViewLayout(v, textParams);
+				windowManager.updateViewLayout(view, startParams);
+			}
+
+			return true;
+		}
+	})); 
+
 
     timerID = timer.setInterval(() => {
 	    time++;
@@ -291,6 +341,57 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
 				windowManager.updateViewLayout(v, startParams);
 				windowManager.updateViewLayout(textView, textParams);
+			}
+
+			return true;
+		}
+	})); 
+
+
+	textView.setOnTouchListener(new android.view.View.OnTouchListener({
+		onTouch: function (v, event) {
+			var action = event.getAction();
+			var currentX = event.getX();
+			var currentY = event.getY();
+
+			if (action === android.view.MotionEvent.ACTION_DOWN) {
+				lastX = currentX;
+				lastY = currentY;
+			} else if (action === android.view.MotionEvent.ACTION_UP) {
+				if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
+					&& currentY > 0 && currentY < TIMER_HEIGHT) {
+					if (timerOpen) {
+						textView.setVisibility(android.view.View.INVISIBLE);
+						startParams.width = TIMER_HEIGHT;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
+						timerOpen = false;
+					} else {
+						startParams.width = TIMER_WIDTH;
+						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
+						timerOpen = true;
+						textView.setVisibility(android.view.View.VISIBLE);
+					}
+				} else {
+					// swipe
+					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
+						startParams.x = 0; 
+						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
+					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+						startParams.x = SCREEN_WIDTH - startParams.width;
+						textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+					}
+
+					if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
+						startParams.y = 0;
+						textParams.y = 0;
+					} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
+						startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+						textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+					}
+				}
+
+				windowManager.updateViewLayout(v, textParams);
+				windowManager.updateViewLayout(view, startParams);
 			}
 
 			return true;

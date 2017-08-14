@@ -3,7 +3,7 @@ const UsageInformationUtil = require("~/util/UsageInformationUtil");
 const StorageUtil = require("~/util/StorageUtil");
 const DialogOverlay = require("~/overlays/DialogOverlay");
 const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
-const Toast = require("nativescript-toast");
+const Toast = require("~/util/ToastUtil");
 const TimerOverlay = require("~/overlays/TimerOverlay");
 const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const VideoOverlay = require("~/overlays/VideoOverlay");
@@ -83,7 +83,7 @@ var shouldPersonalize = function() {
  */
 var popToastVisited = function(real, pkg) {
   if (!real) {
-    Toast.makeText("You've visited Facebook 8 times today").show();
+    Toast.show(context, "You've visited Facebook 8 times today", 1, "#E71D36");
     return;
   }
 
@@ -93,7 +93,7 @@ var popToastVisited = function(real, pkg) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_TOAST}]);
       var app = UsageInformationUtil.getBasicInfo(pkg).name;
       var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-      Toast.makeText(msg).show(); 
+      Toast.show(context, msg, 1, "#E71D36"); 
     }
   }
 };
@@ -193,7 +193,7 @@ var sendNotificationGlances = function(real) {
  */
 var popToastUnlocked = function(real) {
   if (!real) {
-    Toast.makeText("You've unlocked your phone 7 times today").show();
+    Toast.show(context, "You've unlocked your phone 7 times today", 1, "#72E500");
     return;
   }
 
@@ -201,7 +201,8 @@ var popToastUnlocked = function(real) {
     var unlocks = StorageUtil.getUnlocks();
     if (unlocks >= THRESHOLD_UNLOCKS_TST) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_TOAST}]);
-      Toast.makeText("You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today").show();
+      var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today";
+      Toast.show(context, msg, 1, "#72E500");
     }
   }
 };
@@ -273,7 +274,7 @@ var showUnlocksDialog = function (real) {
  */
 var popToastUsage = function (real, pkg) {
   if (!real) {
-    Toast.makeText("You've already used Facebook for 23 minutes today!").show();
+    Toast.show(context, "You've already used Facebook for 23 minutes today!", 1, "#FFA730");
     return;
   }
 
@@ -283,7 +284,7 @@ var popToastUsage = function (real, pkg) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_TOAST}]);
       var app = UsageInformationUtil.getBasicInfo(pkg).name;
       var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
-      Toast.makeText(msg).show();
+      Toast.show(context, msg, 1, "#FFA730");
     }
   }
 };
@@ -382,7 +383,7 @@ var resetDurationInterventions = function() {
  */
 var popToastVisitLength = function (real, pkg) {
   if (!real) {
-    Toast.makeText("You've been on Facebook for 5 minutes this visit").show();
+    Toast.show(context, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
     return;
   }
 
@@ -392,7 +393,8 @@ var popToastVisitLength = function (real, pkg) {
       durationToastID = Timer.setTimeout(() => {
         StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
         var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-        Toast.makeText("You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit").show();
+        var msg = "You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit";
+        Toast.show(context, msg, 1, "#2EC4B6");
         durationToastID = 0;
       }, THRESHOLD_DURATION_TST);
     }

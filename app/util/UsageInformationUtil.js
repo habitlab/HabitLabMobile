@@ -101,7 +101,9 @@ exports.getBasicInfo = function(packageName) {
  */
 exports.getInstalledPresets = function() {
 	var presets = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
-		"com.snapchat.android", "com.instagram.android"];
+		"com.snapchat.android", "com.instagram.android", "com.netflix.mediaclient", "com.pinterest",
+		"com.twitter.android", "com.reddit.frontpage", "com.buzzfeed.android", "com.ninegag.android.app", 
+		"com.amazon.mShop.android.shopping", "com.hulu.plus", "com.tinder", "com.espn.score_center"];
 	var installedPresets = [];
 
 	for (var i = 0; i < applications.size(); i++) {
