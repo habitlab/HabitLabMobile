@@ -5,6 +5,7 @@ var frameModule = require("ui/frame");
 var drawerModule = require("nativescript-telerik-ui/sidedrawer");
 var gestures = require("ui/gestures");
 var tabView = require("ui/tab-view")
+var builder = require('ui/builder');
 var view = require("ui/core/view");
 var imageSource = require("image-source");
 var colorModule = require("tns-core-modules/color")
@@ -444,9 +445,9 @@ populateListViewsDay = function() {
     pageData.set("dayButtons", dayStats);
     var dayButtons = view.getViewById(page, "dayButtons");
     dayButtons.height = SCREEN_HEIGHT*0.04;
+    // setUpAppToday();
     dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
-
 };
 
 
@@ -658,7 +659,7 @@ getAppsToday = function() {
         list.push({
             name: name,
             visits: visits,
-            image: icon,
+            icon: icon,
             mins: mins,
             index: index
         })
@@ -674,6 +675,32 @@ getAppsToday = function() {
     })
     return list;
 };
+
+
+// var setUpAppToday = function() {
+//   var appsToday = getAppsToday();
+//   var appSection = page.getViewById("dayAppsList");
+//   appSection.removeChildren();
+
+//   appsToday.forEach(function (app) {
+//     appSection.addChild(createAppGoal(app));
+//   });
+//   console.warn("Created today");
+// };
+
+
+// var createAppGoal = function(app) {
+//   var item = builder.load({
+//     path: 'shared/progressDayElem',
+//     name: 'progressDayElem',
+//     page: page
+//   });
+//   item.getViewById('name').text = app.name;
+//   item.getViewById('icon').src = app.icon;
+//   item.getViewById('mins').text = app.mins + " mins";
+//   item.getViewById('visits').text = "Opened "+ app.visits + " times";
+//   return item;
+// };
 
 
 //Returns the total time spent on waitlist apps this week as an array of app objects
