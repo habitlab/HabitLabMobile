@@ -57,7 +57,7 @@
 			   			        <lv:RadListView.itemTemplate>
 			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
 			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
-	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+	   			        	            <Image row="0" col="0" src="{{ icon }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
 	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
 	   			        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
