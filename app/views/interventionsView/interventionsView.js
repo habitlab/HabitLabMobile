@@ -95,14 +95,15 @@ exports.pageLoaded = function(args) {
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
+    page.getViewById('nudge-scroll').height = '90%';
   }
   setUpList();
 };
 
 exports.goToProgress = function() {
   StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_tutorial'}]);
-  fancyAlert.TNSFancyAlert.showSuccess("All set!", "HabitLab can now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   StorageUtil.setTutorialComplete();
+  fancyAlert.TNSFancyAlert.showSuccess("All set!", "HabitLab can now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   frameModule.topmost().navigate({
     moduleName: "views/progressView/progressView",
     context: { 

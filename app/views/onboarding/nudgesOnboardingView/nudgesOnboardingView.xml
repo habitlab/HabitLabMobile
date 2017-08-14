@@ -2,8 +2,7 @@
 	<StackLayout>
 	<StackLayout id="main">
 		<Label text="Stay productive with a variety of helpful nudges" class="title" textWrap="true"/>
-		<!-- <Label text= "Let custom alerts help you meet your goals" class="subtitle" />	 -->
-		<Image class = "mainImage" id="image"/>
+		<Image class="mainImage" id="image"/>
 		<GridLayout rows="auto, auto" columns="*,*,*,*,*" id="selector" class="icons"> 
 			<Image row="0" col="0" class="icon" id="{{ names[0] }}" src="{{ images[0] }}" tap="tapIcon"/>
 			<Label text="Hint" row="1" col="0" class="smallText" id="{{ label[0] }}" visibility="hidden"/> 

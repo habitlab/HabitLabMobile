@@ -263,12 +263,6 @@ exports.setUpDB = function(erasingData) {
     appSettings.setString('userID', 'U' + Date.now() + '' + randBW(100, 999));
   }
 
-  if (!appSettings.getString('deviceID')) {
-    var application = require("application");
-    var deviceId = android.provider.Settings.Secure.getString(application.android.context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-    appSettings.setString('deviceID', '' + deviceId);
-  }
-
   var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
 
   appSettings.setString('selectedPackages', JSON.stringify(preset));
@@ -1061,8 +1055,15 @@ exports.addLogEvents = function(events) {
  * Sends the log to Loggly whenever the day is changed
  */
  var sendLog = function() {
+  if (!appSettings.getString('deviceID')) {
+    var application = require("application");
+    var deviceId = android.provider.Settings.Secure.getString(application.android.context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+    appSettings.setString('deviceID', '' + deviceId);
+  }
+
   var log = JSON.parse(appSettings.getString('log'));
   log['userID'] = appSettings.getString('userID');
+  log['deviceID'] = appSettings.getString('deviceID');
 
   var data = {};
   data['name'] = appSettings.getString('name');

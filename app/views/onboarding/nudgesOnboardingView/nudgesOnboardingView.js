@@ -10,7 +10,6 @@ var nudgeImage = [
   '~/images/onboarding_glances.png'
 ];
 
-
 var previousId;
 var page;
 var image;
