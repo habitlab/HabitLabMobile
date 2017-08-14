@@ -12,7 +12,7 @@ exports.pageLoaded = function(args) {
   if (PermissionUtil.checkAccessibilityPermission()) {
     page.getViewById('accessibilityButton').text = "Finish";
   } else {
-    fancyAlert.TNSFancyAlert.showSuccess("Almost there!", "Awesome, just one last thing. We need to be able to monitor the apps you've selected so we can help you build better habits! Please enable the service for HabitLab.", "I'm on it!");
+    fancyAlert.TNSFancyAlert.showSuccess("Almost there!", "We need to be able to monitor the apps you've selected so we can help you build better habits! Please enable the service for HabitLab.", "I'm on it!");
   }
 };
 

@@ -3,7 +3,6 @@ Page{
 }
 
 Label {
-	text-align: center;
 	width: 90%;
 	color: white;
 }
@@ -16,19 +15,22 @@ Button {
 	color: white;
 }
 
-
+.information-image {
+	width: 85%;
+}
 
 .title {
+	text-align: center;
 	font-size: 28%;
 	margin: 5%;
 	padding: 5%;
 	padding-top: 7%;
 }
 
-.subtitle {
+.information {
 	margin-top: 3%;
-	font-size: 15%;
-
+	margin-bottom: 2%;
+	font-size: 18%;
 }
 
 .firstVideo {
