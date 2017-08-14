@@ -19,27 +19,30 @@
 
     <sd:RadSideDrawer.mainContent>
       <StackLayout class="main-container" id="main-layout">
-        <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" tap="editName">
-          <Image class="settings-button-img" src="res://ic_account" id="edit-name"  />
+        <GridLayout columns="auto,*,auto" rows="auto, auto" class="settings-grid" tap="editName">
+          <Image class="settings-button-img" src="res://ic_account" id="edit-name" rowSpan="2" verticalAlignment="center"/>
           <Label text="Edit Name" col="1" class="settings-label" />
+          <Label text="Set your preferred name" col="1" row="1" class="settings-sub-label"/>
         </GridLayout>
-        <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" tap="setHours">
-          <Image class="settings-button-img" src="res://ic_alarm" id="set-hours" />
+        <GridLayout columns="auto,*,auto" rows="auto, auto" class="settings-grid" tap="setHours">
+          <Image class="settings-button-img" src="res://ic_alarm" id="set-hours" rowSpan="2" verticalAlignment="center"/>
           <Label text="Active Hours" col="1" class="settings-label" />
-          <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" />
+          <Label text="Set when HabitLab can nudge you" col="1" row="1" class="settings-sub-label"/>
+          <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" rowSpan="2" verticalAlignment="center"/>
         </GridLayout>
-        <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" tap="goToFeedback" >
-          <Image class="settings-button-img" src="res://ic_feedback" id="faq" />
+        <GridLayout columns="auto,*,auto" rows="auto, auto" class="settings-grid" tap="goToFeedback" >
+          <Image class="settings-button-img" src="res://ic_feedback" id="faq" rowSpan="2" verticalAlignment="center"/>
           <Label text="Feedback" col="1" class="settings-label" />
-          <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" />
+          <Label text="Tell us what you think about HabitLab" col="1" row="1" class="settings-sub-label"/>
+          <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" rowSpan="2" verticalAlignment="center"/>
         </GridLayout>
-        <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" tap="goToFAQ" >
-          <Image class="settings-button-img" src="res://ic_faq" id="faq" />
+        <GridLayout columns="auto,*,auto" rows="auto, auto" class="settings-grid" tap="goToFAQ" >
+          <Image class="settings-button-img" src="res://ic_faq" id="faq" rowSpan="2" verticalAlignment="center"/>
           <Label text="FAQ" col="1" class="settings-label" />
-          <Image class="settings-button-icon" src="res://ic_arrow_right" col="2" />
+          <Image class="settings-button-icon" src="res://ic_arrow_right" col="2"/>
         </GridLayout>
         <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" tap="eraseData" >
-          <Image class="settings-button-img" src="res://ic_trash" id="erase-data" />
+          <Image class="settings-button-img" src="res://ic_trash" id="erase-data" rowSpan="2" verticalAlignment="center"/>
           <Label text="Erase Data" col="1" class="settings-label" />
         </GridLayout>
 
