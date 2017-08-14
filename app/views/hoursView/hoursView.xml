@@ -21,9 +21,10 @@
         <StackLayout orientation="vertical" class="scroll-layout" >
           <GridLayout rows="auto" columns="*,*,*,*,*,*,*" id="days-grid" class="week-layout" />
           <Label class="picker-label" text="Start Time" />
-          <TimePicker id="start-picker" class="picker" />
+          <TimePicker id="start-picker" class="picker"/>
           <Label class="picker-label" text="End Time" />
           <TimePicker id="end-picker" class="picker" />
+          <Label id="active-text" textWrap="true" class="active-label" text="Active 24 hours a day, 7 days a week" />
         </StackLayout>
         <Button class="save-button" tap="onSave" text="save changes" />
       </StackLayout>

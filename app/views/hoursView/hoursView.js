@@ -38,6 +38,16 @@ var setTimes = function(start, end) {
   startPicker.minute = start.m;
   endPicker.hour = end.h;
   endPicker.minute = end.m;
+
+  startPicker.on("timeChange", (args) => {
+    updateActiveLabel(startPicker.hour, startPicker.minute, endPicker.hour, endPicker.minute);
+  });
+
+  endPicker.on("timeChange", (args) => {
+    updateActiveLabel(startPicker.hour, startPicker.minute, endPicker.hour, endPicker.minute);
+  });
+
+  updateActiveLabel(startPicker.hour, startPicker.minute, endPicker.hour, endPicker.minute);
 };
 
 exports.onTimeChange = function(args) {
@@ -45,6 +55,40 @@ exports.onTimeChange = function(args) {
     hourChanged = true;
   }
 };
+
+
+var updateActiveLabel = function(startHours, startMins, endHours, endMins) {
+  var hours = endHours - startHours;
+  var mins = endMins - startMins;
+
+  if (mins < 0) {
+    mins = 60 + mins;
+    hours -= 1;
+  }
+
+  if (hours < 0) {
+    hours = 24 + hours;
+  }
+
+  if (hours === 0 && mins === 0) {
+    hours = 24;
+  }
+
+  var activeLabel = page.getViewById('active-text');
+  activeLabel.text = "Active for " 
+
+  if (hours > 0) {
+    activeLabel.text += hours + (hours === 1 ? " hour" : " hours");
+  }
+
+  if (mins > 0) {
+    if (hours > 0) { activeLabel.text += " and "; }
+    activeLabel.text += mins + (mins === 1 ? " minute" : " minutes");
+  }
+
+  activeLabel.text += " on selected days"; 
+}
+
 
 var fillTimeInfo = function() {
   var activeHours = StorageUtil.getActiveHours();
