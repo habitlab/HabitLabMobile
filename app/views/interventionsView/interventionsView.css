@@ -41,6 +41,8 @@
   border-left-width: 10px;
 }
 
-#finish {
-  color: red;
+.finish-tutorial-btn {
+  background-color: #69BD68;
+  color: white;
+  height: 10%;
 }

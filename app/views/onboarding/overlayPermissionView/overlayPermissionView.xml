@@ -2,10 +2,10 @@
   actionBarHidden="true" xmlns:VideoPlayer="nativescript-videoplayer">
 		<StackLayout>
         <Label text="Enable Drawing" textWrap='true' class="title"/>
-        <VideoPlayer:Video class="firstVideo"
+        <!-- <VideoPlayer:Video class="firstVideo"
           controls="false" 
           loop="true" autoplay="true"
-            src="~/videos/OverlayPermission.mp4"  />
+            src="~/videos/OverlayPermission.mp4"  /> -->
         <Button text="Give Overlay Permission" tap="giveDrawPermission"/>
     </StackLayout>
 </Page>

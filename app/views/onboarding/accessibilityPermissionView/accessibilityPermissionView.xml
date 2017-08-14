@@ -1,12 +1,11 @@
 <Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
   actionBarHidden="true" xmlns:VideoPlayer="nativescript-videoplayer">
 		<StackLayout>
-        <Label text="Enable Services" textWrap='true' class="title"/>
-        <VideoPlayer:Video class="firstVideo"
-          controls="false" 
-          loop="true" autoplay="true"
-          src="~/videos/AccessibilityPermission.mp4" />
-           <Label text="Your data will never be given to third parties" class="subtitle"/>
+        <Label text=" How to Enable Services" textWrap='true' class="title"/>
+        <Label textWrap="true" text="1. Tap the button below to get to your Settings." class="information"/>
+        <Label textWrap="true" text="2. Once there, tap on 'HabitLab' to get to HabitLab's service page." class="information"/>
+        <Image src="~/images/accessibility_example.jpg" class="information-image" />
+        <Label textWrap="true" text="3. Tap on the toggle to switch it to the 'on' position!" class="information"/>
         <Button id="accessibilityButton" text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>
     </StackLayout>
 </Page>
