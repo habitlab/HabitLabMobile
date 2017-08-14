@@ -53,6 +53,7 @@ var page;
 var drawer;
 var basic;
 var progressInfo;
+var trackApps;
 var dayApps = new ObservableArray ([]);
 var weekApps = new ObservableArray ([]);
 var monthApps = new ObservableArray ([]);
@@ -72,8 +73,9 @@ exports.pageNavigating = function(args) {
     }
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
-    //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
+    trackApps = getTrackableApps();
+    //Gets arrays for the 'basic' info of the apps - names and icons    
 }
 
 var cb = function() {
@@ -94,6 +96,7 @@ exports.pageLoaded = function(args) {
   	drawer = page.getViewById("sideDrawer");
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
+    trackApps = getTrackableApps();
     setUp();
 };
 
@@ -161,12 +164,11 @@ function rerender_dayview() {
 
 //Entries for the pie chart
 getDayEntries = function() {
-    var appsToday = getTrackableApps();
     var total = progressInfo.phoneStats[TODAY].time;
     var entries = new ArrayList();
-     for(var i = 0; i < appsToday.length; i++) {
-            if (appsToday[i].mins === 0) continue;
-            entries.add(new PieEntry(appsToday[i].mins, appsToday[i].name));
+     for(var i = 0; i < trackApps.length; i++) {
+            if (trackApps[i].mins === 0) continue;
+            entries.add(new PieEntry(trackApps[i].mins, trackApps[i].name));
      }
     piechart.notifyDataSetChanged();
     piechart.invalidate();
@@ -174,7 +176,15 @@ getDayEntries = function() {
 }
 
 
-//Gets the reduced list of up to 5 apps to track
+
+
+//Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
+// name: name,
+// visits: visits,
+// image: icon,
+// mins: mins,
+// index: index
+//Apart from other, which has a name, and mins
 getTrackableApps = function() {
     var appsToday = getAppsToday();
     if (appsToday.length <= 5) {
@@ -218,7 +228,7 @@ function rerender_weekview() {
     var entries = getWeekEntries();
     var dataset = new BarDataSet(entries, "");
     dataset.setStackLabels(getAppNames());
-    dataset.setColors(getColors(getTrackableApps().length));
+    dataset.setColors(getColors(trackApps.length));
      //array of datasets
     var IbarSet = new ArrayList();
     IbarSet.add(dataset);
@@ -271,16 +281,15 @@ function rerender_weekview() {
 getWeekEntries = function() {
     //array of BarEntries
     var entries = new ArrayList();
-    var trackableApps = getTrackableApps();
     var other = getOther();
     for (var day = 6; day >=0; day--) {
         //array of values for each week
         var appValues = [];
-        for (var app = 0; app < trackableApps.length; app++) {
-            if (trackableApps[app].name === "Other") {
+        for (var app = 0; app < trackApps.length; app++) {
+            if (trackApps[app].name === "Other") {
                 appValues.push(other[TODAY-day]);
             } else {
-                var totalTimeDay = progressInfo.appStats[trackableApps[app].index][TODAY-day].time
+                var totalTimeDay = progressInfo.appStats[trackApps[app].index][TODAY-day].time
                 appValues.push(new java.lang.Integer(totalTimeDay));
             }
         }
@@ -329,7 +338,7 @@ rerender_monthchart = function() {
     var entries = getMonthEntries();
     var dataset = new BarDataSet(entries, "");
     dataset.setStackLabels(getAppNames());
-    dataset.setColors(getColors(getTrackableApps().length));
+    dataset.setColors(getColors(trackApps.length));
     //array of datasets
     var IbarSet = new ArrayList();
     IbarSet.add(dataset);
@@ -378,7 +387,6 @@ rerender_monthchart = function() {
 //Returns an array of barentries
 getMonthEntries = function() {
     var entries = new ArrayList();
-    var trackApps = getTrackableApps();
     var other = getOther();
    for (var weeksAgo = 3; weeksAgo >=0; weeksAgo--) {
         //array of values for each week
@@ -793,14 +801,9 @@ function toJavaStringArray(arr) {
 //Returns a java array of just the app names (used for stack labels)
 function getAppNames() {
     var names = Array.create(java.lang.String, 5);
-    var trackApps = getTrackableApps();
     for (let i = 0; i < trackApps.length; ++i) {
         names[i] = trackApps[i].name;
     }
-
-    // for (let i = 0; i < progressInfo.appStats.length; ++i) {
-    //     names[i] = basic[i].name;
-    // }
     return names;
 }
 

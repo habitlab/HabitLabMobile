@@ -33,10 +33,10 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
         var action = intent.getAction();
 
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
-            screenOnTime = Date.now();
             storage.glanced();
             interventionManager.nextScreenOnIntervention();
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
+            screenOnTime = Date.now();
             storage.unlocked();
             interventionManager.nextScreenUnlockIntervention();
         } else if (action === android.content.Intent.ACTION_SCREEN_OFF) {

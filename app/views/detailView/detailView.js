@@ -124,9 +124,7 @@ exports.pageLoaded = function(args) {
   if (page.navigationContext) {
     info = page.navigationContext.info;
   }
-  if (!StorageUtil.isTutorialComplete()) {
-    page.getViewById('finish').visibility = 'visible';
-  }
+  
   setUpDetail();
 };
 
