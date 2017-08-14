@@ -385,6 +385,7 @@ exports.removePackage = function(packageName) {
   var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     return item !== packageName;
   });
+  sendLog();
   appSettings.remove(packageName);
   appSettings.setString('selectedPackages', JSON.stringify(list));
 };
@@ -398,6 +399,7 @@ exports.togglePackage = function(packageName) {
   var removed = false;
   var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     if (item === packageName) {
+      sendLog();
       appSettings.remove(packageName);
       removed = true;
     }
