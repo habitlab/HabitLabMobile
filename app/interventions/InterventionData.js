@@ -19,8 +19,6 @@ exports.interventionIDs = {
   DIMMER_OVERLAY: 17
 };
 
-//possibilities: {name: 'Look Out!', icon: 'res://ic_exclamation_bubble'}
-
 exports.interventionDetails = [
 {
   id: 0,
