@@ -1,0 +1,8 @@
+<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto" id="progressDayElem">
+    <Image row="0" col="0" class="thumb img-rounded" id="icon"/>
+    <StackLayout row="0" col="1" >
+        <Label class="list-group-item-heading" id="name"/>
+        <Label class="list-group-item-text" id="visits"/>
+    </StackLayout>
+    <Label row ="0" col="2" class="list-group-item-text" id="mins"/>
+</GridLayout>
