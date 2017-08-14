@@ -3,12 +3,14 @@
 		<StackLayout>
         <Label text=" How to Enable Services" textWrap='true' class="title"/>
         <StackLayout>
-          <StackLayout height="80%">
-            <Label textWrap="true" text="1. Tap the button below to get to your Settings." class="information"/>
-            <Label textWrap="true" text="2. Once there, tap on 'HabitLab' to get to HabitLab's service page." class="information"/>
-            <Image src="~/images/accessibility_example.jpg" class="information-image" />
-            <Label textWrap="true" text="3. Tap on the toggle to switch it to the 'on' position!" class="information"/>
-          </StackLayout>
+          <ScrollView height="80%">
+            <StackLayout >
+              <Label textWrap="true" text="1. Tap the button below to get to your Settings." class="information"/>
+              <Label textWrap="true" text="2. Once there, tap on 'HabitLab' to get to HabitLab's service page." class="information"/>
+              <Image src="~/images/accessibility_example.jpg" class="information-image" />
+              <Label textWrap="true" text="3. Tap on the toggle to switch it to the 'on' position!" class="information"/>
+            </StackLayout>
+          </ScrollView>
         <Button id="accessibilityButton" text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>
       </StackLayout>
     </StackLayout>
