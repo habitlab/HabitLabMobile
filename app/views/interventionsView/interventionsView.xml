@@ -19,7 +19,7 @@
       <StackLayout>
         <ScrollView orientation="vertical" id="nudge-scroll">
           <StackLayout>
-            <Label class="nudges-section-title" text="Hints" />
+            <Label class="nudges-section-title" text="Hint Bubbles" />
          		<StackLayout orientation="vertical" id="toast-interventions" />
             <Label class="nudges-section-title" text="Notifications" />
             <StackLayout orientation="vertical" id="notification-interventions" />
