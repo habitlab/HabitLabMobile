@@ -55,6 +55,7 @@ var appStats;
 var container;
 var events;
 var goalChanged;
+var open;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -87,6 +88,19 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById('sideDrawer');
   container = page.getViewById("slides");
   setUpDetail();
+};
+
+var closePrevious = function(openedItem, item) {
+  if (openedItem) {
+    if (open) {
+      open.getViewById('icon2').visibility = 'collapse';
+      open.getViewById('description').visibility = 'collapse';
+      open.getViewById('button').visibility = 'collapse';
+    }
+    open = item;
+  } else if (!openedItem) {
+    open = null;
+  }
 };
 
 //Sets up goals
@@ -178,6 +192,7 @@ var createItem = function(enabled, id, first)  {
   image2.className = 'app-intervention-icon';
 
   if (first) {
+    open = item;
     image2.visibility = 'hidden';
     description.visibility = 'visible';
     button.visibility = 'visible';
@@ -202,6 +217,7 @@ var createItem = function(enabled, id, first)  {
       image2.visibility = image2.visibility === 'hidden' ? 'collapse' : 'hidden';
       description.visibility = description.visibility === 'visible' ? 'collapse' : 'visible';
       button.visibility = description.visibility;
+      closePrevious(image2.visibility === 'hidden', item);
       events.push({category: 'features', index: 'watchlist_detail_expand'});
     } else {
       if (args.action === 'down') {
