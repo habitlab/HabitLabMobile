@@ -8,21 +8,8 @@ Label {
 	color: white;
 }
 
-
-#next {
-	/*padding: 5%;*/
-	height: 100%;
-	background-color: #FF9F1C;
-	color: white;
-}
-
-
 #main {
-	height: 93%;
-}
-
-#button {
-	height: 7%;
+	height: 100%;
 }
 
 
@@ -41,25 +28,39 @@ Label {
 
 }
 
-.icon {
-  margin: 3%;
-  padding: 15%;
-  padding-top: 0;
-  padding-bottom: 0;
-  text-align: center;
-  vertical-align: middle;
-  border-radius: 50%;
-}
-
 .mainImage {
-	height: 60%;
+	height: 90%;
 	margin-bottom: 4%;
 }
 
 .next {
 	margin-top: 3%;
+  height: 35%;
+  background-color: #FF9F1C;
+  color: white;
 }
 
 .smallText {
 	font-size: 14%;
+  overflow: visible;
+}
+
+.small-carousel-dot {
+  background-color: #DCDCDC;
+  margin: 5%;
+  padding: 15%;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.large-carousel-dot {
+  margin: 1%;
+  background-color: #FFA730;
+  padding: 12%;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: middle;
+  border-radius: 50%;
 }

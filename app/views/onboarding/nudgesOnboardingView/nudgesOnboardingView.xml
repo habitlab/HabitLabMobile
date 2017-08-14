@@ -1,23 +1,50 @@
-<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating"  actionBarHidden="true" >
-	<StackLayout>
+<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating"  actionBarHidden="true" xmlns:Slides="nativescript-slides">
 	<StackLayout id="main">
 		<Label text="Stay productive with a variety of helpful nudges" class="title" textWrap="true"/>
-		<Image class="mainImage" id="image"/>
-		<GridLayout rows="auto, auto" columns="*,*,*,*,*" id="selector" class="icons"> 
-			<Image row="0" col="0" class="icon" id="{{ names[0] }}" src="{{ images[0] }}" tap="tapIcon"/>
-			<Label text="Hint" row="1" col="0" class="smallText" id="{{ label[0] }}" visibility="hidden"/> 
-			<Image row="0" col="1" class="icon" id="{{ names[1] }}" src="{{ images[1] }}" tap="tapIcon"/>
-			<Label text="Alert" row="1" col="1" class="smallText" id="{{ label[1] }}" visibility="hidden"/> 
-			<Image row="0" col="2" class="icon" id="{{ names[2] }}" src="{{ images[2] }}" tap="tapIcon"/>
-			<Label text="Timer" row="1" col="2" class="smallText" id="{{ label[2] }}" visibility="hidden"/> 
-			<Image row="0" col="3" class="icon"  id="{{ names[3] }}" src="{{ images[3] }}" tap="tapIcon"/>
-			<Label text="Blockbuster" row="1" col="3" class="smallText" id="{{ label[3] }}" visibility="hidden"/> 
-			<Image row="0" col="4" class="icon"  id="{{ names[4] }}" src="{{ images[4] }}" tap="tapIcon"/>
-			<Label text="Curtain" row="1" col="4" class="smallText" id="{{ label[4] }}" visibility="hidden"/> 
-		</GridLayout>
+		<StackLayout>
+			<Slides:SlideContainer id="slides-container" height="70%">
+	      <Slides:Slide class="slide" swipe="changeSlide">
+	        <StackLayout id="slide-1">
+	        	<Image class="mainImage" id="image-0" src="{{sources[0]}}" />
+	      	</StackLayout>
+	      </Slides:Slide>
+	      <Slides:Slide class="slide" swipe="changeSlide">
+	        <StackLayout id="slide-2">
+	        	<Image class="mainImage" id="image-1" src="{{sources[1]}}" />
+	      	</StackLayout>
+	      </Slides:Slide>
+	      <Slides:Slide class="slide" swipe="changeSlide">
+	        <StackLayout id="slide-3">
+	        	<Image class="mainImage" id="image-2" src="{{sources[2]}}" />
+	      	</StackLayout>
+	      </Slides:Slide>
+	      <Slides:Slide class="slide" swipe="changeSlide">
+	        <StackLayout id="slide-4">
+	        	<Image class="mainImage" id="image-3" src="{{sources[3]}}" />
+	      	</StackLayout>
+	      </Slides:Slide>
+	      <Slides:Slide class="slide" swipe="changeSlide" >
+	        <StackLayout id="slide-5">
+	        	<Image class="mainImage" id="image-4" src="{{sources[4]}}" />
+	      	</StackLayout>
+	      </Slides:Slide>
+	    </Slides:SlideContainer>
+
+	    <StackLayout height="30%">
+				<GridLayout rows="auto,*" columns="*,*,*,*,*,*,*" id="selector" class="icons" height="65%"> 
+					<Image row="0" col="1" id="{{ names[0] }}" src="{{ images[0] }}" tap="tapIcon"/>
+					<Label text="Hint" row="1" col="1" class="smallText" id="{{ label[0] }}" visibility="hidden"/> 
+					<Image row="0" col="2" id="{{ names[1] }}" src="{{ images[1] }}" tap="tapIcon"/>
+					<Label text="Alert" row="1" col="2" class="smallText" id="{{ label[1] }}" visibility="hidden"/> 
+					<Image row="0" col="3" id="{{ names[2] }}" src="{{ images[2] }}" tap="tapIcon"/>
+					<Label text="Timer" row="1" col="3" class="smallText" id="{{ label[2] }}" visibility="hidden"/> 
+					<Image row="0" col="4" id="{{ names[3] }}" src="{{ images[3] }}" tap="tapIcon"/>
+					<Label text="Blockbuster" row="1" col="4" class="smallText" id="{{ label[3] }}" visibility="hidden"/> 
+					<Image row="0" col="5"  id="{{ names[4] }}" src="{{ images[4] }}" tap="tapIcon"/>
+					<Label text="Curtain" row="1" col="5" class="smallText" id="{{ label[4] }}" visibility="hidden"/> 
+				</GridLayout>
+				<Button id="next" text="Next" onTap="goToPermissions" class="next" tap="goToAccessibilityPermission"/>
+			</StackLayout>
+		</StackLayout>
 	</StackLayout>
-	<StackLayout id="button">
-		<Button id="next" text="Next" onTap="goToPermissions" class="next" tap="goToAccessibilityPermission"/>
-	</StackLayout>
-</StackLayout>
 </Page>

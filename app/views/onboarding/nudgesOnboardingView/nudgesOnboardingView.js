@@ -10,11 +10,9 @@ var nudgeImage = [
   '~/images/onboarding_glances.png'
 ];
 
-var previousId;
 var page;
-var image;
-
-var icons = []
+var slides;
+var icons = {};
 
 icons.images = [
 	"~/images/hint_nudge.png",
@@ -27,54 +25,35 @@ icons.images = [
 icons.selected = [false, false, false, false, false];
 icons.names = ["hint", "alert", "timer", "blockbuster", "glance"];
 icons.label = ["hintLabel", "alertLabel", "timerLabel", "blockbusterLabel", "glanceLabel"];
+icons.sources = nudgeImage;
 
+var redraw = function() {
+  icons.names.forEach(function(item, index) {
+    if (index === slides.currentIndex) {
+      page.getViewById(item).className = 'large-carousel-dot';
+      page.getViewById(item + 'Label').visibility = 'visible';
+    } else {
+      page.getViewById(item).className = 'small-carousel-dot';
+      page.getViewById(item + 'Label').visibility = 'hidden';
+    }
+  });
+};
 
 exports.pageLoaded = function(args) {
 	page = args.object;
-  	page.bindingContext = icons;
-  	image = page.getViewById('image');
-  	initializeIcons();
-}
-
-
-exports.tapIcon = function(args) {
-	var currId = args.object.id;
-	var currIndex = args.object.col;
-	redrawAndSelect(currId, currIndex);
-
-}
-
-redrawAndSelect = function(selectId, selectIndex) {
-	if (selectId === previousId) return;
-	var selected = page.getViewById(selectId);
-	selected.backgroundColor = '#FFA730';
-	var selectedLabel = page.getViewById(selectId + "Label");
-	selectedLabel.visibility="visible";
-	image.src = nudgeImage[selectIndex];
-	var unselected = page.getViewById(previousId);
-	var unselectedLabel = page.getViewById(previousId + "Label");
-	unselectedLabel.visibility="hidden";
-	unselected.backgroundColor = "#DCDCDC";
-	previousId = selectId;	
-}
-
-initializeIcons = function() {
-	for (var i = 0; i < icons.names.length; i++) {
-		var icon = page.getViewById(icons.names[i]);
-		icon.backgroundColor = (i === 2 ? '#FFA730' :"#DCDCDC");
-	}
-	image.src = nudgeImage[2];
-	previousId = "timer";
-	var unselectedLabel = page.getViewById("timerLabel");
-	unselectedLabel.visibility="visible";
-}
-
+	page.bindingContext = icons;
+  slides = page.getViewById('slides-container');
+  slides.on('changed', function(args) {
+    redraw();
+  });
+  redraw();
+};
 
 exports.goToAccessibilityPermission = function() {
 	frame.topmost().navigate('views/onboarding/accessibilityPermissionView/accessibilityPermissionView');
-}
+};
 
 exports.backEvent = function(args) {
   args.cancel = true; 
-}
+};
 
