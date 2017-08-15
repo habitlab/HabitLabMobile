@@ -24,6 +24,10 @@
 				<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
 				<Label text="Settings" class="side-label" />
 			</StackLayout>
+			<StackLayout orientation="horizontal" class="side-option" id="block-option" tap="setBlock">
+				<Image class="side-icon" src="res://ic_key" id="block-icon" />
+				<Label text="Hold me back" class="side-label" />
+			</StackLayout>
 		</StackLayout>
 		<StackLayout orientation="horizontal" class="snooze-option" id="snooze-option" tap="setSnooze">
 			<Image class="snooze-icon" src="res://ic_alarm" id="side-icon" />

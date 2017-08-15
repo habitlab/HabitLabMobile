@@ -4,7 +4,7 @@ var onClicksSet;
 var StorageUtil = require('~/util/StorageUtil');
 var dialogs = require("ui/dialogs");
 var menuEvents;
-var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'snooze'];
+var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'block', 'snooze'];
 var Toast = require("nativescript-toast");
 
 var setOnTouches = function() {
@@ -23,6 +23,9 @@ var setOnTouches = function() {
         if (item === 'snooze') {
           opt.backgroundColor = '#FFFFFF';
           return;
+        } else if (item === 'block') {
+          opt.backgroundColor = '#FFFFFF';
+          return;
         } else if (item === 'nudges') {
           item = 'interventions';
         }
@@ -31,6 +34,58 @@ var setOnTouches = function() {
     });
   });
 };
+
+
+
+
+var createBlockDialog = function() {
+  dialogs.action({
+    message: "How long would you like to block your waitlisted apps for?",
+    cancelButtonText: "Cancel",
+    actions: ["15 minutes", "30 minutes", "1 hour", "2 hours"]
+  }).then(function (result) {
+    if (result === "15 minutes"){
+      menuEvents.push({category: "features", index: "block_set"});
+      StorageUtil.setBlock(15);
+    } else if (result === "30 minutesr"){
+      menuEvents.push({category: "features", index: "block_set"});
+      StorageUtil.setBlock(30);
+    } else if (result === "1 hour"){
+      menuEvents.push({category: "features", index: "block_set"});
+      StorageUtil.setBlock(60);
+    } else if (result === "2 hours"){
+      menuEvents.push({category: "features", index: "block_set"});
+      StorageUtil.setBlock(120);
+    }
+
+    if (result !== 'Cancel') {
+      Toast.makeText('Block waitlist for ' + result).show();
+    }
+  });
+};
+
+
+exports.setBlock = function() {
+  menuEvents.push({category: "features", index: "block_opened"});
+  if (StorageUtil.inBlockMode()) {
+    dialogs.confirm({
+      title: "Remove block",
+      message: "You have x minutes remaining of your block. Are you sure you want to remove it?",
+      okButtonText: "Yes",
+      cancelButtonText: "Nevermind"
+    }).then(function (result) {
+      if (result === true) {
+        menuEvents.push({category: "features", index: "remove_block"});
+        Toast.makeText('Block Removed').show();
+        StorageUtil.removeBlock();
+      }
+    });
+  } else {
+    createBlockDialog();
+  }
+};
+
+
 
 var createSnoozeDialog = function() {
   dialogs.action({

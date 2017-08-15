@@ -773,6 +773,42 @@ exports.isEnabledForAll = function(id) {
   return JSON.parse(appSettings.getString('enabled'))[id];
 };
 
+/* export: setBlock
+ * -----------------
+ * Sets the block for 'duration' minutes.
+ */
+exports.setBlock = function(duration) {
+  //set Block
+}
+
+
+/* export: getBlock
+ * -----------------
+ * Returns the time in milliseconds (UTC) when the snooze will end.
+ */
+exports.getBlock = function() {
+  //return Number(appSettings.getString('blockEnd'));
+};
+
+/* export: inBlockMode
+ * --------------------
+ * Returns whether HabitLab is currently blocking
+ */
+exports.inBlockMode = function() {
+  //return  Date.now() - Number(appSettings.getString('blockEnd')) < 0;
+};
+
+
+/* export: removeBlock
+ * --------------------
+ * Removes the block from HabitLab
+ */
+exports.removeBlock = function() {
+  //appSettings.setString('blockEnd', "" + Date.now());
+};
+
+
+
 /* export: setSnooze
  * -----------------
  * Sets the snooze for 'duration' minutes. Snooze is implemented by setting the UTC time in
