@@ -56,13 +56,14 @@
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
 			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
-			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto, auto">
 	   			        	            <Image row="0" col="0" src="{{ icon }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
 	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
 	   			        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
 	   			        	            <Label row ="0" col="2" text="{{ mins + ' mins' }}" class="list-group-item-text"/>
+	   			        	             <Image class="settings-button-icon" src="res://ic_arrow_right" row = "0" col="3"/>
 			   			        	</GridLayout>
 			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
@@ -104,7 +105,7 @@
 		   			        </lv:RadListView.listViewLayout>
 		   			        <lv:RadListView.itemTemplate>
 		   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
-		   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto">
+		   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto, auto">
    			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
    			        	            <StackLayout row="0" col="1" >
    			        	                <Label text="{{ name }}" class="list-group-item-heading"/>
@@ -115,6 +116,7 @@
    			        	            	<Label text="{{ percDesc }}" class="small-text" />
    			        	        	</StackLayout>
    			        	            <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+   			        	            <Image class="settings-button-icon" src="res://ic_arrow_right" row = "0" col="4"/>
 		   			        	</GridLayout>
 		   			        	</RL:Ripple>
 		   			        </lv:RadListView.itemTemplate>
@@ -153,16 +155,14 @@
 			   			        </lv:RadListView.listViewLayout>
 			   			        <lv:RadListView.itemTemplate>
 			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
-			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto">
+			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto, auto">
 	   			        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
 	   			        	            <StackLayout row="0" col="1" >
 	   			        	                <Label text="{{ name }}" class="list-group-item-heading" />
 	   			        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
 	   			        	            </StackLayout>
-	   			        	            <!-- <StackLayout row ="0" col="3"> -->
-		   			        	            <Label row="0" col="2" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
-		   			        	            <!-- <Label text="total mins/week" class="list-desc"/> -->
-	   			        	        	<!-- </StackLayout> -->
+		   			        	        <Label row="0" col="2" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+		   			        	        <Image class="settings-button-icon" src="res://ic_arrow_right" row = "0" col="3"/>
 			   			        	</GridLayout>
 			   			        	</RL:Ripple>
 			   			        </lv:RadListView.itemTemplate>
