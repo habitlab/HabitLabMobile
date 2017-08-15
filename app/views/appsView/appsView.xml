@@ -8,6 +8,7 @@
       <Label text="Manage Watchlist" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
@@ -18,7 +19,7 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout id="main-layout">
-        <SearchBar hint="Search..." submit="onSearch" clear="onClearSearch" />
+        <SearchBar hint="Search..." submit="onSearch" clear="onClearSearch" id="search-bar" visibility="collapse"/>
         <Label id="title" text="Select apps to spend less time on"/>
         <StackLayout id="sub-layout">
           <Label text="no results" class="no-results" id="no-results" visibility="collapse" />

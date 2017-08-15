@@ -16,6 +16,7 @@ var toToggle;
 var page;
 var events;
 var grid;
+var search;
 var noResults;
 var currentSearch = "";
 
@@ -94,9 +95,15 @@ var createCell = function(info, r, c)  {
   return cell;
 };
 
+exports.onShowSearch = function(args) {
+  search.visibility = 'visible';
+  args.object.visibility = 'collapse';
+};
+
 exports.pageLoaded = function(args) { 
   events = [{category: 'page_visits', index: 'watchlist_manage'}];
   page = args.object;
+  search = page.getViewById('search-bar');
   grid = page.getViewById('grid');
   noResults = page.getViewById('no-results');
   toToggle = {};
@@ -126,6 +133,7 @@ exports.pageLoaded = function(args) {
 };
 
 exports.toggleDrawer = function() {
+  search.dismissSoftInput();
   events.push({category: 'navigation', index: 'menu'});
   drawer.toggleDrawerState();
 };
