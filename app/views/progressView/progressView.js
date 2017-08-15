@@ -423,8 +423,18 @@ populateListViewsDay = function() {
      var targetTime = progressInfo.phoneStats[TODAY].time;
      // var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
     
-	//'buttons' that show the usage daily overall phone usage 
-    var hrsTotal = Math.round(total/6)/10;
+	//If less than 1 hour, show minutes instead of 0.2hrs
+    var totalReport;
+    var timeTotalDesc;
+    if (total <= 60) {
+        totalReport = total;
+        totalTimeDesc = "mins on phone"
+    } else {
+        totalReport = Math.round(total/6)/10;
+        totalTimeDesc = "hrs on phone"
+    }
+
+    //'buttons' that show the usage daily overall phone usage 
 	var dayStats = [];
 	dayStats.push(
 	{
@@ -436,8 +446,8 @@ populateListViewsDay = function() {
 		desc: "glances"
 	},
     {
-        value: hrsTotal,
-        desc: "hrs on phone"
+        value: totalReport,
+        desc: totalTimeDesc
         // value: perc + "%",
         // desc: "time on watchlist"
     }
@@ -457,8 +467,27 @@ populateListViewsWeek = function() {
     var timeOnTargetAppsWeek = totalTimeWeek(0, "target");
     // var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
     var unlocks = totalTimeWeek(0, "unlocks");
-    var hrsOnWatchlistWeek = (timeOnTargetAppsWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/6)/10);
-    var hrsOnPhoneWeek = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnPhoneWeek/6)/10);
+  
+    var watchlistReport;
+    var timeWatchlistDesc;
+    if (timeOnTargetAppsWeek <= 60) {
+        watchlistReport = timeOnTargetAppsWeek;
+        timeWatchlistDesc = "mins on watchlist"
+    } else {
+        watchlistReport = Math.round(timeOnTargetAppsWeek/6)/10;
+        timeWatchlistDesc = "hrs on watchlist"
+    }
+
+    //If less than 1 hour, show minutes instead of 0.2hrs
+    var totalReport;
+    var timeTotalDesc;
+    if (timeOnPhoneWeek <= 60) {
+        totalReport = timeOnPhoneWeek;
+        totalTimeDesc = "mins on phone"
+    } else {
+        totalReport = Math.round(timeOnPhoneWeek/6)/10;
+        totalTimeDesc = "hrs on phone"
+    }
 
 
 	var weekStats = [];
@@ -469,12 +498,12 @@ populateListViewsWeek = function() {
 
 	},
 	{
-	    value: hrsOnWatchlistWeek,
-        desc: "hrs on watchlist"
+	    value: watchlistReport,
+        desc: timeWatchlistDesc
 	},
     {
-        value: hrsOnPhoneWeek,
-        desc: "hrs on phone"
+        value: totalReport,
+        desc: totalTimeDesc
         // value: perc + "%",
         // desc: "time on watchlist"
     }
@@ -491,12 +520,34 @@ populateListViewMonth = function () {
 	var totalTimePhoneMonth = totalTimeMonth("total");
     var totalTarget = totalTimeMonth("target");
     var unlocks = totalTimeMonth("unlocks"); 
-    var hrs = (totalTimePhoneMonth === 0 ? 0 : Math.round(totalTimePhoneMonth/6)/10);
-    var watchHrs = (totalTarget === 0 ? 0 : Math.round(totalTarget/6)/10);
     // var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round((totalTarget/totalTimePhoneMonth)*100));
     // var avgUnlocks = (unlocks === 0 ? 0 : Math.round(unlocks/28));
     // var avgHrs = (hrs === 0 ? 0 : Math.round(hrs/28);
     // var avgWatchlistHrs = (hrs === 0 ? 0 : Math.round(watchHrs/28);
+
+    //If less than 1 hour, show minutes instead of 0.2hrs
+    var watchlistReport;
+    var timeWatchlistDesc;
+    if (totalTarget <= 60) {
+        watchlistReport = totalTarget;
+        timeWatchlistDesc = "mins on watchlist"
+    } else {
+        watchlistReport = Math.round(totalTarget/6)/10;
+        timeWatchlistDesc = "hrs on watchlist"
+    }
+
+    //If less than 1 hour, show minutes instead of 0.2hrs
+    var totalReport;
+    var timeTotalDesc;
+    if (totalTimePhoneMonth <= 60) {
+        totalReport = totalTimePhoneMonth;
+        totalTimeDesc = "mins on phone"
+    } else {
+        totalReport = Math.round(totalTimePhoneMonth/6)/10;
+        totalTimeDesc = "hrs on phone"
+    }
+
+
 
 	var monthStats = [];
 	monthStats.push(
@@ -504,13 +555,13 @@ populateListViewMonth = function () {
 		value: unlocks,
         desc: "unlocks"
 	},
-	{
-		value: watchHrs,
-        desc: "hrs on watchlist"
-	},
+	   {
+        value: watchlistReport,
+        desc: timeWatchlistDesc
+    },
     {
-        value: hrs,
-        desc: "hrs on phone"
+        value: totalReport,
+        desc: totalTimeDesc
         // value: perc + "%",
         // desc: "time on watchlist"
     }
