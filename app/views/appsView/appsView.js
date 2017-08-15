@@ -15,16 +15,30 @@ var pkgs;
 var toToggle;
 var page;
 var events;
+var grid;
+var noResults;
+var currentSearch = "";
 
 exports.onUnloaded = function(args) {
   args.object.removeChildren();
 };
 
-var createGrid = function(args) {
+exports.onSearch = function(args) {
+  if (args.object.text !== currentSearch) {
+    grid.removeChildren();
+    createGrid(args.object.text.toLowerCase());
+    currentSearch = args.object.text;
+  }
+  args.object.dismissSoftInput();
+};
+
+var createGrid = function(filter) {
   var list = UsageUtil.getApplicationList();
   var selectedPackages = StorageUtil.getSelectedPackages();
 
-  list.sort(function(a, b){
+  list = list.filter(function (item) {
+    return !filter || item.label.toLowerCase().includes(filter);
+  }).sort(function(a, b){
     var aIsSelected = selectedPackages.includes(a.packageName);
     var bIsSelected = selectedPackages.includes(b.packageName);
 
@@ -37,8 +51,12 @@ var createGrid = function(args) {
     }
   });
 
+  if (!list.length) {
+    noResults.visibility = 'visible';
+  } else {
+    noResults.visibility = 'collapse';
+  }
 
-  var grid = args.object.getViewById('grid');
   list.forEach(function (item, i) {
     if (i % 3 === 0) {
       grid.addRow(new layout.ItemSpec(1, layout.GridUnitType.AUTO));
@@ -79,6 +97,8 @@ var createCell = function(info, r, c)  {
 exports.pageLoaded = function(args) { 
   events = [{category: 'page_visits', index: 'watchlist_manage'}];
   page = args.object;
+  grid = page.getViewById('grid');
+  noResults = page.getViewById('no-results');
   toToggle = {};
   drawer = page.getViewById('sideDrawer');
   pkgs = StorageUtil.getSelectedPackages();
@@ -100,7 +120,7 @@ exports.pageLoaded = function(args) {
   loader.show(options);
 
   timer.setTimeout(() => {
-    createGrid(args);
+    createGrid("");
     loader.hide();
   }, 1000);
 };
