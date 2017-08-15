@@ -27,11 +27,17 @@
 			   <!-- <StackLayout>  
 			   	<ScrollView> -->
 			   		<StackLayout>
-		   				<GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
- 			   				<Label text="Mins on Watchlist Today" row="0" col="0" class="header" horizontalAlignment="center"/>
- 			   				<Button text="{{ showDayGraph ? 'Hide' : 'Show'}}" tap="toggle" class="shide" row="0" col="1"/>
- 			   			</GridLayout>
-			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}" id="dayViewGraph" class="graph"/>
+			   			 
+			   	
+
+		   			<!-- 	<GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
+ 			   				<Label text="Mins on Watchlist Today" row="0" col="0" class="header" horizontalAlignment="center" tap="toggle"/>
+ 			   				<!-- <Button text="{{ showDayGraph ? 'Hide' : 'Show'}}" tap="toggle" class="shide" row="0" col="1"/> -->
+ 			   			<!-- </GridLayout> -->
+
+ 						<Label text="Mins on Watchlist Today" class="header" horizontalAlignment="center" tap="toggle"/>
+			   			<Placeholder creatingView="dayView" visibility = "{{ showDayGraph ? 'visible' : 'collapsed'}}" id="dayViewGraph" class="graph" tap="toggle"/>
+			   			<Image class="showMore" src="res://ic_show_more" visibility = "{{ showDayGraph ? 'collapsed' : 'visible'}}" tap="toggle"/>
 
 			   			<!-- 	For the horizontal button like displays  -->
 		   				<lv:RadListView id="dayButtons" class="list-group"  tap="onDayTap" items="{{ dayButtons }}">
@@ -78,11 +84,14 @@
 		 <TabViewItem title="Week" >
 			 <TabViewItem.view>
 					 <StackLayout>
-						 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
+					<!-- 	 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
  					   				<Label text="Mins on Watchlist This Week" row="0" col="0" class="header" horizontalAlignment="center"/>
  					   				<Button text="{{ showWeekGraph ? 'Hide' : 'Show'}}" tap="toggleWeek" class="shide" row="0" col="1"/>
- 				   			</GridLayout>
-					 	<Placeholder creatingView="weekView" visibility = "{{ showWeekGraph ? 'visible' : 'collapsed'}}" class="graph"/>
+ 				   			</GridLayout> -->
+
+ 				   		<Label text="Mins on Watchlist This Week" class="header" horizontalAlignment="center" tap="toggleWeek"/>
+					 	<Placeholder creatingView="weekView" visibility = "{{ showWeekGraph ? 'visible' : 'collapsed'}}" class="graph" tap="toggleWeek"/>
+					 	<Image class="showMore" src="res://ic_show_more" visibility = "{{ showWeekGraph ? 'collapsed' : 'visible'}}" tap="toggleWeek"/>
 
 					 <!-- 	For the horizontal button like displays  -->
 					 		<lv:RadListView id="weekButtons" class="list-group"  tap="onWeekTap" items="{{ weekButtons }}">
@@ -131,11 +140,14 @@
 				<TabViewItem title="Month">
 					 <TabViewItem.view>
 					     <StackLayout>
-					   		 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
+					   	<!-- 	 <GridLayout class="titleStack" horizontalAlignment="center" row="auto" columns="7*, *">
  				   				<Label text="Mins on Watchlist This Month" row="0" col="0" class="header" horizontalAlignment="center"/>
  					   			<Button text="{{ showMonthGraph ? 'Hide' : 'Show'}}" tap="toggleMonth" class="shide" row="0" col="1"/>
  				   			</GridLayout>
-						 	<Placeholder creatingView="monthView" visibility = "{{ showMonthGraph ? 'visible' : 'collapsed'}}" class="graph"/>
+ -->
+ 				   			<Label text="Mins on Watchlist This Month" class="header" horizontalAlignment="center" tap="toggleMonth"/>
+						 	<Placeholder creatingView="monthView" visibility = "{{ showMonthGraph ? 'visible' : 'collapsed'}}" class="graph" tap="toggleMonth"/>
+						 	<Image class="showMore" src="res://ic_show_more" visibility = "{{ showMonthGraph ? 'collapsed' : 'visible'}}" tap="toggleMonth"/>
 
 					     	<lv:RadListView id="monthButtons" class="list-group"  tap="onMonthTap" items="{{ monthButtons }}">
 			   					<lv:RadListView.listViewLayout>
