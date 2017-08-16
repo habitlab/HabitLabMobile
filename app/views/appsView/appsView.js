@@ -33,13 +33,21 @@ exports.onSearch = function(args) {
   args.object.dismissSoftInput();
 };
 
+exports.onShowSearch = function(args) {
+  search.visibility = 'visible';
+  args.object.visibility = 'collapse';
+};
+
 var createGrid = function(filter) {
   var list = UsageUtil.getApplicationList();
   var selectedPackages = StorageUtil.getSelectedPackages();
 
-  list = list.filter(function (item) {
-    return !filter || item.label.toLowerCase().includes(filter);
-  }).sort(function(a, b){
+  if (filter) {
+    list = list.filter(function (item) {
+      return item.label.toLowerCase().includes(filter);
+    });
+  }
+  list.sort(function(a, b){
     var aIsSelected = selectedPackages.includes(a.packageName);
     var bIsSelected = selectedPackages.includes(b.packageName);
 
@@ -93,11 +101,6 @@ var createCell = function(info, r, c)  {
   layout.GridLayout.setRow(cell, r);
   layout.GridLayout.setColumn(cell, c);
   return cell;
-};
-
-exports.onShowSearch = function(args) {
-  search.visibility = 'visible';
-  args.object.visibility = 'collapse';
 };
 
 exports.pageLoaded = function(args) { 
