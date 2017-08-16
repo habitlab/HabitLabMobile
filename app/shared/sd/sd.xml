@@ -24,13 +24,6 @@
 				<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
 				<Label text="Settings" class="side-label" />
 			</StackLayout>
-<<<<<<< HEAD
-			<StackLayout orientation="horizontal" class="side-option" id="block-option" tap="setBlock">
-				<Image class="side-icon" src="res://ic_key" id="block-icon" />
-				<Label text="Focus Mode" class="side-label" />
-			</StackLayout>
-=======
->>>>>>> origin/master
 		</StackLayout>
 		<StackLayout id="bottom-drawer-content">
 			<StackLayout orientation="horizontal" class="bottom-option" id="block-option" tap="setBlock">
