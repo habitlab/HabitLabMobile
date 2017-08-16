@@ -13,6 +13,8 @@ var TextView = android.widget.TextView;
 var BitmapFactory = android.graphics.BitmapFactory;
 var Bitmap = android.graphics.Bitmap;
 var TypedValue = android.util.TypedValue;
+var ProgressBar = android.widget.ProgressBar;
+var LayoutParams = android.view.ViewGroup.LayoutParams;
 
 
 /******************************
@@ -35,9 +37,6 @@ BACKGROUND.setColor(Color.parseColor("#d13b49"));
 var ICON_FILL = new Paint();
 ICON_FILL.setColor(Color.parseColor("#ffad74"));
 
-
-var BUTTON_FILL = new Paint();
-BUTTON_FILL.setColor(Color.parseColor("#ededed"));
 
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -83,8 +82,10 @@ var overlayTitle;
 var overlayText;
 var overlayPosButton;
 var overlayLink;
+var progBar;
+var labelText;
 
-exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
+exports.showOverlay = function (title, msg, pos, prog, max, negCallback) {
 	// add view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
@@ -95,8 +96,8 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 
 
     // add title
-    var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
-    	0.1 * SCREEN_WIDTH, 0.225 * SCREEN_HEIGHT, 
+    var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
+    	0.1 * SCREEN_WIDTH, 0.3 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     titleParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayTitle = new TextView(context);
@@ -108,8 +109,8 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     windowManager.addView(overlayTitle, titleParams);
 
     // add text
-    var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.4 * SCREEN_HEIGHT,
-    	0.1 * SCREEN_WIDTH, 0.25 * SCREEN_HEIGHT, 
+    var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
+    	0.1 * SCREEN_WIDTH, 0.45 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayText = new TextView(context);
@@ -119,6 +120,30 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     overlayText.setHorizontallyScrolling(false);
     overlayText.setGravity(Gravity.CENTER);
     windowManager.addView(overlayText, textParams);
+
+    //Progress bar 
+    var progParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
+    	0, 0.1*SCREEN_HEIGHT, 
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    progBar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
+    progBar.setMax(max);
+    progBar.setProgress(prog);
+    windowManager.addView(progBar, progParams);
+
+    //Time label
+    var labelParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+    	0.35*SCREEN_WIDTH, 0.12 * SCREEN_HEIGHT, 
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    // labelParams.gravity = Gravity.RIGHT | Gravity.TOP;
+    labelText = new TextView(context);
+    labelText.setText(max + " mins");
+    labelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
+    labelText.setTextColor(Color.WHITE);
+    labelText.setHorizontallyScrolling(false);
+    // labelText.setGravity(Gravity.CENTER);
+    windowManager.addView(labelText, labelParams);
+
+
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.6 * SCREEN_WIDTH, 
@@ -134,17 +159,14 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 	overlayPosButton.getBackground().setColorFilter(Color.parseColor("#eeeeeeff"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (posCallback) {
-	    		posCallback();
-	    	}
 	        exports.removeOverlay();
 	    }
 	}));
     windowManager.addView(overlayPosButton, posButtonParams);
 
     //Add exit button
-    var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
-    	0.1 * SCREEN_WIDTH, 0.72 * SCREEN_HEIGHT, 
+    var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
+    	0.1 * SCREEN_WIDTH, 0.75 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     linkParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayLink = new TextView(context);
@@ -188,6 +210,16 @@ exports.removeOverlay = function () {
 	if (overlayLink) {
 		windowManager.removeView(overlayLink);
 		overlayLink = undefined;
+	}
+
+	if (progBar) {
+		windowManager.removeView(progBar);
+		progBar = undefined;
+	}
+
+	if (labelText) {
+		windowManager.removeView(labelText);
+		labelText = undefined;
 	}
 }
 

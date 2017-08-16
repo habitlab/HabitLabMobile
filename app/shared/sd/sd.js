@@ -38,9 +38,11 @@ var setOnTouches = function() {
 };
 
 var showBlockerOverlay = function () {
+// showOverlay = function (title, msg, pos, prog, max, negCallback) 
+
     BlockerOverlay.showOverlay("You're in focus mode", 
-      "You have x minutes of focus mode left", 
-      "Continue", "Get me out of here!", null, null);
+      "You have 40 minutes of focus mode left", 
+      "Continue", 20, 60, null);
 }
 
 
