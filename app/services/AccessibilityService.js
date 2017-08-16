@@ -1,6 +1,5 @@
 var application = require("application");
 var context = application.android.context;
-var foregroundActivity = application.android.foregroundActivity;
 var toast = require("nativescript-toast");
 var timer = require("timer");
 
@@ -74,8 +73,6 @@ var currentApplication = {
     visitStart: 0
 };
 
-var serviceEnabledId;
-
 /*
  * AccessibilityService
  * --------------------
@@ -93,11 +90,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         }
 
         if (activePackage === "com.stanfordhci.habitlab") { 
-            if (serviceEnabledId) {
-                timer.clearInterval(serviceEnabledId);
-                serviceEnabledId = 0;
-            }
-
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
             storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
@@ -128,14 +120,22 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onServiceConnected: function() {   
         this.super.onServiceConnected();
         setUpScreenReceiver(); // set up unlock receiver on startup
+
         if (!storage.isOnboardingComplete()) {
             storage.setOnboardingComplete();
             storage.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);   
         }
 
-        serviceEnabledId = timer.setInterval(() => {
+        var count = 0;
+        var serviceEnabledId = timer.setInterval(() => {
+            if (count === 2) {
+                timer.clearInterval(serviceEnabledId);
+                return;
+            }
+
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
-        }, 200);
+            count++;
+        }, 100);
     }
 });
 
