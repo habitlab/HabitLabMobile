@@ -85,11 +85,6 @@ var cb = function() {
 
 exports.pageLoaded = function(args) {
     if (!permissionUtil.checkAccessibilityPermission()) {
-        if (!permissionServiceIsRunning()) {
-            var trackingServiceIntent = new android.content.Intent(app.android.context, com.habitlab.AccessibilityCheckerService.class); 
-            app.android.context.startService(trackingServiceIntent)
-        }
-
         FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!", 
             "Take me there!", cb);
     }

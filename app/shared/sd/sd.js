@@ -6,6 +6,8 @@ var dialogs = require("ui/dialogs");
 var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
+const LockdownOverlay = require("~/overlays/LockdownOverlay");
+const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 
 var setOnTouches = function() {
 
@@ -31,6 +33,18 @@ var setOnTouches = function() {
     });
   });
 };
+
+
+
+var showBlockerOverlay = function () {
+// showOverlay = function (title, msg, pos, prog, max, negCallback) 
+
+    LockdownOverlay.showOverlay("You're in lockdown mode", 
+      "You have 40 minutes of focus left", 
+      "Continue", 20, 60, null);
+}
+
+
 
 var createLockdownDialog = function() {
   dialogs.action({
@@ -75,7 +89,8 @@ exports.setLockdown = function() {
       }
     });
   } else {
-    createLockdownDialog();
+    showBlockerOverlay();
+    //createLockdownDialog();
   }
 };
 
