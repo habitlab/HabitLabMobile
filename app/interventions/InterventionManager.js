@@ -7,7 +7,7 @@ const Toast = require("~/util/ToastUtil");
 const TimerOverlay = require("~/overlays/TimerOverlay");
 const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const VideoOverlay = require("~/overlays/VideoOverlay");
-const LockdownOverlay = require("~/overlaps/LockdownOverlay")
+const LockdownOverlay = require("~/overlaps/LockdownOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -727,6 +727,7 @@ var removeOverlays = function() {
   DialogOverlay.removeTwoOptionDialog();
   FullScreenOverlay.removeOverlay();
   VideoOverlay.removeVideoBlocker();
+  LockdownOverlay.removeOverlay();
   pausedThisVisit = false;
 }
 
