@@ -130,6 +130,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         setUpScreenReceiver(); // set up unlock receiver on startup
         if (!storage.isOnboardingComplete()) {
             storage.setOnboardingComplete();
+            storage.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);   
         }
 
         serviceEnabledId = timer.setInterval(() => {
