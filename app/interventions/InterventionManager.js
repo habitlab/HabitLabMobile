@@ -10,7 +10,6 @@ const VideoOverlay = require("~/overlays/VideoOverlay");
 const LockdownOverlay = require("~/overlaps/LockdownOverlay")
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
-var FancyAlert = require("~/util/FancyAlert");
 
 var application = require('application');
 var context = application.android.context.getApplicationContext();
@@ -750,10 +749,13 @@ var nextOnLaunchIntervention = function(pkg) {
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
   showDialogVisitLength(true, pkg);
+  console.warn("next on launch intervention called");
 
   var lockdownMode = StorageUtil.inLockdownMode();
   if (lockdownMode) {
-    showLockdownOverlay();
+    console.warn("in lockdown")
+    showLockdownOverlay(pkg);
+    return;
   }
 
   // decide whether or not to run an on-launch intervention
