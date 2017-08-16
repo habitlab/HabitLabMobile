@@ -143,6 +143,7 @@ exports.giveDrawPermission = function(args) {
 exports.goToAppsView = function(args) {
   if (!StorageUtil.isOnboardingComplete()) {
     StorageUtil.setOnboardingComplete();
+    StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
 
     /** SET UP ALARM **/
     const DAY = 86400 * 1000;

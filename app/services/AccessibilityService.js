@@ -116,6 +116,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         setUpScreenReceiver(); // set up unlock receiver on startup
         if (!storage.isOnboardingComplete()) {
             storage.setOnboardingComplete();
+            StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
             var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
             if (foregroundActivity) {
                 foregroundActivity.startActivity(intent);

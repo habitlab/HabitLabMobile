@@ -24,14 +24,16 @@
 				<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
 				<Label text="Settings" class="side-label" />
 			</StackLayout>
-			<StackLayout orientation="horizontal" class="side-option" id="block-option" tap="setBlock">
-				<Image class="side-icon" src="res://ic_key" id="block-icon" />
-				<Label text="Hold me back" class="side-label" />
-			</StackLayout>
 		</StackLayout>
-		<StackLayout orientation="horizontal" class="snooze-option" id="snooze-option" tap="setSnooze">
-			<Image class="snooze-icon" src="res://ic_alarm" id="side-icon" />
-			<Label text="Snooze" class="side-label" />
+		<StackLayout id="bottom-drawer-content">
+			<StackLayout orientation="horizontal" class="bottom-option" id="block-option" tap="setBlock">
+				<Image class="bottom-icon" src="res://ic_key" id="block-icon" />
+				<Label text="Lockdown Mode" class="bottom-label" />
+			</StackLayout>
+			<StackLayout orientation="horizontal" class="bottom-option" id="snooze-option" tap="setSnooze">
+				<Image class="bottom-icon" src="res://ic_alarm" id="side-icon" />
+				<Label text="Snooze Nudges" class="bottom-label" />
+			</StackLayout>
 		</StackLayout>
 	</StackLayout>
 </StackLayout>

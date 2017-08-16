@@ -8,7 +8,7 @@
       <Label text="Nudges" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
-    <ActionItem tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
+    <ActionItem id="search-icon" tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">

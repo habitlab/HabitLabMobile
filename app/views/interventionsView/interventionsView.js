@@ -135,13 +135,14 @@ exports.pageLoaded = function(args) {
   layouts['overlay'] = page.getViewById("overlay-interventions");
   search = page.getViewById('search-bar');
   drawer = page.getViewById('sideDrawer');
-   if (!StorageUtil.isTutorialComplete()) {
+  if (!StorageUtil.isTutorialComplete()) {
     if (!visited) {
       FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
     page.getViewById('nudge-scroll').height = '90%';
+    page.getViewById('search-icon').visibility = 'collapse';
   }
   setUpList();
 };
