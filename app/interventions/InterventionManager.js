@@ -7,7 +7,7 @@ const Toast = require("~/util/ToastUtil");
 const TimerOverlay = require("~/overlays/TimerOverlay");
 const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const VideoOverlay = require("~/overlays/VideoOverlay");
-const LockdownOverlay = require("~/overlaps/LockdownOverlay");
+const LockdownOverlay = require("~/overlays/LockdownOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -750,11 +750,11 @@ var nextOnLaunchIntervention = function(pkg) {
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
   showDialogVisitLength(true, pkg);
-  console.warn("next on launch intervention called");
+  console.log("next on launch intervention called");
 
   var lockdownMode = StorageUtil.inLockdownMode();
   if (lockdownMode) {
-    console.warn("in lockdown")
+    console.log("in lockdown")
     showLockdownOverlay(pkg);
     return;
   }
