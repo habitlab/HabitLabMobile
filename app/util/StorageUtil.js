@@ -268,7 +268,6 @@ exports.setUpDB = function(erasingData) {
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
-  appSettings.setString('snoozeEnd', Date.now() + '');
 
   preset.forEach(function (item) {
     createPackageData(item);
@@ -289,7 +288,6 @@ exports.setUpFakeDB = function() {
   appSettings.setString('selectedPackages', JSON.stringify(preset));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
-  appSettings.setString('snoozeEnd', Date.now() + '');
 
   preset.forEach(function (item) {
     createFakePackageData(item);
