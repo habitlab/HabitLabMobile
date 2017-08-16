@@ -24,7 +24,10 @@ exports.pageLoaded = function(args) {
   } else if (PermissionUtil.checkAccessibilityPermission()) {
     viewFile = 'goalsView';
     view = 'goalsView';
-    StorageUtil.setOnboardingComplete();
+    if (!StorageUtil.isOnboardingComplete()) {
+      StorageUtil.setOnboardingComplete();
+      StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
+    }
   } 
 
   if (view) {

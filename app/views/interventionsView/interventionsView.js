@@ -12,6 +12,26 @@ var page;
 var interventionList;
 
 var events;
+var currentSearch;
+var search;
+var layouts = {};
+
+exports.onSearch = function(args) {
+  if (args.object.text !== currentSearch) {
+    Object.keys(layouts).forEach(function(key) {
+      layouts[key].removeChildren();
+    });
+    currentSearch = args.object.text;
+    setUpList(args.object.text.toLowerCase());
+  }
+  args.object.dismissSoftInput();
+};
+
+exports.onShowSearch = function(args) {
+  search.visibility = 'visible';
+  args.object.visibility = 'collapse';
+  currentSearch = "";
+};
 
 var createItem = function(info)  {
   var item = builder.load({
@@ -61,19 +81,23 @@ var createItem = function(info)  {
   return item;
 };
 
-var setUpList = function() {
-  var layouts = {};
-  layouts['toast'] = page.getViewById("toast-interventions");
-  layouts['toast'].removeChildren();
-  layouts['notification'] = page.getViewById("notification-interventions");
-  layouts['notification'].removeChildren();
-  layouts['dialog'] = page.getViewById("dialog-interventions");
-  layouts['dialog'].removeChildren();
-  layouts['overlay'] = page.getViewById("overlay-interventions");
-  layouts['overlay'].removeChildren();
-
+var setUpList = function(filter) {
   var order = {easy: 0, medium: 1, hard: 2};
-  interventionList = ID.interventionDetails.slice(0).sort(function (a, b) {
+  interventionList = ID.interventionDetails;
+
+  if (filter) {
+    console.log('1');
+    interventionList = interventionList.filter(function (nudge) {
+      console.dir(nudge);
+      console.log('here');
+      return nudge.name.toLowerCase().includes(filter) || nudge.style.includes(filter) || nudge.description.toLowerCase().includes(filter) || nudge.summary.toLowerCase().includes(filter);
+    });
+  } else {
+    console.log('2');
+    interventionList = interventionList.slice(0);
+  }
+
+  interventionList.sort(function (a, b) {
     return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
   });
 
@@ -91,20 +115,34 @@ var setUpList = function() {
       layouts[item.style].addChild(createItem(item));
     }
   });
+
+  Object.keys(layouts).forEach(function(key) {
+    if (layouts[key].getChildrenCount()) {
+      page.getViewById(key + '-label').visibility = 'visible';
+    } else {
+      page.getViewById(key + '-label').visibility = 'collapse';
+    }
+  });
 };
 
 var visited = false;
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "nudges_main"}];
   page = args.object;
+  layouts['toast'] = page.getViewById("toast-interventions");
+  layouts['notification'] = page.getViewById("notification-interventions");
+  layouts['dialog'] = page.getViewById("dialog-interventions");
+  layouts['overlay'] = page.getViewById("overlay-interventions");
+  search = page.getViewById('search-bar');
   drawer = page.getViewById('sideDrawer');
-   if (!StorageUtil.isTutorialComplete()) {
+  if (!StorageUtil.isTutorialComplete()) {
     if (!visited) {
       FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
     page.getViewById('nudge-scroll').height = '90%';
+    page.getViewById('search-icon').visibility = 'collapse';
   }
   setUpList();
 };
@@ -125,10 +163,15 @@ exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
 };
 
+exports.layoutUnloaded = function(args) {
+  args.object.removeChildren();
+};
+
 exports.toggleDrawer = function() {
  if (!StorageUtil.isTutorialComplete()) {
     fancyAlert.TNSFancyAlert.showError("Almost done!", "Click 'Finish Tutorial' to finish setting up HabitLab!", "Got It!");
   } else {
+    search.dismissSoftInput();
     events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();
   }

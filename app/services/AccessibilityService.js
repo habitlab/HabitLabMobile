@@ -12,7 +12,14 @@ const videoBlocker = require("~/overlays/VideoOverlay");
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
 
 // packages to ignore (might need to compile a list as time goes on)
-const ignore = ["com.sec.android.inputmethod", "com.android.systemui"];
+const ignore = ["com.android.systemui", 
+    "com.nuance.swype.trial", 
+    "com.nuance.swype.dtc",
+    "com.touchtype.swiftkey",
+    "com.syntellia.fleksy.keyboard",
+    "com.whirlscape.minuumkeyboard",
+    "com.whirlscape.minuumfree"
+];
 
 
 /***************************************
@@ -45,6 +52,7 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             var timeSpentOnPhone = now - screenOnTime;
             storage.updateTotalTime(timeSpentOnPhone);
             interventionManager.removeOverlays();
+            interventionManager.resetDurationInterventions();
             currentApplication.packageName = "";
             currentApplication.isBlacklisted = false;
             currentApplication.visitStart = 0;
@@ -65,7 +73,7 @@ var currentApplication = {
 };
 
 var paused = false;
-var playNode;
+var lockNode;
 
 /*
  * AccessibilityService
@@ -77,9 +85,9 @@ var playNode;
 android.accessibilityservice.AccessibilityService.extend("com.habitlab.AccessibilityService", {
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
-        var eventType = event.getEventType();
+        var eventType = event.getEventType(); 
         
-        if (ignore.includes(activePackage)) {
+        if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
         }
 
@@ -116,6 +124,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         setUpScreenReceiver(); // set up unlock receiver on startup
         if (!storage.isOnboardingComplete()) {
             storage.setOnboardingComplete();
+            StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
             var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
             if (foregroundActivity) {
                 foregroundActivity.startActivity(intent);
@@ -123,9 +132,9 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 toast.makeText("Service enabled. Please hit the back button to get back to HabitLab!").show();
             }
         }
-
     }
 });
+
 
 
 /*
@@ -205,4 +214,3 @@ exports.enteredHabitlab = function () {
     storage.updateTotalTime(timeSpentOnPhone);
     screenOnTime = now;
 }
-

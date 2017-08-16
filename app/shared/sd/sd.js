@@ -22,10 +22,7 @@ var setOnTouches = function() {
       } else if (args.action === 'cancel') {
         opt.backgroundColor = menu.page.id === item ? '#F5F5F5' : '#FFFFFF';
       } else if (args.action === 'up') {
-        if (item === 'snooze') {
-          opt.backgroundColor = '#FFFFFF';
-          return;
-        } else if (item === 'block') {
+        if (item === 'snooze' || item === 'block') {
           opt.backgroundColor = '#FFFFFF';
           return;
         } else if (item === 'nudges') {
@@ -37,6 +34,7 @@ var setOnTouches = function() {
   });
 };
 
+<<<<<<< HEAD
 var showBlockerOverlay = function () {
 // showOverlay = function (title, msg, pos, prog, max, negCallback) 
 
@@ -47,6 +45,8 @@ var showBlockerOverlay = function () {
 
 
 
+=======
+>>>>>>> origin/master
 var createBlockDialog = function() {
   dialogs.action({
     message: "How long would you like to block your waitlisted apps for?",
