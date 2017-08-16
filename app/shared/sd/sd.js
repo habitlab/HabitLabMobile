@@ -6,6 +6,8 @@ var dialogs = require("ui/dialogs");
 var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'block', 'snooze'];
 var Toast = require("nativescript-toast");
+const BlockerOverlay = require("~/overlays/BlockerOverlay");
+const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 
 var setOnTouches = function() {
 
@@ -35,6 +37,11 @@ var setOnTouches = function() {
   });
 };
 
+var showBlockerOverlay = function () {
+    BlockerOverlay.showOverlay("You're in focus mode", 
+      "You have x minutes of focus mode left", 
+      "Continue", "Get me out of here!", null, null);
+}
 
 
 
@@ -81,7 +88,8 @@ exports.setBlock = function() {
       }
     });
   } else {
-    createBlockDialog();
+    showBlockerOverlay();
+    // createBlockDialog();
   }
 };
 
