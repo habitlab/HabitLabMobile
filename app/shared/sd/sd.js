@@ -4,7 +4,7 @@ var onClicksSet;
 var StorageUtil = require('~/util/StorageUtil');
 var dialogs = require("ui/dialogs");
 var menuEvents;
-var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'block', 'snooze'];
+var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
 
 var setOnTouches = function() {
@@ -20,7 +20,7 @@ var setOnTouches = function() {
       } else if (args.action === 'cancel') {
         opt.backgroundColor = menu.page.id === item ? '#F5F5F5' : '#FFFFFF';
       } else if (args.action === 'up') {
-        if (item === 'snooze' || item === 'block') {
+        if (item === 'snooze' || item === 'lockdown') {
           opt.backgroundColor = '#FFFFFF';
           return;
         } else if (item === 'nudges') {
@@ -32,50 +32,50 @@ var setOnTouches = function() {
   });
 };
 
-var createBlockDialog = function() {
+var createLockdownDialog = function() {
   dialogs.action({
-    message: "How long would you like to block your waitlisted apps for?",
+    message: "How long would you like to lock your watchlisted apps for?",
     cancelButtonText: "Cancel",
     actions: ["15 minutes", "30 minutes", "1 hour", "2 hours"]
   }).then(function (result) {
     if (result === "15 minutes"){
-      menuEvents.push({category: "features", index: "block_set"});
-      StorageUtil.setBlock(15);
+      menuEvents.push({category: "features", index: "lockdown_set"});
+      StorageUtil.setLockdown(15);
     } else if (result === "30 minutesr"){
-      menuEvents.push({category: "features", index: "block_set"});
-      StorageUtil.setBlock(30);
+      menuEvents.push({category: "features", index: "lockdown_set"});
+      StorageUtil.setLockdown(30);
     } else if (result === "1 hour"){
-      menuEvents.push({category: "features", index: "block_set"});
-      StorageUtil.setBlock(60);
+      menuEvents.push({category: "features", index: "lockdown_set"});
+      StorageUtil.setLockdown(60);
     } else if (result === "2 hours"){
-      menuEvents.push({category: "features", index: "block_set"});
-      StorageUtil.setBlock(120);
+      menuEvents.push({category: "features", index: "lockdown_set"});
+      StorageUtil.setLockdown(120);
     }
 
     if (result !== 'Cancel') {
-      Toast.makeText('Block waitlist for ' + result).show();
+      Toast.makeText('Lockdown Mode enabled for ' + result).show();
     }
   });
 };
 
 
-exports.setBlock = function() {
-  menuEvents.push({category: "features", index: "block_opened"});
-  if (StorageUtil.inBlockMode()) {
+exports.setLockdown = function() {
+  menuEvents.push({category: "features", index: "lockdown_opened"});
+  if (StorageUtil.inLockdownMode()) {
     dialogs.confirm({
-      title: "Remove block",
-      message: "You have x minutes remaining of your block. Are you sure you want to remove it?",
+      title: "Unlock Apps",
+      message: "You are currently in lockdown mode. Would you like to unlock your apps?",
       okButtonText: "Yes",
-      cancelButtonText: "Nevermind"
+      cancelButtonText: "Cancel"
     }).then(function (result) {
       if (result === true) {
-        menuEvents.push({category: "features", index: "remove_block"});
-        Toast.makeText('Block Removed').show();
-        StorageUtil.removeBlock();
+        menuEvents.push({category: "features", index: "remove_lockdown"});
+        Toast.makeText('Lockdown mode disabled').show();
+        StorageUtil.removeLockdown();
       }
     });
   } else {
-    createBlockDialog();
+    createLockdownDialog();
   }
 };
 
