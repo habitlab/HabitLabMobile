@@ -26,8 +26,8 @@
 			</StackLayout>
 		</StackLayout>
 		<StackLayout id="bottom-drawer-content">
-			<StackLayout orientation="horizontal" class="bottom-option" id="block-option" tap="setBlock">
-				<Image class="bottom-icon" src="res://ic_key" id="block-icon" />
+			<StackLayout orientation="horizontal" class="bottom-option" id="lockdown-option" tap="setLockdown">
+				<Image class="bottom-icon" src="res://ic_key" id="lockdown-icon" />
 				<Label text="Lockdown Mode" class="bottom-label" />
 			</StackLayout>
 			<StackLayout orientation="horizontal" class="bottom-option" id="snooze-option" tap="setSnooze">

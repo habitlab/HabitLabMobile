@@ -773,41 +773,38 @@ exports.isEnabledForAll = function(id) {
   return JSON.parse(appSettings.getString('enabled'))[id];
 };
 
-/* export: setBlock
- * -----------------
- * Sets the block for 'duration' minutes.
+/* export: setLockdown
+ * -------------------
+ * Sets the lockdown mode for 'duration' minutes. Lockdown is implemented by setting the UTC time in
+ * milliseconds when HabitLab can send inteverventions again.
  */
-exports.setBlock = function(duration) {
-  //set Block
-}
-
-
-/* export: getBlock
- * -----------------
- * Returns the time in milliseconds (UTC) when the snooze will end.
- */
-exports.getBlock = function() {
-  //return Number(appSettings.getString('blockEnd'));
+exports.setLockdown = function(duration) {
+  appSettings.setString('lockdownEnd', JSON.stringify(Date.now() + duration * 60000));
 };
 
-/* export: inBlockMode
- * --------------------
- * Returns whether HabitLab is currently blocking
+/* export: getLockdown
+ * -------------------
+ * Returns the time in milliseconds (UTC) when the lockdown will end.
  */
-exports.inBlockMode = function() {
-  //return  Date.now() - Number(appSettings.getString('blockEnd')) < 0;
+exports.getLockdown = function() {
+  return Number(appSettings.getString('lockdownEnd'));
 };
 
-
-/* export: removeBlock
- * --------------------
- * Removes the block from HabitLab
+/* export: inLockdownMode
+ * ----------------------
+ * Returns whether HabitLab is currently in lockdown
  */
-exports.removeBlock = function() {
-  //appSettings.setString('blockEnd', "" + Date.now());
+exports.inLockdownMode = function() {
+  return  Date.now() - Number(appSettings.getString('lockdownEnd')) < 0;
 };
 
-
+/* export: removeLockdown
+ * ----------------------
+ * Removes the lockdown from the watchlist
+ */
+exports.removeLockdown = function() {
+  appSettings.setString('lockdownEnd', "" + Date.now());
+};
 
 /* export: setSnooze
  * -----------------
@@ -1082,7 +1079,11 @@ exports.addLogEvents = function(events) {
     if (e.setValue) {
       log[e.category][e.index] = e.setValue;
     } else {
-      log[e.category][e.index]++;
+      if (log[e.category][e.index]) {
+        log[e.category][e.index]++;
+      } else {
+        log[e.category][e.index] = 1;
+      }
     }
   });
   appSettings.setString('log', JSON.stringify(log));

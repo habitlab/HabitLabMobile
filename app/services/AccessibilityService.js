@@ -2,6 +2,7 @@ var application = require("application");
 var context = application.android.context;
 var foregroundActivity = application.android.foregroundActivity;
 var toast = require("nativescript-toast");
+var timer = require("timer");
 
 // utils 
 const storage = require("~/util/StorageUtil");
@@ -10,6 +11,7 @@ const videoBlocker = require("~/overlays/VideoOverlay");
 
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
+const AccessibilityService = android.accessibilityservice.AccessibilityService;
 
 // packages to ignore (might need to compile a list as time goes on)
 const ignore = ["com.android.systemui", 
@@ -72,8 +74,7 @@ var currentApplication = {
     visitStart: 0
 };
 
-var paused = false;
-var lockNode;
+var serviceEnabledId;
 
 /*
  * AccessibilityService
@@ -92,6 +93,11 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         }
 
         if (activePackage === "com.stanfordhci.habitlab") { 
+            if (serviceEnabledId) {
+                timer.clearInterval(serviceEnabledId);
+                serviceEnabledId = 0;
+            }
+
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
             storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
@@ -124,14 +130,12 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         setUpScreenReceiver(); // set up unlock receiver on startup
         if (!storage.isOnboardingComplete()) {
             storage.setOnboardingComplete();
-            StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
-            var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
-            if (foregroundActivity) {
-                foregroundActivity.startActivity(intent);
-            } else {
-                toast.makeText("Service enabled. Please hit the back button to get back to HabitLab!").show();
-            }
+            storage.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);   
         }
+
+        serviceEnabledId = timer.setInterval(() => {
+            this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
+        }, 200);
     }
 });
 
