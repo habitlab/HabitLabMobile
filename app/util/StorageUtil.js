@@ -755,6 +755,8 @@ exports.toggleForApp = function(id, packageName) {
   }
 };
 
+var lockdownDuration = undefined;
+
 /* export: isEnabledForApp
  * -----------------------
  * Returns whether the given intervention is enabled for package specific interventions.
@@ -777,14 +779,25 @@ exports.isEnabledForAll = function(id) {
  * milliseconds when HabitLab can send inteverventions again.
  */
 exports.setLockdown = function(duration) {
+  lockdownDuration = duration;
   appSettings.setString('lockdownEnd', JSON.stringify(Date.now() + duration * 60000));
 };
 
-/* export: getLockdown
+
+/* export: getLockdownGoal
+ * -------------------
+ * Returns the amount of time (in minutes) that the lockdown was set for
+ */
+exports.getLockdownGoal = function() {
+  return lockdownDuration;
+}
+
+
+/* export: getLockdownProgress
  * -------------------
  * Returns the time in milliseconds (UTC) when the lockdown will end.
  */
-exports.getLockdown = function() {
+exports.getLockdownRemaining = function() {
   return Number(appSettings.getString('lockdownEnd'));
 };
 
@@ -802,6 +815,7 @@ exports.inLockdownMode = function() {
  */
 exports.removeLockdown = function() {
   appSettings.setString('lockdownEnd', "" + Date.now());
+  lockdownDuration = undefined;
 };
 
 /* export: setSnooze
