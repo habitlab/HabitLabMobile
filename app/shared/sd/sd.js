@@ -34,7 +34,7 @@ var setOnTouches = function() {
   });
 };
 
-<<<<<<< HEAD
+
 var showBlockerOverlay = function () {
 // showOverlay = function (title, msg, pos, prog, max, negCallback) 
 
@@ -45,8 +45,6 @@ var showBlockerOverlay = function () {
 
 
 
-=======
->>>>>>> origin/master
 var createBlockDialog = function() {
   dialogs.action({
     message: "How long would you like to block your waitlisted apps for?",
