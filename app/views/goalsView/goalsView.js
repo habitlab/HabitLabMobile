@@ -22,6 +22,7 @@ var events;
 var appChanged;
 var phoneChanged;
 var toSave;
+var clicked;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -71,6 +72,7 @@ var createPhoneGoal = function(goal, value) {
   }
   
   var number = np.getViewById('number');
+  clicked = number;
   number.text = value;
   number.on("unloaded", function (args) {
     if (!toSave) return;
@@ -207,6 +209,7 @@ exports.toggleDrawer = function() {
   if (!StorageUtil.isTutorialComplete()) {
     fancyAlert.TNSFancyAlert.showError("Complete Tutorial First", "Click done to continue with the tutorial, then you'll be ready to start exploring!", "Got It!");
   } else {
+    clicked.dismissSoftInput();
     events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();
   }

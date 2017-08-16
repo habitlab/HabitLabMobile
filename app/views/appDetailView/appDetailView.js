@@ -56,6 +56,7 @@ var container;
 var events;
 var goalChanged;
 var open;
+var number;
 
 var getGoal = function(txt, add) {
   var num = txt.replace(/[^0-9]/g, '') || 0;
@@ -114,7 +115,7 @@ var setUpDetail = function() {
   goalChanger.getViewById('icon').visibility = 'hidden';
   goalChanger.getViewById('label').text = 'mins';
   
-  var number = goalChanger.getViewById('number');
+  number = goalChanger.getViewById('number');
   number.text = StorageUtil.getMinutesGoal(pkg);
   number.on("unloaded", function(args) {
     StorageUtil.changeAppGoal(pkg, parseInt(number.text.replace(/[^0-9]/g, '') || 0), 'minutes');
@@ -478,8 +479,9 @@ function getDayLabels() {
 }
 
 exports.toggleDrawer = function() {
-    events.push({category: 'navigation', index: 'menu'});
-    drawer.toggleDrawerState();
+  number.dismissSoftInput();
+  events.push({category: 'navigation', index: 'menu'});
+  drawer.toggleDrawerState();
 };
 
 exports.pageUnloaded = function(args) {
