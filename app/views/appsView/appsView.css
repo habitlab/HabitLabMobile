@@ -55,3 +55,10 @@
   background-color: #F7BBC3;
   color: #747F89;
 }
+
+.no-results {
+  text-align: center;
+  font-size: 17%;
+  color: gray;
+  padding-top: 15%;
+}

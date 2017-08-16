@@ -8,6 +8,7 @@
       <Label text="Nudges" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
   </ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
@@ -17,16 +18,17 @@
 
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
       <StackLayout>
+        <SearchBar hint="Search..." submit="onSearch" clear="onClearSearch" id="search-bar" visibility="collapse"/>
         <ScrollView orientation="vertical" id="nudge-scroll">
           <StackLayout>
-            <Label class="nudges-section-title" text="Hint Bubbles" />
-         		<StackLayout orientation="vertical" id="toast-interventions" />
-            <Label class="nudges-section-title" text="Notifications" />
-            <StackLayout orientation="vertical" id="notification-interventions" />
-            <Label class="nudges-section-title" text="Alerts" />
-            <StackLayout orientation="vertical" id="dialog-interventions" />
-            <Label class="nudges-section-title" text="Other" />
-            <StackLayout orientation="vertical" id="overlay-interventions" />
+            <Label class="nudges-section-title" text="Hint Bubbles" id="toast-label" />
+         		<StackLayout orientation="vertical" id="toast-interventions" unloaded="layoutUnloaded" />
+            <Label class="nudges-section-title" text="Notifications" id="notification-label" />
+            <StackLayout orientation="vertical" id="notification-interventions" unloaded="layoutUnloaded" />
+            <Label class="nudges-section-title" text="Alerts" id="dialog-label" />
+            <StackLayout orientation="vertical" id="dialog-interventions" unloaded="layoutUnloaded" />
+            <Label class="nudges-section-title" text="Other" id="overlay-label" />
+            <StackLayout orientation="vertical" id="overlay-interventions" unloaded="layoutUnloaded" />
           </StackLayout>
         </ScrollView>
         <Button id="finish" tap="goToProgress" text="finish tutorial" class="finish-tutorial-btn" />
