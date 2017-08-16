@@ -96,7 +96,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 
     // add title
     var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.2 * SCREEN_HEIGHT,
-    	0.1 * SCREEN_WIDTH, 0.275 * SCREEN_HEIGHT, 
+    	0.1 * SCREEN_WIDTH, 0.225 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     titleParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayTitle = new TextView(context);
@@ -109,7 +109,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.4 * SCREEN_HEIGHT,
-    	0.1 * SCREEN_WIDTH, 0.3 * SCREEN_HEIGHT, 
+    	0.1 * SCREEN_WIDTH, 0.25 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayText = new TextView(context);
@@ -122,7 +122,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.6 * SCREEN_WIDTH, 
-    	0.1 * SCREEN_HEIGHT, 0.2 * SCREEN_WIDTH, 0.65 * SCREEN_HEIGHT, 
+    	0.08 * SCREEN_HEIGHT, 0.2 * SCREEN_WIDTH, 0.65 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
@@ -143,25 +143,25 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     windowManager.addView(overlayPosButton, posButtonParams);
 
     //Add exit button
- //    var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.005 * SCREEN_HEIGHT,
- //    	0.1 * SCREEN_WIDTH, 0.77 * SCREEN_HEIGHT, 
- //    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
- //    linkParams.gravity = Gravity.LEFT | Gravity.TOP;
- //    overlayLink = new TextView(context);
- //    overlayLink.setText("Exit Focus Mode");
- //    overlayLink.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
- //    overlayLink.setTextColor(Color.WHITE);
- //    overlayLink.setHorizontallyScrolling(false);
- //    overlayLink.setGravity(Gravity.CENTER);
-	// // overlayLink.setOnClickListener(new android.view.View.OnClickListener({
-	// //     onClick: function() {
-	// //     	if (negCallback) {
-	// //     		negCallback();
-	// //     	}
-	// //         exports.removeOverlay();
-	// //     }
-	// // }));
- //    windowManager.addView(overlayLink, linkParams);
+    var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, 0.1 * SCREEN_HEIGHT,
+    	0.1 * SCREEN_WIDTH, 0.72 * SCREEN_HEIGHT, 
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    linkParams.gravity = Gravity.LEFT | Gravity.TOP;
+    overlayLink = new TextView(context);
+    overlayLink.setText("Exit Focus Mode");
+    overlayLink.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
+    overlayLink.setTextColor(Color.WHITE);
+    overlayLink.setHorizontallyScrolling(false);
+    overlayLink.setGravity(Gravity.CENTER);
+	overlayLink.setOnClickListener(new android.view.View.OnClickListener({
+	    onClick: function() {
+	    	if (negCallback) {
+	    		negCallback();
+	    	}
+	        exports.removeOverlay();
+	    }
+	}));
+    windowManager.addView(overlayLink, linkParams);
 }
 
 exports.removeOverlay = function () {
@@ -185,9 +185,9 @@ exports.removeOverlay = function () {
 		overlayPosButton = undefined;
 	}
 
-	// if (overlayLink) {
-	// 	windowManager.removeView(overlayLink);
-	// 	overlayLink = undefined;
-	// }
+	if (overlayLink) {
+		windowManager.removeView(overlayLink);
+		overlayLink = undefined;
+	}
 }
 
