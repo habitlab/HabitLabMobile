@@ -25,7 +25,6 @@
 					<!-- DAY VIEW -->
 					<TabViewItem title="Day">
 					  <TabViewItem.view >  
-					   	<ScrollView>
 					   		<StackLayout>
 
 					   			<!-- DAY VIEW GRAPH -->
@@ -67,14 +66,12 @@
 			   			    </lv:RadListView>
 
 					   		</StackLayout>
-					  	</ScrollView>
 						</TabViewItem.view>
 					</TabViewItem>
 			
 					<!-- WEEK VIEW -->
 		 			<TabViewItem title="Week" >
 			 			<TabViewItem.view>
-			 				<ScrollView>
 					 			<StackLayout>
 
 					 				<!-- WEEK VIEW GRAPH -->
@@ -120,14 +117,12 @@
 		   			    	</lv:RadListView>
 
 				   			</StackLayout>
-				   		</ScrollView>
 					  </TabViewItem.view>
 				  </TabViewItem>
 							   
 					<!-- MONTH VIEW -->
 					<TabViewItem title="Month">
 						<TabViewItem.view>
-						 	<ScrollView>
 						    <StackLayout>
 
 						    	<!-- MONTH VIEW GRAPH -->
@@ -169,7 +164,6 @@
 			   			    </lv:RadListView>
 
 						 		</StackLayout>
-							</ScrollView>
 				    </TabViewItem.view>
 					</TabViewItem>
 
