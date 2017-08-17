@@ -4,9 +4,12 @@ var toast = require("nativescript-toast");
 var timer = require("timer");
 
 // utils 
+const usage = require("~/util/UsageInformationUtil");
 const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
 const videoBlocker = require("~/overlays/VideoOverlay");
+const lockdownOverlay = require("~/overlays/LockdownOverlay");
+const dialogOverlay = require("~/overlays/DialogOverlay");
 
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
@@ -96,6 +99,18 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             screenOnTime = now;
             return; // skip over habitlab
         } 
+
+        if (storage.inLockdownMode() && storage.isPackageSelected(activePackage)) {
+            this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME); // exit app
+            var remaining = Math.round(storage.getLockdownEnd() / 60000);
+            var goal = storage.getLockdownDuration();
+            var progress = goal - remaining;
+            var msg = "You have " + remaining + " minutes of focus remaining";
+            var app = usage.getBasicInfo(activePackage).name;
+            var closeMsg = "Close " + app;
+            lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, lockdownCb);
+            return;
+        }
        
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
@@ -218,3 +233,16 @@ exports.enteredHabitlab = function () {
     storage.updateTotalTime(timeSpentOnPhone);
     screenOnTime = now;
 }
+
+function lockdownCb() {
+    dialogOverlay.showTwoOptionDialogOverlay("Are you sure you want to stop lockdown mode?", 
+        "Yes", "Cancel", removeLockdown ,null);
+}
+
+function removeLockdown() {
+    storage.removeLockdown();
+    toast.makeText("Lockdown removed").show();
+}
+
+
+
