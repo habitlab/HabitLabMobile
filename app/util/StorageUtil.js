@@ -1116,6 +1116,7 @@ exports.addLogEvents = function(events) {
   log['userID'] = appSettings.getString('userID');
   log['deviceID'] = appSettings.getString('deviceID');
   log['localTime'] = new Date().toLocaleDateString();
+  log['index'] = index();
 
   var data = {};
   data['name'] = appSettings.getString('name');
