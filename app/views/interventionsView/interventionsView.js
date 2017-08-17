@@ -86,14 +86,10 @@ var setUpList = function(filter) {
   interventionList = ID.interventionDetails;
 
   if (filter) {
-    console.log('1');
     interventionList = interventionList.filter(function (nudge) {
-      console.dir(nudge);
-      console.log('here');
       return nudge.name.toLowerCase().includes(filter) || nudge.style.includes(filter) || nudge.description.toLowerCase().includes(filter) || nudge.summary.toLowerCase().includes(filter);
     });
   } else {
-    console.log('2');
     interventionList = interventionList.slice(0);
   }
 

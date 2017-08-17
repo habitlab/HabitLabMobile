@@ -88,8 +88,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
         var eventType = event.getEventType(); 
-
-        // console.warn(activePackage);
         
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
@@ -120,7 +118,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         }
        
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            console.warn("removing overlays");
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
 
