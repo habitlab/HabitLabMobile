@@ -110,10 +110,9 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
                 var msg = "You have " + remaining + " minutes remaining in Lockdown Mode. All apps on your watchlist are off-limits.";
                 var closeMsg = "Got it";
-                lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);
-                lockdownSeen++;
+                lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);   
             }
-
+            lockdownSeen++;
             return;
         }
        
