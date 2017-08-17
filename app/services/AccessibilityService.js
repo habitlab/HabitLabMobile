@@ -4,9 +4,12 @@ var toast = require("nativescript-toast");
 var timer = require("timer");
 
 // utils 
+const usage = require("~/util/UsageInformationUtil");
 const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
 const videoBlocker = require("~/overlays/VideoOverlay");
+const lockdownOverlay = require("~/overlays/LockdownOverlay");
+const dialogOverlay = require("~/overlays/DialogOverlay");
 
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
@@ -29,6 +32,7 @@ const ignore = ["com.android.systemui",
 
 // logging vars
 var screenOnTime = Date.now();
+var lockdownSeen = 0;
 
 /*
  * ScreenReceiver
@@ -84,6 +88,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
         var eventType = event.getEventType(); 
+
+        // console.warn(activePackage);
         
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
@@ -96,8 +102,25 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             screenOnTime = now;
             return; // skip over habitlab
         } 
+
+        if (storage.inLockdownMode() && storage.isPackageSelected(activePackage) && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME); // exit app
+            if (lockdownSeen % 3 === 0) {
+                var goal = storage.getLockdownDuration();
+                var progress = Math.round((Date.now() - (storage.getLockdownEnd() - goal*60000))/60000);
+                var remaining = goal - progress;
+
+                var msg = "You have " + remaining + " minutes remaining in Lockdown Mode. All apps on your watchlist are off-limits.";
+                var closeMsg = "Got it";
+                lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);
+                lockdownSeen++;
+            }
+
+            return;
+        }
        
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            console.warn("removing overlays");
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
 
@@ -135,7 +158,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
             count++;
-        }, 100);
+        }, 300);
     }
 });
 
@@ -218,3 +241,17 @@ exports.enteredHabitlab = function () {
     storage.updateTotalTime(timeSpentOnPhone);
     screenOnTime = now;
 }
+
+function lockdownCb() {
+    dialogOverlay.showTwoOptionDialogOverlay("Are you sure you want to stop lockdown mode?", 
+        "Yes", "Cancel", removeLockdown ,null);
+}
+
+function removeLockdown() {
+    lockdownOverlay.removeOverlay();
+    storage.removeLockdown();
+    toast.makeText("Lockdown removed").show();
+}
+
+
+

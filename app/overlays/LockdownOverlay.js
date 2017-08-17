@@ -85,7 +85,7 @@ var overlayLink;
 var progBar;
 var labelText;
 
-exports.showOverlay = function (title, msg, pos, prog, max, negCallback) {
+exports.showOverlay = function (title, msg, pos, prog, max, posCallback, negCallback) {
 	// add view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
@@ -110,7 +110,7 @@ exports.showOverlay = function (title, msg, pos, prog, max, negCallback) {
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
-    	0.1 * SCREEN_WIDTH, 0.45 * SCREEN_HEIGHT, 
+    	0.1 * SCREEN_WIDTH, 0.435 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayText = new TextView(context);
@@ -143,7 +143,26 @@ exports.showOverlay = function (title, msg, pos, prog, max, negCallback) {
     // labelText.setGravity(Gravity.CENTER);
     windowManager.addView(labelText, labelParams);
 
-
+    //Add exit button
+    var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
+    	0.1 * SCREEN_WIDTH, 0.75 * SCREEN_HEIGHT, 
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    linkParams.gravity = Gravity.LEFT | Gravity.TOP;
+    overlayLink = new TextView(context);
+    overlayLink.setText("Turn Off Lockdown Mode");
+    overlayLink.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
+    overlayLink.setTextColor(Color.WHITE);
+    overlayLink.setHorizontallyScrolling(false);
+    overlayLink.setGravity(Gravity.CENTER);
+	overlayLink.setOnClickListener(new android.view.View.OnClickListener({
+	    onClick: function() {
+	    	if (negCallback) {
+	    		negCallback();
+	    	}
+	        // exports.removeOverlay();
+	    }
+	}));
+    windowManager.addView(overlayLink, linkParams);
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.6 * SCREEN_WIDTH, 
@@ -159,31 +178,15 @@ exports.showOverlay = function (title, msg, pos, prog, max, negCallback) {
 	overlayPosButton.getBackground().setColorFilter(Color.parseColor("#eeeeeeff"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
+	    	if (posCallback) {
+	    		posCallback();
+	    	}
 	        exports.removeOverlay();
 	    }
 	}));
     windowManager.addView(overlayPosButton, posButtonParams);
 
-    //Add exit button
-    var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
-    	0.1 * SCREEN_WIDTH, 0.75 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    linkParams.gravity = Gravity.LEFT | Gravity.TOP;
-    overlayLink = new TextView(context);
-    overlayLink.setText("Exit Focus Mode");
-    overlayLink.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
-    overlayLink.setTextColor(Color.WHITE);
-    overlayLink.setHorizontallyScrolling(false);
-    overlayLink.setGravity(Gravity.CENTER);
-	overlayLink.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	    	if (negCallback) {
-	    		negCallback();
-	    	}
-	        exports.removeOverlay();
-	    }
-	}));
-    windowManager.addView(overlayLink, linkParams);
+    
 }
 
 exports.removeOverlay = function () {

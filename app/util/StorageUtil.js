@@ -778,7 +778,7 @@ exports.isEnabledForAll = function(id) {
  */
 exports.setLockdown = function(duration) {
   appSettings.setString('lockdownEnd', JSON.stringify(Date.now() + duration * 60000));
-  appSettings.setNumber('lockdownDuration') = duration;
+  appSettings.setNumber('lockdownDuration', duration);
 };
 
 
