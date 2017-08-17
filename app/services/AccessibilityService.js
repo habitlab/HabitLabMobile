@@ -32,6 +32,7 @@ const ignore = ["com.android.systemui",
 
 // logging vars
 var screenOnTime = Date.now();
+var lockdownSeen = 0;
 
 /*
  * ScreenReceiver
@@ -87,6 +88,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
         var eventType = event.getEventType(); 
+
+        // console.warn(activePackage);
         
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
@@ -100,19 +103,24 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             return; // skip over habitlab
         } 
 
-        if (storage.inLockdownMode() && storage.isPackageSelected(activePackage)) {
+        if (storage.inLockdownMode() && storage.isPackageSelected(activePackage) && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME); // exit app
-            var remaining = Math.round(storage.getLockdownEnd() / 60000);
-            var goal = storage.getLockdownDuration();
-            var progress = goal - remaining;
-            var msg = "You have " + remaining + " minutes of focus remaining";
-            var app = usage.getBasicInfo(activePackage).name;
-            var closeMsg = "Close " + app;
-            lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, lockdownCb);
+            if (lockdownSeen % 3 === 0) {
+                var goal = storage.getLockdownDuration();
+                var progress = Math.round((Date.now() - (storage.getLockdownEnd() - goal*60000))/60000);
+                var remaining = goal - progress;
+
+                var msg = "You have " + remaining + " minutes remaining in Lockdown Mode. All apps on your watchlist are off-limits.";
+                var closeMsg = "Got it";
+                lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);
+                lockdownSeen++;
+            }
+
             return;
         }
        
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            console.warn("removing overlays");
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
 
@@ -240,6 +248,7 @@ function lockdownCb() {
 }
 
 function removeLockdown() {
+    lockdownOverlay.removeOverlay();
     storage.removeLockdown();
     toast.makeText("Lockdown removed").show();
 }

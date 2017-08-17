@@ -616,37 +616,31 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  *        OVERLAY INTERVENTIONS        *
  ***************************************/
 
-/**
- * showLockdownOverlay
- * ---------------------
- * Present a full screen overlay to block user from using watchlisted apps
- */
-var showLockdownOverlay = function (pkg) {
-// showOverlay = function (title, msg, pos, prog, max, negCallback) 
-    var remaining = StorageUtil.getLockdownRemaining();
-    var goal = StorageUtil.getLockdownGoal();
-    var progress = goal - remaining;
-    var msg = "You have " + remaining + " minutes of focus remaining";
-    var app = UsageInformationUtil.getBasicInfo(pkg).name;
-    var closeMsg = "Close " + app;
+// /**
+//  * showLockdownOverlay
+//  * ---------------------
+//  * Present a full screen overlay to block user from using watchlisted apps
+//  */
+// var showLockdownOverlay = function (pkg) {
+// // showOverlay = function (title, msg, pos, prog, max, negCallback) 
+//     var remaining = StorageUtil.getLockdownRemaining();
+//     var goal = StorageUtil.getLockdownGoal();
+//     var progress = goal - remaining;
+//     var msg = "You have " + remaining + " minutes of focus remaining";
+//     var app = UsageInformationUtil.getBasicInfo(pkg).name;
+//     var closeMsg = "Close " + app;
     
-    LockdownOverlay.showOverlay("You're in lockdown mode!", 
-      msg, closeMsg, progress, goal, function() {
-          DialogOverlay.showTwoOptionDialogOverlay("Are you sure you want to stop lockdown mode?", "Yes", "Cancel", removeLockdown ,null);
-      });
-}
+//     LockdownOverlay.showOverlay("You're in lockdown mode!", 
+//       msg, closeMsg, progress, goal, function() {
+//           DialogOverlay.showTwoOptionDialogOverlay("Are you sure you want to stop lockdown mode?", "Yes", "Cancel", removeLockdown ,null);
+//       });
+// }
 
 
-var removeLockdown = function() {
-  StorageUtil.removeLockdown();
-   Toast.makeText("Lockdown removed").show();
-}
- 
-
-
-
-
-
+// var removeLockdown = function() {
+//   StorageUtil.removeLockdown();
+//    Toast.makeText("Lockdown removed").show();
+// }
 
 
 /**
@@ -797,14 +791,14 @@ var nextOnLaunchIntervention = function(pkg) {
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
   showDialogVisitLength(true, pkg);
-  console.log("next on launch intervention called");
+  // console.log("next on launch intervention called");
 
-  var lockdownMode = StorageUtil.inLockdownMode();
-  if (lockdownMode) {
-    console.log("in lockdown")
-    showLockdownOverlay(pkg);
-    return;
-  }
+  // var lockdownMode = StorageUtil.inLockdownMode();
+  // if (lockdownMode) {
+  //   console.log("in lockdown")
+  //   showLockdownOverlay(pkg);
+  //   return;
+  // }
 
   // decide whether or not to run an on-launch intervention
   var run = Math.random();
@@ -871,10 +865,10 @@ module.exports = {
     showDialogUsage,
     showDialogVisitLength,
     showDialogVisited,
-    dimScreen,
-    popToastPhoneUsage,
-    sendPhoneUsageNotification,
-    showPhoneUsageDialog
+    dimScreen
+    // popToastPhoneUsage,
+    // sendPhoneUsageNotification,
+    // showPhoneUsageDialog
   ], 
   resetDurationInterventions,
   removeOverlays,
