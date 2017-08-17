@@ -16,7 +16,10 @@ exports.interventionIDs = {
   USAGE_DIALOG: 14,
   DURATION_DIALOG: 15,
   VISIT_DIALOG: 16,
-  DIMMER_OVERLAY: 17
+  DIMMER_OVERLAY: 17,
+  PHONE_USAGE_TOAST: 18,
+  PHONE_USAGE_NOTIFICATION: 19,
+  PHONE_USAGE_DIALOG: 20
 };
 
 exports.interventionDetails = [
@@ -200,4 +203,34 @@ exports.interventionDetails = [
   level: 'hard',
   summary: 'Dim the screen little at a time',
   style: 'overlay'
+},{
+  id: 18,
+  name: 'Long Time No See', 
+  icon: 'res://ic_search', 
+  functionality: "Phone Usage Toast", 
+  description: "Sends a disappearing message telling you how long you have used your phone today", 
+  target: 'phone', 
+  level: 'easy',
+  summary: 'Sends pop up with your phone usage for the day',
+  style: 'toast'
+},{
+  id: 19,
+  name: "Call it a Day", 
+  icon: 'res://ic_moon', 
+  functionality: "Phone Usage Notification", 
+  description: "Sends a notification telling you how long you have used you phone today", 
+  target: 'phone', 
+  level: 'easy',
+  summary: 'Sends notification with your phone usage for the day',
+  style: 'notification'
+},{
+  id: 20,
+  name: 'Hold the Phone', 
+  icon: 'res://ic_phone', 
+  functionality: "Phone Usage Dialog", 
+  description: "Shows a dialog telling you how long you have used your phone today", 
+  target: 'phone', 
+  level: 'medium',
+  summary: 'Show dialog with phone usage for the day',
+  style: 'dialog'
 }];

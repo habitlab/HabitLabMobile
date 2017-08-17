@@ -18,7 +18,6 @@ var AudioManager = android.media.AudioManager;
 var Context = android.content.Context;
 var Intent = android.content.Intent;
 var System = java.lang.System;
-// var AccessibilityService = android.accessibilityservice.AccessibilityService;
 
 // global vars
 var audioManager = context.getSystemService(Context.AUDIO_SERVICE);
@@ -28,7 +27,8 @@ var notificationID = {
   UNLOCK: 2000,
   VISIT: 3000,
   DURATION: 4000,
-  USAGE: 5000
+  USAGE: 5000,
+  PHONE: 6000
 };
 
 /*************************************************************
@@ -261,6 +261,95 @@ var showUnlocksDialog = function (real) {
 }
 
 
+
+/*************************************
+ *     PHONE USAGE INTERVENTIONS     *
+ *************************************/
+const THRESHOLD_PHONE_USAGE_TST = 60; // 1 hour
+const THRESHOLD_PHONE_USAGE_NTF = 120; // 2 hours
+const THRESHOLD_PHONE_USAGE_DLG = 180; // 3 hours
+
+/**
+ * popToastPhoneUsage
+ * ------------------
+ * Displays a toast if the device has an effective number 
+ * of minutes spent on phone (determined by 
+ * THRESHOLD_PHONE_USAGE_TST).
+ */
+var popToastPhoneUsage = function(real) {
+  if (!real) {
+    Toast.show(context, "You've spent 3.6 hours on your phone today", 1, "#011627");
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_TOAST)) {
+    var time = StorageUtil.getTotalTime();
+    if (time >= THRESHOLD_PHONE_USAGE_TST) {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_TOAST}]);
+      var hours = Math.round(10 * (time / 60)) / 10;
+      var msg = "You've spent " + hours + " hours on your phone today";
+      Toast.show(context, msg, 1, "#011627");
+    }
+  }
+};
+
+
+/**
+ * sendPhoneUsageNotification
+ * --------------------------
+ * Send a notification if the device has an effective number 
+ * of minutes spent on phone (determined by 
+ * THRESHOLD_PHONE_USAGE_NTF).
+ */
+var sendPhoneUsageNotification = function(real) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "Phone Usage Alert", 
+      "You've spend 4.2 hours on your phone today", notificationID.PHONE, 10);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_NOTIFICATION)) {
+    var time = StorageUtil.getTotalTime();
+    if (time >= THRESHOLD_PHONE_USAGE_NTF) {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_NOTIFICATION}]);
+      var hours = Math.round(10 * (time / 60)) / 10;
+      var title = 'Phone Usage Alert';
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " already spent " + hours + ' hours on your phone today';
+      NotificationUtil.sendNotification(context, title, msg, notificationID.PHONE, 10);
+    }
+  }
+};
+
+
+/**
+ * showPhoneUsageDialog
+ * --------------------
+ * Show a dialog if the device has an effective 
+ * number of minutes spent on phone (determined by 
+ * THRESHOLD_PHONE_USAGE_DLG).
+ */
+var showPhoneUsageDialog = function (real) {
+  if (!real) {
+    DialogOverlay.showOneOptionDialogOverlay("You've spent 5.1 hours on your phone today", "Okay");
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_DIALOG)) {
+    var time = StorageUtil.getTotalTime();
+    if (unlocks >= THRESHOLD_PHONE_USAGE_DLG) {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_DIALOG}]);
+      var hours = Math.round(10 * (time / 60)) / 10;
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " already spent " + hours + ' hours on your phone today';
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    }
+  }
+}
+
+
+
+
 /*************************************
  *      APP USAGE INTERVENTIONS      *
  *************************************/
@@ -462,43 +551,6 @@ var showDialogVisitLength = function (real, pkg) {
 /*************************************
  *    VIDEO BLOCKING INTERVENTION    *
  *************************************/
-// var shouldBlockVideo = true;
-
-
-/**
- * allowVideoBlocking
- * ------------------
- * Sets shouldBlockVideo variable to either permit video blocking on 
- * the current package (true) or disable it (false)
- */
-// var allowVideoBlocking = function (bool) {
-//   shouldBlockVideo = bool;
-// };
-
-
-/**
- * blockVideo
- * ----------
- * Blocks all videos from the current package by constantly 
- * requesting audio focus.
- */
-// var blockVideo = function (real, pkg) {
-//   if (!real) {
-//     DialogOverlay.showTwoOptionDialogOverlay("Would you like to continue watching?", "Yes", "No", null, null);
-//     return;
-//   }
-
-//   if (shouldBlockVideo && StorageUtil.canIntervene(ID.interventionIDs.VIDEO_BLOCKER, pkg)) {
-//     audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
-//   }
-// };
-
-
-// // callback function for audioFocusListener
-// var stopVideoBlocking = function () {
-//   allowVideoBlocking(false);
-// };
-
 
 // callback function for audioFocusListener
 var foreground = application.android.foregroundActivity;
@@ -554,11 +606,6 @@ var youTubeVideoBlocker = function (node, pkg) {
 var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListener({
     onAudioFocusChange: function (change) {
       // DO NOTHING
-      // if (shouldBlockVideo && change === AudioManager.AUDIOFOCUS_LOSS) {
-      //   var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", would" : "Would";
-      //   msg += " you like to continue watching?";
-      //   DialogOverlay.showTwoOptionDialogOverlay(msg, "Yes", "No", stopVideoBlocking, exitToHome);
-      // }
     }
 });
 
@@ -706,8 +753,8 @@ var onLaunchInterventions = {
 };
 
 var onScreenUnlockInterventions = {
-  easy: [sendUnlocksNotification, popToastUnlocked],
-  medium: [showUnlocksDialog]
+  easy: [sendUnlocksNotification, popToastUnlocked, popToastPhoneUsage, sendPhoneUsageNotification],
+  medium: [showUnlocksDialog, showPhoneUsageDialog]
 };
 
 var nextOnLaunchIntervention = function(pkg) {
@@ -736,7 +783,7 @@ var nextOnLaunchIntervention = function(pkg) {
 
 var nextScreenOnIntervention = function() {
   var run = Math.random();
-  if (run < 0.05) {
+  if (run < 0.075) {
     sendNotificationGlances(true);
   }
 }
@@ -781,7 +828,10 @@ module.exports = {
     showDialogUsage,
     showDialogVisitLength,
     showDialogVisited,
-    dimScreen
+    dimScreen,
+    popToastPhoneUsage,
+    sendPhoneUsageNotification,
+    showPhoneUsageDialog
   ], 
   resetDurationInterventions,
   removeOverlays,

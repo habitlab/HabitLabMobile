@@ -135,7 +135,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
             count++;
-        }, 100);
+        }, 300);
     }
 });
 
