@@ -36,13 +36,7 @@ var setOnTouches = function() {
 
 
 
-var showBlockerOverlay = function () {
-// showOverlay = function (title, msg, pos, prog, max, negCallback) 
 
-    LockdownOverlay.showOverlay("You're in lockdown mode", 
-      "You have 40 minutes of focus left", 
-      "Continue", 20, 60, null);
-}
 
 
 
@@ -89,8 +83,7 @@ exports.setLockdown = function() {
       }
     });
   } else {
-    showBlockerOverlay();
-    //createLockdownDialog();
+    createLockdownDialog();
   }
 };
 
