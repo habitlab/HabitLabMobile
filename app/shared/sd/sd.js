@@ -49,7 +49,7 @@ var createLockdownDialog = function() {
     if (result === "15 minutes"){
       menuEvents.push({category: "features", index: "lockdown_set"});
       StorageUtil.setLockdown(15);
-    } else if (result === "30 minutesr"){
+    } else if (result === "30 minutes"){
       menuEvents.push({category: "features", index: "lockdown_set"});
       StorageUtil.setLockdown(30);
     } else if (result === "1 hour"){
