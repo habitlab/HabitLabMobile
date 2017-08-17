@@ -504,7 +504,6 @@ var showDialogVisitLength = function (real, pkg) {
 // callback function for audioFocusListener
 var foreground = application.android.foregroundActivity;
 var exitToHome = function () {
-  console.warn("tried to exit to home");
   // if statement to protect if the foreground activity becomes null (after a crash)
   if (foreground) {
     var toHome = new Intent(Intent.ACTION_MAIN);
@@ -721,7 +720,6 @@ var nextOnLaunchIntervention = function(pkg) {
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
   showDialogVisitLength(true, pkg);
-  console.warn("next on launch intervention called");
 
   // decide whether or not to run an on-launch intervention
   var run = Math.random();
