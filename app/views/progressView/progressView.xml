@@ -25,16 +25,15 @@
 					<!-- DAY VIEW -->
 					<TabViewItem title="Day">
 					  <TabViewItem.view >  
-					   	<ScrollView>
 					   		<StackLayout>
 
 					   			<!-- DAY VIEW GRAPH -->
-					   			<!-- <Label text="Mins on Watchlist Today" class="header" horizontalAlignment="center" tap="toggle"/>
+					   			<Label text="Mins on Watchlist Today" class="header" horizontalAlignment="center" tap="toggle"/>
 					   			<Placeholder creatingView="dayView" visibility="{{ showDayGraph ? 'visible' : 'collapsed'}}" id="dayViewGraph" class="graph" tap="toggle"/>
-					   			<Image class="showMore" src="res://ic_show_more" visibility="{{ showDayGraph ? 'collapsed' : 'visible'}}" tap="toggle"/> -->
+					   			<Image class="showMore" src="res://ic_show_more" visibility="{{ showDayGraph ? 'collapsed' : 'visible'}}" tap="toggle"/>
 
 					   			<!-- DAY VIEW STATS SUMMARY -->
-		   						<!-- <lv:RadListView id="dayButtons" class="list-group"  tap="onDayTap" items="{{ dayButtons }}">
+		   						<lv:RadListView id="dayButtons" class="list-group"  tap="onDayTap" items="{{ dayButtons }}">
 		   							<lv:RadListView.listViewLayout>
 		   			          <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
 		   			        </lv:RadListView.listViewLayout>
@@ -44,11 +43,7 @@
    			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
 		   			          </StackLayout>
 		   			        </lv:RadListView.itemTemplate>
-		   			    	</lv:RadListView> -->
-		   			    	<GridLayout id="dayButtons" class="list-group" >
-		   			    		<Label text="{{ dayButtons[0].value }}" class="list-number" />
-   			            <Label text="{{ dayButtons[0].desc }}" textWrap="true" class="list-desc" />
-		   			    	</GridLayout>
+		   			    	</lv:RadListView>
 
 		   			    	<!-- DAY VIEW DETAIL LIST -->
 			   					<lv:RadListView id="listview" class="list-group" items="{{ dayItems }}" >
@@ -71,14 +66,12 @@
 			   			    </lv:RadListView>
 
 					   		</StackLayout>
-					  	</ScrollView>
 						</TabViewItem.view>
 					</TabViewItem>
 			
 					<!-- WEEK VIEW -->
 		 			<TabViewItem title="Week" >
 			 			<TabViewItem.view>
-			 				<ScrollView>
 					 			<StackLayout>
 
 					 				<!-- WEEK VIEW GRAPH -->
@@ -124,14 +117,12 @@
 		   			    	</lv:RadListView>
 
 				   			</StackLayout>
-				   		</ScrollView>
 					  </TabViewItem.view>
 				  </TabViewItem>
 							   
 					<!-- MONTH VIEW -->
 					<TabViewItem title="Month">
 						<TabViewItem.view>
-						 	<ScrollView>
 						    <StackLayout>
 
 						    	<!-- MONTH VIEW GRAPH -->
@@ -173,7 +164,6 @@
 			   			    </lv:RadListView>
 
 						 		</StackLayout>
-							</ScrollView>
 				    </TabViewItem.view>
 					</TabViewItem>
 
