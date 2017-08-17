@@ -252,7 +252,7 @@ function lockdownCb() {
 function removeLockdown() {
     lockdownOverlay.removeOverlay();
     storage.removeLockdown();
-    toast.makeText("Lockdown removed").show();
+    toast.makeText("Lockdown Mode disabled").show();
 }
 
 
