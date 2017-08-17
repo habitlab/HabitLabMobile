@@ -449,7 +449,7 @@ populateListViewsDay = function() {
 	)
     pageData.set("dayButtons", dayStats);
     var dayButtons = view.getViewById(page, "dayButtons");
-    // dayButtons.height = SCREEN_HEIGHT*0.04;
+    dayButtons.height = SCREEN_HEIGHT*0.04;
     // setUpAppToday();
     dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
