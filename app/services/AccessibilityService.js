@@ -89,10 +89,12 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         var activePackage = event.getPackageName();
         var eventType = event.getEventType(); 
         
+        // packages to ignore
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
-        }
+        }  
 
+        // inside habitlab or habitlab intervention showing
         if (activePackage === "com.stanfordhci.habitlab") { 
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
@@ -101,6 +103,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             return; // skip over habitlab
         } 
 
+        // Lockdown Mode
         if (storage.inLockdownMode() && storage.isPackageSelected(activePackage) && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME); // exit app
             if (lockdownSeen % 3 === 0) {
@@ -114,8 +117,11 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             }
             lockdownSeen++;
             return;
+        } else if (lockdownSeen && !storage.inLockdownMode()) {
+            lockdownSeen = 0;
         }
        
+        // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
