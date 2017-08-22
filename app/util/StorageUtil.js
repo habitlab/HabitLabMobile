@@ -1112,7 +1112,7 @@ exports.addLogEvents = function(events) {
   var log = JSON.parse(appSettings.getString('log'));
   log['userID'] = appSettings.getString('userID');
   log['deviceID'] = appSettings.getString('deviceID');
-  log['localTime'] = new Date().toLocaleDateString();
+  log['localTime'] = new Date().toLocaleString();
   log['index'] = index();
 
   var data = {};
