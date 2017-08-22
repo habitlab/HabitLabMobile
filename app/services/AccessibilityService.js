@@ -88,6 +88,10 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
         var eventType = event.getEventType(); 
+
+        if (!activePackage) {
+            return;
+        }
         
         // packages to ignore
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
