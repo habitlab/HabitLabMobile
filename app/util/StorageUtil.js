@@ -588,7 +588,7 @@ exports.getTotalTime = function() {
  ************************************/
 
  exports.getInterventionsForApp = function(pkg) {
-  return JSON.parse(appSettings.getString(pkg)).enabled;
+  return JSON.parse(appSettings.getString(pkg)).enabled || false;
  };
 
 /* export: enableForAll
@@ -760,7 +760,7 @@ exports.toggleForApp = function(id, packageName) {
  * Returns whether the given intervention is enabled for package specific interventions.
  */
 exports.isEnabledForApp = function(id, packageName) {
-  return JSON.parse(appSettings.getString(packageName)).enabled[id];
+  return JSON.parse(appSettings.getString(packageName)).enabled[id] || false;
 };
 
 /* export: isEnabledForAll
@@ -768,7 +768,7 @@ exports.isEnabledForApp = function(id, packageName) {
  * Returns whether the given intervention is enabled generally.
  */
 exports.isEnabledForAll = function(id) {
-  return JSON.parse(appSettings.getString('enabled'))[id];
+  return JSON.parse(appSettings.getString('enabled'))[id] || false;
 };
 
 /* export: setLockdown
@@ -906,10 +906,10 @@ exports.canIntervene = function(id, packageName) {
   }
 
   if (ID.interventionDetails[id].target === 'phone') {
-    return JSON.parse(appSettings.getString('enabled'))[id];;
+    return JSON.parse(appSettings.getString('enabled'))[id] || false;
   } else  { // target === 'app'
     var specified = ID.interventionDetails[id].apps;
-    return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id];
+    return (!specified || specified.includes(packageName)) && JSON.parse(appSettings.getString(packageName)).enabled[id] || false;
   }
 };
 
