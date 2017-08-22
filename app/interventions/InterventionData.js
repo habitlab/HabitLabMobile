@@ -19,7 +19,8 @@ exports.interventionIDs = {
   DIMMER_OVERLAY: 17,
   PHONE_USAGE_TOAST: 18,
   PHONE_USAGE_NOTIFICATION: 19,
-  PHONE_USAGE_DIALOG: 20
+  PHONE_USAGE_DIALOG: 20,
+  APPLICATION_SLIDER: 21
 };
 
 exports.interventionDetails = [
@@ -203,7 +204,7 @@ exports.interventionDetails = [
   level: 'hard',
   summary: 'Dim the screen little at a time',
   style: 'overlay'
-},{
+}, {
   id: 18,
   name: 'Long Time No See', 
   icon: 'res://ic_search', 
@@ -213,7 +214,7 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends pop up with your phone usage for the day',
   style: 'toast'
-},{
+}, {
   id: 19,
   name: "Call it a Day", 
   icon: 'res://ic_moon', 
@@ -223,7 +224,7 @@ exports.interventionDetails = [
   level: 'easy',
   summary: 'Sends notification with your phone usage for the day',
   style: 'notification'
-},{
+}, {
   id: 20,
   name: 'Hold the Phone', 
   icon: 'res://ic_phone', 
@@ -232,5 +233,15 @@ exports.interventionDetails = [
   target: 'phone', 
   level: 'medium',
   summary: 'Show dialog with phone usage for the day',
+  style: 'dialog'
+}, {
+  id: 21,
+  name: 'Take Your Pick', 
+  icon: 'res://ic_eye', 
+  functionality: "Application Slider", 
+  description: "Allows you to select how much time you want to spend on an application", 
+  target: 'app', 
+  level: 'hard',
+  summary: 'Select how long you want to spend on an app',
   style: 'dialog'
 }];

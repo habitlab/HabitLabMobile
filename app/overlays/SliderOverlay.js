@@ -167,9 +167,9 @@ exports.showSliderOverlay = function (msg, callback) {
 	twoOptionPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (callback) {
-	    		callback();
+	    		callback(setTime);
 	    	}
-	    	Toast.makeText('You have ' + setTime + ' mins remaining').show();
+	    	// Toast.makeText('You have ' + setTime + ' mins remaining').show();
 	        exports.removeSliderOverlay();
 	    }
 	}));

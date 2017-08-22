@@ -122,7 +122,7 @@ exports.getInstalledPresets = function() {
 exports.getApplicationBitmap = function(pkg) {
 	var appInfo;
 	try {
-		appInfo = pm.getApplicationInfo(packageName, 0);
+		appInfo = pm.getApplicationInfo(pkg, 0);
 	} catch (e) {
 		appInfo = null;
 	}
