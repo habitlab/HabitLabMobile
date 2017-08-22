@@ -4,147 +4,138 @@ var ID = require('~/interventions/InterventionData');
 var Toast = require('nativescript-toast');
 var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
+var observable = require("data/observable");
+
 var builder = require('ui/builder');
 var frameModule = require('ui/frame');
 var FancyAlert = require("~/util/FancyAlert");
+
 var drawer;
 var page;
 var interventionList;
-
 var events;
-var currentSearch;
 var search;
-var layouts = {};
+var pageData = new observable.Observable();
 
 exports.onSearch = function(args) {
-  if (args.object.text !== currentSearch) {
-    Object.keys(layouts).forEach(function(key) {
-      layouts[key].removeChildren();
-    });
-    currentSearch = args.object.text;
-    setUpList(args.object.text.toLowerCase());
-  }
-  args.object.dismissSoftInput();
+  setList();
 };
 
 exports.onShowSearch = function(args) {
-  search.visibility = 'visible';
-  args.object.visibility = 'collapse';
-  currentSearch = "";
+  search.visibility = search.visibility === 'visible' ? 'collapse' : 'visible';
 };
 
-var createItem = function(info)  {
-  var item = builder.load({
-    path: 'shared/nudgeelem',
-    name: 'nudgeelem',
-    page: page
-  });
+var types = {toast: 0, notification: 1, dialog: 2, overlay: 3};
+var order = {priority: 0, easy: 1, medium: 2, hard: 3};
+var initializeList = function() {
+  interventionList = ID.interventionDetails.filter(function (nudge) {
+    // check if the nudge is implemented
+    if (!IM.interventions[nudge.id]) return false;
 
-  item.id = 'item' + item.id;
-  item.className = 'intervention-grid';
-  item.getViewById('firstrow').className = info.level + '-level';
-  
-  var image = item.getViewById('icon');
-  image.src = info.icon;
-  image.className = 'intervention-icon';
-
-  var label = item.getViewById("name");
-  label.text = info.name;
-  label.className = 'intervention-label';
-
-  var description = item.getViewById("description");
-  description.text = info.summary;
-  description.className = 'intervention-description';
-
-  var options = {
-    moduleName: 'views/detailView/detailView',
-    context: { info: info },
-    animated: true,
-    transition: {
-      name: "slide",
-      duration: 380,
-      curve: "easeIn"
-    }
-  };
-  item.on("tap, touch", function(args) {
-    if (args.eventName === 'tap') {
-      frameModule.topmost().navigate(options);
-    } else {
-      if (args.action === 'down') {
-        item.backgroundColor = '#F5F5F5';
-      } else if (args.action === 'up' || args.action === 'cancel') {
-        item.backgroundColor = '#FFFFFF';
-      }
-    }
-  });
-
-  return item;
-};
-
-var setUpList = function(filter) {
-  var order = {easy: 0, medium: 1, hard: 2};
-  interventionList = ID.interventionDetails;
-
-  if (filter) {
-    console.log('1');
-    interventionList = interventionList.filter(function (nudge) {
-      console.dir(nudge);
-      console.log('here');
-      return nudge.name.toLowerCase().includes(filter) || nudge.style.includes(filter) || nudge.description.toLowerCase().includes(filter) || nudge.summary.toLowerCase().includes(filter);
-    });
-  } else {
-    console.log('2');
-    interventionList = interventionList.slice(0);
-  }
-
-  interventionList.sort(function (a, b) {
-    return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
-  });
-
-  interventionList.forEach(function (item) {
-    var canIntervene = !ID.interventionDetails[item.id].apps;
+    // check that if apps is specified then they have watchlisted a specified app for that nudge
+    var canIntervene = !ID.interventionDetails[nudge.id].apps;
     if (!canIntervene) {
       var appList = StorageUtil.getSelectedPackages();
-      ID.interventionDetails[item.id].apps.forEach(function (specifiedApp) {
-        if (!canIntervene && appList.includes(specifiedApp)) {
-          canIntervene = true;
-        }
+      var result = appList.filter(function (item) { 
+        return ID.interventionDetails[nudge.id].apps.indexOf(item) > -1;
       });
+      if (!result.length) return false;
     }
-    if (IM.interventions[item.id] && canIntervene) {
-      layouts[item.style].addChild(createItem(item));
-    }
+
+    return true;
   });
 
-  Object.keys(layouts).forEach(function(key) {
-    if (layouts[key].getChildrenCount()) {
-      page.getViewById(key + '-label').visibility = 'visible';
-    } else {
-      page.getViewById(key + '-label').visibility = 'collapse';
-    }
+  interventionList.push({
+    title: 'Hint Bubbles',
+    isHeader: true,
+    style: 'toast',
+    level: 'priority'
+  }, {
+    title: 'Notifications',
+    isHeader: true,
+    style: 'notification',
+    level: 'priority'
+  }, {
+    title: 'Alerts',
+    isHeader: true,
+    style: 'dialog',
+    level: 'priority'
+  }, {
+    title: 'Other',
+    isHeader: true,
+    style: 'overlay',
+    level: 'priority'
   });
+
+  interventionList.sort(function (a, b) {
+    return (types[a.style] - types[b.style]) || (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
+  });
+
+  pageData.set('nudges', interventionList);
+};
+
+exports.onItemTap = function(args) {
+  var tappedItem = pageData.get('nudges')[args.index];
+  if (!tappedItem.isHeader) {
+    search.dismissSoftInput();
+    frameModule.topmost().navigate({
+      moduleName: "views/detailView/detailView",
+      context: {
+        info: tappedItem
+      },
+      animated: true,
+      transition: {
+        name: "slide",
+        duration: 380,
+        curve: "easeIn"
+      }
+    });
+  }
+};
+
+// for tracking if there are actually interventions for the headers
+var setList = function() {
+  var styleCounts = {toast: -1, notification: -1, dialog: -1, overlay: -1};
+  var filter = pageData.get('filter');
+  tempList = interventionList.filter(function (nudge) {
+    // check if the filter is included in the nudge (or if it is a header)
+    var include = nudge.isHeader || !filter || nudge.name.toLowerCase().includes(filter) || nudge.style.includes(filter) || nudge.description.toLowerCase().includes(filter) || nudge.summary.toLowerCase().includes(filter);
+    if (include) {
+      styleCounts[nudge.style]++;
+    }
+    return include;
+  });
+
+  tempList = tempList.filter(function (nudge) {
+    return styleCounts[nudge.style];
+  });
+
+  pageData.set('nudges', tempList);  
 };
 
 var visited = false;
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "nudges_main"}];
   page = args.object;
-  layouts['toast'] = page.getViewById("toast-interventions");
-  layouts['notification'] = page.getViewById("notification-interventions");
-  layouts['dialog'] = page.getViewById("dialog-interventions");
-  layouts['overlay'] = page.getViewById("overlay-interventions");
   search = page.getViewById('search-bar');
   drawer = page.getViewById('sideDrawer');
+  page.bindingContext = pageData;
+  pageData.set('filter', '');
+  initializeList();
+  pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
+    if (pcd.propertyName.toString() === 'filter') {
+      setList();
+    }
+  });
   if (!StorageUtil.isTutorialComplete()) {
     if (!visited) {
       FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
       visited = true;
     }
     page.getViewById('finish').visibility = 'visible';
-    page.getViewById('nudge-scroll').height = '90%';
     page.getViewById('search-icon').visibility = 'collapse';
+    page.getViewById('nudges-list').height = '90%';
   }
-  setUpList();
 };
 
 exports.goToProgress = function() {

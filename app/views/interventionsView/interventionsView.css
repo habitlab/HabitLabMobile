@@ -4,10 +4,10 @@
   padding: 0;
 }
 
-.intervention-grid {
+.padded-wrapper {
+  padding: 10%;
   border-color: lightgray;
   border-bottom-width: 1px;
-  padding: 10%;
 }
 
 .nudges-section-title {
@@ -18,25 +18,24 @@
 }
 
 .intervention-icon {
+  padding: 5%;
   background-color: gray;
-  height: 60%;
   border-radius: 50%;
   margin: 2%;
   margin-right: 4%;
-  padding: 5%;
 }
 
-.easy-level {
+.level-easy {
   border-color: green;
   border-left-width: 10px;
 }
 
-.medium-level {
+.level-medium {
   border-color: orange;
   border-left-width: 10px;
 }
 
-.hard-level {
+.level-hard {
   border-color: red;
   border-left-width: 10px;
 }

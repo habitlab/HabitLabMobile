@@ -18,20 +18,30 @@
 
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
       <StackLayout>
-        <SearchBar hint="Search..." submit="onSearch" clear="onClearSearch" id="search-bar" visibility="collapse"/>
-        <ScrollView orientation="vertical" id="nudge-scroll">
-          <StackLayout>
-            <Label class="nudges-section-title" text="Hint Bubbles" id="toast-label" />
-         		<StackLayout orientation="vertical" id="toast-interventions" unloaded="layoutUnloaded" />
-            <Label class="nudges-section-title" text="Notifications" id="notification-label" />
-            <StackLayout orientation="vertical" id="notification-interventions" unloaded="layoutUnloaded" />
-            <Label class="nudges-section-title" text="Alerts" id="dialog-label" />
-            <StackLayout orientation="vertical" id="dialog-interventions" unloaded="layoutUnloaded" />
-            <Label class="nudges-section-title" text="Other" id="overlay-label" />
-            <StackLayout orientation="vertical" id="overlay-interventions" unloaded="layoutUnloaded" />
-          </StackLayout>
-        </ScrollView>
-        <Button id="finish" tap="goToProgress" text="finish tutorial" class="finish-tutorial-btn" />
+        <SearchBar text="{{filter}}" hint="Search..." submit="onSearch" clear="onClearSearch" id="search-bar" visibility="collapse"/>
+        
+        <StackLayout>
+          <ListView items="{{nudges}}" itemTemplateSelector="isHeader ? 'header' : 'item'" id="nudges-list" separatorColor="#FFFFFF" itemTap="onItemTap">
+            <ListView.itemTemplates>
+              <template key="item" >
+                <StackLayout class="padded-wrapper">
+                  <GridLayout columns="auto,*,auto" rows="auto" id="firstrow" class="{{'level-' + level}}">
+                    <Image src="{{icon}}" col="0" verticalAlignment="center" class="intervention-icon"/>
+                    <StackLayout orientation="vertical" col="1" >
+                      <Label text='{{name}}' class='intervention-label' />
+                      <Label text='{{summary}}' class='intervention-description'/>
+                    </StackLayout>
+                    <Image id="arrow" col="2" src="res://ic_arrow_right" />
+                  </GridLayout>
+                </StackLayout>
+              </template>
+              <template key="header" >
+                <Label class="nudges-section-title" text='{{title}}'/>
+              </template>
+            </ListView.itemTemplates>
+          </ListView>
+          <Button id="finish" tap="goToProgress" visibility="collapse" text="finish tutorial" class="finish-tutorial-btn" />
+        </StackLayout>
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
