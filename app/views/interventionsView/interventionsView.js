@@ -15,6 +15,7 @@ var page;
 var interventionList;
 var events;
 var search;
+var noResults;
 var pageData = new observable.Observable();
 
 exports.onShowSearch = function(args) {
@@ -106,31 +107,39 @@ var setList = function() {
     return styleCounts[nudge.style];
   });
 
+  if (!tempList.length) {
+    noResults.visibility = 'visible';
+  } else {
+    noResults.visibility = 'collapse';
+  }
+
   pageData.set('nudges', tempList);  
 };
 
-var visited = false;
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "nudges_main"}];
-  page = args.object;
-  search = page.getViewById('search-bar');
-  drawer = page.getViewById('sideDrawer');
-  page.bindingContext = pageData;
-  pageData.set('filter', '');
-  initializeList();
-  pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
-    if (pcd.propertyName.toString() === 'filter') {
-      setList();
-    }
-  });
-  if (!StorageUtil.isTutorialComplete()) {
-    if (!visited) {
+
+  if (!page) {
+    page = args.object;
+    search = page.getViewById('search-bar');
+    drawer = page.getViewById('sideDrawer');
+    noResults = page.getViewById('no-results');
+
+    page.bindingContext = pageData;
+    pageData.set('filter', '');
+    initializeList();
+    pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
+      if (pcd.propertyName.toString() === 'filter') {
+        setList();
+      }
+    });
+
+    if (!StorageUtil.isTutorialComplete()) {
       FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
-      visited = true;
+      page.getViewById('finish').visibility = 'visible';
+      page.getViewById('search-icon').visibility = 'collapse';
+      page.getViewById('nudges-list').height = '90%';
     }
-    page.getViewById('finish').visibility = 'visible';
-    page.getViewById('search-icon').visibility = 'collapse';
-    page.getViewById('nudges-list').height = '90%';
   }
 };
 
