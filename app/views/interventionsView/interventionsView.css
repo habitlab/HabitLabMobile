@@ -45,3 +45,10 @@
   color: white;
   height: 10%;
 }
+
+.no-results {
+  text-align: center;
+  font-size: 17%;
+  color: gray;
+  padding-top: 15%;
+}
