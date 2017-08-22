@@ -731,7 +731,6 @@ getAppsToday = function() {
 //   appsToday.forEach(function (app) {
 //     appSection.addChild(createAppGoal(app));
 //   });
-//   console.warn("Created today");
 // };
 
 

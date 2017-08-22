@@ -45,8 +45,6 @@ exports.grayOut = function(rect) {
 	var width = rect.right - rect.left;
 	var height = rect.bottom - rect.top;
 
-	console.warn(rect.flattenToString() + " " + getStatusBarHeight());
-
 	if (!overlay && rect.left > 0 && rect.right < SCREEN_WIDTH) {
 		overlayParams = new WindowManager.LayoutParams(width, height, rect.left, rect.top - getStatusBarHeight(),
 			WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 

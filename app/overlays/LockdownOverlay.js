@@ -146,7 +146,8 @@ exports.showOverlay = function (title, msg, pos, prog, max, posCallback, negCall
     //Add exit button
     var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, LayoutParams.WRAP_CONTENT,
     	0.1 * SCREEN_WIDTH, 0.75 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, 
+    	PixelFormat.TRANSLUCENT);
     linkParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayLink = new TextView(context);
     overlayLink.setText("Turn Off Lockdown Mode");

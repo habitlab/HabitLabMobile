@@ -338,7 +338,7 @@ var showPhoneUsageDialog = function (real) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_DIALOG)) {
     var time = StorageUtil.getTotalTime();
-    if (unlocks >= THRESHOLD_PHONE_USAGE_DLG) {
+    if (time >= THRESHOLD_PHONE_USAGE_DLG) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_DIALOG}]);
       var hours = Math.round(10 * (time / 60)) / 10;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
@@ -756,8 +756,8 @@ var onLaunchInterventions = {
 };
 
 var onScreenUnlockInterventions = {
-  easy: [sendUnlocksNotification, popToastUnlocked, popToastPhoneUsage, sendPhoneUsageNotification],
-  medium: [showUnlocksDialog, showPhoneUsageDialog]
+  easy: [sendUnlocksNotification, popToastUnlocked],
+  medium: [showUnlocksDialog]
 };
 
 var nextOnLaunchIntervention = function(pkg) {

@@ -18,13 +18,13 @@
 
    	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
       <StackLayout>
-        <SearchBar text="{{filter}}" hint="Search..." submit="onSearch" clear="onClearSearch" id="search-bar" visibility="collapse"/>
+        <SearchBar text="{{filter}}" hint="Search..." id="search-bar" visibility="collapse"/>
         
         <StackLayout>
           <ListView items="{{nudges}}" itemTemplateSelector="isHeader ? 'header' : 'item'" id="nudges-list" separatorColor="#FFFFFF" itemTap="onItemTap">
             <ListView.itemTemplates>
               <template key="item" >
-                <StackLayout class="padded-wrapper">
+                <StackLayout class="padded-wrapper" >
                   <GridLayout columns="auto,*,auto" rows="auto" id="firstrow" class="{{'level-' + level}}">
                     <Image src="{{icon}}" col="0" verticalAlignment="center" class="intervention-icon"/>
                     <StackLayout orientation="vertical" col="1" >

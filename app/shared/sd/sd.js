@@ -78,7 +78,7 @@ exports.setLockdown = function() {
     }).then(function (result) {
       if (result === true) {
         menuEvents.push({category: "features", index: "remove_lockdown"});
-        Toast.makeText('Lockdown mode disabled').show();
+        Toast.makeText('Lockdown Mode disabled').show();
         StorageUtil.removeLockdown();
       }
     });

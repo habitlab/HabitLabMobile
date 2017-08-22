@@ -17,10 +17,6 @@ var events;
 var search;
 var pageData = new observable.Observable();
 
-exports.onSearch = function(args) {
-  setList();
-};
-
 exports.onShowSearch = function(args) {
   search.visibility = search.visibility === 'visible' ? 'collapse' : 'visible';
 };
