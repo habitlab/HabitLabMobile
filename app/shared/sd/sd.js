@@ -4,7 +4,7 @@ var onClicksSet;
 var StorageUtil = require('~/util/StorageUtil');
 var dialogs = require("ui/dialogs");
 var menuEvents;
-var options = ['progress', 'target', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
+var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
 const ToastOverlay = require("~/overlays/ToastOverlay");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
