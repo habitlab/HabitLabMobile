@@ -34,8 +34,7 @@ exports.onSearch = function(args) {
 };
 
 exports.onShowSearch = function(args) {
-  search.visibility = 'visible';
-  args.object.visibility = 'collapse';
+  search.visibility = search.visibility === 'visible' ? 'collapse' : 'visible';
 };
 
 var createGrid = function(filter) {
