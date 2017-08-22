@@ -16,9 +16,9 @@
 				<Image class="side-icon" src="res://ic_phone_lock" id="nudges-icon" />
 				<Label text="Nudges" class="side-label" id='lined-option'/>
 			</StackLayout>
-			<StackLayout orientation="horizontal" class="side-option" id="goals-option" >
-				<Image class="side-icon" src="res://ic_goals" id="goals-icon" />
-				<Label text="Goals" class="side-label" />
+			<StackLayout orientation="horizontal" class="side-option" id="target-option" >
+				<Image class="side-icon" src="res://ic_goals" id="target-icon" />
+				<Label text="Target" class="side-label" />
 			</StackLayout>
 			<StackLayout orientation="horizontal" class="side-option" id="settings-option" >
 				<Image class="side-icon" src="res://ic_settings" id="settings-icon" />
