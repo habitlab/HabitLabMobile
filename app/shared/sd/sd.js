@@ -85,8 +85,8 @@ exports.setLockdown = function() {
   // } else {
   //   createLockdownDialog();
   // }
-  var icon = UsageInformationUtil.getBasicInfo("com.reddit.frontpage").icon;
-  ToastOverlay.showToastOverlay("Go to Duolinguo",icon, null)
+  var icon = UsageInformationUtil.getApplicationBitmap("com.duolingo");
+  ToastOverlay.showToastOverlay("Go to Duolingo",icon, null)
 
 };
 
