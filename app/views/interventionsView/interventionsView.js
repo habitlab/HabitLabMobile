@@ -119,7 +119,7 @@ var setList = function() {
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "nudges_main"}];
 
-  if (!page) {
+  // if (!page) {
     page = args.object;
     search = page.getViewById('search-bar');
     drawer = page.getViewById('sideDrawer');
@@ -140,7 +140,7 @@ exports.pageLoaded = function(args) {
       page.getViewById('search-icon').visibility = 'collapse';
       page.getViewById('nudges-list').height = '90%';
     }
-  }
+  // }
 };
 
 exports.goToProgress = function() {
