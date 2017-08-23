@@ -74,6 +74,7 @@ var overlayPosButton;
 var overlayNegButton;
 var overlayLink;
 var progBar;
+var id;
 exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
  	// add view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
@@ -224,14 +225,14 @@ exports.showInterstitial = function(title, msg, button, callback) {
 
 
     var count = 0;
-    var id = timer.setInterval(() => {
+    id = timer.setInterval(() => {
     	if (count === 100) {
     		exports.removeOverlay();
     		timer.clearInterval(id);
+    		id = 0;
     	} else {
     		var toSet = progBar.getProgress() + 100;
     		progBar.setProgress(toSet);
-    		console.warn(progBar.getProgress());
     	}
     	count++;
     }, 100);
@@ -273,6 +274,11 @@ exports.removeOverlay = function () {
 	if (progBar) {
 		windowManager.removeView(progBar);
 		progBar = undefined;
+	} 
+
+	if (id) {
+		timer.clearInterval(id);
+		id = 0;
 	}
 }
 
