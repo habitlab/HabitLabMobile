@@ -118,6 +118,12 @@ exports.getInstalledPresets = function() {
 }
 
 
+exports.getInstalledPositive = function() {
+	var positive = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion"];
+	return positive;
+}
+
+
 
 exports.getApplicationBitmap = function(pkg) {
 	var appInfo;

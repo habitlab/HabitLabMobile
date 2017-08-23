@@ -28,6 +28,9 @@ var imageBitmap;
 var TOAST_FILL = new Paint();
 TOAST_FILL.setColor(Color.parseColor("#69BD68")); // Green
 
+var TOAST_OUTLINE_FILL = new Paint();
+TOAST_OUTLINE_FILL.setColor(Color.parseColor("#337332")); // Green
+
 
 var DIM_BACKGROUND = new Paint();
 DIM_BACKGROUND.setColor(Color.BLACK);
@@ -40,7 +43,7 @@ ICON_BACK_FILL.setColor(Color.parseColor("#69BD68"));
 // ICON_BACK_FILL.setAlpha(100);
 
 var CLOSE_FILL = new Paint();
-CLOSE_FILL.setColor(Color.parseColor("#D3D3D3")); //grey
+CLOSE_FILL.setColor(Color.parseColor("#8d978d")); //grey
 
 
 
@@ -48,9 +51,9 @@ CLOSE_FILL.setColor(Color.parseColor("#D3D3D3")); //grey
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
-var DIALOG_WIDTH = 0.4 * SCREEN_WIDTH;
+var DIALOG_WIDTH = 0.3 * SCREEN_WIDTH;
 var DIALOG_HEIGHT = 0.1 * SCREEN_WIDTH;
-var LEFT = 0.3 * SCREEN_WIDTH;
+var LEFT = 0.35 * SCREEN_WIDTH;
 var RIGHT = LEFT + DIALOG_WIDTH;
 var TOP = 0.8*SCREEN_HEIGHT;
 var BOTTOM = TOP + DIALOG_HEIGHT;
@@ -64,17 +67,18 @@ var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 // Custom DialogView 
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
-		DIM_BACKGROUND.setAlpha(128); // 50% dimness
+		DIM_BACKGROUND.setAlpha(70); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, TOAST_FILL);
-		canvas.drawRect(RIGHT, TOP, RIGHT+0.1*SCREEN_WIDTH, BOTTOM, CLOSE_FILL);
-
+		canvas.drawRoundRect(0.24*SCREEN_WIDTH, TOP-0.01*SCREEN_WIDTH, RIGHT+0.11*SCREEN_WIDTH, BOTTOM+0.01*SCREEN_WIDTH, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
+		canvas.drawRoundRect(RIGHT, TOP, RIGHT+0.1*SCREEN_WIDTH, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
+		canvas.drawRect(LEFT-0.01*SCREEN_WIDTH, TOP, RIGHT+0.01*SCREEN_WIDTH, BOTTOM, TOAST_FILL); //green main
+		
 		// // add icon frame
-		var iconLeft = 0.22*SCREEN_WIDTH;
+		var iconLeft = 0.25*SCREEN_WIDTH;
 		var iconRight = LEFT;
 		var iconTop = TOP;
 		var iconBottom = BOTTOM;
-		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, ICON_BACK_FILL);
+		canvas.drawRoundRect(iconLeft, iconTop, iconRight, iconBottom, CORNER_RADIUS, CORNER_RADIUS, ICON_BACK_FILL);
 
 		// // add icon
 		// console.warn(imageBitmap);
@@ -143,7 +147,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback) {
 	closeButton.setText("X");
 	closeButton.setTextColor(Color.WHITE);
 	closeButton.setStateListAnimator(null);
-	closeButton.getBackground().setColorFilter(Color.parseColor("#D3D3D3"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	closeButton.getBackground().setColorFilter(Color.parseColor("#8d978d"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	closeButton.getBackground().setAlpha(170);
 	closeButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
