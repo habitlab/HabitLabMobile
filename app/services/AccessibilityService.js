@@ -2,6 +2,8 @@ var application = require("application");
 var context = application.android.context;
 var toast = require("nativescript-toast");
 var timer = require("timer");
+var {VersionNumber} = require("nativescript-version-number");
+
 
 // utils 
 const usage = require("~/util/UsageInformationUtil");
@@ -52,6 +54,14 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             screenOnTime = Date.now();
             storage.unlocked();
             interventionManager.nextScreenUnlockIntervention();
+
+            var versionName = new VersionNumber().get();
+            if (versionName !== storage.checkVersionName()) {
+                storage.updateDB();
+                storage.setVersionName(versionName); // so it's a one-shot
+            }
+
+
         } else if (action === android.content.Intent.ACTION_SCREEN_OFF) {
             var now = Date.now();
             closeRecentVisit(now);

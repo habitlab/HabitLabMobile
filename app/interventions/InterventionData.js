@@ -20,7 +20,8 @@ exports.interventionIDs = {
   PHONE_USAGE_TOAST: 18,
   PHONE_USAGE_NOTIFICATION: 19,
   PHONE_USAGE_DIALOG: 20,
-  APPLICATION_SLIDER: 21
+  APPLICATION_SLIDER: 21,
+  INTERSTITIAL: 22
 };
 
 exports.interventionDetails = [
@@ -237,11 +238,21 @@ exports.interventionDetails = [
 }, {
   id: 21,
   name: 'Take Your Pick', 
-  icon: 'res://ic_eye', 
+  icon: 'res://ic_slider', 
   functionality: "Application Slider", 
   description: "Allows you to select how much time you want to spend on an application", 
   target: 'app', 
   level: 'hard',
   summary: 'Select how long you want to spend on an app',
   style: 'dialog'
+}, {
+  id: 22,
+  name: 'Wait Up!', 
+  icon: 'res://ic_pause', 
+  functionality: "Interstial Screen", 
+  description: "Waits 10 seconds before you are allowed to enter an app", 
+  target: 'app', 
+  level: 'hard',
+  summary: 'Pause for 10 seconds before entering an app',
+  style: 'overlay'
 }];

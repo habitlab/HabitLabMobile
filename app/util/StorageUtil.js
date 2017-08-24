@@ -1141,3 +1141,27 @@ exports.addLogEvents = function(events) {
 exports.getUserID = function() {
   return appSettings.getString('userID') || 'noIDFound';
 };
+
+
+exports.checkVersionName = function() {
+  return appSettings.getString('versionName') || 'none';
+};
+
+exports.setVersionName = function(versionName) {
+  appSettings.setString('versionName', versionName);
+};
+
+exports.updateDB = function() {
+  var mainEnabled = JSON.parse(appSettings.getString('enabled'));
+  var diff = ID.interventionDetails.length - mainEnabled.length;
+  if (diff) {
+    appSettings.setString('enabled', JSON.stringify(mainEnabled.concat(Array(diff).fill(true))));
+    var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+    pkgs.forEach(function(pkg) {
+      var pkgInfo = JSON.parse(appSettings.getString(pkg));
+      pkgInfo.enabled = pkgInfo.enabled.concat(Array(diff).fill(true));
+      appSettings.setString(pkg, JSON.stringify(pkgInfo));
+    });
+  }
+};
+

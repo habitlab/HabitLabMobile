@@ -65,6 +65,7 @@ const THRESHOLD_COUNTUP_TMR = 12;
 const THRESHOLD_COUNTDOWN_TMR = 15;
 const THRESHOLD_DIMSCREEN_OVR = 15;
 const THRESHOLD_APPLICATION_SLIDER_OVR = 15;
+const THRESHOLD_INTERSTITIAL_OVR = 15;
 
 
 var MIN_IN_MS = 60000;
@@ -732,9 +733,14 @@ var dimScreen = function (real, pkg) {
 }
 
 
-
+/*
+ * showSliderDialog
+ * ----------------
+ * Display a dialog that allows user to set time to 
+ * spend on the specified package.
+ */
 var showSliderDialog = function(real, pkg) {
-  if (! real) {
+  if (!real) {
     var msg = "How much time would you like to spend on Facebook this visit?";
     SliderOverlay.showSliderOverlay(msg, null);
     return;
@@ -758,6 +764,34 @@ var showSliderDialog = function(real, pkg) {
 
 
 /*
+ * showInterstitial
+ * ----------------
+ * Shows a full screen overlay that prevents user from entering app
+ * for 10 seconds (also allows them to leave an app). 
+ */
+ var showInterstitial = function(real, pkg) {
+  if (!real) {
+    var title = "Just a Moment";
+    var msg = "We'll take you to Facebook shortly. Take a deep breath in the meantime!";
+    FullScreenOverlay.showInterstitial(title, msg, "EXIT", null);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.INTERSTITIAL, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits > THRESHOLD_INTERSTITIAL_OVR) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = "Just a Moment";
+      var msg = "We'll take you to " + app + " shortly. Take a deep breath in the meantime!";
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.INTERSTITIAL}]);
+      FullScreenOverlay.showInterstitial(title, msg, "EXIT", exitToHome);
+    } 
+  }
+}
+
+
+
+/*
  * removeOverlays
  * --------------
  * Remove any left over overlays on the screen.
@@ -775,20 +809,18 @@ var removeOverlays = function() {
 }
 
 
-
-
 /***************************************
  *       INTERVENTION RETREIVAL        *
  ***************************************/
 var onLaunchInterventions = {
   easy: [popToastVisited, sendNotificationVisited, popToastUsage, sendNotificationUsage],
   medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer],
-  hard: [showCountDownTimer, dimScreen]
+  hard: [showCountDownTimer, dimScreen, showSliderDialog, showInterstitial]
 };
 
 var onScreenUnlockInterventions = {
-  easy: [sendUnlocksNotification, popToastUnlocked],
-  medium: [showUnlocksDialog]
+  easy: [sendUnlocksNotification, popToastUnlocked , popToastPhoneUsage, sendPhoneUsageNotification],
+  medium: [showUnlocksDialog, showPhoneUsageDialog]
 };
 
 var nextOnLaunchIntervention = function(pkg) {
@@ -862,11 +894,12 @@ module.exports = {
     showDialogUsage,
     showDialogVisitLength,
     showDialogVisited,
-    dimScreen
-    // popToastPhoneUsage,
-    // sendPhoneUsageNotification,
-    // showPhoneUsageDialog,
-    // showSliderDialog 
+    dimScreen,
+    popToastPhoneUsage,
+    sendPhoneUsageNotification,
+    showPhoneUsageDialog,
+    showSliderDialog,
+    showInterstitial 
   ], 
   resetDurationInterventions,
   removeOverlays,
