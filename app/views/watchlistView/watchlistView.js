@@ -9,15 +9,15 @@ var events;
 var pkgs;
 
 exports.onItemTap = function(args) {
-  var info = args.object.bindingContext;
-
   events.push({category: "navigation", index: "watchlist_to_detail"});
+  
+  var info = args.view.bindingContext;
   frame.topmost().navigate({
     moduleName: 'views/appDetailView/appDetailView',
     context: { 
       name: info.name,
       icon: info.icon,
-      packageName: packageName
+      packageName: info.packageName
     },
     animated: true,
     transition: {
