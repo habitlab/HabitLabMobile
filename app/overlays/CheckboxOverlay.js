@@ -101,7 +101,7 @@ var rg;
 var selected = -1;
 var posButton;
 var negButton;
-exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback, negCallback, toastMsg) {
+exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMode, posCallback, negCallback, toastMsg) {
 	
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
@@ -218,14 +218,22 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
 	    		}
 	    		exports.removeDialog();
 	    		return;
-	    	} 
-
-	    	if (posCallback) {
-	    		posCallback();
-	    	}
-
-	    	if (toastMsg !== null) {
-	    		Toast.makeText(toastMsg + selected).show();
+	    	} else if (lockdownMode) {
+	    		Toast.makeText("Lockdown mode enabled for " + selected).show();
+	    		var value = selected.substr(0, selected.indexOf(" "));
+	    		if (value == 1 || value == 2) { 			
+	    			StorageUtil.setLockdown(value*60);
+	    		} else {
+	    			StorageUtil.setLockdown(value);
+	    		}
+	    		exports.removeDialog();
+	    	} else {
+	    		if (posCallback) {
+	    			posCallback();
+	    		}
+	    		if (toastMsg !== undefined) {
+	    			Toast.makeText(toastMsg + selected).show();
+	    		}
 	    	}
 	        exports.removeDialog();
 	    }
