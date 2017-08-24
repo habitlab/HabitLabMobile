@@ -22,6 +22,7 @@
     "nativescript-theme-core": "~1.0.4",
     "nativescript-toast": "^1.4.5",
     "nativescript-tooltip": "^2.1.0",
+    "nativescript-version-number": "^1.1.0",
     "nativescript-videoplayer": "^3.0.9",
     "tns-core-modules": "~3.0.0",
     "tns-core-modules-snapshot": "3.0.1-5.5.372.32"

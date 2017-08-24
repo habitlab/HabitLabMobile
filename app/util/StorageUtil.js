@@ -538,8 +538,19 @@ exports.glanced = function() {
  * day (time is in minutes).
  */
 exports.updateAppTime = function(packageName, time) {
+  var idx = index();
+  var today = new Date();
+  var start = new Date();
+  start.setMilliseconds(today.getMilliseconds() - time);
   var appInfo = JSON.parse(appSettings.getString(packageName));
-  appInfo['stats'][index()]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
+  if (start.getDay() !== today.getDay()) {
+    today.setHours(0, 0, 0, 0); // calculate today's midnight
+    var diff = today.getTime() - start.getTime();
+    appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
+    time = time - diff;
+  } 
+
+  appInfo['stats'][idx]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
@@ -1141,3 +1152,27 @@ exports.addLogEvents = function(events) {
 exports.getUserID = function() {
   return appSettings.getString('userID') || 'noIDFound';
 };
+
+
+exports.checkVersionName = function() {
+  return appSettings.getString('versionName') || 'none';
+};
+
+exports.setVersionName = function(versionName) {
+  appSettings.setString('versionName', versionName);
+};
+
+exports.updateDB = function() {
+  var mainEnabled = JSON.parse(appSettings.getString('enabled'));
+  var diff = ID.interventionDetails.length - mainEnabled.length;
+  if (diff) {
+    appSettings.setString('enabled', JSON.stringify(mainEnabled.concat(Array(diff).fill(true))));
+    var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
+    pkgs.forEach(function(pkg) {
+      var pkgInfo = JSON.parse(appSettings.getString(pkg));
+      pkgInfo.enabled = pkgInfo.enabled.concat(Array(diff).fill(true));
+      appSettings.setString(pkg, JSON.stringify(pkgInfo));
+    });
+  }
+};
+

@@ -2,6 +2,8 @@ var application = require("application");
 var context = application.android.context;
 var toast = require("nativescript-toast");
 var timer = require("timer");
+var {VersionNumber} = require("nativescript-version-number");
+
 
 // utils 
 const usage = require("~/util/UsageInformationUtil");
@@ -52,6 +54,14 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             screenOnTime = Date.now();
             storage.unlocked();
             interventionManager.nextScreenUnlockIntervention();
+
+            var versionName = new VersionNumber().get();
+            if (versionName !== storage.checkVersionName()) {
+                storage.updateDB();
+                storage.setVersionName(versionName); // so it's a one-shot
+            }
+
+
         } else if (action === android.content.Intent.ACTION_SCREEN_OFF) {
             var now = Date.now();
             closeRecentVisit(now);
@@ -125,7 +135,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         } else if (lockdownSeen && !storage.inLockdownMode()) {
             lockdownSeen = 0;
         }
-       
         // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
@@ -139,7 +148,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 interventionManager.nextOnLaunchIntervention(currentApplication.packageName);
             }
         } else if (currentApplication.isBlacklisted) {
-            interventionManager.youTubeVideoBlocker(event.getSource(), currentApplication.packageName); // youtube only
+            interventionManager.youTubeVideoBlocker(true, event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 

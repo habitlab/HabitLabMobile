@@ -20,13 +20,22 @@ var TypedValue = android.util.TypedValue;
  *          PAINTS            *                           
  ******************************/
 var BACKGROUND = new Paint();
-BACKGROUND.setColor(Color.parseColor("#011627"));
+BACKGROUND.setColor(Color.parseColor("#2EC4B6"));
 
 var MAIN = new Paint();
-MAIN.setColor(Color.parseColor("#1A2D3C"));
+MAIN.setColor(Color.parseColor("#6CD5CB"));
 
 var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.parseColor("#E71D36"));
+ICON_FILL.setColor(Color.parseColor("#FFA730"));
+
+var INTERSTITIAL_BACKGROUND = new Paint();
+INTERSTITIAL_BACKGROUND.setColor(Color.parseColor("#011627"));
+
+var INTERSTITIAL_MAIN = new Paint();
+INTERSTITIAL_MAIN.setColor(Color.parseColor("#1A2D3C"));
+
+var INTERSTITIAL_ICON = new Paint();
+INTERSTITIAL_ICON.setColor(Color.parseColor("#E71D36"));
 
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -63,6 +72,35 @@ var DialogView = android.view.View.extend({
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
 		canvas.drawBitmap(icon, bitmapLeft, bitmapTop, ICON_FILL);
+	}
+});
+
+// Custom DialogView 
+var InterstitialView = android.view.View.extend({
+	onDraw: function (canvas) {
+		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, INTERSTITIAL_MAIN);
+		canvas.drawRect(0, 0.25 * SCREEN_HEIGHT, SCREEN_WIDTH, 0.75 * SCREEN_HEIGHT, INTERSTITIAL_BACKGROUND);
+
+
+		// add icon frame
+		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
+		var iconRight = iconLeft + 2 * ICON_RADIUS;
+		var iconTop = (SCREEN_HEIGHT) * 0.175;
+		var iconBottom = iconTop + 2 * ICON_RADIUS;
+		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, INTERSTITIAL_ICON);
+
+		// add icon
+		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
+		var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
+		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
+		var newHeight = 1.5 * ICON_RADIUS;
+		var newWidth = newHeight * hToWRatio;
+		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
+		
+		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
+		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
+
+		canvas.drawBitmap(icon, bitmapLeft, bitmapTop, INTERSTITIAL_ICON);
 	}
 });
 
@@ -118,15 +156,15 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     	PixelFormat.TRANSLUCENT);
     linkParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayLink = new TextView(context);
-    overlayLink.setText(neg);
+    overlayLink.setText(pos);
     overlayLink.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
     overlayLink.setTextColor(Color.WHITE);
     overlayLink.setHorizontallyScrolling(false);
     overlayLink.setGravity(Gravity.CENTER);
 	overlayLink.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (negCallback) {
-	    		negCallback();
+	    	if (posCallback) {
+	    		posCallback();
 	    	}
 	        exports.removeOverlay();
 	    }
@@ -142,13 +180,13 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 		PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayPosButton = new Button(context);
-	overlayPosButton.setText(pos);
+	overlayPosButton.setText(neg);
 	overlayPosButton.setTextColor(Color.parseColor("#2EC4B6"));
 	overlayPosButton.getBackground().setColorFilter(Color.parseColor("#eeeeeeff"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (posCallback) {
-	    		posCallback();
+	    	if (negCallback) {
+	    		negCallback();
 	    	}
 	        exports.removeOverlay();
 	    }
@@ -163,7 +201,7 @@ exports.showInterstitial = function(title, msg, button, callback) {
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    overlayView = new DialogView(context);
+    overlayView = new InterstitialView(context);
     windowManager.addView(overlayView, viewParams);
 
      // add title
