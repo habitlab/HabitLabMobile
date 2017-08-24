@@ -27,6 +27,9 @@ const RADIO_MARGIN = 0.025
  *          PAINTS            *                           
  ******************************/
 
+//turqouise (default), yellow, red
+var iconColor = ["#2EC4B6", "#ffcd30", "#b8172b"];
+
 
 var DIALOG_FILL = new Paint();
 DIALOG_FILL.setColor(Color.parseColor("#efede9")); // default
@@ -35,7 +38,7 @@ var DIM_BACKGROUND = new Paint();
 DIM_BACKGROUND.setColor(Color.BLACK);
 
 var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.parseColor("#2EC4B6"));
+ICON_FILL.setColor(Color.parseColor(iconColor[0]));
 
 var ICON_BACK_FILL = new Paint();
 ICON_BACK_FILL.setColor(Color.WHITE);
@@ -102,7 +105,16 @@ var selected = -1;
 var posButton;
 var negButton;
 exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMode, posCallback, negCallback, toastMsg) {
-	
+	var color = iconColor[0];
+	if (snoozeMode) {
+		color = iconColor[1];
+		ICON_FILL.setColor(Color.parseColor(color));
+	}
+	if (lockdownMode) {
+		color = iconColor[2];
+		ICON_FILL.setColor(Color.parseColor(color));
+	}
+
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
@@ -120,7 +132,12 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
     text.setText(msg);
-    text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    if (lockdownMode) {
+    	text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
+    } else {
+    	text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    }
+    
     text.setTextColor(Color.BLACK);
     text.setHorizontallyScrolling(false);
     text.setGravity(Gravity.CENTER);
@@ -176,7 +193,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
     opt3.setId(3);
     rg.addView(opt3);
 
-
+    //option 4
     var opt4 = new RadioButton(context);
     opt4.setText(op4);
     opt4.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
@@ -187,7 +204,6 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
     opt4.setId(4);
     rg.addView(opt4);
         windowManager.addView(rg, rgparams);
-
 
 
     // add positive button
@@ -201,7 +217,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
     posButton = new Button(context);
 	posButton.setText("Ok");
 	posButton.setTextColor(Color.WHITE);
-	posButton.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	posButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
 	posButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (selected === -1) {
@@ -210,8 +226,8 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	    	}
 	    	if (snoozeMode) {
 	    		Toast.makeText("HabitLab snoozed for " + selected).show();
-	    		var value = selected.substr(0, selected.indexOf(" "));
-	    		if (value == 8 || value == 24) { 			//must be == for type conversion
+	    		var value = parseInt(selected.substr(0, selected.indexOf(" ")));
+	    		if (value === 8 || value === 24) { 			
 	    			StorageUtil.setSnooze(value*60);
 	    		} else {
 	    			StorageUtil.setSnooze(value);
@@ -220,8 +236,8 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	    		return;
 	    	} else if (lockdownMode) {
 	    		Toast.makeText("Lockdown mode enabled for " + selected).show();
-	    		var value = selected.substr(0, selected.indexOf(" "));
-	    		if (value == 1 || value == 2) { 			
+	    		var value = parseInt(selected.substr(0, selected.indexOf(" ")));
+	    		if (value === 1 || value === 2) { 			
 	    			StorageUtil.setLockdown(value*60);
 	    		} else {
 	    			StorageUtil.setLockdown(value);

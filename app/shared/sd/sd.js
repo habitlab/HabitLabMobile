@@ -6,7 +6,6 @@ var dialogs = require("ui/dialogs");
 var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
-const ToastOverlay = require("~/overlays/ToastOverlay");
 const CheckboxOverlay = require("~/overlays/CheckboxOverlay");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
 
@@ -36,35 +35,8 @@ var setOnTouches = function() {
 };
 
 
-
-
-
-
-
 var createLockdownDialog = function() {
-  dialogs.action({
-    message: "How long would you like to lock your watchlisted apps for?",
-    cancelButtonText: "Cancel",
-    actions: ["15 minutes", "30 minutes", "1 hour", "2 hours"]
-  }).then(function (result) {
-    if (result === "15 minutes"){
-      menuEvents.push({category: "features", index: "lockdown_set"});
-      StorageUtil.setLockdown(15);
-    } else if (result === "30 minutes"){
-      menuEvents.push({category: "features", index: "lockdown_set"});
-      StorageUtil.setLockdown(30);
-    } else if (result === "1 hour"){
-      menuEvents.push({category: "features", index: "lockdown_set"});
-      StorageUtil.setLockdown(60);
-    } else if (result === "2 hours"){
-      menuEvents.push({category: "features", index: "lockdown_set"});
-      StorageUtil.setLockdown(120);
-    }
-
-    if (result !== 'Cancel') {
-      Toast.makeText('Lockdown Mode enabled for ' + result).show();
-    }
-  });
+  CheckboxOverlay.showOverlay("How long would you like to lock your watchlisted apps for?", "15 mins", "30 mins", "1 hour", "2 hours", false, true);
 };
 
 
@@ -90,7 +62,7 @@ exports.setLockdown = function() {
 
 
 var createSnoozeDialog = function() {
-  CheckboxOverlay.showOverlay("How long do you want to set snooze for?", "15 mins", "30 mins", "8 hours", "24 hours", true, null, null, null);
+  CheckboxOverlay.showOverlay("How long do you want to set snooze for?", "15 mins", "30 mins", "8 hours", "24 hours", true, false);
 };
 
 exports.setSnooze = function() {
