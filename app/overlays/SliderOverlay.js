@@ -98,7 +98,7 @@ exports.showSliderOverlay = function (msg, callback) {
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+	dialogParams.gravity = Gravity.LEFT | Gravity.TOP;
     dialog = new DialogView(context);
     windowManager.addView(dialog, dialogParams);
 

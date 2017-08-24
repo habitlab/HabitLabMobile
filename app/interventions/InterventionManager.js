@@ -9,6 +9,7 @@ const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const VideoOverlay = require("~/overlays/VideoOverlay");
 const LockdownOverlay = require("~/overlays/LockdownOverlay");
 const SliderOverlay = require("~/overlays/SliderOverlay");
+// const ScreenFlipperOverlay = require("~/overlays/ScreenFlipperOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -811,6 +812,7 @@ var removeOverlays = function() {
   VideoOverlay.removeVideoBlocker();
   LockdownOverlay.removeOverlay();
   SliderOverlay.removeSliderOverlay();
+  // ScreenFlipperOverlay.removeOverlay();
   pausedThisVisit = false;
 }
 
@@ -830,9 +832,6 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
-  showFullScreenOverlay(true, pkg);
-  return;
-
   // set up duration interventions
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
