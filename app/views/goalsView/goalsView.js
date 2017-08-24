@@ -1,204 +1,131 @@
 var frameModule = require("ui/frame");
 var StorageUtil = require('~/util/StorageUtil');
-var builder = require('ui/builder');
 var UsageUtil = require('~/util/UsageInformationUtil');
-var gestures = require('ui/gestures').GestureTypes;
-var Grid = require("ui/layouts/grid-layout").GridLayout;
-var StackLayout = require("ui/layouts/stack-layout").StackLayout;
-var FlexLayout = require("ui/layouts/flexbox-layout").FlexboxLayout;
 var fancyAlert = require("nativescript-fancyalert");
 var ToolTip = require("nativescript-tooltip").ToolTip;
-var view = require("ui/core/view");
-var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
-var timer = require("timer");
 var FancyAlert = require("~/util/FancyAlert");
-var Toast = require("nativescript-toast");
-var Resources = android.content.res.Resources;
-var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
+var SCREEN_WIDTH = android.content.res.Resources.getSystem().getDisplayMetrics().widthPixels;
+var observable = require("data/observable");
 
 var drawer;
 var page;
 var events;
-var appChanged;
-var phoneChanged;
-var toSave;
-var clicked;
+var pageData;
+var phoneList;
+var appsList;
+var targetsList;
+
+exports.onInfo = function(args) {
+  events.push({category: 'features', index: 'tooltips'});
+  const tip = new ToolTip(args.object, {text:"The number of times you check your phone's lock screen", width: 0.43*SCREEN_WIDTH, style: 'CustomToolTipLayoutStyle'});
+  tip.show();
+  setTimeout(function() {
+    tip.hide();
+  }, 3000)
+};
+
+var initializePhoneList = function() {
+  var goals = StorageUtil.getPhoneGoals();
+  var phoneGoals = [];
+  Object.keys(goals).forEach(function (key) {
+    phoneGoals.push({
+      name: key,
+      value: goals[key]
+    });
+  });
+  pageData.set('phoneGoals', phoneGoals);
+};
+
+var initializeAppsList = function() {
+  var pkgs = StorageUtil.getSelectedPackages();
+  var appGoals = [];
+  pkgs.forEach(function (pkg) {
+    var basicInfo = UsageUtil.getBasicInfo(pkg);
+    appGoals.push({
+      app: basicInfo.name,
+      icon: basicInfo.icon,
+      name: 'mins',
+      value: StorageUtil.getMinutesGoal(pkg),
+      packageName: pkg
+    });
+  });
+  pageData.set('appGoals', appGoals);
+};
+
+var initializeTargetsList = function() {
+  pageData.set('targetGoals', []);
+};
 
 var getGoal = function(txt, add) {
-  var num = txt.replace(/[^0-9]/g, '') || 0;
-
-  var newNum = parseInt(num) - 5;
-  if (add) {
-    newNum += 10;
+  var num = add ? Number(txt) + 5 : Number(txt) - 5;
+  if (num > 995) {
+    num = 995;
+  } else if (num < 0) {
+    num = 0
   }
-  
-  if (newNum > 1440) {
-    newNum = 1440;
-  } else if (newNum < 0) {
-    newNum = 0
-  }
-  return newNum;
+  return num;
 };
 
-var createPhoneGoal = function(goal, value) {
-  var item = builder.load({
-    path: 'shared/goalelem',
-    name: 'goalelem',
-    page: page
-  });
-  var icon = item.getViewById('icon');
-  icon.visibility = 'collapsed';
-
-  item.getViewById('name').visibility = 'collapsed';
-
-  var np = item.getViewById('np');
-  np.id = 'phone'+ goal;
-
-  var label = item.getViewById('label');
-  label.text = goal;
-  label.id = goal;
-  label.className = "goal-label-nowidth";
-  
-  var info = item.getViewById('infoButton');
-  if (goal === "glances") {
-      info.visibility = 'visible';
-      info.on(gestures.tap, function() {
-        events.push({category: 'features', index: 'tooltips'});
-        const tip = new ToolTip(info, {text:"The number of times you check your phone's lock screen", width: 0.43*SCREEN_WIDTH});;
-        tip.show(); 
-      });
-  } else {
-    info.visibility="hidden";
-  }
-  
-  var number = np.getViewById('number');
-  clicked = number;
-  number.text = value;
-  number.on("unloaded", function (args) {
-    if (!toSave) return;
-    var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
-    StorageUtil.changePhoneGoal(newNum, goal);
-    if (phoneChanged) {
-      events.push({category: "features", index: "goals_phonegoal_change"});
-    }
-  });
-
-  np.getViewById('plus').on(gestures.tap, function() {
-    phoneChanged = true;
-    number.text = getGoal(number.text, true);
-  });
-
-  np.getViewById('minus').on(gestures.tap, function() {
-    phoneChanged = true;
-    number.text = getGoal(number.text, false);
-  });
-
-  return item;
+exports.phoneGoalChange = function(args) {
+  var boundGoal = args.object.parent.parent.bindingContext;
+  boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
+  phoneList.refresh();
 };
 
-var setUpPhoneGoals = function() {
-  var phoneGoals = StorageUtil.getPhoneGoals();
-  var phoneSection = page.getViewById("phoneGoals");
-  phoneSection.removeChildren();
-
-  Object.keys(phoneGoals).forEach(function(key) {
-    phoneSection.addChild(createPhoneGoal(key, phoneGoals[key]));
-  });
+exports.phoneGoalUnloaded = function(args) {
+  var boundGoal = args.object.bindingContext;
+  StorageUtil.changePhoneGoal(boundGoal.value, boundGoal.name);
 };
 
-var createAppGoal = function(pkg) {
-  var item = builder.load({
-    path: 'shared/goalelem',
-    name: 'goalelem',
-    page: page
-  });
-
-  var basicInfo = UsageUtil.getBasicInfo(pkg);
-  item.getViewById('name').text = basicInfo.name;
-
-  var icon = item.getViewById('icon');
-  icon.src = basicInfo.icon;
-
-  var np = item.getViewById('np');
-  np.id = pkg;
-
-  var goal = StorageUtil.getMinutesGoal(pkg);
-
-  item.getViewById('label').text = 'mins';
-  var number = np.getViewById('number');
-  number.text = goal;
-
-  number.on("unloaded", function (args) {
-    if (!toSave) return;
-    var newNum = parseInt(number.text.replace(/[^0-9]/g, '') || 15);
-    StorageUtil.changeAppGoal(pkg, newNum, 'minutes');
-    if (appChanged) {
-      events.push({category: "features", index: "goals_appgoal_change"});
-    }
-  });
-
-  np.getViewById('plus').on(gestures.tap, function() {
-    appChanged = true;
-    number.text = getGoal(number.text, true);
-  });
-
-  np.getViewById('minus').on(gestures.tap, function() {
-    appChanged = true;
-    number.text = getGoal(number.text, false);
-  });
-
-  return item;
+exports.appGoalChange = function(args) {
+  var boundGoal = args.object.parent.parent.bindingContext;
+  boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
+  appsList.refresh();
 };
 
-var setUpAppGoals = function() {
-  var pkgs = StorageUtil.getSelectedPackages();
-  var appSection = page.getViewById("appGoals");
-  appSection.removeChildren();
+exports.appGoalUnloaded = function(args) {
+  var boundGoal = args.object.bindingContext;
+  console.dir(boundGoal);
+  StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name === 'mins' ? 'minutes' : boundGoal.name);
+};
 
-  pkgs.forEach(function (pkg) {
-    appSection.addChild(createAppGoal(pkg));
-  });
+exports.targetGoalChange = function(args) {
+  var boundGoal = args.object.parent.parent.bindingContext;
+  boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
+  targetsList.refresh();
+};
+
+exports.targetGoalUnloaded = function(args) {
+  var boundGoal = args.object.bindingContext;
+  // StorageUtil.changeTargetGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
+};
+
+var initializeLists = function() {
+  initializePhoneList();
+  initializeAppsList();
+  initializeTargetsList();
 };
 
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "goals"}];
   page = args.object;
+  pageData = new observable.Observable();
+  page.bindingContext = pageData;
+  pageData.set('tutorialFinished', StorageUtil.isTutorialComplete());
+
   drawer = page.getViewById("sideDrawer");
+  phoneList = page.getViewById('phone-list');
+  appsList = page.getViewById('apps-list');
+  targetsList = page.getViewById('targets-list');
+  initializeLists();
 
-  var loader = new LoadingIndicator();
-  var options = {
-    message: 'Loading...',
-    progress: 0.65,
-    android: {
-      indeterminate: true,
-      cancelable: false,
-      max: 100,
-      progressNumberFormat: "%1d/%2d",
-      progressPercentFormat: 0.53,
-      progressStyle: 1,
-      secondaryProgress: 1
-    }
-  };
-  loader.show(options);
+  if (!pageData.get('tutorialFinished')) {
+    FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
+  }
+};
 
-  timer.setTimeout(() => {
-    setUpPhoneGoals();
-    setUpAppGoals();
-    loader.hide();
-    var btn = page.getViewById('done');
-    if (StorageUtil.isTutorialComplete()) {
-      btn.text = 'save';
-      btn.on('tap', function() {
-        toSave = true;
-        Toast.makeText('Goals Saved').show();
-      });
-    } else {
-      btn.on('tap', function() {
-        frameModule.topmost().navigate('views/interventionsView/interventionsView');
-      });
-      FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
-    }
-  }, 1000);  
+exports.nextStep = function() {
+  frameModule.topmost().navigate('views/interventionsView/interventionsView');
 };
 
 exports.pageUnloaded = function(args) {
@@ -209,7 +136,6 @@ exports.toggleDrawer = function() {
   if (!StorageUtil.isTutorialComplete()) {
     fancyAlert.TNSFancyAlert.showError("Complete Tutorial First", "Click done to continue with the tutorial, then you'll be ready to start exploring!", "Got It!");
   } else {
-    clicked.dismissSoftInput();
     events.push({category: "navigation", index: "menu"});
     drawer.toggleDrawerState();
   }

@@ -9,7 +9,6 @@
       <Label text="Goals" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
-    <!-- <ActionItem tap="onManageApps" icon="res://ic_manage_apps" /> -->
 	</ActionBar>
 
   <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
@@ -19,17 +18,70 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
-      <StackLayout orientation='vertical'>
-        <ScrollView orientation="vertical" id="scroll">
-          <StackLayout orientation="vertical">
-            <Label text="Phone" class="section-title" />
-            <StackLayout orientation="vertical" id="phoneGoals" />
-            <Label text="Watchlist" class="section-title-watchlist" />
-            <StackLayout orientation="vertical" id="appGoals" class="goal-scroll" />
-          </StackLayout>
-        </ScrollView>
-        <Button text="done" id="done" class="done-button"/>
-      </StackLayout>
+      <StackLayout>
+      <TabView androidSelectedTabHighlightColor="#FFA730" height="{{tutorialFinished ? '100%' : '91%'}}" >
+        <TabView.items>
+
+          <TabViewItem title="Phone">
+            <TabViewItem.view>
+              <ListView items="{{phoneGoals}}" id="phone-list" separatorColor="#FFFFFF" >
+                <ListView.itemTemplate>
+                  <FlexboxLayout direction="row" class="flex" unloaded="phoneGoalUnloaded">
+                    <FlexboxLayout flexDirection="row" class="np">
+                      <Button text="-" id="minus" class="np-button" tap="phoneGoalChange" />
+                      <Label text="{{value}}" class="np-text" />
+                      <Button text="+" id="plus" class="np-button" tap="phoneGoalChange" />
+                    </FlexboxLayout>
+                    <Label class="phone-goal-label" text="{{name}}" />
+                    <Image class="phone-info-icon" src="res://ic_info_outline" visibility="{{name === 'glances' ? 'visible' : 'hidden'}}" tap="onInfo" />
+                  </FlexboxLayout>
+                </ListView.itemTemplate>
+              </ListView>
+            </TabViewItem.view>
+          </TabViewItem>
+
+          <TabViewItem title="Watchlist">
+            <TabViewItem.view>
+              <ListView items="{{appGoals}}" id="apps-list" separatorColor="#FFFFFF" >
+                <ListView.itemTemplate>
+                  <FlexboxLayout direction="row" class="flex" id="goalelem" unloaded="appGoalUnloaded" >
+                    <Image class="app-icon thumb img-rounded" imageSource="{{icon}}" />
+                    <Label class="app-name" text="{{app}}" />
+                    <FlexboxLayout flexDirection="row" class="np" col="3">
+                      <Button text="-" id="minus" class="np-button" tap="appGoalChange" />
+                      <Label text="{{value}}" class="np-text" />
+                      <Button text="+" id="plus" class="np-button" tap="appGoalChange" />
+                    </FlexboxLayout>
+                    <Label id="label" class="goal-label" text="{{name}}" />
+                  </FlexboxLayout>
+                </ListView.itemTemplate>
+              </ListView>
+            </TabViewItem.view>
+          </TabViewItem>
+
+          <TabViewItem title="Targets" >
+            <TabViewItem.view>
+              <ListView items="{{targetGoals}}" id="targets-list" separatorColor="#FFFFFF" >
+                <ListView.itemTemplate>
+                  <FlexboxLayout direction="row" class="flex" id="goalelem" unloaded="targetGoalUnloaded" >
+                    <Image class="app-icon thumb img-rounded" imageSource="{{icon}}" />
+                    <Label class="app-name" text="{{app}}" />
+                    <FlexboxLayout flexDirection="row" class="np" col="3">
+                      <Button text="-" id="minus" class="np-button" tap="targetGoalChange" />
+                      <Label text="{{value}}" class="np-text" />
+                      <Button text="+" id="plus" class="np-button" tap="targetGoalChange" />
+                    </FlexboxLayout>
+                    <Label id="label" class="goal-label" text="{{name}}" />
+                  </FlexboxLayout>
+                </ListView.itemTemplate>
+              </ListView>
+            </TabViewItem.view>
+          </TabViewItem>
+
+        </TabView.items>
+      </TabView>
+      <Button text="Next Step" height="9%" visibility="{{tutorialFinished ? 'collapse' : 'visible'}}" class="bottom-button" tap="nextStep"/>
+      </StackLayout> 
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>

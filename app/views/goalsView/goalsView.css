@@ -1,38 +1,60 @@
-.section-title {
-  font-size: 23%;
-  text-align: center;
-  padding: 5%;
-  color: #FFA730;
-}
-
-.section-title-watchlist {
-  font-size: 23%;
-  text-align: center;
-  padding: 5%;
-  padding-top: 15%;
-  color: #FFA730;
-}
-
-
-.label-and-icon {
-  margin-top: 3%;
-  margin-bottom: 1%;
-  align-items: center;
-  justify-content: center;
-}
-
-.goal-scroll {
-  padding-right: 6%;
-  padding-left: 6%;
-}
-
-#scroll {
-  height: 89%;
-  margin-top: 2%;
-}
-
-.done-button {
+.bottom-button {
   background-color: #69BD68;
   color: white;
-  height: 11%;
+}
+
+.app-icon {
+  width: 15%;
+}
+
+.app-name {
+  width: 35%;
+  font-size: 15%;
+  margin-left: 2%;
+}
+
+.goal-label {
+  width: 15%;
+  font-size: 17%;
+  margin-left: 1%;
+}
+
+.phone-goal-label {
+  font-size: 17%;
+  margin-left: 1%;
+}
+
+.np-text {
+  width: 30%;
+  text-align: center;
+  color: black;
+  font-size: 16%;
+}
+
+.np-button {
+  width: 35%;
+  font-size: 12%;
+  background-color: #2EC4B6;
+  color: white;
+  margin: 0;
+}
+
+.np {
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  margin-left: 2%;
+}
+
+.flex {
+  justify-content: center;
+  align-items: center;
+  padding: 3%;
+}
+
+.phone-info-icon {
+  width: 7%;
+  margin: 1%;
+  background-color: #A0E4DD;
+  border-radius: 50%
 }

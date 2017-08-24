@@ -722,32 +722,6 @@ getAppsToday = function() {
     return list;
 };
 
-
-// var setUpAppToday = function() {
-//   var appsToday = getAppsToday();
-//   var appSection = page.getViewById("dayAppsList");
-//   appSection.removeChildren();
-
-//   appsToday.forEach(function (app) {
-//     appSection.addChild(createAppGoal(app));
-//   });
-// };
-
-
-// var createAppGoal = function(app) {
-//   var item = builder.load({
-//     path: 'shared/progressDayElem',
-//     name: 'progressDayElem',
-//     page: page
-//   });
-//   item.getViewById('name').text = app.name;
-//   item.getViewById('icon').src = app.icon;
-//   item.getViewById('mins').text = app.mins + " mins";
-//   item.getViewById('visits').text = "Opened "+ app.visits + " times";
-//   return item;
-// };
-
-
 //Returns the total time spent on waitlist apps this week as an array of app objects
 getAppsWeek = function () {
     var weekApps = [];
