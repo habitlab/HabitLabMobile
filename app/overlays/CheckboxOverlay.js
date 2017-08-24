@@ -115,7 +115,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.2*DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.27*SCREEN_HEIGHT + 0.10*DIALOG_HEIGHT, 
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.26*SCREEN_HEIGHT + 0.10*DIALOG_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
@@ -128,7 +128,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
 
    	//radio group
 	var rgparams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.5*DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.25*SCREEN_HEIGHT + 0.33*DIALOG_HEIGHT, 
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.25*SCREEN_HEIGHT + 0.32*DIALOG_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     rgparams.gravity = Gravity.LEFT | Gravity.TOP;
     rg = new RadioGroup(context);
@@ -191,7 +191,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
 
 
     // add positive button
-    var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
+    var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
     	0.15 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
@@ -208,12 +208,14 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
 	    		Toast.makeText("Please select a value").show();
 	    		return;
 	    	}
-
 	    	if (snoozeMode) {
 	    		Toast.makeText("Snooze set for " + selected).show();
 	    		var value = selected.substr(0, selected.indexOf(" "));
-	    		console.warn(value);
-	    		StorageUtil.setSnooze(value);
+	    		if (value == 8 || value == 24) { 		//must be == for type conversion
+	    			StorageUtil.setSnooze(value*60);
+	    		} else {
+	    			StorageUtil.setSnooze(value);
+	    		}
 	    		exports.removeDialog();
 	    		return;
 	    	} 
@@ -231,7 +233,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
     windowManager.addView(posButton, posButtonParams);
 
     // add positive button
-    var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
+    var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
     	0.15 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
