@@ -28,7 +28,7 @@ const RADIO_MARGIN = 0.025
  ******************************/
 
 //turqouise (default), yellow, red
-var iconColor = ["#2EC4B6", "#ffcd30", "#b8172b"];
+var iconColor = ["#2EC4B6", "#ffcd30", "#d13b49"];
 
 
 var DIALOG_FILL = new Paint();
@@ -268,7 +268,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
     negButton = new Button(context);
 	negButton.setText("Not now");
 	negButton.setTextColor(Color.WHITE);
-	negButton.getBackground().setColorFilter(Color.parseColor("#011627"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	negButton.getBackground().setColorFilter(Color.parseColor("#808080"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	negButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (negCallback) {
