@@ -148,7 +148,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 interventionManager.nextOnLaunchIntervention(currentApplication.packageName);
             }
         } else if (currentApplication.isBlacklisted) {
-            interventionManager.youTubeVideoBlocker(event.getSource(), currentApplication.packageName); // youtube only
+            interventionManager.youTubeVideoBlocker(true, event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 

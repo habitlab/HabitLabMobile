@@ -156,15 +156,15 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     	PixelFormat.TRANSLUCENT);
     linkParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayLink = new TextView(context);
-    overlayLink.setText(neg);
+    overlayLink.setText(pos);
     overlayLink.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
     overlayLink.setTextColor(Color.WHITE);
     overlayLink.setHorizontallyScrolling(false);
     overlayLink.setGravity(Gravity.CENTER);
 	overlayLink.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (negCallback) {
-	    		negCallback();
+	    	if (posCallback) {
+	    		posCallback();
 	    	}
 	        exports.removeOverlay();
 	    }
@@ -180,13 +180,13 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 		PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     overlayPosButton = new Button(context);
-	overlayPosButton.setText(pos);
+	overlayPosButton.setText(neg);
 	overlayPosButton.setTextColor(Color.parseColor("#2EC4B6"));
 	overlayPosButton.getBackground().setColorFilter(Color.parseColor("#eeeeeeff"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	overlayPosButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (posCallback) {
-	    		posCallback();
+	    	if (negCallback) {
+	    		negCallback();
 	    	}
 	        exports.removeOverlay();
 	    }

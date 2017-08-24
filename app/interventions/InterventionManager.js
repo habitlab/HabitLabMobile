@@ -578,7 +578,12 @@ var exitToHome = function () {
  */
 var pausedThisVisit = false;
 var playNode;
-var youTubeVideoBlocker = function (node, pkg) {
+var youTubeVideoBlocker = function (real, node, pkg) {
+  if (!real) {
+    Toast.show(context, "No demo available for this nudge!", 0);
+    return;
+  }
+
   if (!node) { return; }
 
   if (node.isFocusable() && (node.getContentDescription() === "Play video" 
@@ -630,7 +635,7 @@ var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay("Continue to Faceook?", 
       "You've already been here 25 times today. Want to take a break?", 
-      "Continue", "Get me out of here!", null, null);
+      "Continue to Facebook", "Get me out of here!", null, null);
     return;
   }
   
@@ -640,9 +645,10 @@ var showFullScreenOverlay = function (real, pkg) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.FULL_SCREEN_OVERLAY}]);
       var app = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = "Continue to " + app + "?";
+      var linkMsg = "Continue to " + app;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
-      FullScreenOverlay.showOverlay(title, msg, "Continue", "Get me out of here!", null, exitToHome);
+      FullScreenOverlay.showOverlay(title, msg, linkMsg, "Get me out of here!", null, exitToHome);
     }
   }
 }
@@ -824,6 +830,9 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
+  showFullScreenOverlay(true, pkg);
+  return;
+
   // set up duration interventions
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
