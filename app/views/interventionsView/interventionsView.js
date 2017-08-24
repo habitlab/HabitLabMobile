@@ -1,15 +1,9 @@
 var StorageUtil = require("~/util/StorageUtil");
 var IM = require('~/interventions/InterventionManager');
 var ID = require('~/interventions/InterventionData');
-var Toast = require('nativescript-toast');
 var fancyAlert = require("nativescript-fancyalert");
-var gestures = require("ui/gestures").GestureTypes;
 var observable = require("data/observable");
 
-var timer = require("timer");
-var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
-
-var builder = require('ui/builder');
 var frameModule = require('ui/frame');
 var FancyAlert = require("~/util/FancyAlert");
 

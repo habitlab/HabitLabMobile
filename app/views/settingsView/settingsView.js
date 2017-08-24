@@ -1,18 +1,21 @@
 var application = require("application");
 var frame = require("ui/frame");
 var fancyAlert = require("nativescript-fancyalert");
+var observable = require("data/observable");
 const StorageUtil = require("~/util/StorageUtil");
 const Toast = require("nativescript-toast");
 
 var drawer;
 var events;
+var page;
+var pageData;
 
 exports.toggleDrawer = function() {
     events.push({category: "navigation", index: "menu"});
 	drawer.toggleDrawerState();
 };
 
-exports.editName = function () {
+var editName = function () {
     events.push({category: "features", index: "editname"});
 	var layout = new android.widget.LinearLayout(application.android.context);
     var parms = new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 
@@ -59,7 +62,6 @@ exports.setFakeData = function() {
   StorageUtil.setUpFakeDB();
 };
 
-
 exports.startAccessibilityService = function() {
     var permission = require("~/util/PermissionUtil");
     if (!permission.checkAccessibilityPermission()) {
@@ -69,8 +71,7 @@ exports.startAccessibilityService = function() {
     }
 }
 
-
-exports.setHours = function() {
+var setHours = function() {
     frame.topmost().navigate({
         moduleName: "views/hoursView/hoursView",
         animated: true,
@@ -82,8 +83,7 @@ exports.setHours = function() {
     });
 };
 
-
-exports.goToFAQ = function () {
+var goToFAQ = function () {
 	frame.topmost().navigate({
         moduleName: "views/faqView/faqView",
         animated: true,
@@ -95,8 +95,19 @@ exports.goToFAQ = function () {
     });
 };
 
+var goToFeedback = function() {
+    frame.topmost().navigate({
+        moduleName: "views/feedbackView/feedbackView",
+        animated: true,
+        transition: {
+          name: "slide",
+          duration: 380,
+          curve: "easeIn"
+        }
+    });
+};
 
-exports.eraseData = function() {
+var eraseData = function() {
     events.push({category: "features", index: "erase_data"});
 	var alert = new android.app.AlertDialog.Builder(application.android.foregroundActivity);
     alert.setTitle("Destroy All Data?");
@@ -117,18 +128,46 @@ exports.eraseData = function() {
 };
 
 
+exports.onItemTap = function(args) {
+    args.view.bindingContext.onTap();
+};
+
 exports.pageLoaded = function(args) {
     events = [{category: "page_visits", index: "settings_main"}];
 	drawer = args.object.getViewById("sideDrawer"); 
-    args.object.getViewById('main-layout').eachChild(function (child) {
-        child.on("touch", function(args) {
-            if (args.action === 'down') {
-                child.backgroundColor = "#F5F5F5";
-            } else if (args.action === 'up' || args.action === 'cancel') {
-                child.backgroundColor = "#FFFFFF";
-            }
-        });
-    });
+    page = args.object;
+    pageData = new observable.Observable();
+    page.bindingContext = pageData;
+    var settings = [{
+        title: 'Edit Name',
+        subtitle: 'Set your preferred name',
+        icon: 'res://ic_account',
+        onTap: editName
+    }, {
+        title: 'Active Hours',
+        subtitle: 'Set when HabitLab can nudge you',
+        icon: 'res://ic_alarm',
+        hasArrow: true,
+        onTap: setHours
+    }, {
+        title: 'Feedback',
+        subtitle: 'Tell us what you think about HabitLab',
+        icon: 'res://ic_feedback',
+        hasArrow: true,
+        onTap: goToFeedback
+    }, {
+        title: 'FAQ',
+        subtitle: '',
+        icon: 'res://ic_faq',
+        hasArrow: true,
+        onTap: goToFAQ
+    }, {
+        title: 'Erase Data',
+        subtitle: '',
+        icon: 'res://ic_trash',
+        onTap: eraseData
+    }];
+    pageData.set('settings', settings);
 };
  
 exports.pageUnloaded = function(args) {
@@ -137,16 +176,4 @@ exports.pageUnloaded = function(args) {
 
 exports.onInfo = function() {
     frame.topmost().navigate('views/infoView/infoView');
-};
-
-exports.goToFeedback = function() {
-    frame.topmost().navigate({
-        moduleName: "views/feedbackView/feedbackView",
-        animated: true,
-        transition: {
-          name: "slide",
-          duration: 380,
-          curve: "easeIn"
-        }
-    });
 };

@@ -1,61 +1,31 @@
 var StorageUtil = require("~/util/StorageUtil");
 var UsageUtil = require('~/util/UsageInformationUtil');
-
-var builder = require('ui/builder');
 var frame = require('ui/frame');
-var layout = require('ui/layouts/stack-layout');
+var observable = require("data/observable");
 
 var drawer;
 var page;
 var events;
+var pkgs;
 
-var createItem = function(packageName)  {
-  var item = builder.load({
-    path: 'shared/watchlistelem',
-    name: 'watchlistelem',
-    page: page
-  });
-
-  item.id = packageName;
-  item.className = 'watchlist-elem';
-
-  var info = UsageUtil.getBasicInfo(packageName);
+exports.onItemTap = function(args) {
+  events.push({category: "navigation", index: "watchlist_to_detail"});
   
-  var image = item.getViewById('icon');
-  image.src = info.icon;
-  image.className = 'watchlist-icon';
-
-  var label = item.getViewById("name");
-  label.text = info.name;
-  label.className = 'watchlist-label';
-
-  item.on("tap, touch", function(args) {
-    if (args.eventName === 'tap') {
-      events.push({category: "navigation", index: "watchlist_to_detail"});
-      frame.topmost().navigate({
-        moduleName: 'views/appDetailView/appDetailView',
-        context: { 
-          name: info.name,
-          icon: info.icon,
-          packageName: packageName
-        },
-        animated: true,
-        transition: {
-          name: "slide",
-          duration: 380,
-          curve: "easeIn"
-        }
-      });
-    } else {
-      if (args.action === 'down') {
-        item.backgroundColor = '#F5F5F5';
-      } else if (args.action === 'up' || args.action === 'cancel') {
-        item.backgroundColor = '#FFFFFF';
-      }
+  var info = args.view.bindingContext;
+  frame.topmost().navigate({
+    moduleName: 'views/appDetailView/appDetailView',
+    context: { 
+      name: info.name,
+      icon: info.icon,
+      packageName: info.packageName
+    },
+    animated: true,
+    transition: {
+      name: "slide",
+      duration: 380,
+      curve: "easeIn"
     }
   });
-
-  return item;
 };
 
 var setUpList = function() {
@@ -71,8 +41,18 @@ var setUpList = function() {
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "watchlist_main"}];
   page = args.object;
+  pageData = new observable.Observable();
+  page.bindingContext = pageData;
   drawer = page.getViewById('sideDrawer');
-  setUpList();
+  pkgs = StorageUtil.getSelectedPackages().map(function (pkgName) {
+    var basicInfo = UsageUtil.getBasicInfo(pkgName);
+    return {
+      packageName: pkgName,
+      name: basicInfo.name,
+      icon: basicInfo.icon
+    }
+  });
+  pageData.set('watchlist', pkgs);
 };
 
 exports.pageUnloaded = function(args) {
