@@ -4,114 +4,113 @@ var StorageUtil = require("~/util/StorageUtil");
 var fancyAlert = require("nativescript-fancyalert");
 
 var frame = require('ui/frame');
-var gestures = require("ui/gestures").GestureTypes;
-var builder = require('ui/builder');
+var observable = require("data/observable");
 var layout = require("ui/layouts/grid-layout");
 var timer = require("timer");
 var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
 
 var drawer;
 var pkgs;
-var toToggle;
 var page;
 var events;
-var grid;
 var search;
 var noResults;
-var currentSearch = "";
+var toToggle;
+var appList;
+var listView;
+var pageData;
 
-exports.onUnloaded = function(args) {
-  args.object.removeChildren();
-};
-
-exports.onSearch = function(args) {
-  if (args.object.text !== currentSearch) {
-    grid.removeChildren();
-    createGrid(args.object.text.toLowerCase());
-    currentSearch = args.object.text;
-  }
-  args.object.dismissSoftInput();
+exports.closeKeyboard = function() {
+  search.dismissSoftInput();
 };
 
 exports.onShowSearch = function(args) {
   search.visibility = search.visibility === 'visible' ? 'collapse' : 'visible';
 };
 
-var createGrid = function(filter) {
-  var list = UsageUtil.getApplicationList();
-  var selectedPackages = StorageUtil.getSelectedPackages();
+exports.itemTap = function(args) {
+  events.push({category: 'features', index: 'watchlist_manage_change'});
 
-  if (filter) {
-    list = list.filter(function (item) {
-      return item.label.toLowerCase().includes(filter);
-    });
-  }
-  list.sort(function(a, b){
-    var aIsSelected = selectedPackages.includes(a.packageName);
-    var bIsSelected = selectedPackages.includes(b.packageName);
+  var index = args.object.id;
 
-    if (aIsSelected && !bIsSelected) {
+  var viewObject = args.object.parent.parent.parent.bindingContext;
+  viewObject[index].isSelected = !viewObject[index].isSelected;
+  toToggle[viewObject[index].packageName] = !toToggle[viewObject[index].packageName];
+
+  listView.refresh();
+};
+
+var initializeGrid = function() {
+  appList = UsageUtil.getApplicationList().map(function (appInfo) {
+    appInfo.isSelected = pkgs.includes(appInfo.packageName);
+    return appInfo;
+  });
+
+  appList.sort(function (a, b){
+    if (a.isSelected && !b.isSelected) {
       return -1;
-    } else if (!aIsSelected && bIsSelected) {
+    } else if (!a.isSelected && b.isSelected) {
       return 1;
     }  else {
       return a.label < b.label ? -1 : 1;
     }
   });
 
-  if (!list.length) {
+  setGrid();
+};
+
+var setGrid = function() {
+
+  var tempList = appList;
+  var filter = pageData.get('filter');
+  tempList = tempList.filter(function (appInfo) {
+    return appInfo.label.toLowerCase().includes(filter.toLowerCase());
+  });
+
+  var apps = [];
+  var temp;
+  tempList.forEach(function (appInfo, index) {
+    var toPush = (index + 1) === tempList.length;
+    var mod = index % 3;
+
+    if (mod === 0) {
+      temp = {one: appInfo};
+    } else if (mod === 1) {
+      temp.two = appInfo;
+    } else {
+      temp.three = appInfo;
+      toPush = true; 
+    }
+
+    if (toPush) {
+      apps.push(temp);
+    }
+  });
+
+  if (!apps.length) {
     noResults.visibility = 'visible';
   } else {
     noResults.visibility = 'collapse';
   }
 
-  list.forEach(function (item, i) {
-    if (i % 3 === 0) {
-      grid.addRow(new layout.ItemSpec(1, layout.GridUnitType.AUTO));
-    }
-    grid.addChild(createCell(list[i], Math.floor(i/3), i%3));
-  });
-};
-
-var setCellInfo = function(cell, info) {
-  cell.getViewById("lbl").text = info.label;
-
-  var selector = cell.getViewById("slctr");
-  selector.visibility = pkgs.includes(info.packageName) ? 'visible' : 'hidden';
-
-  var image = cell.getViewById("img");
-  image.src = info.iconSource;
-  image.on(gestures.tap, function() {
-    events.push({category: 'features', index: 'watchlist_manage_change'});
-    selector.visibility = selector.visibility === 'visible' ? 'hidden' : 'visible';
-    toToggle[info.packageName] = !toToggle[info.packageName];
-  });
-
-};
-
-var createCell = function(info, r, c)  {
-  var cell = builder.load({
-    path: 'shared/appgridcell',
-    name: 'appgridcell',
-    page: page
-  });
-
-  setCellInfo(cell, info);
-  layout.GridLayout.setRow(cell, r);
-  layout.GridLayout.setColumn(cell, c);
-  return cell;
+  pageData.set('apps', apps);
 };
 
 exports.pageLoaded = function(args) { 
   events = [{category: 'page_visits', index: 'watchlist_manage'}];
+
   page = args.object;
+  pageData = new observable.Observable();
+  page.bindingContext = pageData;
   search = page.getViewById('search-bar');
-  grid = page.getViewById('grid');
   noResults = page.getViewById('no-results');
-  toToggle = {};
   drawer = page.getViewById('sideDrawer');
+  listView = page.getViewById('app-list-view');
+
+  toToggle = {};
   pkgs = StorageUtil.getSelectedPackages();
 
+  pageData.set('filter', '');
   var loader = new LoadingIndicator();
   var options = {
     message: 'Retrieving installed applications...',
@@ -129,9 +128,15 @@ exports.pageLoaded = function(args) {
   loader.show(options);
 
   timer.setTimeout(() => {
-    createGrid("");
+    initializeGrid();
     loader.hide();
-  }, 1000);
+  }, 500);
+
+  pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
+    if (pcd.propertyName === 'filter') {
+      setGrid();
+    }
+  });
 };
 
 exports.toggleDrawer = function() {
@@ -155,11 +160,9 @@ exports.onDone = function() {
   });
 
   if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
-    var wasChanged = false;
     Object.keys(toToggle).forEach(function(key) {
       if (toToggle[key]) {
         StorageUtil.togglePackage(key);
-        wasChanged = true;
       }
     });
     frame.topmost().goBack();

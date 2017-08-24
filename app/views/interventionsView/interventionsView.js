@@ -6,6 +6,9 @@ var fancyAlert = require("nativescript-fancyalert");
 var gestures = require("ui/gestures").GestureTypes;
 var observable = require("data/observable");
 
+var timer = require("timer");
+var LoadingIndicator = require("nativescript-loading-indicator").LoadingIndicator;
+
 var builder = require('ui/builder');
 var frameModule = require('ui/frame');
 var FancyAlert = require("~/util/FancyAlert");
@@ -16,7 +19,11 @@ var interventionList;
 var events;
 var search;
 var noResults;
-var pageData = new observable.Observable();
+var pageData;
+
+exports.closeKeyboard = function() {
+  search.dismissSoftInput();
+};
 
 exports.onShowSearch = function(args) {
   search.visibility = search.visibility === 'visible' ? 'collapse' : 'visible';
@@ -119,28 +126,49 @@ var setList = function() {
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "nudges_main"}];
 
-  // if (!page) {
-    page = args.object;
-    search = page.getViewById('search-bar');
-    drawer = page.getViewById('sideDrawer');
-    noResults = page.getViewById('no-results');
+  page = args.object;
+  pageData = new observable.Observable();
+  search = page.getViewById('search-bar');
+  drawer = page.getViewById('sideDrawer');
+  noResults = page.getViewById('no-results');
 
-    page.bindingContext = pageData;
-    pageData.set('filter', '');
+  page.bindingContext = pageData;
+  pageData.set('filter', '');
+  if (!StorageUtil.isTutorialComplete()) {
+    FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+    page.getViewById('finish').visibility = 'visible';
+    page.getViewById('search-icon').visibility = 'collapse';
+    page.getViewById('nudges-list').height = '90%';
     initializeList();
-    pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
-      if (pcd.propertyName.toString() === 'filter') {
-        setList();
+  } else {
+    var loader = new LoadingIndicator();
+    var options = {
+      message: 'Loading nudges...',
+      progress: 0.65,
+      android: {
+        indeterminate: true,
+        cancelable: false,
+        max: 100,
+        progressNumberFormat: "%1d/%2d",
+        progressPercentFormat: 0.53,
+        progressStyle: 1,
+        secondaryProgress: 1
       }
-    });
+    };
+    loader.show(options);
 
-    if (!StorageUtil.isTutorialComplete()) {
-      FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
-      page.getViewById('finish').visibility = 'visible';
-      page.getViewById('search-icon').visibility = 'collapse';
-      page.getViewById('nudges-list').height = '90%';
+    timer.setTimeout(() => {
+      initializeList();
+      loader.hide();
+    }, 500);
+  }
+
+  pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
+    if (pcd.propertyName.toString() === 'filter') {
+      setList();
     }
-  // }
+  });
+
 };
 
 exports.goToProgress = function() {
