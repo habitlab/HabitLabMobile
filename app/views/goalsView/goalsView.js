@@ -85,7 +85,6 @@ exports.appGoalChange = function(args) {
 
 exports.appGoalUnloaded = function(args) {
   var boundGoal = args.object.bindingContext;
-  console.dir(boundGoal);
   StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name === 'mins' ? 'minutes' : boundGoal.name);
 };
 
