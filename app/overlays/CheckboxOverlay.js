@@ -209,9 +209,9 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback
 	    		return;
 	    	}
 	    	if (snoozeMode) {
-	    		Toast.makeText("Snooze set for " + selected).show();
+	    		Toast.makeText("HabitLab snoozed for " + selected).show();
 	    		var value = selected.substr(0, selected.indexOf(" "));
-	    		if (value == 8 || value == 24) { 		//must be == for type conversion
+	    		if (value == 8 || value == 24) { 			//must be == for type conversion
 	    			StorageUtil.setSnooze(value*60);
 	    		} else {
 	    			StorageUtil.setSnooze(value);

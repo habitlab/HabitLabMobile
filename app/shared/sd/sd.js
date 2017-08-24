@@ -7,6 +7,7 @@ var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
 const ToastOverlay = require("~/overlays/ToastOverlay");
+const CheckboxOverlay = require("~/overlays/CheckboxOverlay");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
 
 var setOnTouches = function() {
@@ -68,54 +69,28 @@ var createLockdownDialog = function() {
 
 
 exports.setLockdown = function() {
-  // menuEvents.push({category: "features", index: "lockdown_opened"});
-  // if (StorageUtil.inLockdownMode()) {
-  //   dialogs.confirm({
-  //     title: "Unlock Apps",
-  //     message: "You are currently in lockdown mode. Would you like to unlock your apps?",
-  //     okButtonText: "Yes",
-  //     cancelButtonText: "Cancel"
-  //   }).then(function (result) {
-  //     if (result === true) {
-  //       menuEvents.push({category: "features", index: "remove_lockdown"});
-  //       Toast.makeText('Lockdown Mode disabled').show();
-  //       StorageUtil.removeLockdown();
-  //     }
-  //   });
-  // } else {
-  //   createLockdownDialog();
-  // }
-  var icon = UsageInformationUtil.getApplicationBitmap("com.duolingo");
-  ToastOverlay.showToastOverlay("Go to Duolingo",icon, null)
-
+  menuEvents.push({category: "features", index: "lockdown_opened"});
+  if (StorageUtil.inLockdownMode()) {
+    dialogs.confirm({
+      title: "Unlock Apps",
+      message: "You are currently in lockdown mode. Would you like to unlock your apps?",
+      okButtonText: "Yes",
+      cancelButtonText: "Cancel"
+    }).then(function (result) {
+      if (result === true) {
+        menuEvents.push({category: "features", index: "remove_lockdown"});
+        Toast.makeText('Lockdown Mode disabled').show();
+        StorageUtil.removeLockdown();
+      }
+    });
+  } else {
+    createLockdownDialog();
+  }
 };
 
 
-
 var createSnoozeDialog = function() {
-  dialogs.action({
-    message: "How long would you like to snooze HabitLab for?",
-    cancelButtonText: "Cancel",
-    actions: ["15 minutes", "1 hour", "8 hours", "24 hours"]
-  }).then(function (result) {
-    if (result === "15 minutes"){
-      menuEvents.push({category: "features", index: "snooze_set"});
-      StorageUtil.setSnooze(15);
-    } else if (result === "1 hour"){
-      menuEvents.push({category: "features", index: "snooze_set"});
-      StorageUtil.setSnooze(60);
-    } else if (result === "8 hours"){
-      menuEvents.push({category: "features", index: "snooze_set"});
-      StorageUtil.setSnooze(480);
-    } else if (result === "24 hours"){
-      menuEvents.push({category: "features", index: "snooze_set"});
-      StorageUtil.setSnooze(1440);
-    }
-
-    if (result !== 'Cancel') {
-      Toast.makeText('HabitLab snoozed for ' + result).show();
-    }
-  });
+  CheckboxOverlay.showOverlay("How long do you want to set snooze for?", "15 mins", "30 mins", "8 hours", "24 hours", true, null, null, null);
 };
 
 exports.setSnooze = function() {
