@@ -2,11 +2,11 @@ var frameModule = require("ui/frame");
 var menu;
 var onClicksSet;
 var StorageUtil = require('~/util/StorageUtil');
-var dialogs = require("ui/dialogs");
 var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
 const CheckboxOverlay = require("~/overlays/CheckboxOverlay");
+const CancelOverlay = require("~/overlays/CancelOverlay");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
 
 var setOnTouches = function() {
@@ -43,7 +43,8 @@ var createLockdownDialog = function() {
 exports.setLockdown = function() {
   menuEvents.push({category: "features", index: "lockdown_opened"});
   if (StorageUtil.inLockdownMode()) {
-    DialogOverlay.showTwoOptionDialogOverlay("You are currently in lockdown mode. Would you like to unlock your apps?", "Yes", "Cancel", unlock, null);
+    menuEvents.push({category: "features", index: "remove_lockdown"});
+    CancelOverlay.showCancelLockDialog("Unlock Apps", "You are currently in lockdown mode. Would you like to unlock your apps?", "Yes", "Cancel", unlock, null);
   } else {
     createLockdownDialog();
   }
@@ -63,25 +64,20 @@ var createSnoozeDialog = function() {
 exports.setSnooze = function() {
   menuEvents.push({category: "features", index: "snooze_opened"});
   if (StorageUtil.inSnoozeMode()) {
-    dialogs.confirm({
-      title: "Edit Snooze",
-      message: "You are already in snooze mode. What would you like to do?",
-      okButtonText: "Remove Snooze",
-      cancelButtonText: "Set New Snooze",
-      neutralButtonText: "Cancel"
-    }).then(function (result) {
-      if (result === true) {
-        menuEvents.push({category: "features", index: "remove_snooze"});
-        Toast.makeText('Snooze Removed').show();
-        StorageUtil.removeSnooze();
-      } else if (result === false) {
-        createSnoozeDialog();
-      }
-    });
+    menuEvents.push({category: "features", index: "remove_snooze"});
+    CancelOverlay.showCancelSnoozeDialog("Edit Snooze", "You are already in snooze mode. Would you like to remove snooze?", "Yes", "Cancel", removeSnooze, null);
   } else {
     createSnoozeDialog();
   }
 };
+
+
+
+var removeSnooze = function() {
+  menuEvents.push({category: "features", index: "remove_snooze"});
+  Toast.makeText('Snooze Removed').show();
+  StorageUtil.removeSnooze();
+}
 
 exports.onLoaded = function(args) {
   menu = args.object;
