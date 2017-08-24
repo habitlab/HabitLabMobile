@@ -538,7 +538,17 @@ exports.glanced = function() {
  * day (time is in minutes).
  */
 exports.updateAppTime = function(packageName, time) {
+  var today = new Date();
+  var start = new Date();
+  start.setMilliseconds(today.getMilliseconds() - time);
   var appInfo = JSON.parse(appSettings.getString(packageName));
+  if (start.getDay() !== today.getDay()) {
+    today.setHours(0, 0, 0, 0); // calculate today's midnight
+    var diff = today.getTime() - start.getTime();
+    appInfo['stats'][(index() + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
+    time = time - diff;
+  } 
+
   appInfo['stats'][index()]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };

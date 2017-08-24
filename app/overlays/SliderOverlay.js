@@ -133,7 +133,6 @@ exports.showSliderOverlay = function (msg, callback) {
     	0, 0.1*DIALOG_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     seekBar = new SeekBar(context);
-    console.warn("added seek bar");
     seekBar.setMax(30);
     seekBar.setProgress(10);
     var progressChangedValue = 0;
