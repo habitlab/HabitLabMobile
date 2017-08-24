@@ -44,7 +44,7 @@
             <TabViewItem.view>
               <ListView items="{{appGoals}}" id="apps-list" separatorColor="#FFFFFF" >
                 <ListView.itemTemplate>
-                  <FlexboxLayout direction="row" class="flex" id="goalelem" unloaded="appGoalUnloaded" >
+                  <FlexboxLayout direction="row" class="flex" unloaded="appGoalUnloaded" >
                     <Image class="app-icon thumb img-rounded" imageSource="{{icon}}" />
                     <Label class="app-name" text="{{app}}" />
                     <FlexboxLayout flexDirection="row" class="np" col="3">
@@ -63,7 +63,7 @@
             <TabViewItem.view>
               <ListView items="{{targetGoals}}" id="targets-list" separatorColor="#FFFFFF" >
                 <ListView.itemTemplate>
-                  <FlexboxLayout direction="row" class="flex" id="goalelem" unloaded="targetGoalUnloaded" >
+                  <FlexboxLayout direction="row" class="flex" unloaded="targetGoalUnloaded" >
                     <Image class="app-icon thumb img-rounded" imageSource="{{icon}}" />
                     <Label class="app-name" text="{{app}}" />
                     <FlexboxLayout flexDirection="row" class="np" col="3">
