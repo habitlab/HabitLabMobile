@@ -43,22 +43,17 @@ var createLockdownDialog = function() {
 exports.setLockdown = function() {
   menuEvents.push({category: "features", index: "lockdown_opened"});
   if (StorageUtil.inLockdownMode()) {
-    dialogs.confirm({
-      title: "Unlock Apps",
-      message: "You are currently in lockdown mode. Would you like to unlock your apps?",
-      okButtonText: "Yes",
-      cancelButtonText: "Cancel"
-    }).then(function (result) {
-      if (result === true) {
-        menuEvents.push({category: "features", index: "remove_lockdown"});
-        Toast.makeText('Lockdown Mode disabled').show();
-        StorageUtil.removeLockdown();
-      }
-    });
+    DialogOverlay.showTwoOptionDialogOverlay("You are currently in lockdown mode. Would you like to unlock your apps?", "Yes", "Cancel", unlock, null);
   } else {
     createLockdownDialog();
   }
 };
+
+var unlock = function() {
+  menuEvents.push({category: "features", index: "remove_lockdown"});
+  Toast.makeText('Lockdown Mode disabled').show();
+  StorageUtil.removeLockdown();
+}
 
 
 var createSnoozeDialog = function() {

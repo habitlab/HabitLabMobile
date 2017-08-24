@@ -243,6 +243,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	    			StorageUtil.setLockdown(value);
 	    		}
 	    		exports.removeDialog();
+	    		return;
 	    	} else {
 	    		if (posCallback) {
 	    			posCallback();
