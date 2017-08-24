@@ -6,8 +6,8 @@ var dialogs = require("ui/dialogs");
 var menuEvents;
 var options = ['progress', 'goals', 'settings', 'nudges', 'watchlist', 'lockdown', 'snooze'];
 var Toast = require("nativescript-toast");
-const LockdownOverlay = require("~/overlays/LockdownOverlay");
-const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
+const ToastOverlay = require("~/overlays/ToastOverlay");
+const UsageInformationUtil = require("~/util/UsageInformationUtil");
 
 var setOnTouches = function() {
 
@@ -68,23 +68,26 @@ var createLockdownDialog = function() {
 
 
 exports.setLockdown = function() {
-  menuEvents.push({category: "features", index: "lockdown_opened"});
-  if (StorageUtil.inLockdownMode()) {
-    dialogs.confirm({
-      title: "Unlock Apps",
-      message: "You are currently in lockdown mode. Would you like to unlock your apps?",
-      okButtonText: "Yes",
-      cancelButtonText: "Cancel"
-    }).then(function (result) {
-      if (result === true) {
-        menuEvents.push({category: "features", index: "remove_lockdown"});
-        Toast.makeText('Lockdown Mode disabled').show();
-        StorageUtil.removeLockdown();
-      }
-    });
-  } else {
-    createLockdownDialog();
-  }
+  // menuEvents.push({category: "features", index: "lockdown_opened"});
+  // if (StorageUtil.inLockdownMode()) {
+  //   dialogs.confirm({
+  //     title: "Unlock Apps",
+  //     message: "You are currently in lockdown mode. Would you like to unlock your apps?",
+  //     okButtonText: "Yes",
+  //     cancelButtonText: "Cancel"
+  //   }).then(function (result) {
+  //     if (result === true) {
+  //       menuEvents.push({category: "features", index: "remove_lockdown"});
+  //       Toast.makeText('Lockdown Mode disabled').show();
+  //       StorageUtil.removeLockdown();
+  //     }
+  //   });
+  // } else {
+  //   createLockdownDialog();
+  // }
+  var icon = UsageInformationUtil.getBasicInfo("com.reddit.frontpage").icon;
+  ToastOverlay.showToastOverlay("Go to Duolinguo",icon, null)
+
 };
 
 

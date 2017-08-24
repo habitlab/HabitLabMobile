@@ -8,6 +8,7 @@ const TimerOverlay = require("~/overlays/TimerOverlay");
 const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const VideoOverlay = require("~/overlays/VideoOverlay");
 const LockdownOverlay = require("~/overlays/LockdownOverlay");
+const SliderOverlay = require("~/overlays/SliderOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -63,6 +64,7 @@ const THRESHOLD_FULLSCREEN_OVR = 12;
 const THRESHOLD_COUNTUP_TMR = 12;
 const THRESHOLD_COUNTDOWN_TMR = 15;
 const THRESHOLD_DIMSCREEN_OVR = 15;
+const THRESHOLD_APPLICATION_SLIDER_OVR = 15;
 
 
 var MIN_IN_MS = 60000;
@@ -730,6 +732,31 @@ var dimScreen = function (real, pkg) {
 }
 
 
+
+var showSliderDialog = function(real, pkg) {
+  if (! real) {
+    var msg = "How much time would you like to spend on Facebook this visit?";
+    SliderOverlay.showSliderOverlay(msg, null);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.APPLICATION_SLIDER, pkg)) {
+    var cb = function(setTime) {
+      TimerOverlay.showCountDownTimer(setTime, null);
+    };
+
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits > THRESHOLD_APPLICATION_SLIDER_OVR) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = "How much time would you like to spend on " + app + " this visit?";
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.APPLICATION_SLIDER}]);
+      SliderOverlay.showSliderOverlay(msg, cb);
+    }
+  }
+}
+
+
+
 /*
  * removeOverlays
  * --------------
@@ -743,8 +770,12 @@ var removeOverlays = function() {
   FullScreenOverlay.removeOverlay();
   VideoOverlay.removeVideoBlocker();
   LockdownOverlay.removeOverlay();
+  SliderOverlay.removeSliderOverlay();
   pausedThisVisit = false;
 }
+
+
+
 
 /***************************************
  *       INTERVENTION RETREIVAL        *
@@ -834,7 +865,8 @@ module.exports = {
     dimScreen
     // popToastPhoneUsage,
     // sendPhoneUsageNotification,
-    // showPhoneUsageDialog
+    // showPhoneUsageDialog,
+    // showSliderDialog 
   ], 
   resetDurationInterventions,
   removeOverlays,

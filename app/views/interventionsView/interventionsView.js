@@ -139,36 +139,36 @@ exports.pageLoaded = function(args) {
       page.getViewById('finish').visibility = 'visible';
       page.getViewById('search-icon').visibility = 'collapse';
       page.getViewById('nudges-list').height = '90%';
-    } else {
-      var loader = new LoadingIndicator();
-      var options = {
-        message: 'Loading nudges...',
-        progress: 0.65,
-        android: {
-          indeterminate: true,
-          cancelable: false,
-          max: 100,
-          progressNumberFormat: "%1d/%2d",
-          progressPercentFormat: 0.53,
-          progressStyle: 1,
-          secondaryProgress: 1
-        }
-      };
-      loader.show(options);
-
-      timer.setTimeout(() => {
-        initializeList();
-        loader.hide();
-      }, 500);
     }
-
-
   }
+
+  var loader = new LoadingIndicator();
+  var options = {
+    message: 'Loading nudges...',
+    progress: 0.65,
+    android: {
+      indeterminate: true,
+      cancelable: false,
+      max: 100,
+      progressNumberFormat: "%1d/%2d",
+      progressPercentFormat: 0.53,
+      progressStyle: 1,
+      secondaryProgress: 1
+    }
+  };
+  loader.show(options);
+
+  timer.setTimeout(() => {
+    initializeList();
+    loader.hide();
+  }, 500);
+
   pageData.addEventListener(observable.Observable.propertyChangeEvent, function (pcd) {
     if (pcd.propertyName.toString() === 'filter') {
       setList();
     }
   });
+
 };
 
 exports.goToProgress = function() {

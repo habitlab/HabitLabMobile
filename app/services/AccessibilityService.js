@@ -22,7 +22,8 @@ const ignore = ["com.android.systemui",
     "com.touchtype.swiftkey",
     "com.syntellia.fleksy.keyboard",
     "com.whirlscape.minuumkeyboard",
-    "com.whirlscape.minuumfree"
+    "com.whirlscape.minuumfree",
+    "android"
 ];
 
 

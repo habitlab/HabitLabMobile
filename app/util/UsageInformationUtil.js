@@ -118,3 +118,14 @@ exports.getInstalledPresets = function() {
 }
 
 
+
+exports.getApplicationBitmap = function(pkg) {
+	var appInfo;
+	try {
+		appInfo = pm.getApplicationInfo(pkg, 0);
+	} catch (e) {
+		appInfo = null;
+	}
+
+	return appInfo ? appInfo.loadIcon(pm).getBitmap() : null;
+}
