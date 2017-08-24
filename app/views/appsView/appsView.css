@@ -1,6 +1,6 @@
 .app-cell-img {
   width: 60%;
-  left: 25%;
+  transform: translate(25%, 0%);
 }
 
 .app-cell-lbl {
@@ -9,37 +9,14 @@
   font-size: 15%;
 }
 
-.app-cell-usg {
-  text-align: center;
-  color: green;
-}
-
 .app-cell-selector {
   width: 30%;
   transform: translate(80%, -5%);
 }
 
-.red {
-  color: red;
-}
-
-.yellow {
-  color: orange;
-}
-
-.app-cell {
-  align-contents: middle;
-}
-
 .grid-cell-layout {
   padding-bottom: 15%;
   padding-top: 15%;
-}
-
-.app-list-scroll {
-  width: 100%;
-  margin: auto;
-  height: 90%;
 }
 
 #done-button {
