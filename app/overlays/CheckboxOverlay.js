@@ -1,5 +1,6 @@
 var app = require("application");
 var Toast = require("nativescript-toast");
+var StorageUtil = require('~/util/StorageUtil');
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -14,9 +15,12 @@ var TextView = android.widget.TextView;
 var BitmapFactory = android.graphics.BitmapFactory;
 var Bitmap = android.graphics.Bitmap;
 var TypedValue = android.util.TypedValue;
-var SeekBar = android.widget.SeekBar;
+var CheckBox = android.widget.CheckBox;
+var CompoundButton = android.widget.CompoundButton;
 var LayoutParams = android.view.ViewGroup.LayoutParams;
-
+var RadioGroup = android.widget.RadioGroup;
+var RadioButton = android.widget.RadioButton;
+const RADIO_MARGIN = 0.025
 
 
 /******************************
@@ -25,13 +29,13 @@ var LayoutParams = android.view.ViewGroup.LayoutParams;
 
 
 var DIALOG_FILL = new Paint();
-DIALOG_FILL.setColor(Color.parseColor("#efede9")); // light grey
+DIALOG_FILL.setColor(Color.parseColor("#efede9")); // default
 
 var DIM_BACKGROUND = new Paint();
 DIM_BACKGROUND.setColor(Color.BLACK);
 
 var ICON_FILL = new Paint();
-ICON_FILL.setColor(Color.parseColor("#2EC4B6")); //turquoise
+ICON_FILL.setColor(Color.parseColor("#2EC4B6"));
 
 var ICON_BACK_FILL = new Paint();
 ICON_BACK_FILL.setColor(Color.WHITE);
@@ -40,7 +44,7 @@ ICON_BACK_FILL.setColor(Color.WHITE);
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 var DIALOG_WIDTH = 0.8 * SCREEN_WIDTH;
-var DIALOG_HEIGHT = 0.4 * SCREEN_HEIGHT;
+var DIALOG_HEIGHT = 0.5 * SCREEN_HEIGHT;
 var LEFT = 0.1 * SCREEN_WIDTH;
 var RIGHT = LEFT + DIALOG_WIDTH;
 var TOP = (SCREEN_HEIGHT - DIALOG_HEIGHT) / 2;
@@ -83,28 +87,35 @@ var DialogView = android.view.View.extend({
 });
 
 
-var dialog;
-var text;
-var posButton;
-var negButtons;
-var seekBar;
-var labelText;
-var setTime = 10;
-exports.showSliderOverlay = function (msg, callback) {
 
+
+/*
+* CheckboxOverlay
+* -----------------------
+* Overlay takes up to four options and a message
+*/
+
+var fullScreen;
+var text;
+var rg;
+var selected = -1;
+var posButton;
+var negButton;
+exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, posCallback, negCallback, toastMsg) {
+	
 	// add whole screen view
-	var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    dialog = new DialogView(context);
-    windowManager.addView(dialog, dialogParams);
+    fullScreen = new DialogView(context);
+    windowManager.addView(fullScreen, viewParams);
 
     // add text
-    var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.30 * SCREEN_HEIGHT, 
+    var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.2*DIALOG_HEIGHT,
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.27*SCREEN_HEIGHT + 0.10*DIALOG_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
@@ -115,46 +126,73 @@ exports.showSliderOverlay = function (msg, callback) {
     text.setGravity(Gravity.CENTER);
     windowManager.addView(text, textParams);
 
-
-     //Time label
-    var labelParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-    	0.25*SCREEN_WIDTH, 0.15 * DIALOG_HEIGHT, 
+   	//radio group
+	var rgparams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.5*DIALOG_HEIGHT,
+    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.25*SCREEN_HEIGHT + 0.33*DIALOG_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    labelText = new TextView(context);
-    labelText.setText(setTime + " mins");
-    labelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
-    labelText.setTextColor(Color.parseColor("#5f5e5d"));
-    labelText.setHorizontallyScrolling(false);
-    windowManager.addView(labelText, labelParams);
-
-
-    //add seek bar
-    var seekParams = new WindowManager.LayoutParams( 0.8 * DIALOG_WIDTH, LayoutParams.WRAP_CONTENT,
-    	0, 0.1*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    seekBar = new SeekBar(context);
-    console.warn("added seek bar");
-    seekBar.setMax(30);
-    seekBar.setProgress(10);
-    var progressChangedValue = 0;
-    seekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener({
-    	onProgressChanged: function(seekBar, progress, fromUser) {
-            progressChangedValue = progress;
-            labelText.setText(progressChangedValue + " mins");
-        },
-        onStartTrackingTouch: function(seekBar) {
-
-        },
-    	onStopTrackingTouch: function(seekBar){
-    		 setTime = progressChangedValue;
+    rgparams.gravity = Gravity.LEFT | Gravity.TOP;
+    rg = new RadioGroup(context);
+    rg.setOrientation(RadioGroup.VERTICAL);
+    rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener({
+    	onCheckedChanged: function(rg, id) {
+    		var rb = rg.findViewById(id);
+    		selected = rb.getText();
     	}
     }));
-    windowManager.addView(seekBar, seekParams);
+    
+
+    //option 1
+    var opt1 = new RadioButton(context);
+    opt1.setText(op1);
+    opt1.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
+    opt1.setTextColor(Color.BLACK);
+    opt1.setClickable(true);
+    opt1.setId(1);
+    opt1.setPadding(0,0.03*DIALOG_HEIGHT,0,0.03*DIALOG_HEIGHT);
+    opt1.setGravity(Gravity.CENTER);
+    rg.addView(opt1);
+
+
+       //option 2
+    var opt2 = new RadioButton(context);
+    opt2.setText(op2);
+    opt2.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
+    opt2.setTextColor(Color.BLACK);
+    opt2.setClickable(true);
+    opt2.setId(2);
+    opt2.setPadding(DIALOG_WIDTH*0.01, RADIO_MARGIN *DIALOG_HEIGHT, 0, RADIO_MARGIN*DIALOG_HEIGHT);
+     opt2.setGravity(Gravity.CENTER);
+    rg.addView(opt2);
+
+
+     //option 3
+    var opt3 = new RadioButton(context);
+    opt3.setText(op3);
+    opt3.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
+    opt3.setTextColor(Color.BLACK);
+    opt3.setClickable(true);
+    opt3.setPadding(DIALOG_WIDTH*0.01, RADIO_MARGIN*DIALOG_HEIGHT, 0, RADIO_MARGIN*DIALOG_HEIGHT);
+    opt3.setGravity(Gravity.CENTER);
+    opt3.setId(3);
+    rg.addView(opt3);
+
+
+    var opt4 = new RadioButton(context);
+    opt4.setText(op4);
+    opt4.setTextSize(TypedValue.COMPLEX_UNIT_PT, 8);
+    opt4.setTextColor(Color.BLACK);
+    opt4.setClickable(true);
+    opt4.setPadding(DIALOG_WIDTH*0.01, RADIO_MARGIN*DIALOG_HEIGHT, 0, RADIO_MARGIN*DIALOG_HEIGHT);
+    opt4.setGravity(Gravity.CENTER);
+    opt4.setId(4);
+    rg.addView(opt4);
+        windowManager.addView(rg, rgparams);
+
 
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-    	0.2 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
+    	0.15 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
@@ -166,41 +204,61 @@ exports.showSliderOverlay = function (msg, callback) {
 	posButton.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY);
 	posButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (callback) {
-	    		callback(setTime);
+	    	if (selected === -1) {
+	    		Toast.makeText("Please select a value").show();
+	    		return;
 	    	}
-	    	// Toast.makeText('You have ' + setTime + ' mins remaining').show();
-	        exports.removeSliderOverlay();
+
+	    	if (snoozeMode) {
+	    		Toast.makeText("Snooze set for " + selected).show();
+	    		var value = selected.substr(0, selected.indexOf(" "));
+	    		console.warn(value);
+	    		StorageUtil.setSnooze(value);
+	    		exports.removeDialog();
+	    		return;
+	    	} 
+
+	    	if (posCallback) {
+	    		posCallback();
+	    	}
+
+	    	if (toastMsg !== null) {
+	    		Toast.makeText(toastMsg + selected).show();
+	    	}
+	        exports.removeDialog();
 	    }
 	}));
     windowManager.addView(posButton, posButtonParams);
 
-    // add neg button
+    // add positive button
     var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-    	0.2 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
+    	0.15 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
     	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    negButtons = new Button(context);
-	negButtons.setText("Not Now");
-	negButtons.setTextColor(Color.WHITE);
-	negButtons.getBackground().setColorFilter(Color.parseColor("#5f5e5d"), android.graphics.PorterDuff.Mode.MULTIPLY);
-	negButtons.setOnClickListener(new android.view.View.OnClickListener({
+    negButton = new Button(context);
+	negButton.setText("Not now");
+	negButton.setTextColor(Color.WHITE);
+	negButton.getBackground().setColorFilter(Color.parseColor("#011627"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	negButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	        exports.removeSliderOverlay();
+	    	if (negCallback) {
+	    		negCallback();
+	    	}
+	        exports.removeDialog();
 	    }
 	}));
-    windowManager.addView(negButtons, negButtonParams);
+    windowManager.addView(negButton, negButtonParams);
 }
 
 
 
-exports.removeSliderOverlay = function () {
-	if (dialog) {
-		windowManager.removeView(dialog);
-		dialog = undefined;
+exports.removeDialog = function () {
+	if (fullScreen) {
+		windowManager.removeView(fullScreen);
+		fullScreen = undefined;
 	}
 
 	if (text) {
@@ -208,26 +266,19 @@ exports.removeSliderOverlay = function () {
 		text = undefined;
 	}
 
+	if(rg) {
+		windowManager.removeView(rg);
+		rg = undefined;
+	}
+
 	if (posButton) {
 		windowManager.removeView(posButton);
 		posButton = undefined;
 	}
 
-	if (negButtons) {
-		windowManager.removeView(negButtons);
-		negButtons = undefined;
-	}
-
-	if (seekBar) {
-		windowManager.removeView(seekBar);
-		seekBar = undefined;
-	}
-
-	if (labelText) {
-		windowManager.removeView(labelText);
-		labelText = undefined;
+	if (negButton) {
+		windowManager.removeView(negButton);
+		negButton = undefined;
 	}
 }
-
-
 

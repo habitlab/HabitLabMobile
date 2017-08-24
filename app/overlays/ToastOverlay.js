@@ -34,6 +34,7 @@ TOAST_OUTLINE_FILL.setColor(Color.parseColor("#337332")); // Green
 
 var DIM_BACKGROUND = new Paint();
 DIM_BACKGROUND.setColor(Color.BLACK);
+DIM_BACKGROUND.setAlpha(70); 
 
 var ICON_FILL = new Paint();
 ICON_FILL.setColor(Color.parseColor("#2EC4B6")); //turquoise
@@ -67,7 +68,6 @@ var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 // Custom DialogView 
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
-		DIM_BACKGROUND.setAlpha(70); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
 		canvas.drawRoundRect(0.24*SCREEN_WIDTH, TOP-0.01*SCREEN_WIDTH, RIGHT+0.11*SCREEN_WIDTH, BOTTOM+0.01*SCREEN_WIDTH, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
 		canvas.drawRoundRect(RIGHT, TOP, RIGHT+0.1*SCREEN_WIDTH, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
@@ -81,7 +81,6 @@ var DialogView = android.view.View.extend({
 		canvas.drawRoundRect(iconLeft, iconTop, iconRight, iconBottom, CORNER_RADIUS, CORNER_RADIUS, ICON_BACK_FILL);
 
 		// // add icon
-		// console.warn(imageBitmap);
 		if (imageBitmap === null) return;
 		var bitmap = imageBitmap;
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
@@ -89,9 +88,6 @@ var DialogView = android.view.View.extend({
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
 		
-		// var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
-		// var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
-
 		canvas.drawBitmap(icon, iconLeft, TOP, ICON_FILL);
 	}
 });
