@@ -135,7 +135,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         } else if (lockdownSeen && !storage.inLockdownMode()) {
             lockdownSeen = 0;
         }
-       
+        console.warn(currentApplication.packageName);
         // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();

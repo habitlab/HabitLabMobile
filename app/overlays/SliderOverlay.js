@@ -83,37 +83,37 @@ var DialogView = android.view.View.extend({
 });
 
 
-var twoOptionView;
-var twoOptionText;
-var twoOptionPosButton;
-var twoOptionNegButton;
+var dialog;
+var text;
+var posButton;
+var negButtons;
 var seekBar;
 var labelText;
 var setTime = 10;
 exports.showSliderOverlay = function (msg, callback) {
 
 	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+	var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    twoOptionView = new DialogView(context);
-    windowManager.addView(twoOptionView, viewParams);
+    dialog = new DialogView(context);
+    windowManager.addView(dialog, dialogParams);
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.30 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    twoOptionText = new TextView(context);
-    twoOptionText.setText(msg);
-    twoOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    twoOptionText.setTextColor(Color.BLACK);
-    twoOptionText.setHorizontallyScrolling(false);
-    twoOptionText.setGravity(Gravity.CENTER);
-    windowManager.addView(twoOptionText, textParams);
+    text = new TextView(context);
+    text.setText(msg);
+    text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+    text.setTextColor(Color.BLACK);
+    text.setHorizontallyScrolling(false);
+    text.setGravity(Gravity.CENTER);
+    windowManager.addView(text, textParams);
 
 
      //Time label
@@ -159,11 +159,11 @@ exports.showSliderOverlay = function (msg, callback) {
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
    	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    twoOptionPosButton = new Button(context);
-	twoOptionPosButton.setText("Ok");
-	twoOptionPosButton.setTextColor(Color.WHITE);
-	twoOptionPosButton.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY);
-	twoOptionPosButton.setOnClickListener(new android.view.View.OnClickListener({
+    posButton = new Button(context);
+	posButton.setText("Ok");
+	posButton.setTextColor(Color.WHITE);
+	posButton.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	posButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	    	if (callback) {
 	    		callback(setTime);
@@ -172,7 +172,7 @@ exports.showSliderOverlay = function (msg, callback) {
 	        exports.removeSliderOverlay();
 	    }
 	}));
-    windowManager.addView(twoOptionPosButton, posButtonParams);
+    windowManager.addView(posButton, posButtonParams);
 
     // add neg button
     var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
@@ -182,39 +182,39 @@ exports.showSliderOverlay = function (msg, callback) {
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
    	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    twoOptionNegButton = new Button(context);
-	twoOptionNegButton.setText("Not Now");
-	twoOptionNegButton.setTextColor(Color.WHITE);
-	twoOptionNegButton.getBackground().setColorFilter(Color.parseColor("#5f5e5d"), android.graphics.PorterDuff.Mode.MULTIPLY);
-	twoOptionNegButton.setOnClickListener(new android.view.View.OnClickListener({
+    negButtons = new Button(context);
+	negButtons.setText("Not Now");
+	negButtons.setTextColor(Color.WHITE);
+	negButtons.getBackground().setColorFilter(Color.parseColor("#5f5e5d"), android.graphics.PorterDuff.Mode.MULTIPLY);
+	negButtons.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
 	        exports.removeSliderOverlay();
 	    }
 	}));
-    windowManager.addView(twoOptionNegButton, negButtonParams);
+    windowManager.addView(negButtons, negButtonParams);
 }
 
 
 
 exports.removeSliderOverlay = function () {
-	if (twoOptionView) {
-		windowManager.removeView(twoOptionView);
-		twoOptionView = undefined;
+	if (dialog) {
+		windowManager.removeView(dialog);
+		dialog = undefined;
 	}
 
-	if (twoOptionText) {
-		windowManager.removeView(twoOptionText);
-		twoOptionText = undefined;
+	if (text) {
+		windowManager.removeView(text);
+		text = undefined;
 	}
 
-	if (twoOptionPosButton) {
-		windowManager.removeView(twoOptionPosButton);
-		twoOptionPosButton = undefined;
+	if (posButton) {
+		windowManager.removeView(posButton);
+		posButton = undefined;
 	}
 
-	if (twoOptionNegButton) {
-		windowManager.removeView(twoOptionNegButton);
-		twoOptionNegButton = undefined;
+	if (negButtons) {
+		windowManager.removeView(negButtons);
+		negButtons = undefined;
 	}
 
 	if (seekBar) {
