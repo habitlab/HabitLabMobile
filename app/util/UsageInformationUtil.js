@@ -116,7 +116,7 @@ exports.getInstalledPresets = function() {
 		if (presets.includes(packageName)) {
 			installedPresets.push(packageName);
 		} 
-		if (positive.includes(packageName)) {
+		if (targetPresets.includes(packageName)) {
 			installedTargets.push(packageName);
 		}
 	}
