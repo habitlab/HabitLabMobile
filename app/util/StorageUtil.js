@@ -347,6 +347,25 @@ exports.setTutorialComplete = function() {
   appSettings.setBoolean('tutorialComplete', true);
 };
 
+/* export: setTargetOn
+ * --------------------
+ * Sets the boolean 'targetOn' to true which means the user has enabled
+ * 'target' goals and gone through the tutorial
+ */
+ exports.setTargetOn = function() {
+  appSettings.setBoolean('targetOn', true);
+};
+
+
+/* export: isTargetOn
+ * --------------------
+ * Checks if the user has set target on
+ */
+exports.isTargetOn = function() {
+  return appSettings.getBoolean('targetOn');
+};
+
+
 /* export: setName
  * ---------------
  * Sets the personalized name.
