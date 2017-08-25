@@ -609,13 +609,14 @@ setUp = function() {
 exports.goToDetailApps = function(args) {
     var tappedItem = args.view.bindingContext;
     events.push({category: "navigation", index: "progress_to_detail"});
-    
+
     frameModule.topmost().navigate({
     moduleName: 'views/appDetailView/appDetailView',
     context: { 
         packageName: getPackageName(tappedItem.name),
         name: tappedItem.name,
-        icon: tappedItem.image
+        icon: tappedItem.image,
+        isWatchlist: true
     },
     animated: true,
     transition: {
