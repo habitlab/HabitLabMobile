@@ -3,110 +3,13 @@ var UsageUtil = require('~/util/UsageInformationUtil');
 var IM = require('~/interventions/InterventionManager');
 var fancyAlert = require("nativescript-fancyalert");
 var frameModule = require('ui/frame');
-var builder = require('ui/builder');
 var observable = require("data/observable");
-var gestures = require('ui/gestures').GestureTypes;
 
 var drawer;
 var page;
-var info;
-var switchArr;
 var mainSwitch;
-var mainSwitchLabel;
 var events;
-
-var createItem = function(pkg)  {
-  var item = builder.load({
-    path: 'shared/detailelem',
-    name: 'detailelem',
-    page: page
-  });
-
-  item.id = pkg;
-  item.className = 'detail-grid';
-
-  var appInfo = UsageUtil.getBasicInfo(pkg);
-
-  var label = item.getViewById("name");
-  label.text = appInfo.name;
-  label.className = "detail-label";
-  
-  var icon = item.getViewById("icon");
-  icon.src = appInfo.icon;
-  icon.className = 'detail-icon';
-  
-  var sw = item.getViewById("switch");
-  sw.checked = StorageUtil.isEnabledForApp(info.id, pkg);
-  sw.on(gestures.tap, function() {
-    events.push({category: 'features', index: 'nudge_detail_toggle'});
-    StorageUtil.toggleForApp(info.id, pkg);
-    mainSwitch.checked = StorageUtil.isEnabledForAll(info.id);
-    mainSwitchLabel.text = mainSwitch.checked ? 'Disable All' : 'Enable All';
-  });
-  switchArr.push(sw);
-
-  return item;
-};
-
-var setUpDetail = function() {
-  // if (page.getViewById('list').getChildAt(0)) { return; }
-
-  // page.getViewById('title').text = info.name;
-  // var desc = page.getViewById('description');
-  // desc.text = info.description;
-  // desc.textWrap = true;
-
-  // var level = info.level;
-  // var levelLabel = page.getViewById('level');
-  // levelLabel.text = level.charAt(0).toUpperCase() + level.slice(1);;
-  // levelLabel.className += " " + level;
-
-  // page.getViewById("button").on(gestures.tap, function() {
-  //   IM.interventions[info.id]();
-  //   events.push({category: 'features', index: 'nudge_detail_demo'});
-  // });
-
-  // mainSwitch = page.getViewById("disable-switch");
-  // mainSwitchLabel = page.getViewById('disable-label');
-  // mainSwitch.checked = StorageUtil.isEnabledForAll(info.id);
-
-  // if (info.target === 'phone') {
-  //   page.getViewById('disable-toggle').className = 'level-layout';
-  //   mainSwitchLabel.text = mainSwitch.checked ? 'Disable' : 'Enable';
-  //   mainSwitch.on(gestures.tap, function() {
-  //     events.push({category: 'features', index: 'nudge_detail_toggle_all'});
-  //     mainSwitchLabel.text = mainSwitch.checked ? 'Enable' : 'Disable';
-  //     StorageUtil.toggleForAll(info.id);
-  //   });
-  //   return;
-  // }
-
-  // mainSwitchLabel.text = mainSwitch.checked ? 'Disable All' : 'Enable All';
-  // mainSwitch.on(gestures.tap, function() {
-  //   events.push({category: 'features', index: 'nudge_detail_toggle_all'});
-  //   mainSwitchLabel.text = mainSwitch.checked ? 'Enable All' : 'Disable All';
-  //   StorageUtil.toggleForAll(info.id);
-  //   switchArr.forEach(function(swtch) {
-  //     // toggle happens after this on tap so we have to do it backwards
-  //     swtch.checked = !mainSwitch.checked;
-  //   });
-  // });
-
-  // var layout = page.getViewById('list');
-  // var pkgs = StorageUtil.getSelectedPackages();
-
-  // if (info.apps) {
-  //   pkgs = pkgs.filter(function (item) {
-  //     return info.apps.includes(item);
-  //   });
-  // }
-
-  // pkgs.forEach(function (pkg) {
-  //   if (!layout.getViewById(pkg)) {
-  //     layout.addChild(createItem(pkg));
-  //   }
-  // });
-};
+var id;
 
 exports.toggleDrawer = function() {
   if (!StorageUtil.isTutorialComplete()) {
@@ -118,19 +21,27 @@ exports.toggleDrawer = function() {
 };
 
 exports.onButtonTap = function() {
-  IM.interventions[pageData.get('info').id]();
+  IM.interventions[id]();
   events.push({category: 'features', index: 'nudge_detail_demo'});
 };
 
 var initializeList = function() {
   var info = page.navigationContext.info;
-  info.levelLabel = info.level.charAt(0).toUpperCase() + info.level.slice(1);
-  info.mainLabelEnable = info.target === 'phone' ? 'Enable' : 'Enable All';
-  info.mainLabelDisable = info.target === 'phone' ? 'Disable' : 'Disable All';
-  info.enabled = StorageUtil.isEnabledForAll(info.id);
-  pageData.set('info', info);
+  id = info.id;
 
-  if (info.target === 'phone') return;
+  pageData.set('name', info.name);
+  pageData.set('description', info.description);
+  pageData.set('target', info.target);
+  pageData.set('levelLabel', info.level.charAt(0).toUpperCase() + info.level.slice(1));
+  pageData.set('level', info.level);
+
+  var isEnabled = StorageUtil.isEnabledForAll(id);
+  pageData.set('enabled', isEnabled);
+
+  mainSwitch = page.getViewById('main-toggle');
+  if (info.target === 'phone') {
+    return;
+  }
 
   var apps = StorageUtil.getSelectedPackages().filter(function (pkg) {
     return !info.apps || info.apps.includes(pkg);
@@ -139,27 +50,31 @@ var initializeList = function() {
     return {
       appName: basicInfo.name,
       icon: basicInfo.icon,
-      packageName: pkgName
+      packageName: pkgName,
+      enabled: StorageUtil.isEnabledForApp(id, pkgName)
     };
   });
-
   pageData.set('apps', apps);
 };
 
 exports.onItemTap = function(args) {
-  var appInfo = args.view.bindingContext;
-  // StorageUtil.toggleForApp(app)
+  events.push({category: 'features', index: 'nudge_detail_toggle'});
+  var bound = args.object.parent.bindingContext;
+  StorageUtil.toggleForApp(id, bound.packageName);
+  
+  var isEnabled = StorageUtil.isEnabledForAll(id);
+  pageData.set('enabled', isEnabled);
 };
 
 exports.onMainToggle = function(args) {
-  var info = pageData.get('info');
-  StorageUtil.toggleForAll(info.id);
-  info.enabled = !info.enabled;
-  pageData.set('info', info);
   events.push({category: 'features', index: 'nudge_detail_toggle_all'});
-  console.dir(listView);
+  StorageUtil.toggleForAll(id);
 
-  // do stuff for the list view
+  if (args.object.bindingContext.target === 'phone') return;
+  var enableValue = !args.object.bindingContext.enabled;
+  pageData.get('apps').forEach(function (appInfo) {
+    appInfo.enabled = enableValue;
+  });
 
   listView.refresh();
 };
