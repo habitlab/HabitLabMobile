@@ -31,7 +31,7 @@
                   </GridLayout>
                 </ListView.itemTemplate>
               </ListView>
-             <Button text="Manage Watchlist" onTap="onManage" id="manage" class="manage-button"/>
+             <Button text="Manage Watchlist" tap="onManageWatchlist" id="manage" class="manage-button"/>
            </StackLayout>
           </TabViewItem.view>
           </TabViewItem>
@@ -49,7 +49,7 @@
                 </GridLayout>
               </ListView.itemTemplate>
             </ListView>
-           <Button text="Manage Targets" onTap="onManage" id="manage" class="manage-button"/>
+           <Button text="Manage Targets" tap="onManageTargets" id="manage" class="manage-button"/>
          </StackLayout>
          </TabViewItem.view>
         </TabViewItem>

@@ -65,7 +65,7 @@ var initializeTargetsList = function() {
       packageName: pkg
     });
   });
-  pageData.set('targetGoals', []);
+  pageData.set('targetGoals', targetGoals);
 };
 
 var getGoal = function(txt, add) {
