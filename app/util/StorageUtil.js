@@ -86,6 +86,10 @@ var FakePhStats = function() {
   list.forEach(function (pkg) {
     appStats.push(JSON.parse(appSettings.getString(pkg)).stats);
   });
+  var targetList = JSON.parse(appSettings.getString('targetPackages'));
+  list.forEach(function (pkg) {
+    appStats.push(JSON.parse(appSettings.getString(pkg)).stats);
+  });
 
   for (var i = 0; i < 28; i++) {
     var numUnlocks = randBW(30, 70);
@@ -263,13 +267,19 @@ exports.setUpDB = function(erasingData) {
     appSettings.setString('userID', 'U' + Date.now() + '' + randBW(100, 999));
   }
 
-  var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
+  var watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
+  var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets;
 
-  appSettings.setString('selectedPackages', JSON.stringify(preset));
+
+  appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
+  appSettings.setString('targetPackages', JSON.stringify(targetPreset));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
-  preset.forEach(function (item) {
+  watchlistPreset.forEach(function (item) {
+    createPackageData(item);
+  });
+  targetPreset.forEach(function (item) {
     createPackageData(item);
   });
   createPhoneData();
@@ -283,14 +293,19 @@ exports.setUpDB = function(erasingData) {
  * Puts in completely fake data. Does not get rid of onboarded, setUp, or name.
  */
 exports.setUpFakeDB = function() {
-  var preset = require("~/util/UsageInformationUtil").getInstalledPresets();
+  var watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
+  var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets;
 
-  appSettings.setString('selectedPackages', JSON.stringify(preset));
+  appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
+  appSettings.setString('targetPackages', JSON.stringify(targetPreset));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
-  preset.forEach(function (item) {
-    createFakePackageData(item);
+  watchlistPreset.forEach(function (item) {
+    createPackageData(item);
+  });
+  targetPreset.forEach(function (item) {
+    createPackageData(item);
   });
   createFakePhoneData();
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
@@ -422,6 +437,81 @@ exports.isPackageSelected = function(packageName) {
 };
 
 
+/***********************************
+ *           TARGETS             *
+ ***********************************/
+
+
+/* export: getTargetSelectedPackages
+ * ---------------------------
+ * Returns array of package names (strings) that are currently in 'target'.
+ */
+exports.getTargetSelectedPackages = function() {
+  return JSON.parse(appSettings.getString('targetPackages')) || [];
+};
+
+/* export: addTargetPackage
+ * ------------------
+ * Adds the specified package to storage for target apps (with default goals, no data).
+ */
+exports.addTargetPackage = function(packageName) {
+  var list = JSON.parse(appSettings.getString('targetPackages'));
+  if (!list.includes(packageName)) {
+    list.push(packageName);
+    createPackageData(packageName);
+    appSettings.setString('targetPackages', JSON.stringify(list));
+  }
+};
+
+/* export: removeTargetPackage
+ * ---------------------
+ * Removes the specified package from target.
+ */
+exports.removeTargetPackage = function(packageName) {
+  var list = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
+    return item !== packageName;
+  });
+  sendLog();
+  appSettings.remove(packageName);
+  appSettings.setString('targetPackages', JSON.stringify(list));
+};
+
+/* export: toggleTargetPackage
+ * ---------------------
+ * If the specified package is currently in target, removes it from the list.
+ * If the package is currently not in target, adds it.
+ */
+exports.toggleTargetPackage = function(packageName) {
+  var removed = false;
+  var list = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
+    if (item === packageName) {
+      sendLog();
+      appSettings.remove(packageName);
+      removed = true;
+    }
+    return item !== packageName;
+  });
+
+  if (!removed) {
+    createPackageData(packageName);
+    list.push(packageName);
+  }
+
+  appSettings.setString('targetPackages', JSON.stringify(list));
+  return !removed;
+};
+
+/* export: isTargetPackageSelected
+ * -------------------------
+ * Checks if the given package name is in target apps.
+ */
+exports.isTargetPackageSelected = function(packageName) {
+  return JSON.parse(appSettings.getString('targetPackages')).includes(packageName);
+};
+
+
+
+
 /************************************
  *          DATA AND STATS          *
  ************************************/
@@ -509,8 +599,17 @@ var eraseExpiredData = function() {
       phoneInfo.stats[(today - i + 28) % 28] = PhStat();
     }
 
-    var list = JSON.parse(appSettings.getString('selectedPackages'));
-    list.forEach(function (packageName) {
+    var watchlist = JSON.parse(appSettings.getString('selectedPackages'));
+    watchlist.forEach(function (packageName) {
+      var appInfo = JSON.parse(appSettings.getString(packageName));
+      for (var i = 0; i < diff; i++) {
+        appInfo.stats[(today - i + 28) % 28] = PkgStat();
+      }
+      appSettings.setString(packageName, JSON.stringify(appInfo));
+    });
+
+    var targetlist = JSON.parse(appSettings.getString('targetPackages'));
+    targetlist.forEach(function (packageName) {
       var appInfo = JSON.parse(appSettings.getString(packageName));
       for (var i = 0; i < diff; i++) {
         appInfo.stats[(today - i + 28) % 28] = PkgStat();
