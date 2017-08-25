@@ -37,7 +37,7 @@
           </TabViewItem>
 
         
-        <TabViewItem title="Targets">
+        <!-- <TabViewItem title="Targets">
           <TabViewItem.view>
             <StackLayout>
             <ListView items="{{target}}" separatorColor="#FFFFFF" itemTap="onTargetTap" height="90%">
@@ -53,7 +53,7 @@
          </StackLayout>
          </TabViewItem.view>
         </TabViewItem>
-
+ -->
 
         </TabView.items>
       </TabView>
