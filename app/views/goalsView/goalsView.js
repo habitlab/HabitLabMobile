@@ -53,6 +53,18 @@ var initializeAppsList = function() {
 };
 
 var initializeTargetsList = function() {
+  var pkgs = StorageUtil.getTargetSelectedPackages();
+  var targetGoals = [];
+  pkgs.forEach(function (pkg) {
+    var basicInfo = UsageUtil.getBasicInfo(pkg);
+    targetGoals.push({
+      app: basicInfo.name,
+      icon: basicInfo.icon,
+      name: 'mins',
+      value: StorageUtil.getMinutesGoal(pkg),
+      packageName: pkg
+    });
+  });
   pageData.set('targetGoals', []);
 };
 
@@ -96,7 +108,7 @@ exports.targetGoalChange = function(args) {
 
 exports.targetGoalUnloaded = function(args) {
   var boundGoal = args.object.bindingContext;
-  // StorageUtil.changeTargetGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
+  StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
 };
 
 var initializeLists = function() {

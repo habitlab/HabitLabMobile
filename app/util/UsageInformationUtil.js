@@ -95,9 +95,11 @@ exports.getBasicInfo = function(packageName) {
 /*
  * getInstalledPresets
  * -------------------
- * Returns list of presets that are installed on the
- * device (returns empty array if none of the presets
+ * Returns an object of a list of presets that are installed on the
+ * device(returns empty array if none of the presets
  * are installed).
+ * getInstalledPresets.watchlist returns the installed presets for the watchlsit
+ * getInstalledPresets.targets returns the installed presets for the targets
  */
 exports.getInstalledPresets = function() {
 	var presets = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
@@ -105,23 +107,47 @@ exports.getInstalledPresets = function() {
 		"com.twitter.android", "com.reddit.frontpage", "com.buzzfeed.android", "com.ninegag.android.app", 
 		"com.amazon.mShop.android.shopping", "com.hulu.plus", "com.tinder", "com.espn.score_center"];
 	var installedPresets = [];
+	var targetPresets = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion"];
+	var installedTargets = [];
 
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
 		var packageName = info.activityInfo.packageName;
 		if (presets.includes(packageName)) {
 			installedPresets.push(packageName);
+		} 
+		if (positive.includes(packageName)) {
+			installedTargets.push(packageName);
 		}
 	}
 
-	return installedPresets;
+	return {
+		watchlist: installedPresets,
+		targets: installedTargets
+	};
 }
 
 
-exports.getInstalledPositive = function() {
-	var positive = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion"];
-	return positive;
-}
+
+// /*
+//  * getInstalledTargets
+//  * -------------------
+//  * Returns list of target presets that are installed on the
+//  * device (returns empty array if none of the presets
+//  * are installed).
+//  */
+// exports.getInstalledTargets = function() {
+// 	var positive = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion"];
+// 	var installedPositive = [];
+// 	for (var i = 0; i < applications.size(); i++) {
+// 		var info = applications.get(i);
+// 		var packageName = info.activityInfo.packageName;
+// 		if (positive.includes(packageName)) {
+// 			installedPositive.push(packageName);
+// 		}
+// 	}
+// 	return installedPositive;
+// }
 
 
 
