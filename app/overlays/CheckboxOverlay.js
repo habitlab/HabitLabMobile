@@ -234,6 +234,9 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	    		} else {
 	    			StorageUtil.setSnooze(value);
 	    		}
+	    		if (StorageUtil.inLockdownMode()) {
+	    			StorageUtil.removeLockdown();
+	    		}
 	    		exports.removeDialog();
 	    		return;
 	    	} else if (lockdownMode) {

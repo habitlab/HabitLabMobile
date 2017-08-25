@@ -107,7 +107,9 @@ exports.getInstalledPresets = function() {
 		"com.twitter.android", "com.reddit.frontpage", "com.buzzfeed.android", "com.ninegag.android.app", 
 		"com.amazon.mShop.android.shopping", "com.hulu.plus", "com.tinder", "com.espn.score_center"];
 	var installedPresets = [];
-	var targetPresets = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion"];
+	var targetPresets = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion",
+						"bbc.mobile.news.ww", "com.duolingo", "com.blinkslabs.blinkist.android", "com.nytimes.android",
+						"com.magoosh.gre.quiz.vocabulary", "flipboard.app", "com.guardian"];
 	var installedTargets = [];
 
 	for (var i = 0; i < applications.size(); i++) {
