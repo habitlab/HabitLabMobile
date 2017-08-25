@@ -17,20 +17,28 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation="vertical" id="detail" class="main-container">
-        <Label id="title" class="detail-label" />
-        <Label id="description" class="detail-label" />
+        <Label class="detail-label-title" text="{{info.name}}" />
+        <Label class="detail-label-description" text="{{info.description}}" textWrap="true" />
         <FlexboxLayout orientation="horizontal" class="level-layout">
           <Label text="Level: " class="detail-label" />
-          <Label id="level" class="detail-label" />
+          <Label className="{{'detail-label ' + info.level}}" text="{{info.levelLabel}}" />
         </FlexboxLayout>
-        <Button id='button' text="Show Me a Demo" />
-        <FlexboxLayout orientation="horizontal" class="disable-layout" id="disable-toggle">
-          <Label id="disable-label" text="Disable All" class="detail-label small" />
-          <Switch id="disable-switch" class="detail-label" />
+        <Button class="try-me-button" text="Show Me a Demo" tap="onButtonTap"/>
+        <FlexboxLayout orientation="horizontal" className="{{info.target === 'phone' ? 'level-layout' : 'disable-layout'}}">
+          <Label text="{{info.enabled ? info.mainLabelDisable : info.mainLabelEnable}}" class="detail-label small" />
+          <Switch class="detail-label" tap="onMainToggle" />
         </FlexboxLayout>
-        <ScrollView orientation="vertical">
-          <StackLayout orientation="vertical" id="list" />
-        </ScrollView>
+
+        <ListView id="app-list-view" items="{{apps}}" itemTap="onItemTap" separatorColor="#FFFFFF" class="padded-list">
+          <ListView.itemTemplate>
+            <GridLayout columns="auto,*,auto" rows="auto" class="app-list-item">
+              <Image imageSource="{{icon}}" col="0" class="detail-icon" verticalAlignment="center" />
+              <Label text="{{appName}}" col="1" class="detail-label-app" />
+              <Switch col="2" />
+            </GridLayout>
+          </ListView.itemTemplate>
+        </ListView>
+
       </StackLayout>
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
