@@ -70,9 +70,21 @@ var setGrid = function() {
 
   var apps = [];
   var temp;
+  var removed = 0;
   tempList.forEach(function (appInfo, index) {
-    var toPush = (index + 1) === tempList.length;
-    var mod = index % 3;
+    if (isWatchlist) {
+      if (StorageUtil.getTargetSelectedPackages().includes(appInfo.packageName)) {
+        removed += 1
+        return;
+      }
+    } else {
+       if (StorageUtil.getSelectedPackages().includes(appInfo.packageName)) {
+          removed += 1
+         return;
+       }
+    }
+    var toPush = (index + 1) - removed === tempList.length;
+    var mod = (index-removed) % 3;
 
     if (mod === 0) {
       temp = {one: appInfo};
@@ -82,7 +94,6 @@ var setGrid = function() {
       temp.three = appInfo;
       toPush = true; 
     }
-
     if (toPush) {
       apps.push(temp);
     }
