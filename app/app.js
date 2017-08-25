@@ -6,9 +6,6 @@ var frame = require('ui/frame');
 var viewFile = 'onboarding/nameView';
 var view = 'nameView';
 
- // viewFile = "goalsView";
- //  view = "goalsView";
-
 if (StorageUtil.isTutorialComplete()) {
   viewFile = "progressView";
   view = "progressView";

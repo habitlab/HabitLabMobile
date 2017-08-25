@@ -59,7 +59,7 @@
             </TabViewItem.view>
           </TabViewItem>
 
-          <TabViewItem title="Targets" >
+          <!-- <TabViewItem title="Targets" >
             <TabViewItem.view>
               <ListView items="{{targetGoals}}" id="targets-list" separatorColor="#FFFFFF" >
                 <ListView.itemTemplate>
@@ -76,7 +76,7 @@
                 </ListView.itemTemplate>
               </ListView>
             </TabViewItem.view>
-          </TabViewItem>
+          </TabViewItem> -->
 
         </TabView.items>
       </TabView>
