@@ -1,8 +1,8 @@
 <StackLayout orientation="vertical">
   <GridLayout columns="auto,*,auto" rows="auto,auto" id="firstrow">
-  <Image id="icon" col="0" />
-  <Label id="name" col="1" />
-  <Switch id="switch" col="2" />
+    <Image id="icon" col="0" />
+    <Label id="name" col="1" />
+    <Switch id="switch" col="2" />
   </GridLayout>
   <GridLayout columns="auto,*,auto" rows="auto,auto" id="secondrow">
     <Image id="icon2" col="0" visibility="collapse" />

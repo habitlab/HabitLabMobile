@@ -46,7 +46,7 @@
             <Label text="App Goals" class='app-detail-subtitle top-padded' />
             <goalelem:goalelem id="goal-changer" />
 
-            <Label id="nudges" text="Enabled Nudges" class='app-detail-subtitle top-padded' />
+            <Label id="nudges" text="Nudges" class='app-detail-subtitle top-padded' />
             <StackLayout orientation="vertical" id="list" />
           </StackLayout>
           
