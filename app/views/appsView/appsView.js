@@ -112,12 +112,17 @@ exports.pageLoaded = function(args) {
   listView = page.getViewById('app-list-view');
 
   toToggle = {};
+  //edit so that selected in one doesn't show up in both
+
   if (isWatchlist) {
     pkgs = StorageUtil.getSelectedPackages();
+    pageData.set("title", "Select apps to spend less time on");
+    pageData.set("header", "Manage Watchlist");
   } else {
     pkgs = StorageUtil.getTargetSelectedPackages();
+    pageData.set("title", "Select apps to spend more time on");
+    pageData.set("header", "Manage Targets");
   }
-  
 
   pageData.set('filter', '');
   var loader = new LoadingIndicator();
