@@ -19,6 +19,7 @@ var toToggle;
 var appList;
 var listView;
 var pageData;
+var isWatchlist;
 
 exports.closeKeyboard = function() {
   search.dismissSoftInput();
@@ -100,6 +101,9 @@ exports.pageLoaded = function(args) {
   events = [{category: 'page_visits', index: 'watchlist_manage'}];
 
   page = args.object;
+  if (page.navigationContext) {
+    isWatchlist = page.navigationContext.watchlist;
+  }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
   search = page.getViewById('search-bar');
@@ -108,7 +112,12 @@ exports.pageLoaded = function(args) {
   listView = page.getViewById('app-list-view');
 
   toToggle = {};
-  pkgs = StorageUtil.getSelectedPackages();
+  if (isWatchlist) {
+    pkgs = StorageUtil.getSelectedPackages();
+  } else {
+    pkgs = StorageUtil.getTargetSelectedPackages();
+  }
+  
 
   pageData.set('filter', '');
   var loader = new LoadingIndicator();
@@ -146,7 +155,6 @@ exports.toggleDrawer = function() {
 };
 
 exports.onDone = function() {
-
   var numToRemove = 0;
   var hasAddedPkg = false;
   Object.keys(toToggle).forEach(function(key) {
@@ -162,7 +170,11 @@ exports.onDone = function() {
   if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
     Object.keys(toToggle).forEach(function(key) {
       if (toToggle[key]) {
-        StorageUtil.togglePackage(key);
+        if (isWatchlist) {
+          StorageUtil.togglePackage(key);
+        } else {
+          StorageUtil.toggleTargetPackage(key);
+        }
       }
     });
     frame.topmost().goBack();

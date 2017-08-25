@@ -13,7 +13,7 @@ exports.onItemTap = function(args) {
   events.push({category: "navigation", index: "watchlist_to_detail"});
   
   var info = args.view.bindingContext;
-  frame.topmost().navigate({
+  frameModule.topmost().navigate({
     moduleName: 'views/appDetailView/appDetailView',
     context: { 
       name: info.name,
