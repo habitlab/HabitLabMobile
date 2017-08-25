@@ -9,7 +9,7 @@ const DimmerOverlay = require("~/overlays/DimmerOverlay");
 const VideoOverlay = require("~/overlays/VideoOverlay");
 const LockdownOverlay = require("~/overlays/LockdownOverlay");
 const SliderOverlay = require("~/overlays/SliderOverlay");
-// const ScreenFlipperOverlay = require("~/overlays/ScreenFlipperOverlay");
+const ScreenFlipperOverlay = require("~/overlays/ScreenFlipperOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -67,6 +67,7 @@ const THRESHOLD_COUNTDOWN_TMR = 15;
 const THRESHOLD_DIMSCREEN_OVR = 15;
 const THRESHOLD_APPLICATION_SLIDER_OVR = 15;
 const THRESHOLD_INTERSTITIAL_OVR = 15;
+const THRESHOLD_FLIPPER_OVR = 15;
 
 
 var MIN_IN_MS = 60000;
@@ -796,6 +797,29 @@ var showSliderDialog = function(real, pkg) {
   }
 }
 
+/*
+ * flipScreen
+ * ----------
+ * Flips the screen upside down.
+ */
+var flipScreen = function(real, pkg) {
+  if (!real) {
+    ScreenFlipperOverlay.flipScreen();
+    Timer.setTimeout(() => {
+      ScreenFlipperOverlay.removeOverlay();
+    }, 3000);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.FLIPPER, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits > THRESHOLD_FLIPPER_OVR) {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.FLIPPER}]);
+      ScreenFlipperOverlay.flipScreen();
+    } 
+  }
+}
+
 
 
 /*
@@ -812,7 +836,7 @@ var removeOverlays = function() {
   VideoOverlay.removeVideoBlocker();
   LockdownOverlay.removeOverlay();
   SliderOverlay.removeSliderOverlay();
-  // ScreenFlipperOverlay.removeOverlay();
+  ScreenFlipperOverlay.removeOverlay();
   pausedThisVisit = false;
 }
 
@@ -822,8 +846,8 @@ var removeOverlays = function() {
  ***************************************/
 var onLaunchInterventions = {
   easy: [popToastVisited, sendNotificationVisited, popToastUsage, sendNotificationUsage],
-  medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer],
-  hard: [showCountDownTimer, dimScreen, showSliderDialog, showInterstitial]
+  medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer, showInterstitial],
+  hard: [showCountDownTimer, dimScreen, showSliderDialog /*, flipScreen */]
 };
 
 var onScreenUnlockInterventions = {
@@ -907,7 +931,8 @@ module.exports = {
     sendPhoneUsageNotification,
     showPhoneUsageDialog,
     showSliderDialog,
-    showInterstitial 
+    showInterstitial /*,
+    flipScreen */
   ], 
   resetDurationInterventions,
   removeOverlays,

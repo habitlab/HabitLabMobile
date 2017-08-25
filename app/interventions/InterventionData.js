@@ -21,7 +21,8 @@ exports.interventionIDs = {
   PHONE_USAGE_NOTIFICATION: 19,
   PHONE_USAGE_DIALOG: 20,
   APPLICATION_SLIDER: 21,
-  INTERSTITIAL: 22
+  INTERSTITIAL: 22,
+  FLIPPER: 23
 };
 
 exports.interventionDetails = [
@@ -252,7 +253,17 @@ exports.interventionDetails = [
   functionality: "Interstial Screen", 
   description: "Waits 10 seconds before you are allowed to enter an app", 
   target: 'app', 
-  level: 'hard',
+  level: 'medium',
   summary: 'Pause for 10 seconds before entering an app',
   style: 'overlay'
-}];
+} /*, {
+  id: 23,
+  name: 'Flip the Script', 
+  icon: 'res://ic_flip', 
+  functionality: "Screen Flipper", 
+  description: "Rotates the entire phone screen 180 degrees so that it is upside down", 
+  target: 'app', 
+  level: 'hard',
+  summary: 'Flip the screen upside down',
+  style: 'overlay'
+} */];
