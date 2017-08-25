@@ -129,27 +129,6 @@ exports.getInstalledPresets = function() {
 
 
 
-// /*
-//  * getInstalledTargets
-//  * -------------------
-//  * Returns list of target presets that are installed on the
-//  * device (returns empty array if none of the presets
-//  * are installed).
-//  */
-// exports.getInstalledTargets = function() {
-// 	var positive = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion"];
-// 	var installedPositive = [];
-// 	for (var i = 0; i < applications.size(); i++) {
-// 		var info = applications.get(i);
-// 		var packageName = info.activityInfo.packageName;
-// 		if (positive.includes(packageName)) {
-// 			installedPositive.push(packageName);
-// 		}
-// 	}
-// 	return installedPositive;
-// }
-
-
 
 exports.getApplicationBitmap = function(pkg) {
 	var appInfo;

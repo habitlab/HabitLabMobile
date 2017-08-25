@@ -40,7 +40,7 @@
         <TabViewItem title="Targets">
           <TabViewItem.view>
             <StackLayout>
-            <ListView items="{{target}}" separatorColor="#FFFFFF" itemTap="onItemTap" height="90%">
+            <ListView items="{{target}}" separatorColor="#FFFFFF" itemTap="onTargetTap" height="90%">
               <ListView.itemTemplate>
                 <GridLayout columns="auto,*,auto" rows="auto,auto" class="watchlist-elem" >
                   <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
