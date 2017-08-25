@@ -16,18 +16,50 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center" >
-      <StackLayout>
-        <ListView items="{{watchlist}}" separatorColor="#FFFFFF" itemTap="onItemTap" height="90%" >
-          <ListView.itemTemplate>
-            <GridLayout columns="auto,*,auto" rows="auto,auto" class="watchlist-elem" >
-              <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
-              <Label col="1" text="{{name}}" class="watchlist-label" />
-              <Image col="2" src="res://ic_arrow_right" />
-            </GridLayout>
-          </ListView.itemTemplate>
-        </ListView>
-        <Button text="Manage Watchlist" onTap="onManage" id="manage" class="manage-button"/>
-      </StackLayout>
+      <TabView androidSelectedTabHighlightColor="#FFA730">
+        <TabView.items>
+
+          <TabViewItem title="Watchlist">
+            <TabViewItem.view>
+              <StackLayout>
+              <ListView items="{{watchlist}}" separatorColor="#FFFFFF" itemTap="onItemTap" height="90%">
+                <ListView.itemTemplate>
+                  <GridLayout columns="auto,*,auto" rows="auto,auto" class="watchlist-elem" >
+                    <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
+                    <Label col="1" text="{{name}}" class="watchlist-label" />
+                    <Image col="2" src="res://ic_arrow_right" />
+                  </GridLayout>
+                </ListView.itemTemplate>
+              </ListView>
+             <Button text="Manage Watchlist" tap="onManageWatchlist" id="manage" class="manage-button"/>
+           </StackLayout>
+          </TabViewItem.view>
+          </TabViewItem>
+
+        
+        <TabViewItem title="Targets">
+          <TabViewItem.view>
+            <StackLayout>
+            <ListView items="{{target}}" separatorColor="#FFFFFF" itemTap="onTargetTap" height="90%">
+              <ListView.itemTemplate>
+                <GridLayout columns="auto,*,auto" rows="auto,auto" class="watchlist-elem" >
+                  <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
+                  <Label col="1" text="{{name}}" class="watchlist-label" />
+                  <Image col="2" src="res://ic_arrow_right" />
+                </GridLayout>
+              </ListView.itemTemplate>
+            </ListView>
+           <Button text="Manage Targets" tap="onManageTargets" id="manage" class="manage-button"/>
+         </StackLayout>
+         </TabViewItem.view>
+        </TabViewItem>
+
+
+        </TabView.items>
+      </TabView>
+    <!-- </StackLayout> -->
+
+
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
 </Page>

@@ -11,7 +11,7 @@ const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
 const videoBlocker = require("~/overlays/VideoOverlay");
 const lockdownOverlay = require("~/overlays/LockdownOverlay");
-const dialogOverlay = require("~/overlays/DialogOverlay");
+const CancelOverlay = require("~/overlays/CancelOverlay");
 
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
@@ -259,7 +259,7 @@ exports.enteredHabitlab = function () {
 }
 
 function lockdownCb() {
-    dialogOverlay.showTwoOptionDialogOverlay("Are you sure you want to stop lockdown mode?", 
+    CancelOverlay.showCancelLockDialog("Unlock apps", "Are you sure you want to stop lockdown mode?", 
         "Yes", "Cancel", removeLockdown ,null);
 }
 

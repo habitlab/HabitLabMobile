@@ -53,7 +53,19 @@ var initializeAppsList = function() {
 };
 
 var initializeTargetsList = function() {
-  pageData.set('targetGoals', []);
+  var pkgs = StorageUtil.getTargetSelectedPackages();
+  var targetGoals = [];
+  pkgs.forEach(function (pkg) {
+    var basicInfo = UsageUtil.getBasicInfo(pkg);
+    targetGoals.push({
+      app: basicInfo.name,
+      icon: basicInfo.icon,
+      name: 'mins',
+      value: StorageUtil.getMinutesGoal(pkg),
+      packageName: pkg
+    });
+  });
+  pageData.set('targetGoals', targetGoals);
 };
 
 var getGoal = function(txt, add) {
@@ -79,13 +91,15 @@ exports.phoneGoalUnloaded = function(args) {
 
 exports.appGoalChange = function(args) {
   var boundGoal = args.object.parent.parent.bindingContext;
+  if (!boundGoal) { return; } // because sometimes boundGoal comes back null...
   boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
   appsList.refresh();
 };
 
 exports.appGoalUnloaded = function(args) {
-  var boundGoal = args.object.bindingContext;
-  StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name === 'mins' ? 'minutes' : boundGoal.name);
+  // var boundGoal = args.object.bindingContext;
+  // if (!boundGoal) { return; }
+  // StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name === 'mins' ? 'minutes' : boundGoal.name);
 };
 
 exports.targetGoalChange = function(args) {
@@ -95,8 +109,8 @@ exports.targetGoalChange = function(args) {
 };
 
 exports.targetGoalUnloaded = function(args) {
-  var boundGoal = args.object.bindingContext;
-  // StorageUtil.changeTargetGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
+  // var boundGoal = args.object.bindingContext;
+  // StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
 };
 
 var initializeLists = function() {
@@ -128,6 +142,17 @@ exports.nextStep = function() {
 };
 
 exports.pageUnloaded = function(args) {
+  var watchlist = page.bindingContext.get('appGoals');
+  for (var i = 0; i < watchlist.length; i++) {
+    StorageUtil.changeAppGoal(watchlist[i].packageName, watchlist[i].value, watchlist[i].name === 'mins' ? 'minutes' : watchlist[i].name);
+  }
+
+  var targetList = page.bindingContext.get('targetGoals');
+  for (var i = 0; i < targetList.length; i++) {
+    StorageUtil.changeAppGoal(targetList[i].packageName, targetList[i].value, targetList[i].name === 'mins' ? 'minutes' : targetList[i].name);
+  }
+
+
   StorageUtil.addLogEvents(events);
 };
 

@@ -609,15 +609,22 @@ setUp = function() {
 exports.goToDetailApps = function(args) {
     var tappedItem = args.view.bindingContext;
     events.push({category: "navigation", index: "progress_to_detail"});
-    var options = {
-        moduleName: 'views/appDetailView/appDetailView',
-        context: {
-          packageName: getPackageName(tappedItem.name),
-          name: tappedItem.name,
-          icon: tappedItem.image
-        }
-      }
-      frameModule.topmost().navigate(options);
+
+    frameModule.topmost().navigate({
+    moduleName: 'views/appDetailView/appDetailView',
+    context: { 
+        packageName: getPackageName(tappedItem.name),
+        name: tappedItem.name,
+        icon: tappedItem.image,
+        isWatchlist: true
+    },
+    animated: true,
+    transition: {
+      name: "slide",
+      duration: 380,
+      curve: "easeIn"
+    }
+  });
 }
 
 //Returns the total time spent on an app in a month when passed in that app's object

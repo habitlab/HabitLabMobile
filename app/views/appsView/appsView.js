@@ -19,6 +19,7 @@ var toToggle;
 var appList;
 var listView;
 var pageData;
+var isWatchlist;
 
 exports.closeKeyboard = function() {
   search.dismissSoftInput();
@@ -69,9 +70,21 @@ var setGrid = function() {
 
   var apps = [];
   var temp;
+  var removed = 0;
   tempList.forEach(function (appInfo, index) {
-    var toPush = (index + 1) === tempList.length;
-    var mod = index % 3;
+    if (isWatchlist) {
+      if (StorageUtil.getTargetSelectedPackages().includes(appInfo.packageName)) {
+        removed += 1
+        return;
+      }
+    } else {
+       if (StorageUtil.getSelectedPackages().includes(appInfo.packageName)) {
+          removed += 1
+         return;
+       }
+    }
+    var toPush = (index + 1) - removed === tempList.length;
+    var mod = (index-removed) % 3;
 
     if (mod === 0) {
       temp = {one: appInfo};
@@ -81,7 +94,6 @@ var setGrid = function() {
       temp.three = appInfo;
       toPush = true; 
     }
-
     if (toPush) {
       apps.push(temp);
     }
@@ -100,6 +112,9 @@ exports.pageLoaded = function(args) {
   events = [{category: 'page_visits', index: 'watchlist_manage'}];
 
   page = args.object;
+  if (page.navigationContext) {
+    isWatchlist = page.navigationContext.watchlist;
+  }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
   search = page.getViewById('search-bar');
@@ -108,7 +123,17 @@ exports.pageLoaded = function(args) {
   listView = page.getViewById('app-list-view');
 
   toToggle = {};
-  pkgs = StorageUtil.getSelectedPackages();
+  //edit so that selected in one doesn't show up in both
+
+  if (isWatchlist) {
+    pkgs = StorageUtil.getSelectedPackages();
+    pageData.set("title", "Select apps to spend less time on");
+    pageData.set("header", "Manage Watchlist");
+  } else {
+    pkgs = StorageUtil.getTargetSelectedPackages();
+    pageData.set("title", "Select apps to spend more time on");
+    pageData.set("header", "Manage Targets");
+  }
 
   pageData.set('filter', '');
   var loader = new LoadingIndicator();
@@ -146,7 +171,6 @@ exports.toggleDrawer = function() {
 };
 
 exports.onDone = function() {
-
   var numToRemove = 0;
   var hasAddedPkg = false;
   Object.keys(toToggle).forEach(function(key) {
@@ -162,7 +186,11 @@ exports.onDone = function() {
   if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
     Object.keys(toToggle).forEach(function(key) {
       if (toToggle[key]) {
-        StorageUtil.togglePackage(key);
+        if (isWatchlist) {
+          StorageUtil.togglePackage(key);
+        } else {
+          StorageUtil.toggleTargetPackage(key);
+        }
       }
     });
     frame.topmost().goBack();

@@ -51,6 +51,7 @@ var page;
 var pkg;
 var name;
 var icon;
+var isWatchlist;
 var appStats;
 var container;
 var events;
@@ -81,6 +82,7 @@ exports.pageNavigating = function(args) {
     appStats = StorageUtil.getAppStats(pkg);
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
+    isWatchlist = page.navigationContext.isWatchlist;
   }
 };
 
@@ -88,6 +90,12 @@ exports.pageLoaded = function(args) {
   events = [{category: 'page_visits', index: 'watchlist_detail'}];
   drawer = page.getViewById('sideDrawer');
   container = page.getViewById("slides");
+  if (!isWatchlist) {
+    var nudge = page.getViewById("nudges");
+    nudge.visibility = "collapse";
+    var nudgeList = page.getViewById("list");
+    nudgeList.visibility = "collapse";
+  }
   setUpDetail();
 };
 

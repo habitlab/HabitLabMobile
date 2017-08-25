@@ -101,7 +101,7 @@ var DialogView = android.view.View.extend({
 var fullScreen;
 var text;
 var rg;
-var selected = -1;
+var selected = 15;
 var posButton;
 var negButton;
 exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMode, posCallback, negCallback, toastMsg) {
@@ -205,6 +205,8 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
     rg.addView(opt4);
         windowManager.addView(rg, rgparams);
 
+    rg.getChildAt(0).setChecked(true);
+
 
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
@@ -220,10 +222,10 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	posButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
 	posButton.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
-	    	if (selected === -1) {
-	    		Toast.makeText("Please select a value").show();
-	    		return;
-	    	}
+	    	// if (selected === -1) {
+	    	// 	Toast.makeText("Please select a value").show();
+	    	// 	return;
+	    	// }
 	    	if (snoozeMode) {
 	    		Toast.makeText("HabitLab snoozed for " + selected).show();
 	    		var value = parseInt(selected.substr(0, selected.indexOf(" ")));
@@ -231,6 +233,9 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	    			StorageUtil.setSnooze(value*60);
 	    		} else {
 	    			StorageUtil.setSnooze(value);
+	    		}
+	    		if (StorageUtil.inLockdownMode()) {
+	    			StorageUtil.removeLockdown();
 	    		}
 	    		exports.removeDialog();
 	    		return;
