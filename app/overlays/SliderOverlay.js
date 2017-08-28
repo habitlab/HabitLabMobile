@@ -226,6 +226,8 @@ exports.removeSliderOverlay = function () {
 		windowManager.removeView(labelText);
 		labelText = undefined;
 	}
+
+	setTime = 10;
 }
 
 

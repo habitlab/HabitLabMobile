@@ -53,6 +53,7 @@ exports.onTargetTap = function(args) {
 };
 
 
+
 var setUpList = function() {
   var listLayout = page.getViewById('watchlist-list');
   listLayout.removeChildren();
@@ -127,6 +128,17 @@ exports.onIndexChange = function(args) {
         overlayShowing = false;
       }
     }
+
+  targets = StorageUtil.getTargetSelectedPackages().map(function (pkgName) {
+    var basicInfo = UsageUtil.getBasicInfo(pkgName);
+    return {
+      packageName: pkgName,
+      name: basicInfo.name,
+      icon: basicInfo.icon
+    }
+  });
+  pageData.set("target", targets);
+
 };
 
 
@@ -181,6 +193,7 @@ exports.toggleDrawer = function() {
   drawer.toggleDrawerState();
 };
 
+
 exports.onManageTargets = function() {
   var options = {
         moduleName: 'views/appsView/appsView',
@@ -192,6 +205,8 @@ exports.onManageTargets = function() {
   frameModule.topmost().navigate(options);
 };
 
+
+
 exports.onManageWatchlist = function() {
   var options = {
         moduleName: 'views/appsView/appsView',
@@ -199,6 +214,6 @@ exports.onManageWatchlist = function() {
           watchlist: true,
           tutorial: false
         }
-  }
+  };
   frameModule.topmost().navigate(options);
 };

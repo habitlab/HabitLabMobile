@@ -120,6 +120,4 @@ exports.onDone = function() {
   } else {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
   }
-  frame.topmost().navigate('views/onboarding/nudgesOnboardingView/nudgesOnboardingView');  
-
 };

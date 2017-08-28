@@ -124,8 +124,8 @@ exports.getInstalledPresets = function() {
 	}
 
 	return {
-		watchlist: installedPresets,
-		targets: installedTargets
+		targets: installedTargets,
+		watchlist: installedPresets
 	};
 }
 

@@ -84,7 +84,7 @@ var setGrid = function() {
        }
     }
     var toPush = (index + 1) - removed === tempList.length;
-    var mod = (index-removed) % 3;
+    var mod = (index - removed) % 3;
 
     if (mod === 0) {
       temp = {one: appInfo};
@@ -124,7 +124,7 @@ exports.pageLoaded = function(args) {
   listView = page.getViewById('app-list-view');
 
   toToggle = {};
-  //edit so that selected in one doesn't show up in both
+  
 
   if (isWatchlist) {
     pkgs = StorageUtil.getSelectedPackages();

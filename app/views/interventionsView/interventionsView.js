@@ -117,6 +117,7 @@ var setList = function() {
   pageData.set('nudges', tempList);  
 };
 
+var visited = false;
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "nudges_main"}];
 
@@ -129,7 +130,10 @@ exports.pageLoaded = function(args) {
   page.bindingContext = pageData;
   pageData.set('filter', '');
   if (!StorageUtil.isTutorialComplete()) {
-    FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+    if (!visited) {
+      FancyAlert.show(FancyAlert.type.INFO, "Welcome to Nudges!", "This is where your nudges live. Try tapping on one to see what it does!", "Ok");
+      visited = true;
+    }
     page.getViewById('finish').visibility = 'visible';
     page.getViewById('search-icon').visibility = 'collapse';
     page.getViewById('nudges-list').height = '90%';
@@ -147,7 +151,10 @@ exports.pageLoaded = function(args) {
 exports.goToProgress = function() {
   StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_tutorial'}]);
   StorageUtil.setTutorialComplete();
-  fancyAlert.TNSFancyAlert.showSuccess("All set!", "HabitLab can now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
+  FancyAlert.show(FancyAlert.type.SUCCESS, "All set!", 
+    "HabitLab can now start helping you create better mobile habits! Just keep using your phone like normal.", 
+    "Awesome!", null);
+  // fancyAlert.TNSFancyAlert.showSuccess("All set!", "HabitLab can now start helping you create better mobile habits! Just keep using your phone like normal.", "Awesome!");
   frameModule.topmost().navigate({
     moduleName: "views/progressView/progressView",
     context: { 

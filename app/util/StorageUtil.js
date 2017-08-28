@@ -272,14 +272,13 @@ exports.setUpDB = function(erasingData) {
 
 
   appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
+  appSettings.setString('targetPackages', JSON.stringify(targetPreset));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   watchlistPreset.forEach(function (item) {
     createPackageData(item);
   });
-
-  appSettings.setString('targetPackages', JSON.stringify(targetPreset));
   targetPreset.forEach(function (item) {
     createPackageData(item);
   });
@@ -463,18 +462,18 @@ exports.isPackageSelected = function(packageName) {
  ***********************************/
 
 
-/* export: getTargetSelectedPackages
- * ---------------------------
- * Returns array of package names (strings) that are currently in 'target'.
- */
+// /* export: getTargetSelectedPackages
+//  * ---------------------------
+//  * Returns array of package names (strings) that are currently in 'target'.
+//  */
 exports.getTargetSelectedPackages = function() {
   return JSON.parse(appSettings.getString('targetPackages')) || [];
 };
 
-/* export: addTargetPackage
- * ------------------
- * Adds the specified package to storage for target apps (with default goals, no data).
- */
+// /* export: addTargetPackage
+//  * ------------------
+//  * Adds the specified package to storage for target apps (with default goals, no data).
+//  */
 exports.addTargetPackage = function(packageName) {
   var list = JSON.parse(appSettings.getString('targetPackages'));
   if (!list.includes(packageName)) {
@@ -484,10 +483,10 @@ exports.addTargetPackage = function(packageName) {
   }
 };
 
-/* export: removeTargetPackage
- * ---------------------
- * Removes the specified package from target.
- */
+// /* export: removeTargetPackage
+//  * ---------------------
+//  * Removes the specified package from target.
+//  */
 exports.removeTargetPackage = function(packageName) {
   var list = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
     return item !== packageName;
@@ -497,11 +496,11 @@ exports.removeTargetPackage = function(packageName) {
   appSettings.setString('targetPackages', JSON.stringify(list));
 };
 
-/* export: toggleTargetPackage
- * ---------------------
- * If the specified package is currently in target, removes it from the list.
- * If the package is currently not in target, adds it.
- */
+// /* export: toggleTargetPackage
+//  * ---------------------
+//  * If the specified package is currently in target, removes it from the list.
+//  * If the package is currently not in target, adds it.
+//  */
 exports.toggleTargetPackage = function(packageName) {
   var removed = false;
   var list = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
@@ -522,15 +521,13 @@ exports.toggleTargetPackage = function(packageName) {
   return !removed;
 };
 
-/* export: isTargetPackageSelected
- * -------------------------
- * Checks if the given package name is in target apps.
- */
+// /* export: isTargetPackageSelected
+//  * -------------------------
+//  * Checks if the given package name is in target apps.
+//  */
 exports.isTargetPackageSelected = function(packageName) {
   return JSON.parse(appSettings.getString('targetPackages')).includes(packageName);
 };
-
-
 
 
 /************************************
@@ -1260,7 +1257,7 @@ exports.addLogEvents = function(events) {
 
   log.data = data;
   http.request({
-    url: "http://logs-01.loggly.com/inputs/3d9631e9-46be-4afc-b721-af42ad5e18af/tag/http/",
+    url: "http://logs-01.loggly.com/inputs/6566b577-246e-4530-89b0-cbe1ee219c24/tag/http/",
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     content: JSON.stringify(log)

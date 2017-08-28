@@ -36,8 +36,7 @@
           </TabViewItem.view>
           </TabViewItem>
 
-        
-        <TabViewItem title="Targets">
+        <!-- <TabViewItem title="Targets">
           <TabViewItem.view>
             <StackLayout>
             <ListView  id= "targetList" items="{{target}}" separatorColor="#FFFFFF" itemTap="onTargetTap" height="90%">
@@ -55,13 +54,10 @@
          </StackLayout>
          </TabViewItem.view>
         </TabViewItem>
-
+ -->
 
         </TabView.items>
       </TabView>
-    <!-- </StackLayout> -->
-
-
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
 </Page>

@@ -92,24 +92,15 @@ exports.phoneGoalUnloaded = function(args) {
 
 exports.appGoalChange = function(args) {
   var boundGoal = args.object.parent.parent.bindingContext;
+  if (!boundGoal) { return; } // because sometimes boundGoal comes back null...
   boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
   appsList.refresh();
-};
-
-exports.appGoalUnloaded = function(args) {
-  var boundGoal = args.object.bindingContext;
-  StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name === 'mins' ? 'minutes' : boundGoal.name);
 };
 
 exports.targetGoalChange = function(args) {
   var boundGoal = args.object.parent.parent.bindingContext;
   boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
   targetsList.refresh();
-};
-
-exports.targetGoalUnloaded = function(args) {
-  var boundGoal = args.object.bindingContext;
-  StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
 };
 
 var initializeLists = function() {
@@ -172,6 +163,20 @@ exports.nextStep = function() {
 };
 
 exports.pageUnloaded = function(args) {
+  var watchlist = page.bindingContext.get('appGoals');
+
+  watchlist.forEach(function(app) {
+    if (!app) {
+      return;
+    }
+    StorageUtil.changeAppGoal(app.packageName, app.value, app.name === 'mins' ? 'minutes' : app.name);
+  });
+
+  var targetList = page.bindingContext.get('targetGoals');
+  for (var i = 0; i < targetList.length; i++) {
+    StorageUtil.changeAppGoal(targetList[i].packageName, targetList[i].value, targetList[i].name === 'mins' ? 'minutes' : targetList[i].name);
+  }
+
   StorageUtil.addLogEvents(events);
 };
 
