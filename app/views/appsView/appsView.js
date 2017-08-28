@@ -20,6 +20,7 @@ var appList;
 var listView;
 var pageData;
 var isWatchlist;
+var isTargetTutorial;
 
 exports.closeKeyboard = function() {
   search.dismissSoftInput();
@@ -114,7 +115,7 @@ exports.pageLoaded = function(args) {
   page = args.object;
   if (page.navigationContext) {
     isWatchlist = page.navigationContext.watchlist;
-    isTutorial = page.navigationContext.tutorial;
+    isTargetTutorial = page.navigationContext.tutorial;
   }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
@@ -194,7 +195,7 @@ exports.onDone = function() {
         }
       }
     });
-    if (isTutorial) {
+    if (isTargetTutorial) {
       fancyAlert.TNSFancyAlert.showSuccess("Success!", "Your target apps are added. You can monitor them anytime here!", "Sweet!");
       var options = {
         moduleName: 'views/watchlistView/watchlistView',
@@ -203,6 +204,7 @@ exports.onDone = function() {
           fromGoals: false
         }
       } 
+      StorageUtil.setTargetOn();
       frame.topmost().navigate(options);
     } else {
       frame.topmost().goBack();

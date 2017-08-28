@@ -27,10 +27,12 @@
   text-align: center;
   word-wrap: normal;
   padding: 5%;
+  margin-top: 5%;
 }
 
 #nextTutorial {
   background-color: #2EC4B6;
+  margin-top: 5%;
   color: white;
   vertical-align: baseline;
   float: right;

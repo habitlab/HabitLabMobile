@@ -179,8 +179,10 @@ exports.goNextTutorial = function() {
           tutorial: true
         }
     }
-    StorageUtil.setTargetOn();
+    console.warn("trying to go next")
     frameModule.topmost().navigate(options);
+  } else {
+    console.warn("target is on?")
   }
     
 }
