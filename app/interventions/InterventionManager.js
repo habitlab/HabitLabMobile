@@ -10,6 +10,7 @@ const VideoOverlay = require("~/overlays/VideoOverlay");
 const LockdownOverlay = require("~/overlays/LockdownOverlay");
 const SliderOverlay = require("~/overlays/SliderOverlay");
 const ScreenFlipperOverlay = require("~/overlays/ScreenFlipperOverlay");
+const ToastOverlay = require("~/overlays/ToastOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -68,6 +69,7 @@ const THRESHOLD_DIMSCREEN_OVR = 15;
 const THRESHOLD_APPLICATION_SLIDER_OVR = 15;
 const THRESHOLD_INTERSTITIAL_OVR = 15;
 const THRESHOLD_FLIPPER_OVR = 15;
+const THRESHOLD_POSITIVE_TST = 15;
 
 
 var MIN_IN_MS = 60000;
@@ -800,7 +802,7 @@ var showSliderDialog = function(real, pkg) {
 /*
  * flipScreen
  * ----------
- * Flips the screen upside down.
+ * Flips the screen upside down. REQUIRES PERMISSION
  */
 var flipScreen = function(real, pkg) {
   if (!real) {
@@ -811,15 +813,46 @@ var flipScreen = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.FLIPPER, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits > THRESHOLD_FLIPPER_OVR) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.FLIPPER}]);
-      ScreenFlipperOverlay.flipScreen();
-    } 
-  }
+  // if (StorageUtil.canIntervene(ID.interventionIDs.FLIPPER, pkg)) {
+  //   var visits = StorageUtil.getVisits(pkg);
+  //   if (visits > THRESHOLD_FLIPPER_OVR) {
+  //     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.FLIPPER}]);
+  //     ScreenFlipperOverlay.flipScreen();
+  //   } 
+  // }
 }
 
+
+/*
+ * positiveAppToast
+ * ----------------
+ * Pops toast to go to positive app/
+ */ 
+var positiveAppToast = function(real, pkg) {
+  if (!real) {
+
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg) && StorageUtil.isTargetOn()) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits > 0){//THRESHOLD_POSITIVE_TST) {
+      var targets = StorageUtil.getTargetSelectedPackages();
+      var index = randBW(0, targets.length - 1);
+      var targetPkg = targets[index];
+
+      var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+      var cb = function () {
+        var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+        foreground.startActivity(launchIntent);
+      }
+
+      var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
+      ToastOverlay.showToastOverlay("Go to " + appName, bitmap, cb);
+    }
+  }
+
+}
 
 
 /*
@@ -846,8 +879,8 @@ var removeOverlays = function() {
  ***************************************/
 var onLaunchInterventions = {
   easy: [popToastVisited, sendNotificationVisited, popToastUsage, sendNotificationUsage],
-  medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer, showInterstitial],
-  hard: [showCountDownTimer, dimScreen, showSliderDialog /*, flipScreen */]
+  medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer, showInterstitial, positiveAppToast],
+  hard: [showCountDownTimer, dimScreen, showSliderDialog]
 };
 
 var onScreenUnlockInterventions = {
@@ -856,6 +889,8 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
+  positiveAppToast(pkg);
+  return;
   // set up duration interventions
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
@@ -931,8 +966,8 @@ module.exports = {
     sendPhoneUsageNotification,
     showPhoneUsageDialog,
     showSliderDialog,
-    showInterstitial /*,
-    flipScreen */
+    showInterstitial, 
+    positiveAppToast
   ], 
   resetDurationInterventions,
   removeOverlays,

@@ -22,7 +22,7 @@ exports.interventionIDs = {
   PHONE_USAGE_DIALOG: 20,
   APPLICATION_SLIDER: 21,
   INTERSTITIAL: 22,
-  FLIPPER: 23
+  POSITIVE_TOAST: 23
 };
 
 exports.interventionDetails = [
@@ -256,14 +256,14 @@ exports.interventionDetails = [
   level: 'medium',
   summary: 'Pause for 10 seconds before entering an app',
   style: 'overlay'
-} /*, {
+}, {
   id: 23,
-  name: 'Flip the Script', 
-  icon: 'res://ic_flip', 
-  functionality: "Screen Flipper", 
-  description: "Rotates the entire phone screen 180 degrees so that it is upside down", 
+  name: 'PLACEHOLDER', 
+  icon: 'res://ic_eye', 
+  functionality: "Positive App Toast", 
+  description: "Pops up a hint bubble suggesting a target app to visit", 
   target: 'app', 
-  level: 'hard',
-  summary: 'Flip the screen upside down',
+  level: 'medium',
+  summary: 'Sends pop up to go to a target app',
   style: 'overlay'
-} */];
+}];
