@@ -10,6 +10,7 @@ var page;
 var events;
 var pkgs;
 var targets;
+var fromGoals = false;
 
 exports.onItemTap = function(args) {
   events.push({category: "navigation", index: "watchlist_to_detail"});
@@ -73,7 +74,7 @@ exports.pageLoaded = function(args) {
   page = args.object;
    if (page.navigationContext) {
     var index = page.navigationContext.index;
-    var fromGoals = page.navigationContext.fromGoals;
+    fromGoals = page.navigationContext.fromGoals;
   }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
