@@ -19,7 +19,7 @@
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout>
-      <TabView androidSelectedTabHighlightColor="#FFA730" height="{{tutorialFinished ? '100%' : '91%'}}" >
+      <TabView androidSelectedTabHighlightColor="#FFA730" height="{{tutorialFinished ? '100%' : '91%'}}" id="tabView" selectedIndexChanged="onIndexChanged">
         <TabView.items>
 
           <TabViewItem title="Phone">
@@ -59,7 +59,7 @@
             </TabViewItem.view>
           </TabViewItem>
 
-          <TabViewItem title="Targets" >
+          <TabViewItem title="Targets">
             <TabViewItem.view>
               <ListView items="{{targetGoals}}" id="targets-list" separatorColor="#FFFFFF" >
                 <ListView.itemTemplate>

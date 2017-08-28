@@ -73,21 +73,39 @@ var dialog;
 var title;
 var text;
 var button;
-exports.showIntroDialog = function (titleMsg, msg, butt, callback) {
+exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, 
 		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
     dialog = new IntroDialog(context);
+    dialog.setOnTouchListener(new android.view.View.OnTouchListener({
+	 	onTouch: function (v, event) {
+	 		var action = event.getAction();
+			var currentX = event.getX();
+			var currentY = event.getY();
+	 		if(currentY < 0.145 * SCREEN_HEIGHT){
+	 			if (redirect) {
+	 				redirect();
+	 			}
+	 			exports.removeIntroDialog();
+	 		}
+	 		return false;
+	 	}
+	 }));
+
+
+
     windowManager.addView(dialog, viewParams);
 
      // add title
     var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.15 * DIALOG_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
     titleParams.gravity = Gravity.LEFT | Gravity.TOP;
     title = new TextView(context);
     title.setText(titleMsg);
@@ -101,7 +119,9 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback) {
     // add text
     var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
     text.setText(msg);
@@ -115,13 +135,13 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback) {
     var buttonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
     	0.2 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
     	TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
    	buttonParams.gravity = Gravity.LEFT | Gravity.TOP;
     button = new Button(context);
     button.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY); //turqouise
 	button.setText(butt);
+	button.setVisibility(android.view.Visible);
 	button.setTextColor(Color.WHITE);
 	button.setOnClickListener(new android.view.View.OnClickListener({
 	    onClick: function() {
@@ -131,7 +151,11 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback) {
 	        exports.removeIntroDialog();
 	    }
 	}));
+
     windowManager.addView(button, buttonParams);
+
+
+  
 }
 
 

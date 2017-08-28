@@ -16,7 +16,7 @@
     </sd:RadSideDrawer.drawerContent>
 
     <sd:RadSideDrawer.mainContent horizontalAlignment="center" >
-      <TabView androidSelectedTabHighlightColor="#FFA730">
+      <TabView androidSelectedTabHighlightColor="#FFA730" selectedIndexChanged="onIndexChange" id="tabView">
         <TabView.items>
 
           <TabViewItem title="Watchlist">
@@ -40,7 +40,7 @@
         <TabViewItem title="Targets">
           <TabViewItem.view>
             <StackLayout>
-            <ListView items="{{target}}" separatorColor="#FFFFFF" itemTap="onTargetTap" height="90%">
+            <ListView  id= "targetList" items="{{target}}" separatorColor="#FFFFFF" itemTap="onTargetTap" height="90%">
               <ListView.itemTemplate>
                 <GridLayout columns="auto,*,auto" rows="auto,auto" class="watchlist-elem" >
                   <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
@@ -49,7 +49,9 @@
                 </GridLayout>
               </ListView.itemTemplate>
             </ListView>
-           <Button text="Manage Targets" tap="onManageTargets" id="manage" class="manage-button"/>
+           <Button text="Manage Targets" tap="onManageTargets" id="manageTargets" class="manage-button"/>
+           <Label text="When you have been on a watchlist app for too long, HabitLab will prompt you to visit your target sites" class="tutorial-header" id="tutorialHeader" visibility="collapsed" textWrap="true"/>
+           <Button text="Next" id="nextTutorial" tap="goNextTutorial" visibility="collapsed"/>
          </StackLayout>
          </TabViewItem.view>
         </TabViewItem>

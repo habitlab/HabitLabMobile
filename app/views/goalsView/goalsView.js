@@ -6,6 +6,7 @@ var ToolTip = require("nativescript-tooltip").ToolTip;
 var FancyAlert = require("~/util/FancyAlert");
 var SCREEN_WIDTH = android.content.res.Resources.getSystem().getDisplayMetrics().widthPixels;
 var observable = require("data/observable");
+var TargetOverlay = require("~/overlays/TargetOverlay");
 
 var drawer;
 var page;
@@ -124,6 +125,9 @@ exports.pageLoaded = function(args) {
   page.bindingContext = pageData;
   pageData.set('tutorialFinished', StorageUtil.isTutorialComplete());
 
+  var tabView = page.getViewById("tabView")
+  tabView.selectedIndex = 1;
+
   drawer = page.getViewById("sideDrawer");
   phoneList = page.getViewById('phone-list');
   appsList = page.getViewById('apps-list');
@@ -134,6 +138,34 @@ exports.pageLoaded = function(args) {
     FancyAlert.show(FancyAlert.type.SUCCESS, "Great!", "Set some goals! Or not - you can come back here anytime by clicking on Goals in the menu", "Awesome!"); 
   }
 };
+
+
+exports.onIndexChanged = function(args) {
+  if (args.newIndex === 2) {
+    console.warn("on page")
+    if (!StorageUtil.isTargetOn()) {
+      console.warn("target acquired");
+      TargetOverlay.showIntroDialog("Targets are Locked", "Choose target apps you'd rather spend time on to start building positive habits.", "Ok!", redirectToWatchlist, redirect);
+    }
+  }
+}
+
+redirectToWatchlist = function() {
+  var options = {
+    moduleName: 'views/watchlistView/watchlistView',
+    context: {
+      index: 1,
+      fromGoals: true
+    }
+  } 
+  frameModule.topmost().navigate(options);
+}
+
+
+redirect = function() {
+  var tabView = page.getViewById("tabView")
+  tabView.selectedIndex = 1;
+}
 
 exports.nextStep = function() {
   frameModule.topmost().navigate('views/interventionsView/interventionsView');

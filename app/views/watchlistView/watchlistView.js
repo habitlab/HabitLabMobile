@@ -66,8 +66,13 @@ var setUpList = function() {
 
 
 exports.pageLoaded = function(args) {
+  console.warn("is console.warn working")
   events = [{category: "page_visits", index: "watchlist_main"}];
   page = args.object;
+   if (page.navigationContext) {
+    var index = page.navigationContext.index;
+    var fromGoals = page.navigationContext.fromGoals;
+  }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
   drawer = page.getViewById('sideDrawer');
@@ -93,7 +98,79 @@ exports.pageLoaded = function(args) {
     }
   });
   pageData.set("target", targets);
+
+  if (index) {
+    var tabView = page.getViewById("tabView")
+    tabView.selectedIndex = index;
+  }
 };
+
+var overlayShowing = false;
+var isTutorialComplete = false;
+
+exports.onIndexChange = function(args) {
+    if (args.newIndex === 1) {
+      if (!StorageUtil.isTargetOn()) {
+        if (fromGoals) {
+          showTutorialPage();
+        } else {
+          TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
+          overlayShowing = true;
+        }
+        
+      } else {
+        showMainPage();
+      }
+    } else {
+      if (overlayShowing) {
+        TargetOverlay.removeIntroDialog();
+        overlayShowing = false;
+      }
+    }
+};
+
+
+redirect = function() {
+  var tabView = page.getViewById("tabView")
+  tabView.selectedIndex = 0;
+}
+
+
+showTutorialPage = function() {
+  var list = page.getViewById("targetList");
+  list.visibility = "collapsed";
+  var manageTargets = page.getViewById("manageTargets");
+  manageTargets.visibility = "collapsed";
+  var tutorialHeader = page.getViewById("tutorialHeader");
+  tutorialHeader.visibility = "visible";
+  var nextTutorial = page.getViewById("nextTutorial");
+  nextTutorial.visibility = "visible";
+}
+
+showMainPage = function() {
+  var tutorialHeader = page.getViewById("tutorialHeader");
+  tutorialHeader.visibility = "collapsed";
+  var nextTutorial = page.getViewById("nextTutorial");
+  nextTutorial.visibility = "collapsed";
+}
+
+
+exports.goNextTutorial = function() {
+  if (!StorageUtil.isTargetOn) {
+    var options = {
+        moduleName: 'views/appsView/appsView',
+        context: {
+          watchlist: false,
+          tutorial: true
+        }
+    }
+    StorageUtil.setTargetOn();
+    frameModule.topmost().navigate(options);
+  }
+    
+}
+
+
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
@@ -108,7 +185,8 @@ exports.onManageTargets = function() {
   var options = {
         moduleName: 'views/appsView/appsView',
         context: {
-          watchlist: false
+          watchlist: false,
+          tutorial: false
         }
   }
   frameModule.topmost().navigate(options);
@@ -118,7 +196,8 @@ exports.onManageWatchlist = function() {
   var options = {
         moduleName: 'views/appsView/appsView',
         context: {
-          watchlist: true
+          watchlist: true,
+          tutorial: false
         }
   }
   frameModule.topmost().navigate(options);

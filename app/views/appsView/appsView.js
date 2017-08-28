@@ -114,6 +114,7 @@ exports.pageLoaded = function(args) {
   page = args.object;
   if (page.navigationContext) {
     isWatchlist = page.navigationContext.watchlist;
+    isTutorial = page.navigationContext.tutorial;
   }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
@@ -193,7 +194,19 @@ exports.onDone = function() {
         }
       }
     });
-    frame.topmost().goBack();
+    if (isTutorial) {
+      fancyAlert.TNSFancyAlert.showSuccess("Success!", "Your target apps are added. You can monitor them anytime here!", "Sweet!");
+      var options = {
+        moduleName: 'views/watchlistView/watchlistView',
+        context: {
+          index: 1,
+          fromGoals: false
+        }
+      } 
+      frame.topmost().navigate(options);
+    } else {
+      frame.topmost().goBack();
+    }
   } else {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
   }
