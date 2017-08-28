@@ -25,3 +25,11 @@ The main features of the HabitLab app are:
   1.6 Video Blocker (VideoOverlay)
 2. Progress View
   2.1 Day Graph
+
+
+
+Ongoing/ Future Ideas
+
+- Allow users to favorite nudges and see them more frequently
+- Pictoral view of the types of nudges 
+- Add easy nudges first, then time release add medium nudges after 5 days, etc.
