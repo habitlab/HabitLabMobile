@@ -132,9 +132,13 @@ exports.nextStep = function() {
 
 exports.pageUnloaded = function(args) {
   var watchlist = page.bindingContext.get('appGoals');
-  for (var i = 0; i < watchlist.length; i++) {
-    StorageUtil.changeAppGoal(watchlist[i].packageName, watchlist[i].value, watchlist[i].name === 'mins' ? 'minutes' : watchlist[i].name);
-  }
+
+  watchlist.forEach(function(app) {
+    if (!app) {
+      return;
+    }
+    StorageUtil.changeAppGoal(app.packageName, app.value, app.name === 'mins' ? 'minutes' : app.name);
+  });
 
   // var targetList = page.bindingContext.get('targetGoals');
   // for (var i = 0; i < targetList.length; i++) {
