@@ -258,8 +258,8 @@ exports.interventionDetails = [
   style: 'overlay'
 }, {
   id: 23,
-  name: 'PLACEHOLDER', 
-  icon: 'res://ic_eye', 
+  name: 'Your Better Half', 
+  icon: 'res://ic_heart', 
   functionality: "Positive App Toast", 
   description: "Pops up a hint bubble suggesting a target app to visit", 
   target: 'app', 
