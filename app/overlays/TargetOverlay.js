@@ -1,5 +1,7 @@
 var app = require("application");
 
+//This is a full screen overlay under tabs, with a dialog in the center. Used in target onboarding.
+
 // native APIs
 var WindowManager = android.view.WindowManager;
 var Paint = android.graphics.Paint;
@@ -73,6 +75,7 @@ var dialog;
 var title;
 var text;
 var button;
+//Redirect occurs when the user taps outside of the overlay area. Call back occurs when the user presses the button
 exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 

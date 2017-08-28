@@ -4,6 +4,7 @@ var frameModule = require("ui/frame");
 var observable = require("data/observable");
 var TargetOverlay = require("~/overlays/TargetOverlay");
 
+var pageData;
 var drawer;
 var page;
 var events;
@@ -87,6 +88,7 @@ exports.pageLoaded = function(args) {
       icon: basicInfo.icon
     }
   });
+  console.warn(pageData)
   pageData.set('watchlist', pkgs);
 
   //set up targets list
