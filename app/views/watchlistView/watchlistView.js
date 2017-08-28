@@ -69,7 +69,6 @@ var setUpList = function() {
 
 
 exports.pageLoaded = function(args) {
-  console.warn("is console.warn working")
   events = [{category: "page_visits", index: "watchlist_main"}];
   page = args.object;
    if (page.navigationContext) {
@@ -91,7 +90,6 @@ exports.pageLoaded = function(args) {
       icon: basicInfo.icon
     }
   });
-  console.warn(pageData)
   pageData.set('watchlist', pkgs);
 
   //set up targets list
@@ -112,7 +110,6 @@ exports.pageLoaded = function(args) {
 };
 
 var overlayShowing = false;
-var isTutorialComplete = false;
 
 exports.onIndexChange = function(args) {
     if (args.newIndex === 1) {
@@ -122,8 +119,7 @@ exports.onIndexChange = function(args) {
         } else {
           TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
           overlayShowing = true;
-        }
-        
+        }   
       } else {
         showMainPage();
       }
@@ -133,7 +129,6 @@ exports.onIndexChange = function(args) {
         overlayShowing = false;
       }
     }
-
 };
 
 
@@ -163,7 +158,6 @@ showMainPage = function() {
 
 
 exports.goNextTutorial = function() {
-  if (!StorageUtil.isTargetOn) {
     var options = {
         moduleName: 'views/appsView/appsView',
         context: {
@@ -171,12 +165,7 @@ exports.goNextTutorial = function() {
           tutorial: true
         }
     }
-    console.warn("trying to go next")
     frameModule.topmost().navigate(options);
-  } else {
-    console.warn("target is on?")
-  }
-    
 }
 
 

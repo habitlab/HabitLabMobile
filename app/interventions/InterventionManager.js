@@ -830,12 +830,13 @@ var flipScreen = function(real, pkg) {
  */ 
 var positiveAppToast = function(real, pkg) {
   if (!real) {
-
+    Toast.show(context, "No demo available for this nudge!", 0);
+    return;
   }
 
   if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg) && StorageUtil.isTargetOn()) {
     var visits = StorageUtil.getVisits(pkg);
-    if (visits > 0){//THRESHOLD_POSITIVE_TST) {
+    if (visits > THRESHOLD_POSITIVE_TST) {
       var targets = StorageUtil.getTargetSelectedPackages();
       var index = randBW(0, targets.length - 1);
       var targetPkg = targets[index];
@@ -848,7 +849,7 @@ var positiveAppToast = function(real, pkg) {
 
       var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
 
-      ToastOverlay.showToastOverlay("Go to " + appName, bitmap, cb);
+      ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
     }
   }
 
@@ -889,7 +890,7 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
-  positiveAppToast(pkg);
+  positiveAppToast(true, pkg);
   return;
   // set up duration interventions
   popToastVisitLength(true, pkg);
