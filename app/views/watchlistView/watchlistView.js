@@ -134,16 +134,6 @@ exports.onIndexChange = function(args) {
       }
     }
 
-  targets = StorageUtil.getTargetSelectedPackages().map(function (pkgName) {
-    var basicInfo = UsageUtil.getBasicInfo(pkgName);
-    return {
-      packageName: pkgName,
-      name: basicInfo.name,
-      icon: basicInfo.icon
-    }
-  });
-  pageData.set("target", targets);
-
 };
 
 
