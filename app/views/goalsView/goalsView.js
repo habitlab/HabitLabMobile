@@ -13,7 +13,7 @@ var events;
 var pageData;
 var phoneList;
 var appsList;
-var targetsList;
+// var targetsList;
 
 exports.onInfo = function(args) {
   events.push({category: 'features', index: 'tooltips'});
@@ -52,21 +52,21 @@ var initializeAppsList = function() {
   pageData.set('appGoals', appGoals);
 };
 
-var initializeTargetsList = function() {
-  var pkgs = StorageUtil.getTargetSelectedPackages();
-  var targetGoals = [];
-  pkgs.forEach(function (pkg) {
-    var basicInfo = UsageUtil.getBasicInfo(pkg);
-    targetGoals.push({
-      app: basicInfo.name,
-      icon: basicInfo.icon,
-      name: 'mins',
-      value: StorageUtil.getMinutesGoal(pkg),
-      packageName: pkg
-    });
-  });
-  pageData.set('targetGoals', targetGoals);
-};
+// var initializeTargetsList = function() {
+//   var pkgs = StorageUtil.getTargetSelectedPackages();
+//   var targetGoals = [];
+//   pkgs.forEach(function (pkg) {
+//     var basicInfo = UsageUtil.getBasicInfo(pkg);
+//     targetGoals.push({
+//       app: basicInfo.name,
+//       icon: basicInfo.icon,
+//       name: 'mins',
+//       value: StorageUtil.getMinutesGoal(pkg),
+//       packageName: pkg
+//     });
+//   });
+//   pageData.set('targetGoals', targetGoals);
+// };
 
 var getGoal = function(txt, add) {
   var num = add ? Number(txt) + 5 : Number(txt) - 5;
@@ -96,27 +96,16 @@ exports.appGoalChange = function(args) {
   appsList.refresh();
 };
 
-exports.appGoalUnloaded = function(args) {
-  // var boundGoal = args.object.bindingContext;
-  // if (!boundGoal) { return; }
-  // StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name === 'mins' ? 'minutes' : boundGoal.name);
-};
-
-exports.targetGoalChange = function(args) {
-  var boundGoal = args.object.parent.parent.bindingContext;
-  boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
-  targetsList.refresh();
-};
-
-exports.targetGoalUnloaded = function(args) {
-  // var boundGoal = args.object.bindingContext;
-  // StorageUtil.changeAppGoal(boundGoal.packageName, boundGoal.value, boundGoal.name);
-};
+// exports.targetGoalChange = function(args) {
+//   var boundGoal = args.object.parent.parent.bindingContext;
+//   boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
+//   targetsList.refresh();
+// };
 
 var initializeLists = function() {
   initializePhoneList();
   initializeAppsList();
-  initializeTargetsList();
+  // initializeTargetsList();
 };
 
 exports.pageLoaded = function(args) {
@@ -129,7 +118,7 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById("sideDrawer");
   phoneList = page.getViewById('phone-list');
   appsList = page.getViewById('apps-list');
-  targetsList = page.getViewById('targets-list');
+  // targetsList = page.getViewById('targets-list');
   initializeLists();
 
   if (!pageData.get('tutorialFinished')) {
@@ -147,11 +136,10 @@ exports.pageUnloaded = function(args) {
     StorageUtil.changeAppGoal(watchlist[i].packageName, watchlist[i].value, watchlist[i].name === 'mins' ? 'minutes' : watchlist[i].name);
   }
 
-  var targetList = page.bindingContext.get('targetGoals');
-  for (var i = 0; i < targetList.length; i++) {
-    StorageUtil.changeAppGoal(targetList[i].packageName, targetList[i].value, targetList[i].name === 'mins' ? 'minutes' : targetList[i].name);
-  }
-
+  // var targetList = page.bindingContext.get('targetGoals');
+  // for (var i = 0; i < targetList.length; i++) {
+  //   StorageUtil.changeAppGoal(targetList[i].packageName, targetList[i].value, targetList[i].name === 'mins' ? 'minutes' : targetList[i].name);
+  // }
 
   StorageUtil.addLogEvents(events);
 };
