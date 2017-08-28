@@ -3,8 +3,8 @@ var UsageUtil = require('~/util/UsageInformationUtil');
 var frameModule = require("ui/frame");
 var observable = require("data/observable");
 var TargetOverlay = require("~/overlays/TargetOverlay");
+var pageData = new observable.Observable();
 
-var pageData;
 var drawer;
 var page;
 var events;
