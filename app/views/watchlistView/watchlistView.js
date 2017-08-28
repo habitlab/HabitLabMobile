@@ -2,6 +2,7 @@ var StorageUtil = require("~/util/StorageUtil");
 var UsageUtil = require('~/util/UsageInformationUtil');
 var frameModule = require("ui/frame");
 var observable = require("data/observable");
+var TargetOverlay = require("~/overlays/TargetOverlay");
 
 var drawer;
 var page;
@@ -61,6 +62,7 @@ var setUpList = function() {
     listLayout.addChild(createItem(pkg));
   });
 };
+
 
 
 exports.pageLoaded = function(args) {
