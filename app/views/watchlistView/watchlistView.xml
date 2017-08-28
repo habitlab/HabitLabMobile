@@ -36,7 +36,6 @@
           </TabViewItem.view>
           </TabViewItem>
 
-        
         <!-- <TabViewItem title="Targets">
           <TabViewItem.view>
             <StackLayout>
@@ -57,9 +56,6 @@
 
         </TabView.items>
       </TabView>
-    <!-- </StackLayout> -->
-
-
     </sd:RadSideDrawer.mainContent>
   </sd:RadSideDrawer>
 </Page>
