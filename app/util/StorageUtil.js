@@ -303,10 +303,10 @@ exports.setUpFakeDB = function() {
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   watchlistPreset.forEach(function (item) {
-    createPackageData(item);
+    createFakePackageData(item);
   });
   targetPreset.forEach(function (item) {
-    createPackageData(item);
+    createFakePackageData(item);
   });
   createFakePhoneData();
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
