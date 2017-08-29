@@ -20,6 +20,7 @@ exports.toggleDrawer = function() {
   }
 };
 
+//Demo button
 exports.onButtonTap = function() {
   IM.interventions[id]();
   events.push({category: 'features', index: 'nudge_detail_demo'});

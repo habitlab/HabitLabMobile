@@ -134,13 +134,11 @@ exports.showOverlay = function (title, msg, pos, prog, max, posCallback, negCall
     var labelParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
     	0.35*SCREEN_WIDTH, 0.12 * SCREEN_HEIGHT, 
     	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    // labelParams.gravity = Gravity.RIGHT | Gravity.TOP;
     labelText = new TextView(context);
     labelText.setText(max + " mins");
     labelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
     labelText.setTextColor(Color.WHITE);
     labelText.setHorizontallyScrolling(false);
-    // labelText.setGravity(Gravity.CENTER);
     windowManager.addView(labelText, labelParams);
 
     //Add exit button

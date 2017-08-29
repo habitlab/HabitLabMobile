@@ -22,7 +22,7 @@
         <Label text="no results" class="no-results" id="no-results" visibility="collapse" />
         
         <StackLayout>
-          <ListView items="{{nudges}}" itemTemplateSelector="isHeader ? 'header' : 'item'" id="nudges-list" separatorColor="#FFFFFF" itemTap="onItemTap">
+          <ListView items="{{nudges}}" itemTemplateSelector="isHeader ? 'header' : 'item'" id="nudges-list" separatorColor="#FFFFFF" itemTap="onItemTap" tap="headerTap">
             <ListView.itemTemplates>
               <template key="item" >
                 <StackLayout class="padded-wrapper" >
@@ -32,12 +32,16 @@
                       <Label text='{{name}}' class='intervention-label' />
                       <Label text='{{summary}}' class='intervention-description'/>
                     </StackLayout>
-                    <Image id="arrow" col="2" src="res://ic_arrow_right" />
+                    <Image id="arrow" col="3" src="res://ic_arrow_right" />
                   </GridLayout>
                 </StackLayout>
               </template>
               <template key="header" >
-                <Label class="nudges-section-title" text='{{title}}'/>
+                <StackLayout orientation="horizontal" id="headers">
+                  <Label class="nudges-section-title" text='{{title}}'/>
+                  <!-- Weird things happening with the info button -->
+                  <!-- <Image src="res://ic_about" id="aboutIcon" verticalAlignment="middle"/> -->
+                </StackLayout>
               </template>
             </ListView.itemTemplates>
           </ListView>
