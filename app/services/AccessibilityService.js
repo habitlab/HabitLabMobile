@@ -66,12 +66,17 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             var now = Date.now();
             closeRecentVisit(now);
             var timeSpentOnPhone = now - screenOnTime;
-            storage.updateTotalTime(timeSpentOnPhone);
+            
+            if (screenOnTime) {
+                storage.updateTotalTime(timeSpentOnPhone);
+            }
+
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
             currentApplication.packageName = "";
             currentApplication.isBlacklisted = false;
             currentApplication.visitStart = 0;
+            screenOnTime = 0; // reset (otherwise glances cause inaccurate data)
         }  
     }
 });
@@ -113,7 +118,11 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         if (activePackage === "com.stanfordhci.habitlab") { 
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
-            storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
+
+            if (screenOnTime) {
+                storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
+            }
+            
             screenOnTime = now;
             return; // skip over habitlab
         } 
@@ -243,20 +252,6 @@ function setUpScreenReceiver() {
     closeRecentVisit(Date.now());
  };
 
-
-/**
- * enteredHabitlab
- * ---------------
- * Function to be called by the progressView when Habitlab is opened.
- * Allows AccessibilityService to update the current time spent on
- * phone, displayed by the progressView
- */
-exports.enteredHabitlab = function () {
-    var now = Date.now();
-    var timeSpentOnPhone = now - screenOnTime;
-    storage.updateTotalTime(timeSpentOnPhone);
-    screenOnTime = now;
-}
 
 function lockdownCb() {
     CancelOverlay.showCancelLockDialog("Unlock apps", "Are you sure you want to stop lockdown mode?", 

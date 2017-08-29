@@ -49,6 +49,7 @@ var editName = function () {
                 events.push({category: "features", index: "editname_changed"});
 	    		StorageUtil.setName(newName);
 	    		dialog.dismiss();
+                Toast.makeText("Name changed to " + newName).show();
 	    	} else {
 	    		Toast.makeText("Please enter your name").show();
 	    	} 	
@@ -121,6 +122,7 @@ var eraseData = function() {
             events.push({category: "features", index: "erase_data_confirm"});
 	    	StorageUtil.setUpDB(true);
 	    	dialog.dismiss();
+            Toast.makeText("Data Erased").show();
 	    }
 	});
 

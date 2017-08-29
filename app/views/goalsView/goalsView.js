@@ -133,7 +133,6 @@ exports.pageLoaded = function(args) {
 
 exports.onIndexChanged = function(args) {
   if (args.newIndex === 2) {
-    console.warn("on page")
     if (!StorageUtil.isTargetOn()) {
       if (!StorageUtil.isTutorialComplete()) {
           TargetOverlay.showIntroDialog("Off Limits", "Targets are Locked. Continue using HabitLab to unlock Targets.", "Ok!", redirect, redirect);

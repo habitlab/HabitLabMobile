@@ -11,6 +11,7 @@ const LockdownOverlay = require("~/overlays/LockdownOverlay");
 const SliderOverlay = require("~/overlays/SliderOverlay");
 const ScreenFlipperOverlay = require("~/overlays/ScreenFlipperOverlay");
 const ToastOverlay = require("~/overlays/ToastOverlay");
+const TargetOverlay = require("~/overlays/TargetOverlay");
 const ID = require('~/interventions/InterventionData');
 const Timer = require("timer");
 
@@ -834,25 +835,37 @@ var positiveAppToast = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg) && StorageUtil.isTargetOn()) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits > THRESHOLD_POSITIVE_TST) {
-      var targets = StorageUtil.getTargetSelectedPackages();
-      var index = randBW(0, targets.length - 1);
-      var targetPkg = targets[index];
+  if (StorageUtil.isTargetOn()) {
+    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
+      var visits = StorageUtil.getVisits(pkg);
+      if (visits > THRESHOLD_POSITIVE_TST) {
+        var targets = StorageUtil.getTargetSelectedPackages();
+        var index = randBW(0, targets.length - 1);
+        var targetPkg = targets[index];
 
-      var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
-      var cb = function () {
-        var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-        foreground.startActivity(launchIntent);
+        var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+        var cb = function () {
+          var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+          foreground.startActivity(launchIntent);
+        }
+
+        var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
+        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
       }
-
-      var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-
-      ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
     }
-  }
+  } else {
+    var title = "Target Acquired";
+    var msg = "Looks like you haven't set any target apps yet! Would you like to set that up?";
+    var pos = "Let's do it!";
+    var neg = "Later";
+    var cb = function() {
+      var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
+      foreground.startActivity(launchIntent);
+    };
 
+    TargetOverlay.showTargetEnableOverlay(title, msg, pos, neg, cb, null);
+  }
 }
 
 

@@ -79,8 +79,6 @@ exports.pageLoaded = function(args) {
   page.bindingContext = pageData;
   drawer = page.getViewById('sideDrawer');
 
-  console.warn(pageData);
-
   //set up watchlist list
   pkgs = StorageUtil.getSelectedPackages().map(function (pkgName) {
     var basicInfo = UsageUtil.getBasicInfo(pkgName);

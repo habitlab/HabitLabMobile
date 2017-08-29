@@ -25,7 +25,7 @@
         </FlexboxLayout>
         <Button class="try-me-button" text="Show Me a Demo" tap="onButtonTap"/>
         <FlexboxLayout orientation="horizontal" className="{{target === 'phone' ? 'level-layout' : 'disable-layout'}}">
-          <Label text="{{enabled ? 'Disable Nudge' : 'Enable Nudge'}}" class="detail-label small" />
+          <Label text="{{enabled ? 'Nudge Enabled' : 'Nudge Disabled'}}" class="detail-label small" />
           <Switch id="main-toggle" checked="{{enabled}}" tap="onMainToggle" />
         </FlexboxLayout>
 
