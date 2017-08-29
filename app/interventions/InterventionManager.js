@@ -836,7 +836,9 @@ var positiveAppToast = function(real, pkg) {
   }
 
   if (StorageUtil.isTargetOn()) {
+    console.warn("aboutToIntervene");
     if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
+      console.warn("intervening");
       var visits = StorageUtil.getVisits(pkg);
       if (visits > THRESHOLD_POSITIVE_TST) {
         var targets = StorageUtil.getTargetSelectedPackages();
@@ -846,7 +848,9 @@ var positiveAppToast = function(real, pkg) {
         var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
         var cb = function () {
           var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-          foreground.startActivity(launchIntent);
+          if (foreground) {
+            foreground.startActivity(launchIntent);
+          }
         }
 
         var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
@@ -861,7 +865,10 @@ var positiveAppToast = function(real, pkg) {
     var neg = "Later";
     var cb = function() {
       var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
-      foreground.startActivity(launchIntent);
+      intent.putExtra("goToTarget", "true");
+      if (foreground) {
+        foreground.startActivity(intent);
+      }
     };
 
     TargetOverlay.showTargetEnableOverlay(title, msg, pos, neg, cb, null);
@@ -884,6 +891,9 @@ var removeOverlays = function() {
   LockdownOverlay.removeOverlay();
   SliderOverlay.removeSliderOverlay();
   ScreenFlipperOverlay.removeOverlay();
+  TargetOverlay.removeTargetDialog();
+  TargetOverlay.removeIntroDialog();
+  ToastOverlay.removeOverlay();
   pausedThisVisit = false;
 }
 
@@ -903,8 +913,6 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
-  positiveAppToast(true, pkg);
-  return;
   // set up duration interventions
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);

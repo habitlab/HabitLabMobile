@@ -86,6 +86,23 @@ var cb = function() {
 };
 
 exports.pageLoaded = function(args) {
+    var intent = app.android.foregroundActivity.getIntent();
+    if (intent) {
+        var val = intent.getStringExtra("goToTarget");
+        console.warn(val);
+        if (val === "true") {
+            intent.removeExtra("goToTarget");
+            var options = {
+                moduleName: 'views/watchlistView/watchlistView',
+                context: {
+                  index: 1,
+                  fromGoals: false
+                }
+            } 
+            frameModule.topmost().navigate(options);
+        }
+    }
+
     if (!permissionUtil.checkAccessibilityPermission()) {
         FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!", 
             "Take me there!", cb);
