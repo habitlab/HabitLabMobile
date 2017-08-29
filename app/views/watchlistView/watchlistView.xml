@@ -49,7 +49,8 @@
               </ListView.itemTemplate>
             </ListView>
            <Button text="Manage Targets" tap="onManageTargets" id="manageTargets" class="manage-button"/>
-           <Label text="When you have been on a watchlist app for too long, HabitLab will prompt you to visit your target sites" class="tutorial-header" id="tutorialHeader" visibility="collapsed" textWrap="true"/>
+           <Label text="HabitLab will help you redirect your attention to more productive apps" class="tutorial-header" id="tutorialHeader" visibility="collapsed" textWrap="true"/>
+           <Image id="tutorial-image" src="~/images/target_shot.jpg" visibility="collapsed"/>
            <Button text="Next" id="nextTutorial" tap="goNextTutorial" visibility="collapse"/>
          </StackLayout>
          </TabViewItem.view>
