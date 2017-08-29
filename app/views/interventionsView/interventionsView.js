@@ -3,6 +3,11 @@ var IM = require('~/interventions/InterventionManager');
 var ID = require('~/interventions/InterventionData');
 var fancyAlert = require("nativescript-fancyalert");
 var observable = require("data/observable");
+var Toast = require("nativescript-toast");
+var DialogOverlay = require('~/overlays/DialogOverlay');
+var NotificationUtil = require('~/util/NotificationUtil');
+var application = require("application");
+var context = application.android.context;
 
 var frameModule = require('ui/frame');
 var FancyAlert = require("~/util/FancyAlert");
@@ -88,8 +93,28 @@ exports.onItemTap = function(args) {
         curve: "easeIn"
       }
     });
+  } else {
+    switch(tappedItem.title) {
+      case("Hint Bubbles"):
+          Toast.makeText("This is a hint bubble!").show();
+          break;
+      case("Notifications"):
+          NotificationUtil.sendNotification(context, "Demo", "This is a notification", 0, 0);
+          break;
+      case("Alerts"):
+          var name = StorageUtil.getName();
+          DialogOverlay.showOneOptionDialogOverlay("Hey " + name + ", this is an alert!", "Ok");
+          break;
+      default:
+          break;
+    }
+    
+
   }
 };
+
+
+
 
 // for tracking if there are actually interventions for the headers
 var setList = function() {

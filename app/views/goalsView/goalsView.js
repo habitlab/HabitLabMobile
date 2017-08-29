@@ -135,7 +135,7 @@ exports.onIndexChanged = function(args) {
   if (args.newIndex === 2) {
     if (!StorageUtil.isTargetOn()) {
       if (!StorageUtil.isTutorialComplete()) {
-          TargetOverlay.showIntroDialog("Off Limits", "Targets are Locked. Continue using HabitLab to unlock Targets.", "Ok!", redirect, redirect);
+          TargetOverlay.showIntroDialog("Targets are Locked", "Continue using HabitLab to unlock Targets.", "Ok", redirect, redirect);
       } else {
         TargetOverlay.showIntroDialog("Targets are Locked", "Choose target apps you'd rather spend time on to start building positive habits.", "Ok!", redirectToWatchlist, redirect);
       }

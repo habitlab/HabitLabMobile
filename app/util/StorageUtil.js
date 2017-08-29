@@ -353,7 +353,7 @@ exports.setTutorialComplete = function() {
  * Sets the boolean 'targetOn' to true which means the user has enabled
  * 'target' goals and gone through the tutorial
  */
- exports.setTargetOn = function() {
+exports.setTargetOn = function() {
   appSettings.setBoolean('targetOn', true);
 };
 
