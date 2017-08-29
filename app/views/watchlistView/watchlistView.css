@@ -20,3 +20,19 @@
   margin-left: 4%;
   vertical-align: middle;
 }
+
+.tutorial-header {
+  font-size: 20%
+  vertical-align: middle;
+  text-align: center;
+  word-wrap: normal;
+  padding: 5%;
+  margin-top: 5%;
+}
+
+#nextTutorial {
+  background-color: #2EC4B6;
+  margin-top: 5%;
+  color: white;
+  float: right;
+}

@@ -20,6 +20,7 @@ var appList;
 var listView;
 var pageData;
 var isWatchlist;
+var isTargetTutorial;
 
 exports.closeKeyboard = function() {
   search.dismissSoftInput();
@@ -72,17 +73,17 @@ var setGrid = function() {
   var temp;
   var removed = 0;
   tempList.forEach(function (appInfo, index) {
-    // if (isWatchlist) {
-    //   if (StorageUtil.getTargetSelectedPackages().includes(appInfo.packageName)) {
-    //     removed += 1
-    //     return;
-    //   }
-    // } else {
-    //    if (StorageUtil.getSelectedPackages().includes(appInfo.packageName)) {
-    //       removed += 1
-    //      return;
-    //    }
-    // }
+    if (isWatchlist) {
+      if (StorageUtil.getTargetSelectedPackages().includes(appInfo.packageName)) {
+        removed += 1
+        return;
+      }
+    } else {
+       if (StorageUtil.getSelectedPackages().includes(appInfo.packageName)) {
+          removed += 1
+         return;
+       }
+    }
     var toPush = (index + 1) - removed === tempList.length;
     var mod = (index - removed) % 3;
 
@@ -112,9 +113,10 @@ exports.pageLoaded = function(args) {
   events = [{category: 'page_visits', index: 'watchlist_manage'}];
 
   page = args.object;
-  // if (page.navigationContext) {
-  //   isWatchlist = page.navigationContext.watchlist;
-  // }
+  if (page.navigationContext) {
+    isWatchlist = page.navigationContext.watchlist;
+    isTargetTutorial = page.navigationContext.tutorial;
+  }
   pageData = new observable.Observable();
   page.bindingContext = pageData;
   search = page.getViewById('search-bar');
@@ -123,17 +125,17 @@ exports.pageLoaded = function(args) {
   listView = page.getViewById('app-list-view');
 
   toToggle = {};
-  //edit so that selected in one doesn't show up in both
+  
 
-  // if (isWatchlist) {
+  if (isWatchlist) {
     pkgs = StorageUtil.getSelectedPackages();
     pageData.set("title", "Select apps to spend less time on");
     pageData.set("header", "Manage Watchlist");
-  // } else {
-  //   pkgs = StorageUtil.getTargetSelectedPackages();
-  //   pageData.set("title", "Select apps to spend more time on");
-  //   pageData.set("header", "Manage Targets");
-  // }
+  } else {
+    pkgs = StorageUtil.getTargetSelectedPackages();
+    pageData.set("title", "Select apps to spend more time on");
+    pageData.set("header", "Manage Targets");
+  }
 
   pageData.set('filter', '');
   var loader = new LoadingIndicator();
@@ -186,14 +188,27 @@ exports.onDone = function() {
   if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
     Object.keys(toToggle).forEach(function(key) {
       if (toToggle[key]) {
-        // if (isWatchlist) {
+        if (isWatchlist) {
           StorageUtil.togglePackage(key);
-        // } else {
-        //   StorageUtil.toggleTargetPackage(key);
-        // }
+        } else {
+          StorageUtil.toggleTargetPackage(key);
+        }
       }
     });
-    frame.topmost().goBack();
+    if (isTargetTutorial) {
+      fancyAlert.TNSFancyAlert.showSuccess("Success!", "Your target apps are added. You can monitor them anytime here!", "Sweet!");
+      var options = {
+        moduleName: 'views/watchlistView/watchlistView',
+        context: {
+          index: 1,
+          fromGoals: false
+        }
+      } 
+      StorageUtil.setTargetOn();
+      frame.topmost().navigate(options);
+    } else {
+      frame.topmost().goBack();
+    }
   } else {
     fancyAlert.TNSFancyAlert.showError("Uh Oh!", "Please select at least one app to monitor!", "Okay");
   }

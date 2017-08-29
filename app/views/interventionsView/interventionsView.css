@@ -13,7 +13,6 @@
 .nudges-section-title {
   font-size: 22%;
   color: #FFA730;
-  padding-top: 10%;
   padding-left: 10%;
 }
 
@@ -23,6 +22,19 @@
   border-radius: 50%;
   margin: 2%;
   margin-right: 4%;
+}
+
+#aboutIcon {
+  height: 15;
+  background-color: #ffcd30;
+  border-radius: 50%;
+  margin: 2%;
+}
+
+#headers {
+  padding-left: 10%;
+  padding-top: 10%;
+  padding-bottom: 5%;
 }
 
 .level-easy {

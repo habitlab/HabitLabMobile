@@ -165,40 +165,14 @@ getDayEntries = function() {
     var total = progressInfo.phoneStats[TODAY].time;
     var entries = new ArrayList();
      for(var i = 0; i < trackApps.length; i++) {
-            if (trackApps[i].mins === 0) continue;
-            entries.add(new PieEntry(trackApps[i].mins, trackApps[i].name));
+        if (trackApps[i].mins === 0) continue;
+        entries.add(new PieEntry(trackApps[i].mins, trackApps[i].name));
      }
     piechart.notifyDataSetChanged();
     piechart.invalidate();
     return entries;
 }
 
-
-
-
-//Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
-// name: name,
-// visits: visits,
-// image: icon,
-// mins: mins,
-// index: index
-//Apart from other, which has a name, and mins
-getTrackableApps = function() {
-    var appsToday = getAppsToday();
-    if (appsToday.length <= 5) {
-        return appsToday;
-     } else if (appsToday.length > 5) {
-        //If there are more than 4 entries in the pie chart, use 'other' for the 5th label
-        var trackApps;
-        trackApps = appsToday.slice(0,4);
-        var other = getOther();
-        trackApps.push({
-            name: "Other",
-            mins: other[TODAY]
-        })
-    }
-    return trackApps;
-}
 
 
 
@@ -452,7 +426,6 @@ populateListViewsDay = function() {
     pageData.set("dayButtons", dayStats);
     var dayButtons = view.getViewById(page, "dayButtons");
     dayButtons.height = SCREEN_HEIGHT*0.04;
-    // setUpAppToday();
     dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
 };
@@ -603,6 +576,7 @@ setUp = function() {
         monthchart.notifyDataSetChanged();
         monthchart.invalidate();
     }
+    storageUtil.updateTargetDB();
 }
 
 //Allows the list to be pressable 
@@ -626,6 +600,35 @@ exports.goToDetailApps = function(args) {
     }
   });
 }
+
+
+
+
+
+//Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
+// name: name,
+// visits: visits,
+// image: icon,
+// mins: mins,
+// index: index
+//Apart from other, which has a name, and mins
+getTrackableApps = function() {
+    var appsToday = getAppsToday();
+    if (appsToday.length <= 5) {
+        return appsToday;
+     } else if (appsToday.length > 5) {
+        //If there are more than 4 entries in the pie chart, use 'other' for the 5th label
+        var trackApps;
+        trackApps = appsToday.slice(0,4);
+        var other = getOther();
+        trackApps.push({
+            name: "Other",
+            mins: other[TODAY]
+        })
+    }
+    return trackApps;
+}
+
 
 //Returns the total time spent on an app in a month when passed in that app's object
 getTotalTimeAppMonth = function(array) {
@@ -962,7 +965,7 @@ exports.toggleDrawer = function() {
 };
 
 
-
+//Controlls the back button
 exports.backEvent = function(args) {
    if(fromTutorial) {
         var foreground = app.android.foregroundActivity;
@@ -974,7 +977,7 @@ exports.backEvent = function(args) {
    }
 }
 
-
+//Checks if the pernission service is running 
 var permissionServiceIsRunning = function () {
     var manager = app.android.context.getSystemService(android.content.Context.ACTIVITY_SERVICE);
     var services = manager.getRunningServices(java.lang.Integer.MAX_VALUE);

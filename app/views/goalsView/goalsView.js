@@ -6,6 +6,7 @@ var ToolTip = require("nativescript-tooltip").ToolTip;
 var FancyAlert = require("~/util/FancyAlert");
 var SCREEN_WIDTH = android.content.res.Resources.getSystem().getDisplayMetrics().widthPixels;
 var observable = require("data/observable");
+var TargetOverlay = require("~/overlays/TargetOverlay");
 
 var drawer;
 var page;
@@ -13,7 +14,7 @@ var events;
 var pageData;
 var phoneList;
 var appsList;
-// var targetsList;
+var targetsList;
 
 exports.onInfo = function(args) {
   events.push({category: 'features', index: 'tooltips'});
@@ -52,21 +53,21 @@ var initializeAppsList = function() {
   pageData.set('appGoals', appGoals);
 };
 
-// var initializeTargetsList = function() {
-//   var pkgs = StorageUtil.getTargetSelectedPackages();
-//   var targetGoals = [];
-//   pkgs.forEach(function (pkg) {
-//     var basicInfo = UsageUtil.getBasicInfo(pkg);
-//     targetGoals.push({
-//       app: basicInfo.name,
-//       icon: basicInfo.icon,
-//       name: 'mins',
-//       value: StorageUtil.getMinutesGoal(pkg),
-//       packageName: pkg
-//     });
-//   });
-//   pageData.set('targetGoals', targetGoals);
-// };
+var initializeTargetsList = function() {
+  var pkgs = StorageUtil.getTargetSelectedPackages();
+  var targetGoals = [];
+  pkgs.forEach(function (pkg) {
+    var basicInfo = UsageUtil.getBasicInfo(pkg);
+    targetGoals.push({
+      app: basicInfo.name,
+      icon: basicInfo.icon,
+      name: 'mins',
+      value: StorageUtil.getMinutesGoal(pkg),
+      packageName: pkg
+    });
+  });
+  pageData.set('targetGoals', targetGoals);
+};
 
 var getGoal = function(txt, add) {
   var num = add ? Number(txt) + 5 : Number(txt) - 5;
@@ -96,16 +97,16 @@ exports.appGoalChange = function(args) {
   appsList.refresh();
 };
 
-// exports.targetGoalChange = function(args) {
-//   var boundGoal = args.object.parent.parent.bindingContext;
-//   boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
-//   targetsList.refresh();
-// };
+exports.targetGoalChange = function(args) {
+  var boundGoal = args.object.parent.parent.bindingContext;
+  boundGoal.value = getGoal(boundGoal.value, args.object.id === 'plus');
+  targetsList.refresh();
+};
 
 var initializeLists = function() {
   initializePhoneList();
   initializeAppsList();
-  // initializeTargetsList();
+  initializeTargetsList();
 };
 
 exports.pageLoaded = function(args) {
@@ -115,10 +116,13 @@ exports.pageLoaded = function(args) {
   page.bindingContext = pageData;
   pageData.set('tutorialFinished', StorageUtil.isTutorialComplete());
 
+  var tabView = page.getViewById("tabView")
+  tabView.selectedIndex = 1;
+
   drawer = page.getViewById("sideDrawer");
   phoneList = page.getViewById('phone-list');
   appsList = page.getViewById('apps-list');
-  // targetsList = page.getViewById('targets-list');
+  targetsList = page.getViewById('targets-list');
   initializeLists();
 
   if (!pageData.get('tutorialFinished')) {
@@ -126,20 +130,54 @@ exports.pageLoaded = function(args) {
   }
 };
 
+
+exports.onIndexChanged = function(args) {
+  if (args.newIndex === 2) {
+    if (!StorageUtil.isTargetOn()) {
+      if (!StorageUtil.isTutorialComplete()) {
+          TargetOverlay.showIntroDialog("Targets are Locked", "Continue using HabitLab to unlock Targets.", "Ok", redirect, redirect);
+      } else {
+        TargetOverlay.showIntroDialog("Targets are Locked", "Choose target apps you'd rather spend time on to start building positive habits.", "Ok!", redirectToWatchlist, redirect);
+      }
+    }
+  }
+}
+
+redirectToWatchlist = function() {
+  var options = {
+    moduleName: 'views/watchlistView/watchlistView',
+    context: {
+      index: 1,
+      fromGoals: true
+    }
+  } 
+  frameModule.topmost().navigate(options);
+}
+
+
+redirect = function() {
+  var tabView = page.getViewById("tabView")
+  tabView.selectedIndex = 1;
+}
+
 exports.nextStep = function() {
   frameModule.topmost().navigate('views/interventionsView/interventionsView');
 };
 
 exports.pageUnloaded = function(args) {
   var watchlist = page.bindingContext.get('appGoals');
-  for (var i = 0; i < watchlist.length; i++) {
-    StorageUtil.changeAppGoal(watchlist[i].packageName, watchlist[i].value, watchlist[i].name === 'mins' ? 'minutes' : watchlist[i].name);
-  }
 
-  // var targetList = page.bindingContext.get('targetGoals');
-  // for (var i = 0; i < targetList.length; i++) {
-  //   StorageUtil.changeAppGoal(targetList[i].packageName, targetList[i].value, targetList[i].name === 'mins' ? 'minutes' : targetList[i].name);
-  // }
+  watchlist.forEach(function(app) {
+    if (!app) {
+      return;
+    }
+    StorageUtil.changeAppGoal(app.packageName, app.value, app.name === 'mins' ? 'minutes' : app.name);
+  });
+
+  var targetList = page.bindingContext.get('targetGoals');
+  for (var i = 0; i < targetList.length; i++) {
+    StorageUtil.changeAppGoal(targetList[i].packageName, targetList[i].value, targetList[i].name === 'mins' ? 'minutes' : targetList[i].name);
+  }
 
   StorageUtil.addLogEvents(events);
 };

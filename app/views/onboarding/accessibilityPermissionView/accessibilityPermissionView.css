@@ -17,6 +17,8 @@ Button {
 
 .information-image {
 	width: 85%;
+	padding-top: 10%;
+	padding-bottom: 10%;
 }
 
 .title {
