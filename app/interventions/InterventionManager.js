@@ -836,9 +836,7 @@ var positiveAppToast = function(real, pkg) {
   }
 
   if (StorageUtil.isTargetOn()) {
-    console.warn("aboutToIntervene");
     if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
-      console.warn("intervening");
       var visits = StorageUtil.getVisits(pkg);
       if (visits > THRESHOLD_POSITIVE_TST) {
         var targets = StorageUtil.getTargetSelectedPackages();

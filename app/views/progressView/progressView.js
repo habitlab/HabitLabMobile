@@ -89,7 +89,6 @@ exports.pageLoaded = function(args) {
     var intent = app.android.foregroundActivity.getIntent();
     if (intent) {
         var val = intent.getStringExtra("goToTarget");
-        console.warn(val);
         if (val === "true") {
             intent.removeExtra("goToTarget");
             var options = {
