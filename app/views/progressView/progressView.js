@@ -491,7 +491,8 @@ populateListViewsWeek = function() {
 	)
 	pageData.set("weekButtons", weekStats);
     var weekButtons = view.getViewById(page, "weekButtons");
-    weekButtons.height = SCREEN_HEIGHT*0.04;
+    // weekButtons.height = SCREEN_HEIGHT*0.04;
+    weekButtons.height = LayoutParams.WRAP_CONTENT;
     var weekApps = getAppsWeek();
 	pageData.set("weekItems", weekApps);
  }
@@ -541,7 +542,8 @@ populateListViewMonth = function () {
 	)
 	pageData.set("monthButtons", monthStats);
     var monthButtons = view.getViewById(page, "monthButtons");
-    monthButtons.height = SCREEN_HEIGHT*0.04;
+    monthButtons.height = LayoutParams.WRAP_CONTENT;
+    // monthButtons.height = SCREEN_HEIGHT*0.04;
     var monthApps = getAppsMonth();
     pageData.set("monthItems", monthApps);
 };

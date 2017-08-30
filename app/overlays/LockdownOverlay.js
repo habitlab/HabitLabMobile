@@ -1,4 +1,4 @@
-var application = require("application");
+ var application = require("application");
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -21,9 +21,6 @@ var LayoutParams = android.view.ViewGroup.LayoutParams;
  *          PAINTS            *                           
  ******************************/
 
-// var fillPairs = [
-// 	{bkgd: "#FFA730", hdr: "#2EC4B6", pos: "#2EC4B6", neg: "#011627"}
-// ]
 
 //Lighter red for main rectange in center
 var MAIN = new Paint();
