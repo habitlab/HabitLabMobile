@@ -24,15 +24,22 @@
 .tutorial-header {
   font-size: 20%
   vertical-align: middle;
+  width: 90%;
   text-align: center;
   word-wrap: normal;
   padding: 5%;
   margin-top: 5%;
 }
 
+#tutorial-image {
+  height: 61%;
+  margin-top: 4%;
+  margin-bottom: 5%;
+}
+
 #nextTutorial {
   background-color: #2EC4B6;
   margin-top: 5%;
+  height: 10%;
   color: white;
-  float: right;
 }

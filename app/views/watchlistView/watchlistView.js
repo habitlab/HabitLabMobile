@@ -143,6 +143,8 @@ showTutorialPage = function() {
   manageTargets.visibility = "collapsed";
   var tutorialHeader = page.getViewById("tutorialHeader");
   tutorialHeader.visibility = "visible";
+  var tutorialImage = page.getViewById("tutorial-image");
+  tutorialImage.visibility = "visible";
   var nextTutorial = page.getViewById("nextTutorial");
   nextTutorial.visibility = "visible";
 }
@@ -150,6 +152,8 @@ showTutorialPage = function() {
 showMainPage = function() {
   var tutorialHeader = page.getViewById("tutorialHeader");
   tutorialHeader.visibility = "collapsed";
+  var tutorialImage = page.getViewById("tutorial-image");
+  tutorialImage.visibility = "collapsed";
   var nextTutorial = page.getViewById("nextTutorial");
   nextTutorial.visibility = "collapsed";
 }
