@@ -35,85 +35,85 @@
 					   			<!-- DAY VIEW STATS SUMMARY -->
 		   						<lv:RadListView id="dayButtons" class="list-group"  tap="onDayTap" items="{{ dayButtons }}">
 		   							<lv:RadListView.listViewLayout>
-		   			          <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
-		   			        </lv:RadListView.listViewLayout>
-		   			        <lv:RadListView.itemTemplate>
-		   			          <StackLayout class="list-buttons">
-   			                <Label text="{{ value }}" class="list-number" />
-   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
-		   			          </StackLayout>
-		   			        </lv:RadListView.itemTemplate>
-		   			    	</lv:RadListView>
+		   			          			<lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
+		   			        		</lv:RadListView.listViewLayout>
+		   			        			<lv:RadListView.itemTemplate>
+		   			          				<StackLayout class="list-buttons">
+   			                					<Label text="{{ value }}" class="button-number" id="buttonValue" />
+   			                					<Label text="{{ desc }}" textWrap="true" class="button-desc" />
+		   			          				</StackLayout>
+		   			        			</lv:RadListView.itemTemplate>
+		   			    		</lv:RadListView>
 
 		   			    	<!-- DAY VIEW DETAIL LIST -->
 			   					<lv:RadListView id="listview" class="list-group" items="{{ dayItems }}" >
 			   						<lv:RadListView.listViewLayout>
-	   			            <lv:ListViewLinearLayout scrollDirection="Vertical"/>
-			   			      </lv:RadListView.listViewLayout>
-			   			      <lv:RadListView.itemTemplate>
-			   			        <RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
-			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto, auto">
-	   			        	      <Image row="0" col="0" src="{{ icon }}" class="thumb img-rounded" />
-		        	            <StackLayout row="0" col="1" >
-	        	                <Label text="{{ name }}" class="list-group-item-heading" />
-	        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
-		        	            </StackLayout>
-		        	            <Label row="0" col="2" text="{{ mins + ' mins' }}" class="list-group-item-text"/>
-		        	            <Image class="settings-button-icon" src="res://ic_arrow_right" row="0" col="3"/>
-			   			        	</GridLayout>
-			   			       	</RL:Ripple>
-			   			      </lv:RadListView.itemTemplate>
-			   			    </lv:RadListView>
-
+	   			            			<lv:ListViewLinearLayout scrollDirection="Vertical"/>
+			   			     		 </lv:RadListView.listViewLayout>
+				   			     	<lv:RadListView.itemTemplate>
+					   			        <RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
+					   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto, auto">
+			   			        	      <Image row="0" col="0" src="{{ icon }}" class="thumb img-rounded" />
+				        	            <StackLayout row="0" col="1" >
+			        	                <Label text="{{ name }}" class="list-group-item-heading" />
+			        	                <Label text="{{ 'Opened '+ visits + ' times' }}" class="list-group-item-text" />
+				        	            </StackLayout>
+				        	            <Label row="0" col="2" text="{{ mins + ' mins' }}" class="list-group-item-text"/>
+				        	            <Image class="settings-button-icon" src="res://ic_arrow_right" row="0" col="3"/>
+					   			        	</GridLayout>
+					   			       	</RL:Ripple>
+					   			      </lv:RadListView.itemTemplate>
+					   			    </lv:RadListView>
 					   		</StackLayout>
+
 						</TabViewItem.view>
 					</TabViewItem>
 			
 					<!-- WEEK VIEW -->
 		 			<TabViewItem title="Week" >
 			 			<TabViewItem.view>
-					 			<StackLayout>
+					 	<StackLayout>
 
-					 				<!-- WEEK VIEW GRAPH -->
-		 				   		<Label text="Mins on Watchlist This Week" class="header" horizontalAlignment="center" tap="toggleWeek"/>
-								 	<Placeholder creatingView="weekView" visibility="{{ showWeekGraph ? 'visible' : 'collapsed'}}" class="graph" tap="toggleWeek"/>
-								 	<Image class="showMore" src="res://ic_show_more" visibility="{{ showWeekGraph ? 'collapsed' : 'visible'}}" tap="toggleWeek"/>
+					 		<!-- WEEK VIEW GRAPH -->
+	 				   		<Label text="Mins on Watchlist This Week" class="header" horizontalAlignment="center" tap="toggleWeek"/>
+							 <Placeholder creatingView="weekView" visibility="{{ showWeekGraph ? 'visible' : 'collapsed'}}" class="graph" tap="toggleWeek"/>
+							 <Image class="showMore" src="res://ic_show_more" visibility="{{ showWeekGraph ? 'collapsed' : 'visible'}}" tap="toggleWeek"/>
 
-								 	<!-- WEEK VIEW STATS SUMMARY -->
-					 				<lv:RadListView id="weekButtons" class="list-group"  tap="onWeekTap" items="{{ weekButtons }}">
-		   							<lv:RadListView.listViewLayout>
-		   			          <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
-		   			        </lv:RadListView.listViewLayout>
-		   			        <lv:RadListView.itemTemplate>
-		   			          <StackLayout class="list-buttons" >
-   			                <Label text="{{ value }}" class="list-number" />
-   			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
-		   			          </StackLayout>
-		   			        </lv:RadListView.itemTemplate>
+							<!-- WEEK VIEW STATS SUMMARY -->
+					 		<lv:RadListView id="weekButtons" class="list-group"  tap="onWeekTap" items="{{ weekButtons }}">
+		   						<lv:RadListView.listViewLayout>
+		   			          		<lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
+		   			        	</lv:RadListView.listViewLayout>
+		   			        		<lv:RadListView.itemTemplate>
+		   			          			<StackLayout class="list-buttons" >
+   			                				<Label text="{{ value }}" class="button-number"/>
+   			                				<Label text="{{ desc }}" textWrap="true" class="button-desc" />
+		   			          			</StackLayout>
+		   			        		</lv:RadListView.itemTemplate>
 		   			    	</lv:RadListView>
 
 		   			    	<!-- WEEK VIEW DETAIL LIST -->
 		   			    	<lv:RadListView id="weekList" class="list-group" items="{{ weekItems }}" itemTap="goToDetailApps">
-		   							<lv:RadListView.listViewLayout>
-		   			          <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
-		   			        </lv:RadListView.listViewLayout>
-		   			        <lv:RadListView.itemTemplate>
-		   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
-		   			        		<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto, auto">
-   			        	        <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
-   			        	        <StackLayout row="0" col="1" >
-	        	                <Label text="{{ name }}" class="list-group-item-heading"/>
-	        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
-   			        	        </StackLayout>
-			        	          <StackLayout row="0" col="2" >
-		        	            	<Label text="{{ percChange }}" class="percChange" horizontalAlignment="center"/>
-		        	            	<Label text="{{ percDesc }}" class="small-text" />
-   			        	        </StackLayout>
-   			        	        <Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
-   			        	        <Image class="settings-button-icon" src="res://ic_arrow_right" row="0" col="4"/>
-		   			        		</GridLayout>
-		   			        	</RL:Ripple>
-		   			        </lv:RadListView.itemTemplate>
+		   						<lv:RadListView.listViewLayout>
+		   			          		<lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
+		   			        	</lv:RadListView.listViewLayout>
+			   			        <lv:RadListView.itemTemplate>
+			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
+			   			        		<GridLayout class="list-group-item" rows="auto" columns="auto, *, *, auto, auto">
+	   			        	        		<Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+	   			        	        		<StackLayout row="0" col="1" >
+		        	                			<Label text="{{ name }}" class="list-group-item-heading"/>
+		        	                			<Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
+	   			        	        		</StackLayout>
+				        	          		<StackLayout row="0" col="2" >
+			        	            			<Label text="{{ percChange }}" class="percChange" horizontalAlignment="center"/>
+			        	            			<Label text="{{ percDesc }}" class="small-text" />
+	   			        	        		</StackLayout>
+	   			        	        		<Label row="0" col="3" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+	   			        	        		<Image class="settings-button-icon" src="res://ic_arrow_right" row="0" col="4"/>
+			   			        		</GridLayout>
+			   			        	</RL:Ripple>
+			   			        </lv:RadListView.itemTemplate>
 		   			    	</lv:RadListView>
 
 				   			</StackLayout>
@@ -127,46 +127,44 @@
 
 						    	<!-- MONTH VIEW GRAPH -->
 	 				   			<Label text="Mins on Watchlist This Month" class="header" horizontalAlignment="center" tap="toggleMonth"/>
-								 	<Placeholder creatingView="monthView" visibility="{{ showMonthGraph ? 'visible' : 'collapsed'}}" class="graph" tap="toggleMonth"/>
-								 	<Image class="showMore" src="res://ic_show_more" visibility="{{ showMonthGraph ? 'collapsed' : 'visible'}}" tap="toggleMonth"/>
+								<Placeholder creatingView="monthView" visibility="{{ showMonthGraph ? 'visible' : 'collapsed'}}" class="graph" tap="toggleMonth"/>
+								<Image class="showMore" src="res://ic_show_more" visibility="{{ showMonthGraph ? 'collapsed' : 'visible'}}" tap="toggleMonth"/>
 
-								 	<!-- MONTH VIEW STATS SUMMARY -->
+								 <!-- MONTH VIEW STATS SUMMARY -->
 						     	<lv:RadListView id="monthButtons" class="list-group"  tap="onMonthTap" items="{{ monthButtons }}">
 				   					<lv:RadListView.listViewLayout>
-				   			      <lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
-				   			    </lv:RadListView.listViewLayout>
-				   			    <lv:RadListView.itemTemplate>
-				   			      <StackLayout class="list-buttons">
-	 			                <Label text="{{ value }}" class="list-number" />
-	 			                <Label text="{{ desc }}" textWrap="true" class="list-desc" />
-	   			            </StackLayout>
-		   			        </lv:RadListView.itemTemplate>
+				   			      		<lv:ListViewGridLayout scrollDirection="Vertical" itemHeight="100" spanCount="3"/>
+				   			    	</lv:RadListView.listViewLayout>
+				   			    	<lv:RadListView.itemTemplate>
+					   			    	<StackLayout class="list-buttons">
+		 			                		<Label text="{{ value }}" class="button-number" />
+		 			                		<Label text="{{ desc }}" textWrap="true" class="button-desc" />
+		   			            		</StackLayout>
+			   			        	</lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
 				   			    
-				   			  <!-- MONTH VIEW DETAIL LIST -->
+				   			 <!-- MONTH VIEW DETAIL LIST -->
 			   			    <lv:RadListView id="monthList" class="list-group" items="{{ monthItems }}" itemTap="goToDetailApps">
-				   					<lv:RadListView.listViewLayout>
-				   			      <lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
-		   			        </lv:RadListView.listViewLayout>
-		   			        <lv:RadListView.itemTemplate>
-		   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
-			   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto, auto">
-		        	            <Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
-		        	            <StackLayout row="0" col="1" >
-	        	                <Label text="{{ name }}" class="list-group-item-heading" />
-	        	                <Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
-		        	            </StackLayout>
-	 			        	        <Label row="0" col="2" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
-	 			        	        <Image class="settings-button-icon" src="res://ic_arrow_right" row="0" col="3"/>
-			   			        	</GridLayout>
-		   			        	</RL:Ripple>
-		   			        </lv:RadListView.itemTemplate>
+				   				<lv:RadListView.listViewLayout>
+				   			    	<lv:ListViewLinearLayout scrollDirection="Vertical" itemHeight="100" />
+		   			        	</lv:RadListView.listViewLayout>
+			   			        	<lv:RadListView.itemTemplate>
+			   			        	<RL:Ripple rippleColor="#CFCFCF" tap="goToDetailApps">
+				   			        	<GridLayout class="list-group-item" rows="auto" columns="auto, *, auto, auto">
+			        	            		<Image row="0" col="0" src="{{ image }}" class="thumb img-rounded" />
+			        	            		<StackLayout row="0" col="1" >
+				        	                	<Label text="{{ name }}" class="list-group-item-heading" />
+				        	                	<Label text="{{ 'Avg min/day:  ' + avgMins }}" class="list-group-item-text" />
+					        	            </StackLayout>
+		 			        	        	<Label row="0" col="2" text="{{ totalMins + ' mins'}}" class="list-group-item-text" horizontalAlignment="center"/>
+		 			        	        	<Image class="settings-button-icon" src="res://ic_arrow_right" row="0" col="3"/>
+				   			        	</GridLayout>
+			   			        	</RL:Ripple>
+			   			        </lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
-
-						 		</StackLayout>
+							</StackLayout>
 				    </TabViewItem.view>
 					</TabViewItem>
-
 				</TabView.items>
 			</TabView>     
 	  </sd:RadSideDrawer.mainContent>
