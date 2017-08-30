@@ -836,13 +836,12 @@ var positiveAppToast = function(real, pkg) {
   }
 
   if (StorageUtil.isTargetOn()) {
-    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
+    var targets = StorageUtil.getTargetSelectedPackages();
+    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg) && targets.length) {
       var visits = StorageUtil.getVisits(pkg);
       if (visits > THRESHOLD_POSITIVE_TST) {
-        var targets = StorageUtil.getTargetSelectedPackages();
         var index = randBW(0, targets.length - 1);
         var targetPkg = targets[index];
-
         var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
         var cb = function () {
           var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);

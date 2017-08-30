@@ -110,16 +110,31 @@ exports.pageLoaded = function(args) {
     var tabView = page.getViewById("tabView")
     tabView.selectedIndex = index;
   }
+  if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
+    var list = page.getViewById("targetList");
+    list.visibility = "collapsed";
+    var msg = page.getViewById("noneSelectedMessage");
+    msg.visibility = "visible";
+  } else {
+    var list = page.getViewById("targetList");
+    list.visibility = "visible";
+    var msg = page.getViewById("noneSelectedMessage");
+    msg.visibility = "collapsed";
+  }
 };
 
 var overlayShowing = false;
 
 exports.onIndexChange = function(args) {
-    if (args.newIndex === 1) {
+    if (args.newIndex === 1) { //If on "targets" page
       if (!StorageUtil.isTargetOn()) {
         if (fromGoals) {
           showTutorialPage();
         } else {
+          var list = page.getViewById("targetList");
+          list.visibility = "collapsed";
+          var manageTargets = page.getViewById("manageTargets");
+          manageTargets.visibility = "collapsed";
           TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
           overlayShowing = true;
         }   
@@ -165,6 +180,7 @@ showMainPage = function() {
 
 
 exports.goNextTutorial = function() {
+   StorageUtil.updateTargetDB();
     var options = {
         moduleName: 'views/appsView/appsView',
         context: {

@@ -272,7 +272,7 @@ exports.setUpDB = function(erasingData) {
 
 
   appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
-  appSettings.setString('targetPackages', JSON.stringify(targetPreset));
+  //appSettings.setString('targetPackages', JSON.stringify(targetPreset));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
@@ -1295,11 +1295,14 @@ exports.updateDB = function() {
 
 exports.updateTargetDB = function() {
   if (!appSettings.getString('targetPackages')) {
-      var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets;
-      appSettings.setString('targetPackages', JSON.stringify(targetPreset));
-      targetPreset.forEach(function (item) {
-          createPackageData(item);
-      });
+    var selectedPackages = JSON.parse(appSettings.getString('selectedPackages'));
+    var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets.filter(function (pkg) {
+      return !selectedPackages.includes(pkg);
+    });
+    appSettings.setString('targetPackages', JSON.stringify(targetPreset));
+    targetPreset.forEach(function (item) {
+        createPackageData(item);
+    });
   }
 }
 
