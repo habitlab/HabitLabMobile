@@ -840,6 +840,7 @@ var positiveAppToast = function(real, pkg) {
       var visits = StorageUtil.getVisits(pkg);
       if (visits > THRESHOLD_POSITIVE_TST) {
         var targets = StorageUtil.getTargetSelectedPackages();
+        if (targets.length === 0) { return; }
         var index = randBW(0, targets.length - 1);
         var targetPkg = targets[index];
 
