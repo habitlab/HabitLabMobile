@@ -638,7 +638,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  */
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
-    FullScreenOverlay.showOverlay("Continue to Faceook?", 
+    FullScreenOverlay.showOverlay("Continue to Facebook?", 
       "You've already been here 25 times today. Want to take a break?", 
       "Continue to Facebook", "Get me out of here!", null, null);
     return;
@@ -836,10 +836,11 @@ var positiveAppToast = function(real, pkg) {
   }
 
   if (StorageUtil.isTargetOn()) {
-    var targets = StorageUtil.getTargetSelectedPackages();
-    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg) && targets.length) {
+    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
       var visits = StorageUtil.getVisits(pkg);
       if (visits > THRESHOLD_POSITIVE_TST) {
+        var targets = StorageUtil.getTargetSelectedPackages();
+        if (targets.length === 0) { return; }
         var index = randBW(0, targets.length - 1);
         var targetPkg = targets[index];
         var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);

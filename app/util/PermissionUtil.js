@@ -8,38 +8,6 @@ var Process = android.os.Process;
 var Context = android.content.Context;
 var AccessibilityServiceInfo = 	android.accessibilityservice.AccessibilityServiceInfo;
 
-
-/* 
- * checkActionUsagePermission
- * --------------------------
- * Checks the system for the permission required to 
- * access application usage time. Returns true if the 
- * permission has already been obtained, false 
- * otherwise.
- */
-exports.checkActionUsagePermission = function () {
-	var context = application.android.context;
-	var appOps = context.getSystemService(Context.APP_OPS_SERVICE);
-	var mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), context.getPackageName());
-    return mode === AppOpsManager.MODE_ALLOWED;
-}
-
-
-/* 
- * launchActionUsageIntent
- * -----------------------
- * Launches intent to the system page where user can
- * allow permission to usage statistics.
- */
-exports.launchActionUsageIntent = function () {
-	var int = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-	var foreground = application.android.foregroundActivity;
-	if (foreground) {
-		foreground.startActivity(int);
-	}
-}
-
-
 /* 
  * checkSystemOverlayPermission
  * ----------------------------

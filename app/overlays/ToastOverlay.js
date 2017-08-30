@@ -111,7 +111,8 @@ exports.showToastOverlay = function (msg, iconBitmap, callback) {
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	LEFT+0.1*DIALOG_WIDTH, TOP + 0.13*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+    	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
     text.setText(msg);
