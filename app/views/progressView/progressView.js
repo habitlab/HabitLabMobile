@@ -408,7 +408,6 @@ populateListViewsDay = function() {
      var glances = progressInfo.phoneStats[TODAY].glances;
      var total = progressInfo.phoneStats[TODAY].totalTime;
      var targetTime = progressInfo.phoneStats[TODAY].time;
-     // var perc = (total === 0 ? 0 : Math.round((targetTime/total)*100)); 
     
 	//If less than 1 hour, show minutes instead of 0.2hrs
     var totalReport;
@@ -435,13 +434,12 @@ populateListViewsDay = function() {
     {
         value: totalReport,
         desc: totalTimeDesc
-        // value: perc + "%",
-        // desc: "time on watchlist"
     }
 	)
     pageData.set("dayButtons", dayStats);
     var dayButtons = view.getViewById(page, "dayButtons");
-    dayButtons.height = SCREEN_HEIGHT*0.04;
+    // dayButtons.height = SCREEN_HEIGHT*0.04;
+    dayButtons.height = LayoutParams.WRAP_CONTENT;
     dayApps = getAppsToday();
     pageData.set("dayItems", dayApps);
 };
@@ -451,7 +449,6 @@ populateListViewsDay = function() {
 populateListViewsWeek = function() {
     var timeOnPhoneWeek = totalTimeWeek(0, "total")
     var timeOnTargetAppsWeek = totalTimeWeek(0, "target");
-    // var perc = (timeOnPhoneWeek === 0 ? 0 : Math.round(timeOnTargetAppsWeek/timeOnPhoneWeek*100)); 
     var unlocks = totalTimeWeek(0, "unlocks");
   
     var watchlistReport;
@@ -490,8 +487,6 @@ populateListViewsWeek = function() {
     {
         value: totalReport,
         desc: totalTimeDesc
-        // value: perc + "%",
-        // desc: "time on watchlist"
     }
 	)
 	pageData.set("weekButtons", weekStats);
@@ -506,10 +501,6 @@ populateListViewMonth = function () {
 	var totalTimePhoneMonth = totalTimeMonth("total");
     var totalTarget = totalTimeMonth("target");
     var unlocks = totalTimeMonth("unlocks"); 
-    // var perc = (totalTimePhoneMonth === 0 ? 0 : Math.round((totalTarget/totalTimePhoneMonth)*100));
-    // var avgUnlocks = (unlocks === 0 ? 0 : Math.round(unlocks/28));
-    // var avgHrs = (hrs === 0 ? 0 : Math.round(hrs/28);
-    // var avgWatchlistHrs = (hrs === 0 ? 0 : Math.round(watchHrs/28);
 
     //If less than 1 hour, show minutes instead of 0.2hrs
     var watchlistReport;
@@ -533,8 +524,6 @@ populateListViewMonth = function () {
         totalTimeDesc = "hrs on phone"
     }
 
-
-
 	var monthStats = [];
 	monthStats.push(
 	{
@@ -548,8 +537,6 @@ populateListViewMonth = function () {
     {
         value: totalReport,
         desc: totalTimeDesc
-        // value: perc + "%",
-        // desc: "time on watchlist"
     }
 	)
 	pageData.set("monthButtons", monthStats);
