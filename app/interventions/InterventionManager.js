@@ -831,7 +831,22 @@ var flipScreen = function(real, pkg) {
  */ 
 var positiveAppToast = function(real, pkg) {
   if (!real) {
-    Toast.show(context, "No demo available for this nudge!", 0);
+    var targetPkg = 'com.stanfordhci.habitlab';
+    var targets = StorageUtil.getTargetSelectedPackages();
+    if (targets.length > 0) {
+      targetPkg = targets[0];
+    }
+    var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+    var cb = function () {
+      var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+      if (foreground) {
+        foreground.startActivity(launchIntent);
+      }
+    }
+
+    var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
+    ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
     return;
   }
 
