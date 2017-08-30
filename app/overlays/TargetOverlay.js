@@ -75,6 +75,8 @@ var dialog;
 var title;
 var text;
 var button;
+var lastX;
+var lastY;
 //Redirect occurs when the user taps outside of the overlay area. Call back occurs when the user presses the button
 exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	// add whole screen view
@@ -89,14 +91,30 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	 		var action = event.getAction();
 			var currentX = event.getX();
 			var currentY = event.getY();
+			//If taps above the dialog height
 	 		if(currentY < 0.145 * SCREEN_HEIGHT){
 	 			if (redirect) {
 	 				redirect();
 	 			}
 	 			exports.removeIntroDialog();
 	 		}
+	 		if (action === android.view.MotionEvent.ACTION_DOWN) {
+				lastX = currentX;
+				lastY = currentY;
+			} else if (action === android.view.MotionEvent.ACTION_UP) {
+				//swipe left to change tab
+				if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+					if (redirect) {
+						redirect();
+					}
+					exports.removeIntroDialog();
+				}
+			}
 	 		return false;
 	 	}
+
+			
+
 	 }));
     windowManager.addView(dialog, viewParams);
 
