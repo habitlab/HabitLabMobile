@@ -39,7 +39,7 @@
 					<Image row="0" col="3" id="{{ names[2] }}" src="{{ images[2] }}" tap="tapIcon"/>
 					<Label text="Timer" row="1" col="3" class="smallText" id="{{ label[2] }}" visibility="hidden"/> 
 					<Image row="0" col="4" id="{{ names[3] }}" src="{{ images[3] }}" tap="tapIcon"/>
-					<Label text="Blockbuster" row="1" col="4" class="smallText" id="{{ label[3] }}" visibility="hidden"/> 
+					<Label text="Slider" row="1" col="4" class="smallText" id="{{ label[3] }}" visibility="hidden"/> 
 					<Image row="0" col="5"  id="{{ names[4] }}" src="{{ images[4] }}" tap="tapIcon"/>
 					<Label text="Curtain" row="1" col="5" class="smallText" id="{{ label[4] }}" visibility="hidden"/> 
 				</GridLayout>

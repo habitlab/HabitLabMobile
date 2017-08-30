@@ -6,8 +6,8 @@ var nudgeImage = [
   '~/images/onboarding_hint.png',
   '~/images/onboarding_alert.png',
   '~/images/onboarding_timer.png',
-  '~/images/onboarding_blockbuster.png',
-  '~/images/onboarding_glances.png'
+  '~/images/onboarding_slider.png',
+  '~/images/onboarding_curtain.png'
 ];
 
 var page;
@@ -23,8 +23,8 @@ icons.images = [
 ];
 
 icons.selected = [false, false, false, false, false];
-icons.names = ["hint", "alert", "timer", "blockbuster", "glance"];
-icons.label = ["hintLabel", "alertLabel", "timerLabel", "blockbusterLabel", "glanceLabel"];
+icons.names = ["hint", "alert", "timer", "slider", "curtain"];
+icons.label = ["hintLabel", "alertLabel", "timerLabel", "sliderLabel", "curtainLabel"];
 icons.sources = nudgeImage;
 
 var redraw = function() {

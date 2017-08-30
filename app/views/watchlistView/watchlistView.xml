@@ -50,7 +50,7 @@
             </ListView>
            <Button text="Manage Targets" tap="onManageTargets" id="manageTargets" class="manage-button"/>
            <Label text="HabitLab will help you redirect your attention to more productive apps" class="tutorial-header" id="tutorialHeader" visibility="collapsed" textWrap="true"/>
-           <Image id="tutorial-image" src="~/images/target_shot.jpg" visibility="collapsed"/>
+           <Image id="tutorial-image" src="~/images/target_shot.png" visibility="collapsed"/>
            <Button text="Next" id="nextTutorial" tap="goNextTutorial" visibility="collapse"/>
          </StackLayout>
          </TabViewItem.view>
