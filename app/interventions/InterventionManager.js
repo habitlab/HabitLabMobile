@@ -857,8 +857,8 @@ var positiveAppToast = function(real, pkg) {
       }
     }
   } else {
-    var title = "Target Acquired";
-    var msg = "Looks like you haven't set any target apps yet! Would you like to set that up?";
+    var title = "Target Acquired!";
+    var msg = "You've unlocked Targets! Would you like to check it out?";
     var pos = "Let's do it!";
     var neg = "Later";
     var cb = function() {
