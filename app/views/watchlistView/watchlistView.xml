@@ -5,7 +5,7 @@
 
   <ActionBar class="action-bar">
     <ActionBar.titleView>
-      <Label text="Watchlist" horizontalAlignment="center" class="action-bar-title" />
+      <Label text="Apps" horizontalAlignment="center" class="action-bar-title" />
     </ActionBar.titleView>
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>

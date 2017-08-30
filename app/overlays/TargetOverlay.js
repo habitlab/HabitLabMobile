@@ -98,9 +98,6 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	 		return false;
 	 	}
 	 }));
-
-
-
     windowManager.addView(dialog, viewParams);
 
      // add title

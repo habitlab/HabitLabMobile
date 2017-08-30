@@ -10,7 +10,7 @@
 			</StackLayout>
 			<StackLayout orientation="horizontal" class="side-option" id="watchlist-option" >
 				<Image class="side-icon" src="res://ic_watchlist" id="watchlist-icon" />
-				<Label text="Watchlist" class="side-label" />
+				<Label text="Apps" class="side-label" />
 			</StackLayout>
 			<StackLayout orientation="horizontal" class="side-option" id="nudges-option" >
 				<Image class="side-icon" src="res://ic_phone_lock" id="nudges-icon" />
