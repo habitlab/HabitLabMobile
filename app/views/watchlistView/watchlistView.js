@@ -11,6 +11,7 @@ var events;
 var pkgs;
 var targets;
 var fromGoals = false;
+var overlayShowing = false;
 
 exports.onItemTap = function(args) {
   events.push({category: "navigation", index: "watchlist_to_detail"});
@@ -123,12 +124,12 @@ exports.pageLoaded = function(args) {
   }
 };
 
-var overlayShowing = false;
+
 
 exports.onIndexChange = function(args) {
     if (args.newIndex === 1) { //If on "targets" page
       if (!StorageUtil.isTargetOn()) {
-        if (fromGoals) {
+        if (fromGoals) { //Don't show the first dialog
           showTutorialPage();
         } else {
           var list = page.getViewById("targetList");
@@ -151,7 +152,7 @@ exports.onIndexChange = function(args) {
     }
 };
 
-
+//If user tries to go to the target tab before setting it up, then take them back to the watchlist tab
 redirect = function() {
   var tabView = page.getViewById("tabView")
   tabView.selectedIndex = 0;
@@ -171,6 +172,8 @@ showTutorialPage = function() {
   nextTutorial.visibility = "visible";
 }
 
+
+//Show the page after the tutorial
 showMainPage = function() {
   var tutorialHeader = page.getViewById("tutorialHeader");
   tutorialHeader.visibility = "collapsed";
@@ -180,7 +183,7 @@ showMainPage = function() {
   nextTutorial.visibility = "collapsed";
 }
 
-
+//In the target tutorial, go to select target apps
 exports.goNextTutorial = function() {
    StorageUtil.setTargetPresets();
     var options = {
