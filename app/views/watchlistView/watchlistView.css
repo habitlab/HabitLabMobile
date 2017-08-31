@@ -26,7 +26,7 @@
   width: 90%;
   text-align: center;
   word-wrap: normal;
-  height: 20%;
+  height: 10%;
   margin-top: 5%;
 }
 
@@ -35,14 +35,16 @@
   width: 90%;
   text-align: center;
   word-wrap: normal;
-  padding: 5%;
+  /*padding-top: 100%;*/
   margin-top: 35%;
+  height: 10%;
   margin-bottom: 45%;
 }
 
 #tutorial-image {
   height: 60%;
-  margin-bottom: 5%;
+  margin-top:7.5%;
+  margin-bottom: 7.5%;
 }
 
 #nextTutorial {

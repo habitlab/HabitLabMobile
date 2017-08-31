@@ -113,17 +113,28 @@ exports.pageLoaded = function(args) {
   }
   if (fromGoals) {
     showTutorialPage();
-  } else if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
-    var list = page.getViewById("targetList");
-    list.visibility = "collapse";
-    var msg = page.getViewById("noneSelectedMessage");
-    msg.visibility = "visible";
   } else {
-    var list = page.getViewById("targetList");
-    list.visibility = "visible";
-    var msg = page.getViewById("noneSelectedMessage");
-    msg.visibility = "collapse";
+    showMainPage();
   }
+
+
+  // } else if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
+  //   console.warn("no packages selected")
+  //   var list = page.getViewById("targetList");
+  //   list.visibility = "collapse";
+  //   var msg = page.getViewById("noneSelectedMessage");
+  //   msg.visibility = "visible";
+  //   var manageTargets = page.getViewById("manageTargets");
+  //   manageTargets.visibility = "visible";
+  //   console.warn(manageTargets.visibility)
+  // } else {
+  //   var list = page.getViewById("targetList");
+  //   list.visibility = "visible";
+  //   var manageTargets = page.getViewById("manageTargets");
+  //   manageTargets.visibility = "visible";
+  //   var msg = page.getViewById("noneSelectedMessage");
+  //   msg.visibility = "collapse";
+  // }
 };
 
 
@@ -134,14 +145,7 @@ exports.onIndexChange = function(args) {
         if (fromGoals) { //Don't show the first dialog
           showTutorialPage();
         } else {
-          var list = page.getViewById("targetList");
-          list.visibility = "collapse";
-          var msg = page.getViewById("noneSelectedMessage");
-          msg.visibility = "collapse";
-          var manageTargets = page.getViewById("manageTargets");
-          manageTargets.visibility = "collapse";
-          TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
-          overlayShowing = true;
+          showIntroPage();
         }   
       } else {
         showMainPage();
@@ -160,6 +164,17 @@ redirect = function() {
   tabView.selectedIndex = 0;
 }
 
+//The first page of the target tutorial
+showIntroPage = function() {
+ var list = page.getViewById("targetList");
+ list.visibility = "collapse";
+ var msg = page.getViewById("noneSelectedMessage");
+  msg.visibility = "collapse";
+  var manageTargets = page.getViewById("manageTargets");
+  manageTargets.visibility = "collapse";
+  TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
+  overlayShowing = true;
+}
 
 showTutorialPage = function() {
   var list = page.getViewById("targetList");
@@ -177,12 +192,29 @@ showTutorialPage = function() {
 
 //Show the page after the tutorial
 showMainPage = function() {
-  var tutorialHeader = page.getViewById("tutorialHeader");
-  tutorialHeader.visibility = "collapse";
-  var tutorialImage = page.getViewById("tutorial-image");
-  tutorialImage.visibility = "collapse";
-  var nextTutorial = page.getViewById("nextTutorial");
-  nextTutorial.visibility = "collapse";
+  if (StorageUtil.isTargetOn()) {
+    var tutorialHeader = page.getViewById("tutorialHeader");
+    tutorialHeader.visibility = "collapse";
+    var tutorialImage = page.getViewById("tutorial-image");
+    tutorialImage.visibility = "collapse";
+    var nextTutorial = page.getViewById("nextTutorial");
+    nextTutorial.visibility = "collapse"; 
+
+    if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
+      console.warn("no packages selected")
+      var list = page.getViewById("targetList");
+      list.visibility = "collapse";
+      var msg = page.getViewById("noneSelectedMessage");
+      msg.visibility = "visible";
+    } else {
+      var list = page.getViewById("targetList");
+      list.visibility = "visible";
+      var msg = page.getViewById("noneSelectedMessage");
+      msg.visibility = "collapse";
+    }
+    var manageTargets = page.getViewById("manageTargets");
+    manageTargets.visibility = "visible";
+   } 
 }
 
 //In the target tutorial, go to select target apps

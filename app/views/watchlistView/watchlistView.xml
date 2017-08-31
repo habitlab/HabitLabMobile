@@ -48,7 +48,7 @@
                   </GridLayout>
                 </ListView.itemTemplate>
               </ListView>
-              <Label text="You have not selected any target apps! Tap manage targets to select some." class="none-selected-msg" visibility="collapse" id="noneSelectedMessage" textWrap="true" height="90%" />
+              <Label text="You have not selected any target apps! Tap manage targets to select some." class="none-selected-msg" visibility="collapse" id="noneSelectedMessage" textWrap="true" verticalAlignment="center" />
              <Button text="Manage Targets" tap="onManageTargets" id="manageTargets" class="manage-button"/>
              <Label text="HabitLab will help you redirect your attention to more productive apps" class="tutorial-header" id="tutorialHeader" visibility="collapse" textWrap="true" verticalAlignment="center" />
              <Image id="tutorial-image" src="~/images/target_shot.png" visibility="collapse" verticalAlignment="center" />
