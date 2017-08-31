@@ -838,7 +838,7 @@ var positiveAppToast = function(real, pkg) {
     // add icon
     var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
-    ToastOverlay.showToastOverlay("Open HabitLab", bitmap, null);
+    ToastOverlay.showToastOverlay("Open HabitLab", bitmap, null, false);
     return;
   }
 
