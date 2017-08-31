@@ -639,7 +639,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay("Continue to Facebook?", 
-      "You've already been here 25 times today. Want to take a break?", 
+      "You've been here 25 times today. Want to take a break?", 
       "Continue to Facebook", "Get me out of here!", null, null);
     return;
   }
@@ -652,7 +652,7 @@ var showFullScreenOverlay = function (real, pkg) {
       var title = "Continue to " + app + "?";
       var linkMsg = "Continue to " + app;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
+      msg += " been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
       FullScreenOverlay.showOverlay(title, msg, linkMsg, "Get me out of here!", null, exitToHome);
     }
   }
