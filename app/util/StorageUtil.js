@@ -414,9 +414,13 @@ exports.removePackage = function(packageName) {
   var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     return item !== packageName;
   });
+  var targetlist = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
+    return item !== packageName;
+  });
   sendLog();
   appSettings.remove(packageName);
   appSettings.setString('selectedPackages', JSON.stringify(list));
+  appSettings.setString('targetPackages', JSON.stringify(targetlist));
 };
 
 /* export: togglePackage
