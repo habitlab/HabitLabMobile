@@ -3,6 +3,7 @@ var imageModule = require('ui/image');
 var layout = require('ui/layouts/grid-layout');
 var frame = require('ui/frame');
 var PercentLength = require("ui/styling/style-properties").PercentLength;
+var toast = require('nativescript-toast');
 
 var drawer;
 var page;
@@ -141,6 +142,8 @@ exports.onSave = function() {
   if (prevStart.h !== startH || prevStart.m !== startM || prevEnd.h !== endH || prevEnd.m !== endM) {
     events.push({category: "features", index: "active_hours_changed"});
   }
+
+  toast.makeText("Changes saved").show();
   frame.topmost().goBack();
 };
 
