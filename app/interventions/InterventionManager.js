@@ -889,6 +889,90 @@ var positiveAppToast = function(real, pkg) {
   }
 }
 
+/*
+ * positiveAppInterstitial
+ * ----------------
+ * Pops interstitial to go to positive app/
+ */ 
+var positiveAppInterstitial = function(real, pkg) {
+  if (!real) {
+    var title = "Just a Moment";
+    var msg = "We'll take you to Facebook shortly. Take a deep breath in the meantime!";
+    FullScreenOverlay.showInterstitial(title, msg, "EXIT", null);
+    return;
+  }
+
+  if (StorageUtil.canIntervene(ID.interventionIDs.INTERSTITIAL, pkg)) {
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits > THRESHOLD_INTERSTITIAL_OVR) {
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = "Just a Moment";
+      var msg = "We'll take you to " + app + " shortly. Take a deep breath in the meantime!";
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.INTERSTITIAL}]);
+      FullScreenOverlay.showInterstitial(title, msg, "EXIT", exitToHome);
+    } 
+  }
+  /*
+  if (!real) {
+    var targetPkg = 'com.stanfordhci.habitlab';
+    var targets = StorageUtil.getTargetSelectedPackages();
+    if (targets.length > 0) {
+      targetPkg = targets[0];
+    }
+    var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+    var cb = function () {
+      var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+      if (foreground) {
+        foreground.startActivity(launchIntent);
+      }
+    }
+
+    var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
+    ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+    return;
+  }
+
+  if (StorageUtil.isTargetOn()) {
+    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
+      var visits = StorageUtil.getVisits(pkg);
+      if (visits > THRESHOLD_POSITIVE_TST) {
+        var targets = StorageUtil.getTargetSelectedPackages();
+        if (targets.length === 0) { return; }
+        var index = randBW(0, targets.length - 1);
+        var targetPkg = targets[index];
+
+        var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+        var cb = function () {
+          var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+          if (foreground) {
+            foreground.startActivity(launchIntent);
+          }
+        }
+
+        var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
+        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+      }
+    }
+  } else {
+    var title = "Target Acquired!";
+    var msg = "You've unlocked Targets! Would you like to check it out?";
+    var pos = "Let's do it!";
+    var neg = "Later";
+    var cb = function() {
+      var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
+      intent.putExtra("goToTarget", "true");
+      if (foreground) {
+        foreground.startActivity(intent);
+      }
+    };
+
+    TargetOverlay.showTargetEnableOverlay(title, msg, pos, neg, cb, null);
+  }
+  */
+}
+
 
 /*
  * removeOverlays
@@ -1003,7 +1087,8 @@ module.exports = {
     showPhoneUsageDialog,
     showSliderDialog,
     showInterstitial, 
-    positiveAppToast
+    positiveAppToast,
+    positiveAppInterstitial
   ], 
   resetDurationInterventions,
   removeOverlays,

@@ -22,7 +22,8 @@ exports.interventionIDs = {
   PHONE_USAGE_DIALOG: 20,
   APPLICATION_SLIDER: 21,
   INTERSTITIAL: 22,
-  POSITIVE_TOAST: 23
+  POSITIVE_TOAST: 23,
+  POSITIVE_INTERSTITIAL: 24,
 };
 
 exports.interventionDetails = [
@@ -265,5 +266,15 @@ exports.interventionDetails = [
   target: 'app', 
   level: 'medium',
   summary: 'Sends pop up to go to a target app',
+  style: 'overlay'
+}, {
+  id: 23,
+  name: 'Back To Target', 
+  icon: 'res://ic_heart', 
+  functionality: "Interstial Screen", 
+  description: "Suggests you to visit a target app", 
+  target: 'app', 
+  level: 'medium',
+  summary: 'Suggests you to visit a target app',
   style: 'overlay'
 }];
