@@ -1291,6 +1291,11 @@ exports.updateDB = function() {
 
 exports.updateTargetDB = function() {
   if (!appSettings.getString('targetPackages')) {
+    appSettings.setString('targetPackages', JSON.stringify([]));
+  }
+}
+
+exports.setTargetPresets = function() {
     var selectedPackages = JSON.parse(appSettings.getString('selectedPackages'));
     var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets.filter(function (pkg) {
       return !selectedPackages.includes(pkg);
@@ -1299,6 +1304,5 @@ exports.updateTargetDB = function() {
     targetPreset.forEach(function (item) {
         createPackageData(item);
     });
-  }
 }
 

@@ -133,6 +133,8 @@ exports.onIndexChange = function(args) {
         } else {
           var list = page.getViewById("targetList");
           list.visibility = "collapsed";
+          var msg = page.getViewById("noneSelectedMessage");
+          msg.visibility = "collapsed";
           var manageTargets = page.getViewById("manageTargets");
           manageTargets.visibility = "collapsed";
           TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
@@ -180,7 +182,7 @@ showMainPage = function() {
 
 
 exports.goNextTutorial = function() {
-   StorageUtil.updateTargetDB();
+   StorageUtil.setTargetPresets();
     var options = {
         moduleName: 'views/appsView/appsView',
         context: {
