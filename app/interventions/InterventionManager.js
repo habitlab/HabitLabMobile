@@ -823,6 +823,21 @@ var flipScreen = function(real, pkg) {
   // }
 }
 
+function show_target_enabler() {
+  var title = "Target Acquired!";
+  var msg = "You've unlocked Targets! Would you like to check it out?";
+  var pos = "Let's do it!";
+  var neg = "Later";
+  var cb = function() {
+    var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
+    intent.putExtra("goToTarget", "true");
+    if (foreground) {
+      foreground.startActivity(intent);
+    }
+  };
+
+  TargetOverlay.showTargetEnableOverlay(title, msg, pos, neg, cb, null);
+}
 
 /*
  * positiveAppToast
@@ -873,19 +888,7 @@ var positiveAppToast = function(real, pkg) {
       }
     }
   } else {
-    var title = "Target Acquired!";
-    var msg = "You've unlocked Targets! Would you like to check it out?";
-    var pos = "Let's do it!";
-    var neg = "Later";
-    var cb = function() {
-      var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
-      intent.putExtra("goToTarget", "true");
-      if (foreground) {
-        foreground.startActivity(intent);
-      }
-    };
-
-    TargetOverlay.showTargetEnableOverlay(title, msg, pos, neg, cb, null);
+    show_target_enabler()
   }
 }
 
@@ -894,32 +897,14 @@ var positiveAppToast = function(real, pkg) {
  * ----------------
  * Pops interstitial to go to positive app/
  */ 
-var positiveAppInterstitial = function(real, pkg) {
-  if (!real) {
-    var title = "Just a Moment";
-    var msg = "We'll take you to Facebook shortly. Take a deep breath in the meantime!";
-    FullScreenOverlay.showInterstitial(title, msg, "EXIT", null);
-    return;
-  }
-
-  if (StorageUtil.canIntervene(ID.interventionIDs.INTERSTITIAL, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits > THRESHOLD_INTERSTITIAL_OVR) {
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var title = "Just a Moment";
-      var msg = "We'll take you to " + app + " shortly. Take a deep breath in the meantime!";
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.INTERSTITIAL}]);
-      FullScreenOverlay.showInterstitial(title, msg, "EXIT", exitToHome);
-    } 
-  }
-  /*
+var positiveAppOverlay = function(real, pkg) {
   if (!real) {
     var targetPkg = 'com.stanfordhci.habitlab';
     var targets = StorageUtil.getTargetSelectedPackages();
     if (targets.length > 0) {
       targetPkg = targets[0];
     }
-    var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+    var targetAppName = UsageInformationUtil.getBasicInfo(targetPkg).name;
     var cb = function () {
       var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
       if (foreground) {
@@ -927,50 +912,41 @@ var positiveAppInterstitial = function(real, pkg) {
       }
     }
 
-    var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-
-    ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+    FullScreenOverlay.showOverlay("Go to " + targetAppName + " instead?", 
+      "You've already been here 25 times today. Want to do something else?", 
+      "Continue to Facebook", "Go to " + targetAppName, null, cb);
     return;
   }
 
+  var targetPkg = 'com.stanfordhci.habitlab';
+  var targets = StorageUtil.getTargetSelectedPackages();
+  if (targets.length > 0) {
+    targetPkg = targets[0];
+  }
+  var targetAppName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+  var cb = function () {
+    var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+    if (foreground) {
+      foreground.startActivity(launchIntent);
+    }
+  }
+  
   if (StorageUtil.isTargetOn()) {
-    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
+    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_FULL_SCREEN_OVERLAY, pkg)) {
       var visits = StorageUtil.getVisits(pkg);
-      if (visits > THRESHOLD_POSITIVE_TST) {
-        var targets = StorageUtil.getTargetSelectedPackages();
-        if (targets.length === 0) { return; }
-        var index = randBW(0, targets.length - 1);
-        var targetPkg = targets[index];
-
-        var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
-        var cb = function () {
-          var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-          if (foreground) {
-            foreground.startActivity(launchIntent);
-          }
-        }
-
-        var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-
-        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+      if (visits >= THRESHOLD_FULLSCREEN_OVR) {
+        StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.POSITIVE_FULL_SCREEN_OVERLAY}]);
+        var app = UsageInformationUtil.getBasicInfo(pkg).name;
+        var title = "Go to " + targetAppName + " instead?";
+        var linkMsg = "Continue to " + app;
+        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+        msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to do something else?";
+        FullScreenOverlay.showOverlay(title, msg, linkMsg, "Go to " + targetAppName, null, cb);
       }
     }
   } else {
-    var title = "Target Acquired!";
-    var msg = "You've unlocked Targets! Would you like to check it out?";
-    var pos = "Let's do it!";
-    var neg = "Later";
-    var cb = function() {
-      var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
-      intent.putExtra("goToTarget", "true");
-      if (foreground) {
-        foreground.startActivity(intent);
-      }
-    };
-
-    TargetOverlay.showTargetEnableOverlay(title, msg, pos, neg, cb, null);
+    show_target_enabler()
   }
-  */
 }
 
 
@@ -1088,7 +1064,7 @@ module.exports = {
     showSliderDialog,
     showInterstitial, 
     positiveAppToast,
-    positiveAppInterstitial
+    positiveAppOverlay
   ], 
   resetDurationInterventions,
   removeOverlays,
