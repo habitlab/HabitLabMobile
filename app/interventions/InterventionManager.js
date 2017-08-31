@@ -835,7 +835,10 @@ var flipScreen = function(real, pkg) {
  */ 
 var positiveAppToast = function(real, pkg) {
   if (!real) {
-    Toast.show(context, "No demo available for this nudge!", 0);
+    // add icon
+    var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
+    var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
+    ToastOverlay.showToastOverlay("Open HabitLab", bitmap, null);
     return;
   }
 
