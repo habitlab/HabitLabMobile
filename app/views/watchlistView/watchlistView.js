@@ -110,16 +110,18 @@ exports.pageLoaded = function(args) {
     var tabView = page.getViewById("tabView")
     tabView.selectedIndex = index;
   }
-  if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
+  if (fromGoals) {
+    showTutorialPage();
+  } else if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
     var list = page.getViewById("targetList");
-    list.visibility = "collapsed";
+    list.visibility = "collapse";
     var msg = page.getViewById("noneSelectedMessage");
     msg.visibility = "visible";
   } else {
     var list = page.getViewById("targetList");
     list.visibility = "visible";
     var msg = page.getViewById("noneSelectedMessage");
-    msg.visibility = "collapsed";
+    msg.visibility = "collapse";
   }
 };
 
@@ -132,11 +134,11 @@ exports.onIndexChange = function(args) {
           showTutorialPage();
         } else {
           var list = page.getViewById("targetList");
-          list.visibility = "collapsed";
+          list.visibility = "collapse";
           var msg = page.getViewById("noneSelectedMessage");
-          msg.visibility = "collapsed";
+          msg.visibility = "collapse";
           var manageTargets = page.getViewById("manageTargets");
-          manageTargets.visibility = "collapsed";
+          manageTargets.visibility = "collapse";
           TargetOverlay.showIntroDialog("Introducing: Targets", "Choose apps you'd rather spend time on to start building positive habits", "Ok!", showTutorialPage, redirect);
           overlayShowing = true;
         }   
@@ -160,9 +162,9 @@ redirect = function() {
 
 showTutorialPage = function() {
   var list = page.getViewById("targetList");
-  list.visibility = "collapsed";
+  list.visibility = "collapse";
   var manageTargets = page.getViewById("manageTargets");
-  manageTargets.visibility = "collapsed";
+  manageTargets.visibility = "collapse";
   var tutorialHeader = page.getViewById("tutorialHeader");
   tutorialHeader.visibility = "visible";
   var tutorialImage = page.getViewById("tutorial-image");
@@ -173,11 +175,11 @@ showTutorialPage = function() {
 
 showMainPage = function() {
   var tutorialHeader = page.getViewById("tutorialHeader");
-  tutorialHeader.visibility = "collapsed";
+  tutorialHeader.visibility = "collapse";
   var tutorialImage = page.getViewById("tutorial-image");
-  tutorialImage.visibility = "collapsed";
+  tutorialImage.visibility = "collapse";
   var nextTutorial = page.getViewById("nextTutorial");
-  nextTutorial.visibility = "collapsed";
+  nextTutorial.visibility = "collapse";
 }
 
 

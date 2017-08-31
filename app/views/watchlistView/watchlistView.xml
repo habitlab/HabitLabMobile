@@ -39,21 +39,21 @@
         <TabViewItem title="Targets">
           <TabViewItem.view>
             <StackLayout>
-            <ListView  id= "targetList" items="{{target}}" separatorColor="#FFFFFF" height="90%">
-              <ListView.itemTemplate>
-                <GridLayout columns="auto,*" rows="auto,auto" class="watchlist-elem" >
-                  <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
-                  <Label col="1" text="{{name}}" class="watchlist-label" />
-                  <!-- <Image col="2" src="res://ic_arrow_right" /> -->
-                </GridLayout>
-              </ListView.itemTemplate>
-            </ListView>
-            <Label text="You have not selected any target apps! Tap manage targets to select some" class="none-selected-msg" visibility="collapsed" id="noneSelectedMessage" textWrap="true"/>
-           <Button text="Manage Targets" tap="onManageTargets" id="manageTargets" class="manage-button"/>
-           <Label text="HabitLab will help you redirect your attention to more productive apps" class="tutorial-header" id="tutorialHeader" visibility="collapsed" textWrap="true"/>
-           <Image id="tutorial-image" src="~/images/target_shot.png" visibility="collapsed"/>
-           <Button text="Next" id="nextTutorial" tap="goNextTutorial" visibility="collapse"/>
-         </StackLayout>
+              <ListView  id="targetList" items="{{target}}" separatorColor="#FFFFFF" height="90%">
+                <ListView.itemTemplate>
+                  <GridLayout columns="auto,*" rows="auto,auto" class="watchlist-elem" >
+                    <Image col="0" imageSource="{{icon}}" verticalAlignment="center" class="watchlist-icon" />
+                    <Label col="1" text="{{name}}" class="watchlist-label" />
+                    <!-- <Image col="2" src="res://ic_arrow_right" /> -->
+                  </GridLayout>
+                </ListView.itemTemplate>
+              </ListView>
+              <Label text="You have not selected any target apps! Tap manage targets to select some." class="none-selected-msg" visibility="collapse" id="noneSelectedMessage" textWrap="true" height="90%" />
+             <Button text="Manage Targets" tap="onManageTargets" id="manageTargets" class="manage-button"/>
+             <Label text="HabitLab will help you redirect your attention to more productive apps" class="tutorial-header" id="tutorialHeader" visibility="collapse" textWrap="true" verticalAlignment="center" />
+             <Image id="tutorial-image" src="~/images/target_shot.png" visibility="collapse" verticalAlignment="center" />
+             <Button text="Next" id="nextTutorial" tap="goNextTutorial" visibility="collapse"/>
+           </StackLayout>
          </TabViewItem.view>
         </TabViewItem>
 
