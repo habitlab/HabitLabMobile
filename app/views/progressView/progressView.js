@@ -86,6 +86,7 @@ var cb = function() {
 };
 
 exports.pageLoaded = function(args) {
+    //For setting up targets from the notification
     var intent = app.android.foregroundActivity.getIntent();
     if (intent) {
         var val = intent.getStringExtra("goToTarget");
@@ -287,19 +288,6 @@ getWeekEntries = function() {
    return entries;
 }
 
-
-getOther = function() {
-    var appsAll = getAppsToday();
-    var other = [];
-    for (var day = TODAY; day >=0; day--) {
-        var otherSum = 0;
-        for (var i = 4; i < appsAll.length; i++) {
-            otherSum += progressInfo.appStats[appsAll[i].index][TODAY-day].time
-        }
-        other[TODAY-day] = otherSum;
-    }
-    return other;
-}
 
 
 
@@ -604,7 +592,18 @@ exports.goToDetailApps = function(args) {
 }
 
 
-
+getOther = function() {
+    var appsAll = getAppsToday();
+    var other = [];
+    for (var day = TODAY; day >=0; day--) {
+        var otherSum = 0;
+        for (var i = 4; i < appsAll.length; i++) {
+            otherSum += progressInfo.appStats[appsAll[i].index][TODAY-day].time
+        }
+        other[TODAY-day] = otherSum;
+    }
+    return other;
+}
 
 
 //Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
@@ -632,7 +631,7 @@ getTrackableApps = function() {
 }
 
 
-//Returns the total time spent on an app in a month when passed in that app's object
+//Returns the total time spent on a specific app in a month when passed in that app's object
 getTotalTimeAppMonth = function(array) {
     var sum = 0;
     for (var i = 0; i <= TODAY; i++) {
@@ -677,12 +676,16 @@ totalTimeWeek = function(weeksAgo, value) {
         switch(value) {
             case ("total"):
                  sum += progressInfo.phoneStats[i].totalTime;
+                 continue;
             case ("target"):
                 sum += progressInfo.phoneStats[i].time;
+                continue;
             case ("glances"):
                 sum += progressInfo.phoneStats[i].glances;
+                continue;
             case ("unlocks"):
                 sum += progressInfo.phoneStats[i].unlocks;
+                continue;
         }
     }
     return sum;
@@ -695,12 +698,16 @@ totalTimeMonth = function(value) {
         switch(value) {
             case ("total"):
                  sum += progressInfo.phoneStats[i].totalTime;
+                 continue;
             case ("target"):
                 sum += progressInfo.phoneStats[i].time;
+                continue;
             case ("glances"):
                 sum += progressInfo.phoneStats[i].glances;
+                continue;
             case ("unlocks"):
                 sum += progressInfo.phoneStats[i].unlocks;
+                continue;
         }
     }
     return sum;
@@ -932,7 +939,7 @@ function getSpannableString() {
 
 }
 
-//Toggle buttons for day/week/month graphs
+//Toggle for day/week/month graphs
 exports.toggle = function () {
     pageData.set("showDayGraph", !pageData.get("showDayGraph"));
 }
