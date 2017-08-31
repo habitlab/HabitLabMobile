@@ -94,10 +94,36 @@ var DialogView = android.view.View.extend({
 });
 
 
+// Custom DialogView 
+var FakeDialogView = android.view.View.extend({
+	onDraw: function (canvas) {
+		canvas.drawRoundRect(0.24*SCREEN_WIDTH, TOP-0.01*SCREEN_WIDTH, RIGHT+0.11*SCREEN_WIDTH, BOTTOM+0.01*SCREEN_WIDTH, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
+		canvas.drawRoundRect(RIGHT, TOP, RIGHT+0.1*SCREEN_WIDTH, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
+		canvas.drawRect(LEFT-0.01*SCREEN_WIDTH, TOP, RIGHT+0.01*SCREEN_WIDTH, BOTTOM, TOAST_FILL); //green main
+		
+		// // add icon frame
+		var iconLeft = 0.25*SCREEN_WIDTH;
+		var iconRight = LEFT;
+		var iconTop = TOP;
+		var iconBottom = BOTTOM;
+		canvas.drawRoundRect(iconLeft, iconTop, iconRight, iconBottom, CORNER_RADIUS, CORNER_RADIUS, ICON_BACK_FILL);
+
+		// // add icon
+		if (imageBitmap === null) return;
+		var bitmap = imageBitmap;
+		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
+		var newHeight = ICON_HEIGHT;
+		var newWidth = newHeight * hToWRatio;
+		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
+		
+		canvas.drawBitmap(icon, iconLeft, TOP, ICON_FILL);
+	}
+});
+
 var fullScreen;
 var text;
 var closeButton;
-exports.showToastOverlay = function (msg, iconBitmap, callback) {
+exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 	imageBitmap = iconBitmap;
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
@@ -106,7 +132,11 @@ exports.showToastOverlay = function (msg, iconBitmap, callback) {
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    fullScreen = new DialogView(context);
+	if (!real) {
+		fullScreen = new FakeDialogView(context);
+	} else {
+		fullScreen = new DialogView(context);
+	}
     windowManager.addView(fullScreen, viewParams);
 
     // add text
