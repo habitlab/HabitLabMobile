@@ -73,7 +73,7 @@ exports.interventionDetails = [
   functionality: "App Usage Notification", 
   description: "Sends a notification telling you how long you've been on your phone today", 
   target: 'app', 
-  level: 'medium',
+  level: 'easy',
   summary: "Sends notification with today's total usage for a certain app",
   style: 'notification'
 }, {
@@ -92,7 +92,7 @@ exports.interventionDetails = [
   icon: 'res://ic_clock', 
   functionality: "Visit Length Notification", 
   description: "Sends a notification when you are on a watchlisted app telling you how long that visit has been", 
-  level: 'medium',
+  level: 'easy',
   summary: 'Sends a notification with current app visit duration',
   style: 'notification'
 }, {
@@ -112,7 +112,7 @@ exports.interventionDetails = [
   functionality: "Visits Notification", 
   description: "Sends a notification telling you how many times you've been on a certain app today", 
   target: 'app', 
-  level: 'medium',
+  level: 'easy',
   summary: 'Sends a notification with your app visit count',
   style: 'notification'
 }, {
@@ -122,7 +122,7 @@ exports.interventionDetails = [
   functionality: "Video Pause Overlay", 
   description: "Pauses YouTube videos until you confirm that you would like to continue watching", 
   target: 'app', 
-  level: 'medium', 
+  level: 'hard', 
   apps: ['com.google.android.youtube'],
   summary: 'Asks for confirmation before playing videos',
   style: 'overlay'
@@ -133,7 +133,7 @@ exports.interventionDetails = [
   functionality: "Full Screen Overlay", 
   description: "Covers the screen when you enter a watchlisted app and prompts you to either continue or exit the app", 
   target: 'app', 
-  level: 'easy',
+  level: 'medium',
   summary: 'Asks for confirmation before opening watchlisted apps',
   style: 'overlay'
 }, {
@@ -143,7 +143,7 @@ exports.interventionDetails = [
   functionality: "Timer Counting Up Overlay", 
   description: "Puts a flick-to-move timer in the bottom right corner of your screen counting how long you spend in an app", 
   target: 'app', 
-  level: 'easy',
+  level: 'medium',
   summary: 'Puts a timer on screen in watchlisted apps',
   style: 'overlay'
 }, {
