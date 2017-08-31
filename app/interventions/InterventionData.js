@@ -261,9 +261,9 @@ exports.interventionDetails = [
   name: 'Your Better Half', 
   icon: 'res://ic_heart', 
   functionality: "Positive App Toast", 
-  description: "Pops up a hint bubble suggesting a target app to visit", 
+  description: "Sends a disappearing message suggesting a target app to visit", 
   target: 'app', 
   level: 'medium',
   summary: 'Sends pop up to go to a target app',
-  style: 'overlay'
+  style: 'toast'
 }];
