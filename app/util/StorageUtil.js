@@ -268,20 +268,16 @@ exports.setUpDB = function(erasingData) {
   }
 
   var watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
-  var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets;
-
 
   appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
-  //appSettings.setString('targetPackages', JSON.stringify(targetPreset));
+  appSettings.setString('targetPackages', JSON.stringify([]));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   watchlistPreset.forEach(function (item) {
     createPackageData(item);
   });
-  targetPreset.forEach(function (item) {
-    createPackageData(item);
-  });
+
 
   createPhoneData();
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
