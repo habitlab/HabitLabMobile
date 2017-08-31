@@ -52,14 +52,15 @@ CLOSE_FILL.setColor(Color.parseColor("#8d978d")); //grey
 // CONSTANTS
 var SCREEN_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
-var DIALOG_WIDTH = 0.3 * SCREEN_WIDTH;
+var DIALOG_WIDTH = 0.8 * SCREEN_WIDTH;
 var DIALOG_HEIGHT = 0.1 * SCREEN_WIDTH;
-var LEFT = 0.35 * SCREEN_WIDTH;
+var LEFT = 0.1 * SCREEN_WIDTH;
 var RIGHT = LEFT + DIALOG_WIDTH;
 var TOP = 0.8*SCREEN_HEIGHT;
 var BOTTOM = TOP + DIALOG_HEIGHT;
 var ICON_HEIGHT = DIALOG_HEIGHT;
 var CORNER_RADIUS = 15;
+var PADDING = 0.01 * SCREEN_WIDTH;
 
 
 var context = app.android.context;
@@ -69,26 +70,26 @@ var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(0.24*SCREEN_WIDTH, TOP-0.01*SCREEN_WIDTH, RIGHT+0.11*SCREEN_WIDTH, BOTTOM+0.01*SCREEN_WIDTH, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
-		canvas.drawRoundRect(RIGHT, TOP, RIGHT+0.1*SCREEN_WIDTH, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
-		canvas.drawRect(LEFT-0.01*SCREEN_WIDTH, TOP, RIGHT+0.01*SCREEN_WIDTH, BOTTOM, TOAST_FILL); //green main
+		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
+		canvas.drawRoundRect(RIGHT - DIALOG_HEIGHT - PADDING, TOP + PADDING, RIGHT - PADDING, BOTTOM - PADDING, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
+		canvas.drawRect(LEFT + PADDING, TOP + PADDING, RIGHT - DIALOG_HEIGHT + PADDING, BOTTOM - PADDING, TOAST_FILL); //green main
 		
 		// // add icon frame
-		var iconLeft = 0.25*SCREEN_WIDTH;
-		var iconRight = LEFT;
-		var iconTop = TOP;
-		var iconBottom = BOTTOM;
+		var iconLeft = LEFT +  2 * PADDING;
+		var iconRight = iconLeft + DIALOG_HEIGHT;
+		var iconTop = TOP + 2 * PADDING;
+		var iconBottom = BOTTOM - 2 * PADDING;
 		canvas.drawRoundRect(iconLeft, iconTop, iconRight, iconBottom, CORNER_RADIUS, CORNER_RADIUS, ICON_BACK_FILL);
 
 		// // add icon
 		if (imageBitmap === null) return;
 		var bitmap = imageBitmap;
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
-		var newHeight = ICON_HEIGHT;
+		var newHeight = ICON_HEIGHT - 4 * PADDING;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
 		
-		canvas.drawBitmap(icon, iconLeft, TOP, ICON_FILL);
+		canvas.drawBitmap(icon, iconLeft, iconTop, ICON_FILL);
 	}
 });
 
@@ -134,7 +135,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback) {
 
     // add neg button
     var closeButtonParams = new WindowManager.LayoutParams(0.1*SCREEN_WIDTH, 
-    	0.1*SCREEN_WIDTH, RIGHT, 
+    	0.1*SCREEN_WIDTH, RIGHT - DIALOG_HEIGHT, 
     	TOP, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
