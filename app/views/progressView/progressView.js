@@ -395,7 +395,6 @@ populateListViewsDay = function() {
      var unlocks = progressInfo.phoneStats[TODAY].unlocks;
      var glances = progressInfo.phoneStats[TODAY].glances;
      var total = progressInfo.phoneStats[TODAY].totalTime;
-     var targetTime = progressInfo.phoneStats[TODAY].time;
     
 	//If less than 1 hour, show minutes instead of 0.2hrs
     var totalReport;
@@ -435,16 +434,16 @@ populateListViewsDay = function() {
 //Creates list view for week, showing name, avg min.day and total minutes
 populateListViewsWeek = function() {
     var timeOnPhoneWeek = totalTimeWeek(0, "total")
-    var timeOnTargetAppsWeek = totalTimeWeek(0, "target");
+    var timeOnWatchlistAppsWeek = totalTimeWeek(0, "watchlist");
     var unlocks = totalTimeWeek(0, "unlocks");
   
     var watchlistReport;
     var timeWatchlistDesc;
-    if (timeOnTargetAppsWeek <= 60) {
-        watchlistReport = timeOnTargetAppsWeek;
+    if (timeOnWatchlistAppsWeek <= 60) {
+        watchlistReport = timeOnWatchlistAppsWeek;
         timeWatchlistDesc = "mins on watchlist"
     } else {
-        watchlistReport = Math.round(timeOnTargetAppsWeek/6)/10;
+        watchlistReport = Math.round(timeOnWatchlistAppsWeek/6)/10;
         timeWatchlistDesc = "hrs on watchlist"
     }
 
@@ -486,17 +485,17 @@ populateListViewsWeek = function() {
 //Creates a list view for the month view, with name, avg min/day and total mintues
 populateListViewMonth = function () {
 	var totalTimePhoneMonth = totalTimeMonth("total");
-    var totalTarget = totalTimeMonth("target");
+    var totalWatchlistMonth = totalTimeMonth("watchlist");
     var unlocks = totalTimeMonth("unlocks"); 
 
     //If less than 1 hour, show minutes instead of 0.2hrs
     var watchlistReport;
     var timeWatchlistDesc;
-    if (totalTarget <= 60) {
-        watchlistReport = totalTarget;
+    if (totalWatchlistMonth <= 60) {
+        watchlistReport = totalWatchlistMonth;
         timeWatchlistDesc = "mins on watchlist"
     } else {
-        watchlistReport = Math.round(totalTarget/6)/10;
+        watchlistReport = Math.round(totalWatchlistMonth/6)/10;
         timeWatchlistDesc = "hrs on watchlist"
     }
 
@@ -677,7 +676,7 @@ totalTimeWeek = function(weeksAgo, value) {
             case ("total"):
                  sum += progressInfo.phoneStats[i].totalTime;
                  continue;
-            case ("target"):
+            case ("watchlist"):
                 sum += progressInfo.phoneStats[i].time;
                 continue;
             case ("glances"):
@@ -697,9 +696,9 @@ totalTimeMonth = function(value) {
     for (var i = 0; i <= TODAY; i++) {
         switch(value) {
             case ("total"):
-                 sum += progressInfo.phoneStats[i].totalTime;
-                 continue;
-            case ("target"):
+                sum += progressInfo.phoneStats[i].totalTime;
+                continue;
+            case ("watchlist"):
                 sum += progressInfo.phoneStats[i].time;
                 continue;
             case ("glances"):
