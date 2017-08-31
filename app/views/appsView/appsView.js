@@ -175,15 +175,21 @@ exports.toggleDrawer = function() {
 exports.onDone = function() {
   var numToRemove = 0;
   var hasAddedPkg = false;
-  Object.keys(toToggle).forEach(function(key) {
-    if (!hasAddedPkg && toToggle[key]) {
-      if (pkgs.includes(key)) {
-        numToRemove++;
-      } else {
-        hasAddedPkg = true;
+
+  if (!isWatchlist) { // target list
+    hasAddedPkg = true;
+  } else { // watchlist
+    Object.keys(toToggle).forEach(function(key) {
+      if (!hasAddedPkg && toToggle[key]) {
+        if (pkgs.includes(key)) {
+          numToRemove++;
+        } else {
+          hasAddedPkg = true;
+        }
       }
-    }
-  });
+    });
+  }
+
 
   if (hasAddedPkg || (numToRemove !== pkgs.length && pkgs.length !== 0)) {
     Object.keys(toToggle).forEach(function(key) {

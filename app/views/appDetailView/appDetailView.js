@@ -167,6 +167,8 @@ var createItem = function(enabled, id, first)  {
     page: page
   });
 
+  var sw = item.getViewById("switch");
+
   item.id = 'intervention' + id;
   item.className = 'app-detail-grid';
   var button = item.getViewById('button');
@@ -182,6 +184,7 @@ var createItem = function(enabled, id, first)  {
     }).then(function (result) {
       if (result) {
         StorageUtil.disableForAll(id);
+        sw.checked = false;
         events.push({category: 'features', index: 'watchlist_detail_disable_all_confirm'});
       }
     });
@@ -207,7 +210,6 @@ var createItem = function(enabled, id, first)  {
     button.visibility = 'visible';
   }
 
-  var sw = item.getViewById("switch");
   sw.checked = enabled;
   sw.on(gestures.tap, function() {
     StorageUtil.toggleForApp(id, pkg);

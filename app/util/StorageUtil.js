@@ -268,20 +268,16 @@ exports.setUpDB = function(erasingData) {
   }
 
   var watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
-  var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets;
-
 
   appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
-  appSettings.setString('targetPackages', JSON.stringify(targetPreset));
+  appSettings.setString('targetPackages', JSON.stringify([]));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
   appSettings.setString('activeHours', JSON.stringify(ActiveHours()));
 
   watchlistPreset.forEach(function (item) {
     createPackageData(item);
   });
-  targetPreset.forEach(function (item) {
-    createPackageData(item);
-  });
+
 
   createPhoneData();
   appSettings.setString('enabled', JSON.stringify(Array(ID.interventionDetails.length).fill(true)));
@@ -418,9 +414,13 @@ exports.removePackage = function(packageName) {
   var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     return item !== packageName;
   });
+  var targetlist = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
+    return item !== packageName;
+  });
   sendLog();
   appSettings.remove(packageName);
   appSettings.setString('selectedPackages', JSON.stringify(list));
+  appSettings.setString('targetPackages', JSON.stringify(targetlist));
 };
 
 /* export: togglePackage
@@ -1295,11 +1295,18 @@ exports.updateDB = function() {
 
 exports.updateTargetDB = function() {
   if (!appSettings.getString('targetPackages')) {
-      var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets;
-      appSettings.setString('targetPackages', JSON.stringify(targetPreset));
-      targetPreset.forEach(function (item) {
-          createPackageData(item);
-      });
+    appSettings.setString('targetPackages', JSON.stringify([]));
   }
+}
+
+exports.setTargetPresets = function() {
+    var selectedPackages = JSON.parse(appSettings.getString('selectedPackages'));
+    var targetPreset = require("~/util/UsageInformationUtil").getInstalledPresets().targets.filter(function (pkg) {
+      return !selectedPackages.includes(pkg);
+    });
+    appSettings.setString('targetPackages', JSON.stringify(targetPreset));
+    targetPreset.forEach(function (item) {
+        createPackageData(item);
+    });
 }
 
