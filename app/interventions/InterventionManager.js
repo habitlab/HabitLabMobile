@@ -759,7 +759,11 @@ var showSliderDialog = function(real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.APPLICATION_SLIDER, pkg)) {
     var cb = function(setTime) {
-      TimerOverlay.showCountDownTimer(setTime, null);
+      if (setTime === 0) {
+        setTime = 0.05;
+      }
+
+      TimerOverlay.showCountDownTimer(setTime, exitToHome);
     };
 
     var visits = StorageUtil.getVisits(pkg);
