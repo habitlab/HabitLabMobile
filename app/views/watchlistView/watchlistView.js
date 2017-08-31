@@ -34,7 +34,6 @@ exports.onItemTap = function(args) {
   });
 };
 
-
 /** Has not been implemented as accessibility service needs to be re-configured to track target apps 
 ** When that is complete, write "onItemTap = 'onTargetTap'" in xml, and uncomment this function
 */
@@ -60,8 +59,6 @@ exports.onItemTap = function(args) {
 //   });
 // };
 
-
-
 var setUpList = function() {
   var listLayout = page.getViewById('watchlist-list');
   listLayout.removeChildren();
@@ -71,8 +68,6 @@ var setUpList = function() {
     listLayout.addChild(createItem(pkg));
   });
 };
-
-
 
 exports.pageLoaded = function(args) {
   events = [{category: "page_visits", index: "watchlist_main"}];
@@ -126,8 +121,6 @@ exports.pageLoaded = function(args) {
   }
 };
 
-
-
 exports.onIndexChange = function(args) {
     if (args.newIndex === 1) { //If on "targets" page
       if (!StorageUtil.isTargetOn()) {
@@ -155,13 +148,12 @@ exports.onIndexChange = function(args) {
 };
 
 //If user tries to go to the target tab before setting it up, then take them back to the watchlist tab
-redirect = function() {
+var redirect = function() {
   var tabView = page.getViewById("tabView")
   tabView.selectedIndex = 0;
-}
+};
 
-
-showTutorialPage = function() {
+var showTutorialPage = function() {
   var list = page.getViewById("targetList");
   list.visibility = "collapse";
   var manageTargets = page.getViewById("manageTargets");
@@ -172,11 +164,10 @@ showTutorialPage = function() {
   tutorialImage.visibility = "visible";
   var nextTutorial = page.getViewById("nextTutorial");
   nextTutorial.visibility = "visible";
-}
-
+};
 
 //Show the page after the tutorial
-showMainPage = function() {
+var showMainPage = function() {
   var tutorialHeader = page.getViewById("tutorialHeader");
   tutorialHeader.visibility = "collapse";
   var tutorialImage = page.getViewById("tutorial-image");
@@ -196,9 +187,7 @@ exports.goNextTutorial = function() {
         }
     }
     frameModule.topmost().navigate(options);
-}
-
-
+};
 
 exports.pageUnloaded = function(args) {
   StorageUtil.addLogEvents(events);
@@ -208,7 +197,6 @@ exports.toggleDrawer = function() {
   events.push({category: "navigation", index: "menu"});
   drawer.toggleDrawerState();
 };
-
 
 exports.onManageTargets = function() {
   var options = {
@@ -220,8 +208,6 @@ exports.onManageTargets = function() {
   }
   frameModule.topmost().navigate(options);
 };
-
-
 
 exports.onManageWatchlist = function() {
   var options = {
