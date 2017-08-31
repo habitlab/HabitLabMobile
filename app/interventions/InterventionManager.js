@@ -1,6 +1,7 @@
 const NotificationUtil = require("~/util/NotificationUtil");
 const UsageInformationUtil = require("~/util/UsageInformationUtil");
 const StorageUtil = require("~/util/StorageUtil");
+const GlobalUtil = require("~/util/GlobalUtil");
 const DialogOverlay = require("~/overlays/DialogOverlay");
 const FullScreenOverlay = require("~/overlays/FullScreenOverlay");
 const Toast = require("~/util/ToastUtil");
@@ -968,7 +969,7 @@ var removeOverlays = function() {
  ***************************************/
 var onLaunchInterventions = {
   easy: [popToastVisited, sendNotificationVisited, popToastUsage, sendNotificationUsage],
-  medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer, showInterstitial, positiveAppToast],
+  medium: [showDialogVisited, showDialogUsage, showFullScreenOverlay, showCountUpTimer, showInterstitial, positiveAppToast, positiveAppOverlay],
   hard: [showCountDownTimer, dimScreen, showSliderDialog]
 };
 
@@ -978,6 +979,10 @@ var onScreenUnlockInterventions = {
 };
 
 var nextOnLaunchIntervention = function(pkg) {
+  if (GlobalUtil.getVar('override_launch_intervention')) {
+    module.exports.interventions[GlobalUtil.getVar('override_launch_intervention')](true, pkg)
+    return
+  }
   // set up duration interventions
   popToastVisitLength(true, pkg);
   sendNotificationVisitLength(true, pkg);
