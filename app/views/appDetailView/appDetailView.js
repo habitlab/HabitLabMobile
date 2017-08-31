@@ -184,7 +184,7 @@ var createItem = function(enabled, id, first)  {
     }).then(function (result) {
       if (result) {
         StorageUtil.disableForAll(id);
-        sw.checked = !sw.checked;
+        sw.checked = false;
         events.push({category: 'features', index: 'watchlist_detail_disable_all_confirm'});
       }
     });

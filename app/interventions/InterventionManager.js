@@ -922,7 +922,7 @@ var nextOnLaunchIntervention = function(pkg) {
 
   // decide whether or not to run an on-launch intervention
   var run = Math.random();
-  if (run < 0.6) {
+  if (run < 0.8) {
     var randomDifficulty = Math.random();
     var index;
     if (randomDifficulty < 0.1) {  // hard
