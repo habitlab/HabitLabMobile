@@ -86,6 +86,7 @@ var cb = function() {
 };
 
 exports.pageLoaded = function(args) {
+    //For setting up targets from the notification
     var intent = app.android.foregroundActivity.getIntent();
     if (intent) {
         var val = intent.getStringExtra("goToTarget");
@@ -288,19 +289,6 @@ getWeekEntries = function() {
 }
 
 
-getOther = function() {
-    var appsAll = getAppsToday();
-    var other = [];
-    for (var day = TODAY; day >=0; day--) {
-        var otherSum = 0;
-        for (var i = 4; i < appsAll.length; i++) {
-            otherSum += progressInfo.appStats[appsAll[i].index][TODAY-day].time
-        }
-        other[TODAY-day] = otherSum;
-    }
-    return other;
-}
-
 
 
 /************************************
@@ -407,7 +395,6 @@ populateListViewsDay = function() {
      var unlocks = progressInfo.phoneStats[TODAY].unlocks;
      var glances = progressInfo.phoneStats[TODAY].glances;
      var total = progressInfo.phoneStats[TODAY].totalTime;
-     var targetTime = progressInfo.phoneStats[TODAY].time;
     
 	//If less than 1 hour, show minutes instead of 0.2hrs
     var totalReport;
@@ -447,16 +434,16 @@ populateListViewsDay = function() {
 //Creates list view for week, showing name, avg min.day and total minutes
 populateListViewsWeek = function() {
     var timeOnPhoneWeek = totalTimeWeek(0, "total")
-    var timeOnTargetAppsWeek = totalTimeWeek(0, "target");
+    var timeOnWatchlistAppsWeek = totalTimeWeek(0, "watchlist");
     var unlocks = totalTimeWeek(0, "unlocks");
   
     var watchlistReport;
     var timeWatchlistDesc;
-    if (timeOnTargetAppsWeek <= 60) {
-        watchlistReport = timeOnTargetAppsWeek;
+    if (timeOnWatchlistAppsWeek <= 60) {
+        watchlistReport = timeOnWatchlistAppsWeek;
         timeWatchlistDesc = "mins on watchlist"
     } else {
-        watchlistReport = Math.round(timeOnTargetAppsWeek/6)/10;
+        watchlistReport = Math.round(timeOnWatchlistAppsWeek/6)/10;
         timeWatchlistDesc = "hrs on watchlist"
     }
 
@@ -498,17 +485,17 @@ populateListViewsWeek = function() {
 //Creates a list view for the month view, with name, avg min/day and total mintues
 populateListViewMonth = function () {
 	var totalTimePhoneMonth = totalTimeMonth("total");
-    var totalTarget = totalTimeMonth("target");
+    var totalWatchlistMonth = totalTimeMonth("watchlist");
     var unlocks = totalTimeMonth("unlocks"); 
 
     //If less than 1 hour, show minutes instead of 0.2hrs
     var watchlistReport;
     var timeWatchlistDesc;
-    if (totalTarget <= 60) {
-        watchlistReport = totalTarget;
+    if (totalWatchlistMonth <= 60) {
+        watchlistReport = totalWatchlistMonth;
         timeWatchlistDesc = "mins on watchlist"
     } else {
-        watchlistReport = Math.round(totalTarget/6)/10;
+        watchlistReport = Math.round(totalWatchlistMonth/6)/10;
         timeWatchlistDesc = "hrs on watchlist"
     }
 
@@ -604,7 +591,18 @@ exports.goToDetailApps = function(args) {
 }
 
 
-
+getOther = function() {
+    var appsAll = getAppsToday();
+    var other = [];
+    for (var day = TODAY; day >=0; day--) {
+        var otherSum = 0;
+        for (var i = 4; i < appsAll.length; i++) {
+            otherSum += progressInfo.appStats[appsAll[i].index][TODAY-day].time
+        }
+        other[TODAY-day] = otherSum;
+    }
+    return other;
+}
 
 
 //Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
@@ -632,7 +630,7 @@ getTrackableApps = function() {
 }
 
 
-//Returns the total time spent on an app in a month when passed in that app's object
+//Returns the total time spent on a specific app in a month when passed in that app's object
 getTotalTimeAppMonth = function(array) {
     var sum = 0;
     for (var i = 0; i <= TODAY; i++) {
@@ -677,12 +675,16 @@ totalTimeWeek = function(weeksAgo, value) {
         switch(value) {
             case ("total"):
                  sum += progressInfo.phoneStats[i].totalTime;
-            case ("target"):
+                 continue;
+            case ("watchlist"):
                 sum += progressInfo.phoneStats[i].time;
+                continue;
             case ("glances"):
                 sum += progressInfo.phoneStats[i].glances;
+                continue;
             case ("unlocks"):
                 sum += progressInfo.phoneStats[i].unlocks;
+                continue;
         }
     }
     return sum;
@@ -694,13 +696,17 @@ totalTimeMonth = function(value) {
     for (var i = 0; i <= TODAY; i++) {
         switch(value) {
             case ("total"):
-                 sum += progressInfo.phoneStats[i].totalTime;
-            case ("target"):
+                sum += progressInfo.phoneStats[i].totalTime;
+                continue;
+            case ("watchlist"):
                 sum += progressInfo.phoneStats[i].time;
+                continue;
             case ("glances"):
                 sum += progressInfo.phoneStats[i].glances;
+                continue;
             case ("unlocks"):
                 sum += progressInfo.phoneStats[i].unlocks;
+                continue;
         }
     }
     return sum;
@@ -932,7 +938,7 @@ function getSpannableString() {
 
 }
 
-//Toggle buttons for day/week/month graphs
+//Toggle for day/week/month graphs
 exports.toggle = function () {
     pageData.set("showDayGraph", !pageData.get("showDayGraph"));
 }

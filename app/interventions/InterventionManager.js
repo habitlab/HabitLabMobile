@@ -639,7 +639,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
 var showFullScreenOverlay = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay("Continue to Facebook?", 
-      "You've already been here 25 times today. Want to take a break?", 
+      "You've been here 25 times today. Want to take a break?", 
       "Continue to Facebook", "Get me out of here!", null, null);
     return;
   }
@@ -652,7 +652,7 @@ var showFullScreenOverlay = function (real, pkg) {
       var title = "Continue to " + app + "?";
       var linkMsg = "Continue to " + app;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
+      msg += " been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
       FullScreenOverlay.showOverlay(title, msg, linkMsg, "Get me out of here!", null, exitToHome);
     }
   }
@@ -759,7 +759,11 @@ var showSliderDialog = function(real, pkg) {
 
   if (StorageUtil.canIntervene(ID.interventionIDs.APPLICATION_SLIDER, pkg)) {
     var cb = function(setTime) {
-      TimerOverlay.showCountDownTimer(setTime, null);
+      if (setTime === 0) {
+        setTime = 0.05;
+      }
+
+      TimerOverlay.showCountDownTimer(setTime, exitToHome);
     };
 
     var visits = StorageUtil.getVisits(pkg);
@@ -846,22 +850,10 @@ function show_target_enabler() {
  */ 
 var positiveAppToast = function(real, pkg) {
   if (!real) {
-    var targetPkg = 'com.stanfordhci.habitlab';
-    var targets = StorageUtil.getTargetSelectedPackages();
-    if (targets.length > 0) {
-      targetPkg = targets[0];
-    }
-    var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
-    var cb = function () {
-      var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-      if (foreground) {
-        foreground.startActivity(launchIntent);
-      }
-    }
-
-    var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-
-    ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+    // add icon
+    var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
+    var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
+    ToastOverlay.showToastOverlay("Open HabitLab", bitmap, null, false);
     return;
   }
 
@@ -873,7 +865,6 @@ var positiveAppToast = function(real, pkg) {
         if (targets.length === 0) { return; }
         var index = randBW(0, targets.length - 1);
         var targetPkg = targets[index];
-
         var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
         var cb = function () {
           var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
@@ -884,7 +875,7 @@ var positiveAppToast = function(real, pkg) {
 
         var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
 
-        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
       }
     }
   } else {
@@ -994,7 +985,7 @@ var nextOnLaunchIntervention = function(pkg) {
 
   // decide whether or not to run an on-launch intervention
   var run = Math.random();
-  if (run < 0.6) {
+  if (run < 0.8) {
     var randomDifficulty = Math.random();
     var index;
     if (randomDifficulty < 0.1) {  // hard

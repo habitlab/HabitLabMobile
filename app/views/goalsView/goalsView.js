@@ -143,6 +143,7 @@ exports.onIndexChanged = function(args) {
   }
 }
 
+//Setting up targets occurs in the watchlist 
 redirectToWatchlist = function() {
   var options = {
     moduleName: 'views/watchlistView/watchlistView',
@@ -154,7 +155,7 @@ redirectToWatchlist = function() {
   frameModule.topmost().navigate(options);
 }
 
-
+//Redirect back to the watchlist tab
 redirect = function() {
   var tabView = page.getViewById("tabView")
   tabView.selectedIndex = 1;
