@@ -860,7 +860,7 @@ var positiveAppToast = function(real, pkg) {
 
         var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
 
-        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb);
+        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
       }
     }
   } else {
