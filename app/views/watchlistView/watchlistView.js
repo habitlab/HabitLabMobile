@@ -23,7 +23,7 @@ exports.onItemTap = function(args) {
       name: info.name,
       icon: info.icon,
       packageName: info.packageName,
-      isWatchlist: true
+      isWatchlist: true // once target apps tracking is implemented, we can show details from this click (simply pass false here)
     },
     animated: true,
     transition: {
@@ -33,31 +33,6 @@ exports.onItemTap = function(args) {
     }
   });
 };
-
-/** Has not been implemented as accessibility service needs to be re-configured to track target apps 
-** When that is complete, write "onItemTap = 'onTargetTap'" in xml, and uncomment this function
-*/
-
-// exports.onTargetTap = function(args) {
-//   events.push({category: "navigation", index: "watchlist_to_detail"});
-
-//   var info = args.view.bindingContext;
-//   frameModule.topmost().navigate({
-//     moduleName: 'views/appDetailView/appDetailView',
-//     context: { 
-//       name: info.name,
-//       icon: info.icon,
-//       packageName: info.packageName,
-//       isWatchlist: false
-//     },
-//     animated: true,
-//     transition: {
-//       name: "slide",
-//       duration: 380,
-//       curve: "easeIn"
-//     }
-//   });
-// };
 
 var setUpList = function() {
   var listLayout = page.getViewById('watchlist-list');
