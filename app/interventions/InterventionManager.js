@@ -100,14 +100,12 @@ code.VISIT_TOAST = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_TOAST, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits >= THRESHOLD_VISIT_TST) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_TOAST}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-      Toast.show(context, msg, 1, "#E71D36"); 
-    }
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits >= THRESHOLD_VISIT_TST) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_TOAST}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+    Toast.show(context, msg, 1, "#E71D36"); 
   }
 };
 
@@ -126,16 +124,14 @@ code.VISIT_NOTIFICATION = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_NOTIFICATION, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits >= THRESHOLD_VISIT_NTF) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_NOTIFICATION}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var title = app + " Visit Count";
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT, 10);
-    }
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits >= THRESHOLD_VISIT_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_NOTIFICATION}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var title = app + " Visit Count";
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+    NotificationUtil.sendNotification(context, title, msg, notificationID.VISIT, 10);
   }
 };
 
@@ -153,15 +149,13 @@ code.VISIT_DIALOG = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.VISIT_DIALOG, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits >= THRESHOLD_VISIT_DLG) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_DIALOG}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-    }
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits >= THRESHOLD_VISIT_DLG) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_DIALOG}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
   }
 }
 
@@ -185,15 +179,13 @@ code.GLANCE_NOTIFICATION = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.GLANCE_NOTIFICATION)) {
-    var glances = StorageUtil.getGlances();
-    if (glances >= THRESHOLD_GLANCES_NTF) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.GLANCE_NOTIFICATION}]);
-      var title = 'Glance Alert';
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
-      NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE, 10);
-    }
+  var glances = StorageUtil.getGlances();
+  if (glances >= THRESHOLD_GLANCES_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.GLANCE_NOTIFICATION}]);
+    var title = 'Glance Alert';
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
+    NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE, 10);
   }
 };
 
@@ -210,13 +202,11 @@ code.UNLOCK_TOAST = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_TOAST)) {
-    var unlocks = StorageUtil.getUnlocks();
-    if (unlocks >= THRESHOLD_UNLOCKS_TST) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_TOAST}]);
-      var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today";
-      Toast.show(context, msg, 1, "#72E500");
-    }
+  var unlocks = StorageUtil.getUnlocks();
+  if (unlocks >= THRESHOLD_UNLOCKS_TST) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_TOAST}]);
+    var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today";
+    Toast.show(context, msg, 1, "#72E500");
   }
 };
 
@@ -235,15 +225,13 @@ code.UNLOCK_NOTIFICATION = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_NOTIFICATION)) {
-    var unlocks = StorageUtil.getUnlocks();
-    if (unlocks >= THRESHOLD_UNLOCKS_NTF) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_NOTIFICATION}]);
-      var title = 'Unlock Alert';
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-      NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK, 10);
-    }
+  var unlocks = StorageUtil.getUnlocks();
+  if (unlocks >= THRESHOLD_UNLOCKS_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_NOTIFICATION}]);
+    var title = 'Unlock Alert';
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+    NotificationUtil.sendNotification(context, title, msg, notificationID.UNLOCK, 10);
   }
 };
 
@@ -261,15 +249,13 @@ code.UNLOCK_DIALOG = function (real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.UNLOCK_DIALOG)) {
-    var unlocks = StorageUtil.getUnlocks();
-    if (unlocks >= THRESHOLD_UNLOCKS_DLG) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_DIALOG}]);
-      var title = 'Unlock Alert';
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-    }
+  var unlocks = StorageUtil.getUnlocks();
+  if (unlocks >= THRESHOLD_UNLOCKS_DLG) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_DIALOG}]);
+    var title = 'Unlock Alert';
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
   }
 }
 
@@ -295,14 +281,12 @@ code.PHONE_USAGE_TOAST = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_TOAST)) {
-    var time = StorageUtil.getTotalTime();
-    if (time >= THRESHOLD_PHONE_USAGE_TST) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_TOAST}]);
-      var hours = Math.round(10 * (time / 60)) / 10;
-      var msg = "You've spent " + hours + " hours on your phone today";
-      Toast.show(context, msg, 1, "#011627");
-    }
+  var time = StorageUtil.getTotalTime();
+  if (time >= THRESHOLD_PHONE_USAGE_TST) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_TOAST}]);
+    var hours = Math.round(10 * (time / 60)) / 10;
+    var msg = "You've spent " + hours + " hours on your phone today";
+    Toast.show(context, msg, 1, "#011627");
   }
 };
 
@@ -321,16 +305,14 @@ code.PHONE_USAGE_NOTIFICATION = function(real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_NOTIFICATION)) {
-    var time = StorageUtil.getTotalTime();
-    if (time >= THRESHOLD_PHONE_USAGE_NTF) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_NOTIFICATION}]);
-      var hours = Math.round(10 * (time / 60)) / 10;
-      var title = 'Phone Usage Alert';
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " already spent " + hours + ' hours on your phone today';
-      NotificationUtil.sendNotification(context, title, msg, notificationID.PHONE, 10);
-    }
+  var time = StorageUtil.getTotalTime();
+  if (time >= THRESHOLD_PHONE_USAGE_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_NOTIFICATION}]);
+    var hours = Math.round(10 * (time / 60)) / 10;
+    var title = 'Phone Usage Alert';
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " already spent " + hours + ' hours on your phone today';
+    NotificationUtil.sendNotification(context, title, msg, notificationID.PHONE, 10);
   }
 };
 
@@ -348,15 +330,13 @@ code.PHONE_USAGE_DIALOG = function (real) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.PHONE_USAGE_DIALOG)) {
-    var time = StorageUtil.getTotalTime();
-    if (time >= THRESHOLD_PHONE_USAGE_DLG) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_DIALOG}]);
-      var hours = Math.round(10 * (time / 60)) / 10;
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " already spent " + hours + ' hours on your phone today';
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-    }
+  var time = StorageUtil.getTotalTime();
+  if (time >= THRESHOLD_PHONE_USAGE_DLG) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_DIALOG}]);
+    var hours = Math.round(10 * (time / 60)) / 10;
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " already spent " + hours + ' hours on your phone today';
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
   }
 }
 
@@ -380,14 +360,12 @@ code.USAGE_TOAST = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_TOAST, pkg)) {
-    var minutes = StorageUtil.getAppTime(pkg);
-    if (minutes >= THRESHOLD_USAGE_TST) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_TOAST}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
-      Toast.show(context, msg, 1, "#FFA730");
-    }
+  var minutes = StorageUtil.getAppTime(pkg);
+  if (minutes >= THRESHOLD_USAGE_TST) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_TOAST}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
+    Toast.show(context, msg, 1, "#FFA730");
   }
 };
 
@@ -405,16 +383,14 @@ code.USAGE_NOTIFICATION = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_NOTIFICATION, pkg)) {
-    var minutes = StorageUtil.getAppTime(pkg);
-    if (minutes >= THRESHOLD_USAGE_NTF) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var title = app + " Usage Alert"
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " already used " + app + " for " + minutes + " minutes today.";
-      NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
-    } 
+  var minutes = StorageUtil.getAppTime(pkg);
+  if (minutes >= THRESHOLD_USAGE_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var title = app + " Usage Alert"
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " already used " + app + " for " + minutes + " minutes today.";
+    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
   }
 };
 
@@ -431,15 +407,13 @@ code.USAGE_DIALOG = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.USAGE_DIALOG, pkg)) {
-    var minutes = StorageUtil.getAppTime(pkg);
-    if (minutes >= THRESHOLD_USAGE_DLG) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_DIALOG}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", that's" : "That's"
-      msg += " already " + minutes + " minutes on " + app + " today!"; 
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-    }
+  var minutes = StorageUtil.getAppTime(pkg);
+  if (minutes >= THRESHOLD_USAGE_DLG) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_DIALOG}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", that's" : "That's"
+    msg += " already " + minutes + " minutes on " + app + " today!"; 
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
   }
 };
 
@@ -489,17 +463,15 @@ code.DURATION_TOAST = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_TOAST, pkg)) {
-    var now = System.currentTimeMillis();
-    if (!durationToastID) {
-      durationToastID = Timer.setTimeout(() => {
-        StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
-        var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-        var msg = "You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit";
-        Toast.show(context, msg, 1, "#2EC4B6");
-        durationToastID = 0;
-      }, THRESHOLD_DURATION_TST);
-    }
+  var now = System.currentTimeMillis();
+  if (!durationToastID) {
+    durationToastID = Timer.setTimeout(() => {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = "You've been on " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_TST / MIN_IN_MS) + " minutes this visit";
+      Toast.show(context, msg, 1, "#2EC4B6");
+      durationToastID = 0;
+    }, THRESHOLD_DURATION_TST);
   }
 };
 
@@ -516,19 +488,17 @@ code.DURATION_NOTIFICATION = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_NOTIFICATION, pkg)) {
-    var now = System.currentTimeMillis();
-    if (!durationNotifID) {
-      durationNotifID = Timer.setTimeout(() => {
-        StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_NOTIFICATION}]);
-        var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-        var title = applicationName + " Visit Length";
-        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-        msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_NTF / MIN_IN_MS) + " minutes";
-        NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
-        durationNotifID = 0;
-      }, THRESHOLD_DURATION_NTF);
-    }
+  var now = System.currentTimeMillis();
+  if (!durationNotifID) {
+    durationNotifID = Timer.setTimeout(() => {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_NOTIFICATION}]);
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = applicationName + " Visit Length";
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_NTF / MIN_IN_MS) + " minutes";
+      NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
+      durationNotifID = 0;
+    }, THRESHOLD_DURATION_NTF);
   }
 };
 
@@ -545,18 +515,16 @@ code.DURATION_DIALOG = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.DURATION_DIALOG, pkg)) {
-    var now = System.currentTimeMillis();
-    if (!durationDialogID) {
-      durationDialogID = Timer.setTimeout(() => {
-        StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_DIALOG}]);
-        var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-        msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_DLG / MIN_IN_MS) + " minutes";
-        DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
-        durationDialogID = 0;
-      }, THRESHOLD_DURATION_DLG);
-    }
+  var now = System.currentTimeMillis();
+  if (!durationDialogID) {
+    durationDialogID = Timer.setTimeout(() => {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_DIALOG}]);
+      var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " been using " + applicationName + " for " + Math.ceil(THRESHOLD_DURATION_DLG / MIN_IN_MS) + " minutes";
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+      durationDialogID = 0;
+    }, THRESHOLD_DURATION_DLG);
   }
 }
 
@@ -602,12 +570,10 @@ code.VIDEO_BLOCKER = function (real, node, pkg) {
     var videoRect = new android.graphics.Rect();
     if (videoContainer) { videoContainer.getBoundsInScreen(videoRect); }
 
-    if (StorageUtil.canIntervene(ID.interventionIDs.VIDEO_BLOCKER, pkg)) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VIDEO_BLOCKER}]);
-      audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
-      VideoOverlay.showYoutube(videoRect.width(), videoRect.height(), null, exitToHome);
-      pausedThisVisit = true;
-    }
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VIDEO_BLOCKER}]);
+    audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_SYSTEM, AudioManager.AUDIOFOCUS_GAIN);
+    VideoOverlay.showYoutube(videoRect.width(), videoRect.height(), null, exitToHome);
+    pausedThisVisit = true;
   }
 }
 
@@ -648,17 +614,15 @@ code.FULL_SCREEN_OVERLAY = function (real, pkg) {
     return;
   }
   
-  if (StorageUtil.canIntervene(ID.interventionIDs.FULL_SCREEN_OVERLAY, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits >= THRESHOLD_FULLSCREEN_OVR) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.FULL_SCREEN_OVERLAY}]);
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var title = "Continue to " + app + "?";
-      var linkMsg = "Continue to " + app;
-      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
-      FullScreenOverlay.showOverlay(title, msg, linkMsg, "Get me out of here!", null, exitToHome);
-    }
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits >= THRESHOLD_FULLSCREEN_OVR) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.FULL_SCREEN_OVERLAY}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var title = "Continue to " + app + "?";
+    var linkMsg = "Continue to " + app;
+    var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+    msg += " been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to take a break?";
+    FullScreenOverlay.showOverlay(title, msg, linkMsg, "Get me out of here!", null, exitToHome);
   }
 }
 
@@ -687,13 +651,10 @@ code.COUNTUP_TIMER_OVERLAY = function (real, pkg) {
     return;
   }
 
-
-  if (StorageUtil.canIntervene(ID.interventionIDs.COUNTUP_TIMER_OVERLAY, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits >= THRESHOLD_COUNTUP_TMR) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.COUNTUP_TIMER_OVERLAY}]);
-      TimerOverlay.showCountUpTimer();
-    }
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits >= THRESHOLD_COUNTUP_TMR) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.COUNTUP_TIMER_OVERLAY}]);
+    TimerOverlay.showCountUpTimer();
   }
 }
 
@@ -712,12 +673,10 @@ code.COUNTDOWN_TIMER_OVERLAY = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits >= THRESHOLD_COUNTDOWN_TMR) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY}]);
-      TimerOverlay.showCountDownTimer(2, exitToHome);
-    } 
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits >= THRESHOLD_COUNTDOWN_TMR) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.COUNTDOWN_TIMER_OVERLAY}]);
+    TimerOverlay.showCountDownTimer(2, exitToHome);
   }
 }
 
@@ -738,12 +697,10 @@ var dimScreen = code.DIMMER_OVERLAY = function (real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.DIMMER_OVERLAY, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits > THRESHOLD_DIMSCREEN_OVR) {
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DIMMER_OVERLAY}]);
-      DimmerOverlay.dim(0.01);
-    }
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits > THRESHOLD_DIMSCREEN_OVR) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DIMMER_OVERLAY}]);
+    DimmerOverlay.dim(0.01);
   }
 }
 
@@ -761,22 +718,20 @@ code.APPLICATION_SLIDER = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.APPLICATION_SLIDER, pkg)) {
-    var cb = function(setTime) {
-      if (setTime === 0) {
-        setTime = 0.05;
-      }
-
-      TimerOverlay.showCountDownTimer(setTime, exitToHome);
-    };
-
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits > THRESHOLD_APPLICATION_SLIDER_OVR) {
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = "How much time would you like to spend on " + app + " this visit?";
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.APPLICATION_SLIDER}]);
-      SliderOverlay.showSliderOverlay(msg, cb);
+  var cb = function(setTime) {
+    if (setTime === 0) {
+      setTime = 0.05;
     }
+
+    TimerOverlay.showCountDownTimer(setTime, exitToHome);
+  };
+
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits > THRESHOLD_APPLICATION_SLIDER_OVR) {
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var msg = "How much time would you like to spend on " + app + " this visit?";
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.APPLICATION_SLIDER}]);
+    SliderOverlay.showSliderOverlay(msg, cb);
   }
 }
 
@@ -796,15 +751,13 @@ code.INTERSTITIAL = function(real, pkg) {
     return;
   }
 
-  if (StorageUtil.canIntervene(ID.interventionIDs.INTERSTITIAL, pkg)) {
-    var visits = StorageUtil.getVisits(pkg);
-    if (visits > THRESHOLD_INTERSTITIAL_OVR) {
-      var app = UsageInformationUtil.getBasicInfo(pkg).name;
-      var title = "Just a Moment";
-      var msg = "We'll take you to " + app + " shortly. Take a deep breath in the meantime!";
-      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.INTERSTITIAL}]);
-      FullScreenOverlay.showInterstitial(title, msg, "EXIT", exitToHome);
-    } 
+  var visits = StorageUtil.getVisits(pkg);
+  if (visits > THRESHOLD_INTERSTITIAL_OVR) {
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var title = "Just a Moment";
+    var msg = "We'll take you to " + app + " shortly. Take a deep breath in the meantime!";
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.INTERSTITIAL}]);
+    FullScreenOverlay.showInterstitial(title, msg, "EXIT", exitToHome);
   }
 }
 
@@ -870,30 +823,28 @@ code.POSITIVE_TOAST = function(real, pkg) {
     var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
     //var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     //var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
-    ToastOverlay.showToastOverlay("Open " + appName, bitmap, null, false);
+    ToastOverlay.showToastOverlay("Open " + appName, bitmap, null, true);
     return;
   }
 
   if (StorageUtil.isTargetOn()) {
-    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_TOAST, pkg)) {
-      var visits = StorageUtil.getVisits(pkg);
-      if (visits > THRESHOLD_POSITIVE_TST) {
-        var targets = StorageUtil.getTargetSelectedPackages();
-        if (targets.length === 0) { return; }
-        var index = randBW(0, targets.length - 1);
-        var targetPkg = targets[index];
-        var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
-        var cb = function () {
-          var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-          if (foreground) {
-            foreground.startActivity(launchIntent);
-          }
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits > THRESHOLD_POSITIVE_TST) {
+      var targets = StorageUtil.getTargetSelectedPackages();
+      if (targets.length === 0) { return; }
+      var index = randBW(0, targets.length - 1);
+      var targetPkg = targets[index];
+      var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+      var cb = function () {
+        var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+        if (foreground) {
+          foreground.startActivity(launchIntent);
         }
-
-        var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-
-        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
       }
+
+      var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
+      ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
     }
   } else {
     show_target_enabler()
@@ -940,17 +891,15 @@ code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg) {
   }
   
   if (StorageUtil.isTargetOn()) {
-    if (StorageUtil.canIntervene(ID.interventionIDs.POSITIVE_FULL_SCREEN_OVERLAY, pkg)) {
-      var visits = StorageUtil.getVisits(pkg);
-      if (visits >= THRESHOLD_FULLSCREEN_OVR) {
-        StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.POSITIVE_FULL_SCREEN_OVERLAY}]);
-        var app = UsageInformationUtil.getBasicInfo(pkg).name;
-        var title = "Go to " + targetAppName + " instead?";
-        var linkMsg = "Continue to " + app;
-        var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-        msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to do something else?";
-        FullScreenOverlay.showOverlay(title, msg, linkMsg, "Go to " + targetAppName, null, cb);
-      }
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits >= THRESHOLD_FULLSCREEN_OVR) {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.POSITIVE_FULL_SCREEN_OVERLAY}]);
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var title = "Go to " + targetAppName + " instead?";
+      var linkMsg = "Continue to " + app;
+      var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
+      msg += " already been here " + visits + (visits === 1 ? " time" : " times") + " today. Want to do something else?";
+      FullScreenOverlay.showOverlay(title, msg, linkMsg, "Go to " + targetAppName, null, cb);
     }
   } else {
     show_target_enabler()
