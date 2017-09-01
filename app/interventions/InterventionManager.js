@@ -1042,15 +1042,19 @@ var nextOnLaunchIntervention = function(pkg) {
   if (run < 0.8) {
     var randomDifficulty = Math.random();
     var index;
+    var func_and_name;
     if (randomDifficulty < 0.1) {  // hard
       index = randBW(0, onLaunchInterventions.hard.length - 1);
-      onLaunchInterventions.hard[index].func(true, pkg);
+      func_and_name = onLaunchInterventions.hard[index];
     }  else if (randomDifficulty < 0.4) { // medium
       index = randBW(0, onLaunchInterventions.medium.length - 1);
-      onLaunchInterventions.medium[index].func(true, pkg);
+      func_and_name = onLaunchInterventions.medium[index];
     } else {  // easy
       index = randBW(0, onLaunchInterventions.easy.length - 1);
-      onLaunchInterventions.easy[index].func(true, pkg);
+      func_and_name = onLaunchInterventions.easy[index];
+    }
+    if (StorageUtil.canIntervene(ID[func_and_name.shortname])) {
+      func_and_name.func(true, pkg);
     }
   }
 };
@@ -1067,12 +1071,17 @@ var nextScreenUnlockIntervention = function() {
   if (run < 0.15) {
     var randomDifficulty = Math.random();
     var index;
+    var func_and_name;
     if (randomDifficulty < 0.4) {
       index = randBW(0, onScreenUnlockInterventions.medium.length - 1);
-      onScreenUnlockInterventions.medium[index].func(true);
+      func_and_name = onScreenUnlockInterventions.medium[index];
     } else {
       index = randBW(0, onScreenUnlockInterventions.easy.length - 1);
-      onScreenUnlockInterventions.easy[index].func(true);
+      func_and_name = onScreenUnlockInterventions.easy[index];
+    }
+    // TODO there are no hard interventions for screen unlock (phone) type
+    if (StorageUtil.canIntervene(ID[func_and_name.shortname])) {
+      func_and_name.func(true);
     }
   }
 }
