@@ -94,7 +94,7 @@ var code = {};
  * of visits (determined by THRESHOLD_VISIT_TST) to 
  * the specified package.
  */
-var popToastVisited = code.VISIT_TOAST = function(real, pkg) {
+code.VISIT_TOAST = function(real, pkg) {
   if (!real) {
     Toast.show(context, "You've visited Facebook 8 times today", 1, "#E71D36");
     return;
@@ -119,7 +119,7 @@ var popToastVisited = code.VISIT_TOAST = function(real, pkg) {
  * of visits (determined by THRESHOLD_VISIT_NTF) to 
  * the specified package.
  */
-var sendNotificationVisited = code.VISIT_NOTIFICATION = function(real, pkg) {
+code.VISIT_NOTIFICATION = function(real, pkg) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Visit Count", 
       "You've opened Facebook 7 times today", notificationID.VISIT, 10);
@@ -147,7 +147,7 @@ var sendNotificationVisited = code.VISIT_NOTIFICATION = function(real, pkg) {
  * of visits (determined by THRESHOLD_VISIT_DLG) to 
  * the specified package.
  */
-var showDialogVisited = code.VISIT_DIALOG = function (real, pkg) {
+code.VISIT_DIALOG = function (real, pkg) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've opened Facebook 12 times today", "Okay");
     return;
@@ -178,7 +178,7 @@ var showDialogVisited = code.VISIT_DIALOG = function (real, pkg) {
  * number of glances (determined by 
  * THRESHOLD_GLANCES_NTF).
  */
-var sendNotificationGlances = code.GLANCE_NOTIFICATION = function(real) {
+code.GLANCE_NOTIFICATION = function(real) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Glance Alert", 
       "You've glanced at your phone 7 times today", notificationID.VISIT, 10);
@@ -204,7 +204,7 @@ var sendNotificationGlances = code.GLANCE_NOTIFICATION = function(real) {
  * Displays a toast if the device has an effective number 
  * of unlocks (determined by THRESHOLD_UNLOCKS_TST).
  */
-var popToastUnlocked = code.UNLOCK_TOAST = function(real) {
+code.UNLOCK_TOAST = function(real) {
   if (!real) {
     Toast.show(context, "You've unlocked your phone 7 times today", 1, "#72E500");
     return;
@@ -228,7 +228,7 @@ var popToastUnlocked = code.UNLOCK_TOAST = function(real) {
  * number of unlocks (determined by 
  * THRESHOLD_UNLOCKS_NTF).
  */
-var sendUnlocksNotification = code.UNLOCK_NOTIFICATION = function(real) {
+code.UNLOCK_NOTIFICATION = function(real) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Unlock Alert", 
       "You've unlocked your phone 7 times today", notificationID.VISIT, 10);
@@ -255,7 +255,7 @@ var sendUnlocksNotification = code.UNLOCK_NOTIFICATION = function(real) {
  * number of unlocks (determined by 
  * THRESHOLD_UNLOCKS_DLG).
  */
-var showUnlocksDialog = code.UNLOCK_DIALOG = function (real) {
+code.UNLOCK_DIALOG = function (real) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've unlocked your phone 18 times today", "Okay");
     return;
@@ -289,7 +289,7 @@ const THRESHOLD_PHONE_USAGE_DLG = 180; // 3 hours
  * of minutes spent on phone (determined by 
  * THRESHOLD_PHONE_USAGE_TST).
  */
-var popToastPhoneUsage = code.PHONE_USAGE_TOAST = function(real) {
+code.PHONE_USAGE_TOAST = function(real) {
   if (!real) {
     Toast.show(context, "You've spent 3.6 hours on your phone today", 1, "#011627");
     return;
@@ -314,7 +314,7 @@ var popToastPhoneUsage = code.PHONE_USAGE_TOAST = function(real) {
  * of minutes spent on phone (determined by 
  * THRESHOLD_PHONE_USAGE_NTF).
  */
-var sendPhoneUsageNotification = code.PHONE_USAGE_NOTIFICATION = function(real) {
+code.PHONE_USAGE_NOTIFICATION = function(real) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Phone Usage Alert", 
       "You've spend 4.2 hours on your phone today", notificationID.PHONE, 10);
@@ -342,7 +342,7 @@ var sendPhoneUsageNotification = code.PHONE_USAGE_NOTIFICATION = function(real) 
  * number of minutes spent on phone (determined by 
  * THRESHOLD_PHONE_USAGE_DLG).
  */
-var showPhoneUsageDialog = code.PHONE_USAGE_DIALOG = function (real) {
+code.PHONE_USAGE_DIALOG = function (real) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've spent 5.1 hours on your phone today", "Okay");
     return;
@@ -374,7 +374,7 @@ var showPhoneUsageDialog = code.PHONE_USAGE_DIALOG = function (real) {
  * Displays a toast on application launch if the user has already
  * surpassed their minutes goal for the day.
  */
-var popToastUsage = code.USAGE_TOAST = function (real, pkg) {
+code.USAGE_TOAST = function (real, pkg) {
   if (!real) {
     Toast.show(context, "You've already used Facebook for 23 minutes today!", 1, "#FFA730");
     return;
@@ -398,7 +398,7 @@ var popToastUsage = code.USAGE_TOAST = function (real, pkg) {
  * Sends a notification on application launch if the user has 
  * already surpassed 1.5 times their minutes goal for the day.
  */
-var sendNotificationUsage = code.USAGE_NOTIFICATION = function (real, pkg) {
+code.USAGE_NOTIFICATION = function (real, pkg) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Usage Alert", 
       "You've already used Facebook for 27 minutes today!", notificationID.USAGE, 10);
@@ -425,7 +425,7 @@ var sendNotificationUsage = code.USAGE_NOTIFICATION = function (real, pkg) {
  * Shows a dialog on application launch if the user has 
  * already surpassed 2 times their minutes goal for the day.
  */
-var showDialogUsage = code.USAGE_DIALOG = function (real, pkg) {
+code.USAGE_DIALOG = function (real, pkg) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've already used Facebook for 47 minutes today!", "Okay");
     return;
@@ -483,7 +483,7 @@ var resetDurationInterventions = function() {
  * Displays a toast after THRESHOLD_DURATION_TST ms on the 
  * specified package.
  */
-var popToastVisitLength = code.DURATION_TOAST = function (real, pkg) {
+code.DURATION_TOAST = function (real, pkg) {
   if (!real) {
     Toast.show(context, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
     return;
@@ -509,7 +509,7 @@ var popToastVisitLength = code.DURATION_TOAST = function (real, pkg) {
  * Displays a notification after THRESHOLD_DURATION_NTF ms 
  * on the specified package.
  */
-var sendNotificationVisitLength = code.DURATION_NOTIFICATION = function (real, pkg) {
+code.DURATION_NOTIFICATION = function (real, pkg) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Visit Length", 
       "You've been using Facebook for 10 minutes", notificationID.DURATION, 10);
@@ -539,7 +539,7 @@ var sendNotificationVisitLength = code.DURATION_NOTIFICATION = function (real, p
  * Displays a toast after THRESHOLD_DURATION_DLG ms on the 
  * specified package.
  */
-var showDialogVisitLength = code.DURATION_DIALOG = function (real, pkg) {
+code.DURATION_DIALOG = function (real, pkg) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay");
     return;
@@ -587,7 +587,7 @@ var exitToHome = function () {
  */
 var pausedThisVisit = false;
 var playNode;
-var youTubeVideoBlocker = code.VIDEO_BLOCKER = function (real, node, pkg) {
+code.VIDEO_BLOCKER = function (real, node, pkg) {
   if (!real) {
     Toast.show(context, "No demo available for this nudge!", 0);
     return;
@@ -640,7 +640,7 @@ var audioFocusListener = new android.media.AudioManager.OnAudioFocusChangeListen
  * Present a full screen overlay with two buttons (positive
  * and negative). Overlay disappears on click. 
  */
-var showFullScreenOverlay = code.FULL_SCREEN_OVERLAY = function (real, pkg) {
+code.FULL_SCREEN_OVERLAY = function (real, pkg) {
   if (!real) {
     FullScreenOverlay.showOverlay("Continue to Facebook?", 
       "You've been here 25 times today. Want to take a break?", 
@@ -671,7 +671,7 @@ var showFullScreenOverlay = code.FULL_SCREEN_OVERLAY = function (real, pkg) {
  * Call dismissTimer to get rid of display. 
  */
 var countUpTimerID;
-var showCountUpTimer = code.COUNTUP_TIMER_OVERLAY = function (real, pkg) {
+code.COUNTUP_TIMER_OVERLAY = function (real, pkg) {
   if (!real) {
     TimerOverlay.dismissTimer();
     if (countUpTimerID) {
@@ -705,7 +705,7 @@ var showCountUpTimer = code.COUNTUP_TIMER_OVERLAY = function (real, pkg) {
  * right corner) that counts down. Timer is flickable.
  * Call dismissTimer to get rid of display. 
  */
-var showCountDownTimer = code.COUNTDOWN_TIMER_OVERLAY = function (real, pkg) {
+code.COUNTDOWN_TIMER_OVERLAY = function (real, pkg) {
   if (!real) {
     TimerOverlay.dismissTimer();
     TimerOverlay.showCountDownTimer((1/12), null);
@@ -754,7 +754,7 @@ var dimScreen = code.DIMMER_OVERLAY = function (real, pkg) {
  * Display a dialog that allows user to set time to 
  * spend on the specified package.
  */
-var showSliderDialog = code.APPLICATION_SLIDER = function(real, pkg) {
+code.APPLICATION_SLIDER = function(real, pkg) {
   if (!real) {
     var msg = "How much time would you like to spend on Facebook this visit?";
     SliderOverlay.showSliderOverlay(msg, null);
@@ -788,7 +788,7 @@ var showSliderDialog = code.APPLICATION_SLIDER = function(real, pkg) {
  * Shows a full screen overlay that prevents user from entering app
  * for 10 seconds (also allows them to leave an app). 
  */
- var showInterstitial = code.INTERSTITIAL = function(real, pkg) {
+code.INTERSTITIAL = function(real, pkg) {
   if (!real) {
     var title = "Just a Moment";
     var msg = "We'll take you to Facebook shortly. Take a deep breath in the meantime!";
@@ -852,7 +852,7 @@ function show_target_enabler() {
  * ----------------
  * Pops toast to go to positive app/
  */ 
-var positiveAppToast = code.POSITIVE_TOAST = function(real, pkg) {
+code.POSITIVE_TOAST = function(real, pkg) {
   if (!real) {
     var targetPkg = 'com.stanfordhci.habitlab';
     var targets = StorageUtil.getTargetSelectedPackages();
@@ -905,7 +905,7 @@ var positiveAppToast = code.POSITIVE_TOAST = function(real, pkg) {
  * ----------------
  * Pops interstitial to go to positive app/
  */ 
-var positiveAppOverlay = code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg) {
+code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg) {
   if (!real) {
     var targetPkg = 'com.stanfordhci.habitlab';
     var targets = StorageUtil.getTargetSelectedPackages();
@@ -1012,25 +1012,29 @@ var durationInterventions = [];
       continue
     }
     intervention_functions[i] = intervention_function;
+    intervention_function_and_name = {
+      func: intervention_function,
+      shortname: intervention_info.shortname,
+    }
     if (intervention_info.target == 'duration') {
-      durationInterventions.push(intervention_function);
+      durationInterventions.push(intervention_function_and_name);
     } 
     else if (intervention_info.target == 'app') {
-      onLaunchInterventions[intervention_info.level].push(intervention_function);
+      onLaunchInterventions[intervention_info.level].push(intervention_function_and_name);
     } else if (intervention_info.target == 'phone') {
-      onScreenUnlockInterventions[intervention_info.level].push(intervention_function);
+      onScreenUnlockInterventions[intervention_info.level].push(intervention_function_and_name);
     }
   }
 })();
 
 var nextOnLaunchIntervention = function(pkg) {
   if (GlobalUtil.getVar('override_launch_intervention')) {
-    module.exports.interventions[GlobalUtil.getVar('override_launch_intervention')](true, pkg)
+    code[GlobalUtil.getVar('override_launch_intervention')](true, pkg)
     return
   }
   // set up duration interventions
-  for (var duration_intervention of duration_interventions) {
-    duration_intervention(true, pkg);
+  for (var duration_intervention of durationInterventions) {
+    duration_intervention.func(true, pkg);
   }
 
   // decide whether or not to run an on-launch intervention
@@ -1040,13 +1044,13 @@ var nextOnLaunchIntervention = function(pkg) {
     var index;
     if (randomDifficulty < 0.1) {  // hard
       index = randBW(0, onLaunchInterventions.hard.length - 1);
-      onLaunchInterventions.hard[index](true, pkg);
+      onLaunchInterventions.hard[index].func(true, pkg);
     }  else if (randomDifficulty < 0.4) { // medium
       index = randBW(0, onLaunchInterventions.medium.length - 1);
-      onLaunchInterventions.medium[index](true, pkg);
+      onLaunchInterventions.medium[index].func(true, pkg);
     } else {  // easy
       index = randBW(0, onLaunchInterventions.easy.length - 1);
-      onLaunchInterventions.easy[index](true, pkg);
+      onLaunchInterventions.easy[index].func(true, pkg);
     }
   }
 };
@@ -1054,7 +1058,7 @@ var nextOnLaunchIntervention = function(pkg) {
 var nextScreenOnIntervention = function() {
   var run = Math.random();
   if (run < 0.075) {
-    sendNotificationGlances(true);
+    code.GLANCE_NOTIFICATION(true);
   }
 }
 
@@ -1065,10 +1069,10 @@ var nextScreenUnlockIntervention = function() {
     var index;
     if (randomDifficulty < 0.4) {
       index = randBW(0, onScreenUnlockInterventions.medium.length - 1);
-      onScreenUnlockInterventions.medium[index](true);
+      onScreenUnlockInterventions.medium[index].func(true);
     } else {
       index = randBW(0, onScreenUnlockInterventions.easy.length - 1);
-      onScreenUnlockInterventions.easy[index](true);
+      onScreenUnlockInterventions.easy[index].func(true);
     }
   }
 }
@@ -1084,5 +1088,4 @@ module.exports = {
   nextOnLaunchIntervention,
   nextScreenOnIntervention,
   nextScreenUnlockIntervention,
-  youTubeVideoBlocker
 };

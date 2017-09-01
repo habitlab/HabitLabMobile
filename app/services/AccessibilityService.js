@@ -9,6 +9,7 @@ var {VersionNumber} = require("nativescript-version-number");
 const usage = require("~/util/UsageInformationUtil");
 const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
+const ID = require("~/interventions/InterventionData");
 const videoBlocker = require("~/overlays/VideoOverlay");
 const lockdownOverlay = require("~/overlays/LockdownOverlay");
 const CancelOverlay = require("~/overlays/CancelOverlay");
@@ -157,7 +158,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 interventionManager.nextOnLaunchIntervention(currentApplication.packageName);
             }
         } else if (currentApplication.isBlacklisted) {
-            interventionManager.youTubeVideoBlocker(true, event.getSource(), currentApplication.packageName); // youtube only
+            interventionManager.interventions[ID.interventionIDs.VIDEO_BLOCKER](true, event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 
