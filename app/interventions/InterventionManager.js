@@ -879,6 +879,7 @@ code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg) {
 
   var targetPkg = 'com.stanfordhci.habitlab';
   var targets = StorageUtil.getTargetSelectedPackages();
+  if (targets.length === 0) { return; }
   if (targets.length > 0) {
     targetPkg = targets[0];
   }
