@@ -1002,7 +1002,7 @@ var nextOnLaunchIntervention = function(pkg) {
       index = randBW(0, onLaunchInterventions.easy.length - 1);
       func_and_name = onLaunchInterventions.easy[index];
     }
-    if (StorageUtil.canIntervene(ID[func_and_name.shortname])) {
+    if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname], pkg)) {
       func_and_name.func(true, pkg);
     }
   }
@@ -1029,7 +1029,7 @@ var nextScreenUnlockIntervention = function() {
       func_and_name = onScreenUnlockInterventions.easy[index];
     }
     // TODO there are no hard interventions for screen unlock (phone) type
-    if (StorageUtil.canIntervene(ID[func_and_name.shortname])) {
+    if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname])) {
       func_and_name.func(true);
     }
   }
