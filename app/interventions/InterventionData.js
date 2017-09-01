@@ -61,7 +61,7 @@ exports.interventionDetails = [
   icon: 'res://ic_plane', 
   functionality: "Visit Length Toast", 
   description: "Sends a disappearing message when you are on a watchlisted app telling you how long that visit has been", 
-  target: 'app', 
+  target: 'duration', 
   level: 'easy',
   summary: 'Sends a pop up message with current app visit duration',
   style: 'toast'
@@ -72,6 +72,7 @@ exports.interventionDetails = [
   icon: 'res://ic_clock', 
   functionality: "Visit Length Notification", 
   description: "Sends a notification when you are on a watchlisted app telling you how long that visit has been", 
+  target: 'duration',
   level: 'easy',
   summary: 'Sends a notification with current app visit duration',
   style: 'notification'
@@ -171,7 +172,7 @@ exports.interventionDetails = [
   icon: 'res://ic_book', 
   functionality: "Visit Duration Dialog", 
   description: 'Shows a dialog telling you how long the visit to the current app has lasted', 
-  target: 'app', 
+  target: 'duration', 
   level: 'medium',
   summary: "Pops a dialog with the visit time for the current app",
   style: 'dialog'
