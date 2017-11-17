@@ -64,3 +64,9 @@
   color: gray;
   padding-top: 15%;
 }
+
+.nudge-button {
+  background-color: #69BD68;
+  color: white;
+  font-size: 18%;
+}

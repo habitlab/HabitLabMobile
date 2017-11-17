@@ -907,6 +907,27 @@ code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg) {
   }
 }
 
+/***************************************
+ *             CUSTOM NUDGE            *
+ ***************************************/
+
+/**
+ * customNudgeDialog
+ * -----------------
+ * Shows a dialog for the custom nudge with the specified message.
+ */
+code.CUSTOM_NUDGE_DIALOG = function (real, pkg, intervention_info) {
+  if (!real) {
+    console.log(intervention_info)
+    console.log(JSON.stringify(intervention_info))
+    DialogOverlay.showOneOptionDialogOverlay("Add your own message", "Okay");
+    return;
+  }
+
+    DialogOverlay.showOneOptionDialogOverlay(intervention_info, "Okay");
+  //}
+}
+
 
 /*
  * removeOverlays
@@ -931,7 +952,7 @@ var removeOverlays = function() {
 
 
 /***************************************
- *       INTERVENTION RETREIVAL        *
+ *       INTERVENTION RETRIEVAL        *
  ***************************************/
 var intervention_functions = []
 
@@ -956,7 +977,13 @@ var durationInterventions = [];
       console.warn(intervention_info)
       continue
     }
-    intervention_function = code[intervention_info.shortname] //intervention_functions[i];
+
+    if (intervention_info.based_on != null) {
+      intervention_functions[i] = code[intervention_info.based_on]
+    } else {
+      intervention_function = code[intervention_info.shortname] // intervention_functions[i]
+    }
+
     if (!intervention_function) {
       console.warn('missing code for intervention: ' + intervention_info.shortname);
       continue
@@ -966,6 +993,7 @@ var durationInterventions = [];
       func: intervention_function,
       shortname: intervention_info.shortname,
     }
+
     if (intervention_info.target == 'duration') {
       durationInterventions.push(intervention_function_and_name);
     } 
@@ -1003,8 +1031,13 @@ var nextOnLaunchIntervention = function(pkg) {
       index = randBW(0, onLaunchInterventions.easy.length - 1);
       func_and_name = onLaunchInterventions.easy[index];
     }
-    if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname], pkg)) {
-      func_and_name.func(true, pkg);
+    let intervention_id = ID.interventionIDs[func_and_name.shortname]
+    let intervention_info = ID.interventionDetails[intervention_id]
+    console.log('intervention_info is:')
+    console.log(intervention_info)
+    console.log(JSON.stringify(intervention_info))
+    if (StorageUtil.canIntervene(intervention_id, pkg)) {
+      func_and_name.func(true, pkg, intervention_info);
     }
   }
 };
@@ -1029,9 +1062,11 @@ var nextScreenUnlockIntervention = function() {
       index = randBW(0, onScreenUnlockInterventions.easy.length - 1);
       func_and_name = onScreenUnlockInterventions.easy[index];
     }
+    let intervention_id = ID.interventionIDs[func_and_name.shortname]
+    let intervention_info = ID.interventionDetails[intervention_id]
     // TODO there are no hard interventions for screen unlock (phone) type
-    if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname])) {
-      func_and_name.func(true);
+    if (StorageUtil.canIntervene(intervention_id)) {
+      func_and_name.func(true, null, intervention_info);
     }
   }
 }

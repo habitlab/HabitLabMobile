@@ -79,7 +79,7 @@ var initializeList = function() {
 
 exports.onItemTap = function(args) {
   var tappedItem = pageData.get('nudges')[args.index];
-  if (!tappedItem.isHeader) {
+  if (!tappedItem.isHeader) { // if what's been clicked is not a header
     search.dismissSoftInput();
     frameModule.topmost().navigate({
       moduleName: "views/detailView/detailView",
@@ -113,8 +113,18 @@ exports.onItemTap = function(args) {
   }
 };
 
-
-
+// function for creating your own nudge
+exports.ownNudge = function() {
+  frameModule.topmost().navigate({
+    moduleName: "views/ownNudgeView/ownNudgeView",
+    animated: true,
+    transition: {
+      name: "slide",
+      duration: 380,
+      curve: "easeIn"
+    }
+  });
+}
 
 // for tracking if there are actually interventions for the headers
 var setList = function() {

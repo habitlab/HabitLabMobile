@@ -1,6 +1,7 @@
 var StorageUtil = require('~/util/StorageUtil');
 var UsageUtil = require('~/util/UsageInformationUtil');
 var IM = require('~/interventions/InterventionManager');
+var ID = require('~/interventions/InterventionData');
 var fancyAlert = require("nativescript-fancyalert");
 var frameModule = require('ui/frame');
 var observable = require("data/observable");
@@ -22,7 +23,11 @@ exports.toggleDrawer = function() {
 
 //Demo button
 exports.onButtonTap = function() {
-  IM.interventions[id]();
+  let intervention_info = ID.interventionDetails[id]
+  console.log('intervention_info is:')
+  console.log(intervention_info)
+  console.log(JSON.stringify(intervention_info))
+  IM.interventions[id](false, null, intervention_info);
   events.push({category: 'features', index: 'nudge_detail_demo'});
 };
 

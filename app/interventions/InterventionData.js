@@ -1,6 +1,8 @@
-exports.interventionDetails = [
+var appSettings = require("application-settings");
+
+var default_interventions = [
 {
-  id: 0,
+  //id: 0,
   shortname: 'GLANCE_NOTIFICATION',
   name: 'Easy on the Eyes',
   icon: 'res://ic_eye', 
@@ -11,7 +13,7 @@ exports.interventionDetails = [
   summary: 'Sends notification with your glance count for the day',
   style: 'notification'
 }, {
-  id: 1,
+  //id: 1,
   shortname: 'UNLOCK_TOAST',
   name: 'Knock Knock', 
   icon: 'res://ic_smile', 
@@ -22,7 +24,7 @@ exports.interventionDetails = [
   summary: 'Sends pop up with your glance count for the day',
   style: 'toast'
 }, {
-  id: 2,
+  //id: 2,
   shortname: 'UNLOCK_NOTIFICATION',
   name: 'Hello, Old Friend', 
   icon: 'res://ic_hand', 
@@ -33,7 +35,7 @@ exports.interventionDetails = [
   summary: 'Sends notification with your unlock count for the day',
   style: 'notification'
 }, {
-  id: 3,
+  //id: 3,
   shortname: 'USAGE_TOAST',
   name: 'Progress Report', 
   icon: 'res://ic_clipboard', 
@@ -44,7 +46,7 @@ exports.interventionDetails = [
   summary: "Sends pop up with today's total usage for a certain app",
   style: 'toast'
 }, {
-  id: 4,
+  //id: 4,
   shortname: 'USAGE_NOTIFICATION',
   name: 'Red Alert!', 
   icon: 'res://ic_alert', 
@@ -55,7 +57,7 @@ exports.interventionDetails = [
   summary: "Sends notification with today's total usage for a certain app",
   style: 'notification'
 }, {
-  id: 5,
+  //id: 5,
   shortname: 'DURATION_TOAST',
   name: 'How Time Flies!', 
   icon: 'res://ic_plane', 
@@ -66,7 +68,7 @@ exports.interventionDetails = [
   summary: 'Sends a pop up message with current app visit duration',
   style: 'toast'
 }, {
-  id: 6,
+  //id: 6,
   shortname: 'DURATION_NOTIFICATION',
   name: 'The Clock is Ticking', 
   icon: 'res://ic_clock', 
@@ -77,7 +79,7 @@ exports.interventionDetails = [
   summary: 'Sends a notification with current app visit duration',
   style: 'notification'
 }, {
-  id: 7,
+  //id: 7,
   shortname: 'VISIT_TOAST',
   name: 'At it Again', 
   icon: 'res://ic_history', 
@@ -88,7 +90,7 @@ exports.interventionDetails = [
   summary: 'Sends a pop up with your app visit count',
   style: 'toast'
 }, {
-  id: 8,
+  //id: 8,
   shortname: 'VISIT_NOTIFICATION',
   name: 'Repeat Offender', 
   icon: 'res://ic_repeat', 
@@ -99,7 +101,7 @@ exports.interventionDetails = [
   summary: 'Sends a notification with your app visit count',
   style: 'notification'
 }, {
-  id: 9,
+  //id: 9,
   shortname: 'VIDEO_BLOCKER',
   name: 'Block-Buster', 
   icon: 'res://ic_videocam', 
@@ -111,7 +113,7 @@ exports.interventionDetails = [
   summary: 'Asks for confirmation before playing videos',
   style: 'overlay'
 }, {
-  id: 10,
+  //id: 10,
   shortname: 'FULL_SCREEN_OVERLAY',
   name: 'No Peeking!', 
   icon: 'res://ic_key', 
@@ -122,7 +124,7 @@ exports.interventionDetails = [
   summary: 'Asks for confirmation before opening watchlisted apps',
   style: 'overlay'
 }, {
-  id: 11,
+  //id: 11,
   shortname: 'COUNTUP_TIMER_OVERLAY',
   name: 'Counting on You', 
   icon: 'res://ic_timer', 
@@ -133,7 +135,7 @@ exports.interventionDetails = [
   summary: 'Puts a timer on screen in watchlisted apps',
   style: 'overlay'
 }, {
-  id: 12,
+  //id: 12,
   shortname: 'COUNTDOWN_TIMER_OVERLAY',
   name: 'The Final Countdown', 
   icon: 'res://ic_hourglass', 
@@ -144,7 +146,7 @@ exports.interventionDetails = [
   summary: "On screen timer that closes the app when time runs out",
   style: 'overlay'
 }, {
-  id: 13,
+  //id: 13,
   shortname: 'UNLOCK_DIALOG',
   name: 'En Garde', 
   icon: 'res://ic_shield', 
@@ -155,7 +157,7 @@ exports.interventionDetails = [
   summary: "Pops a dialog with the day's total unlock count",
   style: 'dialog'
 }, {
-  id: 14,
+  //id: 14,
   shortname: 'USAGE_DIALOG',
   name: 'All in All', 
   icon: 'res://ic_infinity', 
@@ -166,7 +168,7 @@ exports.interventionDetails = [
   summary: "Pops a dialog with the day's total time on the current app",
   style: 'dialog'
 }, {
-  id: 15,
+  //id: 15,
   shortname: 'DURATION_DIALOG',
   name: 'Long Story Short', 
   icon: 'res://ic_book', 
@@ -177,7 +179,7 @@ exports.interventionDetails = [
   summary: "Pops a dialog with the visit time for the current app",
   style: 'dialog'
 }, {
-  id: 16,
+  //id: 16,
   shortname: 'VISIT_DIALOG',
   name: 'Man Overboard!', 
   icon: 'res://ic_rowing', 
@@ -188,7 +190,7 @@ exports.interventionDetails = [
   summary: 'Shows a dialog with your app visits count',
   style: 'dialog'
 }, {
-  id: 17,
+  //id: 17,
   shortname: 'DIMMER_OVERLAY',
   name: 'Look on the Bright Side', 
   icon: 'res://ic_lightbulb', 
@@ -199,7 +201,7 @@ exports.interventionDetails = [
   summary: 'Dim the screen little at a time',
   style: 'overlay'
 }, {
-  id: 18,
+  //id: 18,
   shortname: 'PHONE_USAGE_TOAST',
   name: 'Long Time No See', 
   icon: 'res://ic_search', 
@@ -210,7 +212,7 @@ exports.interventionDetails = [
   summary: 'Sends pop up with your phone usage for the day',
   style: 'toast'
 }, {
-  id: 19,
+  //id: 19,
   shortname: 'PHONE_USAGE_NOTIFICATION',
   name: "Call it a Day", 
   icon: 'res://ic_moon', 
@@ -221,7 +223,7 @@ exports.interventionDetails = [
   summary: 'Sends notification with your phone usage for the day',
   style: 'notification'
 }, {
-  id: 20,
+  //id: 20,
   shortname: 'PHONE_USAGE_DIALOG',
   name: 'Hold the Phone', 
   icon: 'res://ic_phone', 
@@ -232,7 +234,7 @@ exports.interventionDetails = [
   summary: 'Show dialog with phone usage for the day',
   style: 'dialog'
 }, {
-  id: 21,
+  //id: 21,
   shortname: 'APPLICATION_SLIDER',
   name: 'Take Your Pick', 
   icon: 'res://ic_slider', 
@@ -243,7 +245,7 @@ exports.interventionDetails = [
   summary: 'Select how long you want to spend on an app',
   style: 'dialog'
 }, {
-  id: 22,
+  //id: 22,
   shortname: 'INTERSTITIAL',
   name: 'Wait Up!', 
   icon: 'res://ic_pause', 
@@ -254,7 +256,7 @@ exports.interventionDetails = [
   summary: 'Pause for 10 seconds before entering an app',
   style: 'overlay'
 }, {
-  id: 23,
+  //id: 23,
   shortname: 'POSITIVE_TOAST',
   name: 'Your Better Half', 
   icon: 'res://ic_heart', 
@@ -265,7 +267,7 @@ exports.interventionDetails = [
   summary: 'Sends pop up to go to a target app',
   style: 'toast'
 }, {
-  id: 24,
+  //id: 24,
   shortname: 'POSITIVE_FULL_SCREEN_OVERLAY',
   name: 'Back To Target', 
   icon: 'res://ic_input_white', 
@@ -277,7 +279,27 @@ exports.interventionDetails = [
   style: 'overlay'
 }];
 
-exports.interventionIDs = {}
-for (let intervention_info of exports.interventionDetails) {
-  exports.interventionIDs[intervention_info.shortname] = intervention_info.id
+
+
+function updateInterventions() {
+  var custom_interventions = appSettings.getString("custom_interventions");
+  if (custom_interventions == null) {
+      custom_interventions = []
+  } else {
+      custom_interventions = JSON.parse(custom_interventions)
+  }
+
+  exports.interventionDetails = default_interventions.concat(custom_interventions);
+  
+  for (let i = 0; i < exports.interventionDetails.length; ++i) {
+    exports.interventionDetails[i].id = i;
+  }
+
+  exports.interventionIDs = {}
+  for (let intervention_info of exports.interventionDetails) {
+    exports.interventionIDs[intervention_info.shortname] = intervention_info.id
+  }  
 }
+
+updateInterventions()
+exports.updateInterventions = updateInterventions

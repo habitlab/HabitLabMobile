@@ -1,0 +1,50 @@
+Button {
+    background-color: transparent;
+    color: rgb(7, 7, 7);
+    font-size: 13%;
+  }
+
+  .message-label {
+    font-size: 15%;
+    vertical-align: center;
+    text-align: center;
+    color: rgb(7, 7, 7);
+    padding: 0;
+  }
+
+  .selected {
+    font-size: 15%;
+    vertical-align: center;
+    text-align: center;
+    color: #FFA730;
+    padding: 0;
+  }
+
+  .header {
+    font-size: 22%;
+    text-align: center;
+    color: #FFA730;
+    padding-left: 10%;
+    padding-top: 10%;
+    padding-bottom: 5%;
+  }
+
+  .padded-wrapper {
+    padding: 10%;
+    border-color: lightgray;
+    border-bottom-width: 1px;
+  }
+
+  .image {
+    padding: 5%;
+    background-color: gray;
+    border-radius: 50%;
+    margin: 2%;
+    margin-right: 4%;
+  }
+
+.button {
+  background-color: #69BD68;
+  color: white;
+  font-size: 18%;
+}

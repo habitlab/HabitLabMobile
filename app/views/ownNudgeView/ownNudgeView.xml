@@ -1,0 +1,70 @@
+<Page loaded="pageLoaded" id="createNudge" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
+  xmlns:lv="nativescript-telerik-ui/listview">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Create Your Own Nudge" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+	    <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+   	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
+
+        <StackLayout>
+      <StackLayout>
+            
+            <StackLayout>
+                      <StackLayout class=".padded-wrapper">
+                        <Label text="Select an Image" class="header"/>
+                        </StackLayout>
+                      
+		   						<lv:RadListView id="imageButtons" itemTap="onImageTap" items="{{images}}">
+		   							<lv:RadListView.listViewLayout>
+		   			          			<lv:ListViewLinearLayout scrollDirection="Horizontal"/>
+		   			        		</lv:RadListView.listViewLayout>
+		   			        			<lv:RadListView.itemTemplate>
+		   			          				<StackLayout width="50" height="50">
+   			                					<Image src="{{icon}}" class="image"/>
+		   			          				</StackLayout>
+		   			        			</lv:RadListView.itemTemplate>
+		   			    		</lv:RadListView>
+                     
+
+              </StackLayout>
+
+              <StackLayout>
+                        <Label text="Select a Message" class="header"/>
+                      </StackLayout>
+
+              <StackLayout>
+              <ListView items="{{messages}}" separatorColor="#FFFFFF" itemTap="onMessageTap" tap="headerTap" >
+              <!-- Edit below -->
+                <ListView.itemTemplate>
+                        <StackLayout class="padded-wrapper">
+                          <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" >
+                          <StackLayout>
+                            <Label text="{{message}}" class="{{isSelected ? 'selected' : 'message-label'}}" />
+                          </StackLayout>
+                        </GridLayout>
+                      </StackLayout>
+
+                </ListView.itemTemplate>
+              </ListView>
+            </StackLayout>
+
+              <Button text="Add a Message" tap ="addMessage" class="button" />
+              <Button text="Finish" tap ="finish" class="button" />
+            </StackLayout>
+        </StackLayout>
+
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>
