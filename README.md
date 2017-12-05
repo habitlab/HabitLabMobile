@@ -1,5 +1,7 @@
 # HabitLabMobile
 
+[Habitlab Mobile on the Play Store](https://play.google.com/store/apps/details?id=com.stanfordhci.habitlab)
+
 1. Introduction
 2. Features
 3. Implementation Details
