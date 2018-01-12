@@ -11,7 +11,8 @@ var pm = context.getPackageManager();
 var mainIntent = new android.content.Intent(android.content.Intent.ACTION_MAIN, null);
 mainIntent.addCategory(android.content.Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0); // all launchable packages
-
+var Bitmap = android.graphics.Bitmap
+var Canvas = android.graphics.Canvas
 
 /* refreshApplicationList
  * ----------------------
@@ -22,6 +23,17 @@ exports.refreshApplicationList = function() {
 	applications = pm.queryIntentActivities(mainIntent, 0);
 }
 
+
+function convertToBitmap(drawable) {
+    if (drawable.getBitmap != null) {
+        return drawable.getBitmap()
+    }
+    const bmp = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888)
+    const canvas = new Canvas(bmp);
+    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
+    drawable.draw(canvas)
+    return bmp
+}
 
 /* getApplicationList
  * ------------------
@@ -45,8 +57,9 @@ exports.getApplicationList = function() {
 		
 		var label = info.loadLabel(pm).toString();
 		if (label === "Voice Search") { continue; }
-		
-		var iconSource = imageSource.fromNativeSource(info.loadIcon(pm).getBitmap());
+
+        let bitmap = convertToBitmap(info.loadIcon(pm))
+        var iconSource = imageSource.fromNativeSource(bitmap);
 		
 		// construct object
 		var applicationObj = {
@@ -77,8 +90,9 @@ exports.getBasicInfo = function(packageName) {
 	}
 
 	if (appInfo) {
-		var applicationName = pm.getApplicationLabel(appInfo);
-  		var iconSource = imageSource.fromNativeSource(appInfo.loadIcon(pm).getBitmap());
+        var applicationName = pm.getApplicationLabel(appInfo);
+        var bitmap = convertToBitmap(appInfo.loadIcon(pm))
+  		var iconSource = imageSource.fromNativeSource(bitmap);
   		return {
   			name: applicationName,
   			icon: iconSource
