@@ -1,0 +1,25 @@
+Button {
+    background-color: transparent;
+    color: rgb(7, 7, 7);
+    font-size: 13%;
+  }
+
+  .message-label {
+    font-size: 14%;
+    vertical-align: middle;
+    padding: 0;
+  }
+
+  .header {
+    font-size: 22%;
+    /*vertical-align: middle;*/
+    text-align: center;
+    color: #FFA730;
+    padding-left: 10%;
+  }
+
+  .padded-wrapper {
+    padding: 10%;
+    border-color: lightgray;
+    border-bottom-width: 1px;
+  }

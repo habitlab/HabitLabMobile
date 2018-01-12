@@ -22,6 +22,10 @@
         <Label text="no results" class="no-results" id="no-results" visibility="collapse" />
         
         <StackLayout>
+          <Button text="Make Your Own Nudge!" tap ="ownNudge" />
+        </StackLayout>
+
+        <StackLayout>
           <ListView items="{{nudges}}" itemTemplateSelector="isHeader ? 'header' : 'item'" id="nudges-list" separatorColor="#FFFFFF" itemTap="onItemTap" tap="headerTap">
             <ListView.itemTemplates>
               <template key="item" >
