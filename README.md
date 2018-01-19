@@ -1,5 +1,13 @@
 # HabitLabMobile
 
+This is the version of HabitLab for Android devices
+
+## Try it
+
+https://play.google.com/store/apps/details?id=com.stanfordhci.habitlab
+
+## Old information
+
 1. Introduction
 2. Features
 3. Implementation Details
