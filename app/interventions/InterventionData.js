@@ -275,7 +275,32 @@ exports.interventionDetails = [
   level: 'medium',
   summary: 'Suggests you to visit a target app',
   style: 'overlay'
-}];
+},
+{
+  id: 25,
+  shortname: 'QUOTE_NOTIFICATION',
+  name: 'Quote Reminder', 
+  icon: 'res://ic_phone', 
+  functionality: "Quote Intervention (Experimental)", 
+  description: "Shows an inspirational quote after x minutes spent on undesired apps", 
+  target: 'phone', 
+  level: 'medium',
+  summary: 'Show quote upon opening app',
+  style: 'dialog'
+},
+{
+  id: 26,
+  shortname: 'TIME_NOTIFICATION',
+  name: 'Time Reminder', 
+  icon: 'res://ic_moon', 
+  functionality: "Time Intervention (Experimental)", 
+  description: "Shows a dialog that tells you how long you have used undesired apps today", 
+  target: 'phone', 
+  level: 'medium',
+  summary: 'Show dialog with phone usage for the day',
+  style: 'dialog'
+}
+];
 
 exports.interventionIDs = {}
 for (let intervention_info of exports.interventionDetails) {
