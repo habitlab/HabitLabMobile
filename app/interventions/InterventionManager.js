@@ -18,6 +18,7 @@ const Timer = require("timer");
 
 var application = require('application');
 var context = application.android.context.getApplicationContext();
+var quoteFile = "quotes.json";
 
 // native APIs
 var AudioManager = android.media.AudioManager;
@@ -418,6 +419,62 @@ code.USAGE_DIALOG = function (real, pkg) {
 };
 
 
+
+/**
+ * EXPERIMENTAL USE
+ * 
+ * showRandomQuote
+ * ---------------
+ * Displays a random quote on application launch if user has exceeded minute goal.
+ * 
+ **/
+code.QUOTE_NOTIFICATION = function (real, pkg) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "Facebook Usage Alert", 
+    "Each day provides its own gifts. (Marcus Aurelius)", notificationID.USAGE, 10);
+    return;
+  }
+  let quoteArray = []
+  var quoteData = require('~/interventions/quotes')
+  for (let {quoteAuthor, quoteText} of quoteData) {
+    quoteArray[quoteText + ' (' + quoteAuthor + ')']
+  }
+  var minutes = StorageUtil.getAppTime(pkg);
+  if (minutes >= THRESHOLD_USAGE_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var title = app + " Usage Alert";
+    var msg = quoteArray[Math.floor(Math.random() * quoteArray.length)];
+    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
+  }
+};
+
+
+/**
+ * EXPERIMENTAL USE
+ * 
+ * showTotalTime
+ * ---------------
+ * Displays total undesired app usage on undesired app launch.
+ * Does not use name/other personalization. Uses neutral language.
+ * 
+ **/
+code.TIME_NOTIFICATION = function (real, pkg) {
+  if (!real) {
+    NotificationUtil.sendNotification(context, "App Usage Alert", 
+    "You've used your targeted apps for 55 minutes today", notificationID.USAGE, 10);
+    return;
+  }
+
+  var minutes = StorageUtil.getAppTime(pkg);
+  if (minutes >= THRESHOLD_USAGE_NTF) {
+    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
+    var app = UsageInformationUtil.getBasicInfo(pkg).name;
+    var title = app + " Usage Alert"
+    var msg = "You've used " + app + " for " + minutes + " minutes today.";
+    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
+  }
+};
 
 /**************************************
  *    VISIT DURATION INTERVENTIONS    *
