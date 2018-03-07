@@ -491,6 +491,8 @@ var durationDialogID = 0;
  * resets necessary logging variables.
  */
 var resetDurationInterventions = function() {
+  data = {"userID": StorageUtil.getUserID(),message:"application opened"};
+  send_log(userId)
   if (durationToastID) {
     Timer.clearTimeout(durationToastID);
     durationToastID = 0;

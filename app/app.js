@@ -9,9 +9,14 @@ var view = 'nameView';
 if (StorageUtil.isTutorialComplete()) {
   viewFile = "progressView";
   view = "progressView";
+  data = {"userID": StorageUtil.getUserID(),message:"Tutorial Complete"};
+  send_log(data)
+  //send_log tutorial complete, timestamp, how long it took them to complete
 } else if (StorageUtil.isOnboardingComplete()) {
   viewFile = "goalsView";
   view = 'goalsView';
+  data = {"userID": StorageUtil.getUserID(), message:"Onboarding Complete"}
+  send_log(data)
 }
 
 var getErrorDetails = function (args) {
@@ -38,10 +43,15 @@ function send_error(error) {
 }
 
 function send_log(data) {
+  // if(Storage.StorageUtil.getUserID != null){
+  //   data.userid = StorageUtil.getUserID()
+  // }
+  userID = "fakeUserID"
+
   return http.request({
-    url: "http://logs-01.loggly.com/inputs/6566b577-246e-4530-89b0-cbe1ee219c24/tag/http/",
+    url: "http://habitlabmobile.herokuapp.com/addtolog",
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: { "Content-Type": "application/json" },
     content: JSON.stringify(data)
   });
 }
