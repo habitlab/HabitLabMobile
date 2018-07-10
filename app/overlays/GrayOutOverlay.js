@@ -1,6 +1,7 @@
 var app = require("application");
 var timer = require("timer");
 var toast = require("nativescript-toast");
+var permissions = require("~/util/PermissionUtil")
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -46,24 +47,30 @@ exports.grayOut = function(rect) {
 	var height = rect.bottom - rect.top;
 
 	if (!overlay && rect.left > 0 && rect.right < SCREEN_WIDTH) {
-		overlayParams = new WindowManager.LayoutParams(width, height, rect.left, rect.top - getStatusBarHeight(),
-			WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-			PixelFormat.TRANSLUCENT);
-		overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
-		overlay = new OverlayView(context);
-		windowManager.addView(overlay, overlayParams);
+	    if (permissions.checkSystemOverlayPermission()) {
+			overlayParams = new WindowManager.LayoutParams(width, height, rect.left, rect.top - getStatusBarHeight(),
+				WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+				PixelFormat.TRANSLUCENT);
+			overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
+			overlay = new OverlayView(context);
+			windowManager.addView(overlay, overlayParams);
 
-		overlay.setOnTouchListener(new android.view.View.OnTouchListener({
-			onTouch: function (v, event) {
-				var action = event.getAction();
+			overlay.setOnTouchListener(new android.view.View.OnTouchListener({
+				onTouch: function (v, event) {
+					var action = event.getAction();
 
-				if (action === android.view.MotionEvent.ACTION_UP) {
-					toast.makeText("unavailable").show();
+					if (action === android.view.MotionEvent.ACTION_UP) {
+						toast.makeText("unavailable").show();
+					}
+
+					return true;
 				}
-
-				return true;
-			}
-		})); 
+			})); 
+	    } else {
+	        permissions.launchSystemOverlayIntent(); 
+	    }
+		
+		
 
 	} else {
 

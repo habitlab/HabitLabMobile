@@ -276,7 +276,7 @@ var targetNegButton;
 exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
@@ -287,7 +287,7 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
      // add title
     var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * TARGET_HEIGHT,
     	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TARGETTOP + 0.075*TARGET_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     titleParams.gravity = Gravity.LEFT | Gravity.TOP;
     targetTitle = new TextView(context);
     targetTitle.setText(title);
@@ -301,7 +301,7 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
     // add text
     var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * TARGET_HEIGHT,
     	LEFT + 0.075 * DIALOG_WIDTH, TARGETTOP+0.22*TARGET_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
+    	WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     targetText = new TextView(context);
     targetText.setText(msg);
@@ -314,7 +314,7 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
     // add positive button
     var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
     	0.18 * TARGET_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
-    	TARGETTOP+0.75*TARGET_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+    	TARGETTOP+0.75*TARGET_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
@@ -337,7 +337,7 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
         // add positive button
     var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
     	0.18 * TARGET_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
-    	TARGETTOP+0.75*TARGET_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+    	TARGETTOP+0.75*TARGET_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);

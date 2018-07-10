@@ -1,5 +1,6 @@
 var app = require("application");
 var Toast = require("nativescript-toast");
+var permissions = require("~/util/PermissionUtil")
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -91,107 +92,110 @@ var seekBar;
 var labelText;
 var setTime = 10;
 exports.showSliderOverlay = function (msg, callback) {
+	if (permissions.checkSystemOverlayPermission()) {
+		// add whole screen view
+		var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		dialogParams.gravity = Gravity.LEFT | Gravity.TOP;
+		dialog = new DialogView(context);
+		windowManager.addView(dialog, dialogParams);
 
-	// add whole screen view
-	var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-	dialogParams.gravity = Gravity.LEFT | Gravity.TOP;
-    dialog = new DialogView(context);
-    windowManager.addView(dialog, dialogParams);
-
-    // add text
-    var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.30 * SCREEN_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    text = new TextView(context);
-    text.setText(msg);
-    text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    text.setTextColor(Color.BLACK);
-    text.setHorizontallyScrolling(false);
-    text.setGravity(Gravity.CENTER);
-    windowManager.addView(text, textParams);
-
-
-     //Time label
-    var labelParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-    	0.25*SCREEN_WIDTH, 0.15 * DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    labelText = new TextView(context);
-    labelText.setText(setTime + " mins");
-    labelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
-    labelText.setTextColor(Color.parseColor("#5f5e5d"));
-    labelText.setHorizontallyScrolling(false);
-    windowManager.addView(labelText, labelParams);
+		// add text
+		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.30 * SCREEN_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		textParams.gravity = Gravity.LEFT | Gravity.TOP;
+		text = new TextView(context);
+		text.setText(msg);
+		text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+		text.setTextColor(Color.BLACK);
+		text.setHorizontallyScrolling(false);
+		text.setGravity(Gravity.CENTER);
+		windowManager.addView(text, textParams);
 
 
-    //add seek bar
-    var seekParams = new WindowManager.LayoutParams( 0.8 * DIALOG_WIDTH, LayoutParams.WRAP_CONTENT,
-    	0, 0.1*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    seekBar = new SeekBar(context);
-    seekBar.setMax(30);
-    seekBar.setProgress(10);
-    var progressChangedValue = 0;
-    seekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener({
-    	onProgressChanged: function(seekBar, progress, fromUser) {
-            progressChangedValue = progress;
-            labelText.setText(progressChangedValue + " mins");
-        },
-        onStartTrackingTouch: function(seekBar) {
-
-        },
-    	onStopTrackingTouch: function(seekBar){
-    		 setTime = progressChangedValue;
-    	}
-    }));
-    windowManager.addView(seekBar, seekParams);
+		//Time label
+		var labelParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+			0.25*SCREEN_WIDTH, 0.15 * DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		labelText = new TextView(context);
+		labelText.setText(setTime + " mins");
+		labelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 5);
+		labelText.setTextColor(Color.parseColor("#5f5e5d"));
+		labelText.setHorizontallyScrolling(false);
+		windowManager.addView(labelText, labelParams);
 
 
-    // add positive button
-    var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-    	0.2 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
-    	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    posButton = new Button(context);
-	posButton.setText("Ok");
-	posButton.setTextColor(Color.WHITE);
-	posButton.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY);
-	posButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	    	if (callback) {
-	    		callback(setTime);
-	    	}
-	    	// Toast.makeText('You have ' + setTime + ' mins remaining').show();
-	        exports.removeSliderOverlay();
-	    }
-	}));
-    windowManager.addView(posButton, posButtonParams);
+		//add seek bar
+		var seekParams = new WindowManager.LayoutParams( 0.8 * DIALOG_WIDTH, LayoutParams.WRAP_CONTENT,
+			0, 0.1*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		seekBar = new SeekBar(context);
+		seekBar.setMax(30);
+		seekBar.setProgress(10);
+		var progressChangedValue = 0;
+		seekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener({
+			onProgressChanged: function(seekBar, progress, fromUser) {
+				progressChangedValue = progress;
+				labelText.setText(progressChangedValue + " mins");
+			},
+			onStartTrackingTouch: function(seekBar) {
 
-    // add neg button
-    var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-    	0.2 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
-    	0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    negButtons = new Button(context);
-	negButtons.setText("Not Now");
-	negButtons.setTextColor(Color.WHITE);
-	negButtons.getBackground().setColorFilter(Color.parseColor("#5f5e5d"), android.graphics.PorterDuff.Mode.MULTIPLY);
-	negButtons.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        exports.removeSliderOverlay();
-	    }
-	}));
-    windowManager.addView(negButtons, negButtonParams);
+			},
+			onStopTrackingTouch: function(seekBar){
+				setTime = progressChangedValue;
+			}
+		}));
+		windowManager.addView(seekBar, seekParams);
+
+
+		// add positive button
+		var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
+			0.2 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
+			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		posButton = new Button(context);
+		posButton.setText("Ok");
+		posButton.setTextColor(Color.WHITE);
+		posButton.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY);
+		posButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (callback) {
+					callback(setTime);
+				}
+				// Toast.makeText('You have ' + setTime + ' mins remaining').show();
+				exports.removeSliderOverlay();
+			}
+		}));
+		windowManager.addView(posButton, posButtonParams);
+
+		// add neg button
+		var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
+			0.2 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
+			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		negButtons = new Button(context);
+		negButtons.setText("Not Now");
+		negButtons.setTextColor(Color.WHITE);
+		negButtons.getBackground().setColorFilter(Color.parseColor("#5f5e5d"), android.graphics.PorterDuff.Mode.MULTIPLY);
+		negButtons.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				exports.removeSliderOverlay();
+			}
+		}));
+		windowManager.addView(negButtons, negButtonParams);
+	} else {
+        permissions.launchSystemOverlayIntent(); 
+    }
 }
 
 

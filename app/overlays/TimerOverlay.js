@@ -1,5 +1,6 @@
 var application = require("application");
 var timer = require("timer");
+var permissions = require("~/util/PermissionUtil")
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -91,157 +92,162 @@ exports.showCountUpTimer = function() {
 	var lastX;
 	var lastY;
 
-	// layout params for wrapped content overlay (background clickable)
-	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
-		startX, startY, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-	startParams.gravity = Gravity.LEFT | Gravity.TOP;
+    if (permissions.checkSystemOverlayPermission()) {
+		// layout params for wrapped content overlay (background clickable)
+		var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
+			startX, startY, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		startParams.gravity = Gravity.LEFT | Gravity.TOP;
 
-	// add timer in bottom left corner
-    view = new DialogView(context);
-    windowManager.addView(view, startParams);
+		// add timer in bottom left corner
+		view = new DialogView(context);
+		windowManager.addView(view, startParams);
 
-    // add timer text    
-    textView = new TextView(context);
-    textView.setText("00:00");
-    textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    textView.setTextColor(Color.BLACK);
-    textView.setHorizontallyScrolling(false);
-    textView.setGravity(Gravity.CENTER);
-    textView.setWidth(TIMER_WIDTH - TIMER_HEIGHT);
-    textView.setHeight(TIMER_HEIGHT);
+		// add timer text    
+		textView = new TextView(context);
+		textView.setText("00:00");
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+		textView.setTextColor(Color.BLACK);
+		textView.setHorizontallyScrolling(false);
+		textView.setGravity(Gravity.CENTER);
+		textView.setWidth(TIMER_WIDTH - TIMER_HEIGHT);
+		textView.setHeight(TIMER_HEIGHT);
 
-    var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
-			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 
-	    	WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-   	windowManager.addView(textView, textParams);
+		var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
+				WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
+				SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 
+				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
+		textParams.gravity = Gravity.LEFT | Gravity.TOP;
+		windowManager.addView(textView, textParams);
 
 
-   	view.setOnTouchListener(new android.view.View.OnTouchListener({
-		onTouch: function (v, event) {
-			var action = event.getAction();
-			var currentX = event.getX();
-			var currentY = event.getY();
+		view.setOnTouchListener(new android.view.View.OnTouchListener({
+			onTouch: function (v, event) {
+				var action = event.getAction();
+				var currentX = event.getX();
+				var currentY = event.getY();
 
-			if (action === android.view.MotionEvent.ACTION_DOWN) {
-				lastX = currentX;
-				lastY = currentY;
-			} else if (action === android.view.MotionEvent.ACTION_UP) {
-				if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
-					&& currentY > 0 && currentY < TIMER_HEIGHT) {
-					if (timerOpen) {
-						textView.setVisibility(android.view.View.INVISIBLE);
-						startParams.width = TIMER_HEIGHT;
-						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
-						timerOpen = false;
+				if (action === android.view.MotionEvent.ACTION_DOWN) {
+					lastX = currentX;
+					lastY = currentY;
+				} else if (action === android.view.MotionEvent.ACTION_UP) {
+					if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
+						&& currentY > 0 && currentY < TIMER_HEIGHT) {
+						if (timerOpen) {
+							textView.setVisibility(android.view.View.INVISIBLE);
+							startParams.width = TIMER_HEIGHT;
+							startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
+							timerOpen = false;
+						} else {
+							startParams.width = TIMER_WIDTH;
+							startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
+							timerOpen = true;
+							textView.setVisibility(android.view.View.VISIBLE);
+						}
 					} else {
-						startParams.width = TIMER_WIDTH;
-						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
-						timerOpen = true;
-						textView.setVisibility(android.view.View.VISIBLE);
-					}
-				} else {
-					// swipe
-					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
-						startParams.x = 0; 
-						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
-					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
-						startParams.x = SCREEN_WIDTH - startParams.width;
-						textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+						// swipe
+						if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
+							startParams.x = 0; 
+							textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
+						} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+							startParams.x = SCREEN_WIDTH - startParams.width;
+							textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+						}
+
+						if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
+							startParams.y = 0;
+							textParams.y = 0;
+						} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
+							startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+							textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+						}
 					}
 
-					if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
-						startParams.y = 0;
-						textParams.y = 0;
-					} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
-						startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
-						textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
-					}
+					windowManager.updateViewLayout(v, startParams);
+					windowManager.updateViewLayout(textView, textParams);
 				}
 
-				windowManager.updateViewLayout(v, startParams);
-				windowManager.updateViewLayout(textView, textParams);
+				return true;
 			}
+		})); 
 
-			return true;
-		}
-	})); 
+		textView.setOnTouchListener(new android.view.View.OnTouchListener({
+			onTouch: function (v, event) {
+				var action = event.getAction();
+				var currentX = event.getX();
+				var currentY = event.getY();
 
-	textView.setOnTouchListener(new android.view.View.OnTouchListener({
-		onTouch: function (v, event) {
-			var action = event.getAction();
-			var currentX = event.getX();
-			var currentY = event.getY();
-
-			if (action === android.view.MotionEvent.ACTION_DOWN) {
-				lastX = currentX;
-				lastY = currentY;
-			} else if (action === android.view.MotionEvent.ACTION_UP) {
-				if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
-					&& currentY > 0 && currentY < TIMER_HEIGHT) {
-					if (timerOpen) {
-						textView.setVisibility(android.view.View.INVISIBLE);
-						startParams.width = TIMER_HEIGHT;
-						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
-						timerOpen = false;
+				if (action === android.view.MotionEvent.ACTION_DOWN) {
+					lastX = currentX;
+					lastY = currentY;
+				} else if (action === android.view.MotionEvent.ACTION_UP) {
+					if (currentX === lastX && currentY === lastY && currentX > 0 && currentX < TIMER_HEIGHT
+						&& currentY > 0 && currentY < TIMER_HEIGHT) {
+						if (timerOpen) {
+							textView.setVisibility(android.view.View.INVISIBLE);
+							startParams.width = TIMER_HEIGHT;
+							startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_HEIGHT;
+							timerOpen = false;
+						} else {
+							startParams.width = TIMER_WIDTH;
+							startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
+							timerOpen = true;
+							textView.setVisibility(android.view.View.VISIBLE);
+						}
 					} else {
-						startParams.width = TIMER_WIDTH;
-						startParams.x = startParams.x === 0 ? 0 : SCREEN_WIDTH - TIMER_WIDTH;
-						timerOpen = true;
-						textView.setVisibility(android.view.View.VISIBLE);
-					}
-				} else {
-					// swipe
-					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
-						startParams.x = 0; 
-						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
-					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
-						startParams.x = SCREEN_WIDTH - startParams.width;
-						textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+						// swipe
+						if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
+							startParams.x = 0; 
+							textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
+						} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+							startParams.x = SCREEN_WIDTH - startParams.width;
+							textParams.x = SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT;
+						}
+
+						if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
+							startParams.y = 0;
+							textParams.y = 0;
+						} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
+							startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+							textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
+						}
 					}
 
-					if (currentY - lastY < (-0.05 * SCREEN_HEIGHT)) {
-						startParams.y = 0;
-						textParams.y = 0;
-					} else if (currentY - lastY > (0.05 * SCREEN_HEIGHT)) {
-						startParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
-						textParams.y = SCREEN_HEIGHT - TIMER_HEIGHT;
-					}
+					windowManager.updateViewLayout(v, textParams);
+					windowManager.updateViewLayout(view, startParams);
 				}
 
-				windowManager.updateViewLayout(v, textParams);
-				windowManager.updateViewLayout(view, startParams);
+				return true;
 			}
-
-			return true;
-		}
-	})); 
+		})); 
 
 
-    timerID = timer.setInterval(() => {
-	    time++;
+		timerID = timer.setInterval(() => {
+			time++;
 
-	    var minutes = Math.floor(time / 60);
-	    var seconds = time % 60;
+			var minutes = Math.floor(time / 60);
+			var seconds = time % 60;
 
-	    if (minutes === 5) {
-	    	textView.setTextColor(Color.parseColor("#FF7538"));
-	    } else if (minutes === 10) {
-	    	textView.setTextColor(Color.parseColor("#C41E3A"));
-	    } 
+			if (minutes === 5) {
+				textView.setTextColor(Color.parseColor("#FF7538"));
+			} else if (minutes === 10) {
+				textView.setTextColor(Color.parseColor("#C41E3A"));
+			} 
 
-	    minutes = "0" + minutes;
-	    seconds = "0" + seconds;
+			minutes = "0" + minutes;
+			seconds = "0" + seconds;
 
-	    minutes = minutes.substr(minutes.length - 2, 2);
-	    seconds = seconds.substr(seconds.length - 2, 2); 
+			minutes = minutes.substr(minutes.length - 2, 2);
+			seconds = seconds.substr(seconds.length - 2, 2); 
 
-	    textView.setText(minutes + ":" + seconds);
-	}, 1000);
+			textView.setText(minutes + ":" + seconds);
+		}, 1000);
+    } else {
+        permissions.launchSystemOverlayIntent(); 
+    }
+	
 }
 
 
@@ -259,7 +265,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
 	// layout params for wrapped content overlay (background clickable)
 	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
-		startX, startY, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+		startX, startY, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 	startParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -290,7 +296,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
     var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
 			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 	    	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;

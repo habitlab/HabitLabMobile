@@ -1,4 +1,5 @@
 var app = require("application");
+var permissions = require("~/util/PermissionUtil");
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -91,86 +92,89 @@ var cancelText;
 var cancelPosButton;
 var cancelNegButton;
 exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negCallback) {
+	if (permissions.checkSystemOverlayPermission()) {
+		// add whole screen view
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+		cancelDialog = new CancelLockDialog(context);
+		windowManager.addView(cancelDialog, viewParams);
 
-	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    cancelDialog = new CancelLockDialog(context);
-    windowManager.addView(cancelDialog, viewParams);
+		// add title
+		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
+		cancelTitle = new TextView(context);
+		cancelTitle.setText(title);
+		cancelTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+		cancelTitle.setTextColor(Color.WHITE);
+		cancelTitle.setHorizontallyScrolling(false);
+		cancelTitle.setGravity(Gravity.CENTER);
+		windowManager.addView(cancelTitle, titleParams);
 
-    // add title
-    var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    titleParams.gravity = Gravity.LEFT | Gravity.TOP;
-    cancelTitle = new TextView(context);
-    cancelTitle.setText(title);
-    cancelTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    cancelTitle.setTextColor(Color.WHITE);
-    cancelTitle.setHorizontallyScrolling(false);
-    cancelTitle.setGravity(Gravity.CENTER);
-    windowManager.addView(cancelTitle, titleParams);
+		// add text
+		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		textParams.gravity = Gravity.LEFT | Gravity.TOP;
+		cancelText = new TextView(context);
+		cancelText.setText(msg);
+		cancelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
+		cancelText.setTextColor(Color.WHITE);
+		cancelText.setHorizontallyScrolling(false);
+		cancelText.setGravity(Gravity.CENTER);
+		windowManager.addView(cancelText, textParams);
 
-    // add text
-    var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    cancelText = new TextView(context);
-    cancelText.setText(msg);
-    cancelText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
-    cancelText.setTextColor(Color.WHITE);
-    cancelText.setHorizontallyScrolling(false);
-    cancelText.setGravity(Gravity.CENTER);
-    windowManager.addView(cancelText, textParams);
+		// add positive button
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
+			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
+			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		cancelPosButton = new Button(context);
+		cancelPosButton.setText(pos);
+		cancelPosButton.setTextColor(Color.parseColor("#d13b49"));	//Red
+		cancelPosButton.getBackground().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
+		cancelPosButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (posCallback) {
+					posCallback();
+				}
+				exports.removeCancelLockDialog();
+			}
+		}));
+		windowManager.addView(cancelPosButton, posButtonParams);
 
-    // add positive button
-    var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-    	0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
-    	TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    cancelPosButton = new Button(context);
-	cancelPosButton.setText(pos);
-	cancelPosButton.setTextColor(Color.parseColor("#d13b49"));	//Red
-	cancelPosButton.getBackground().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
-	cancelPosButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	    	if (posCallback) {
-	    		posCallback();
-	    	}
-	        exports.removeCancelLockDialog();
-	    }
-	}));
-    windowManager.addView(cancelPosButton, posButtonParams);
-
-    // add positive button
-    var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-    	0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
-    	TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    cancelNegButton = new Button(context);
-	cancelNegButton.setText(neg);
-	cancelNegButton.setTextColor(Color.parseColor("#69BD68")); //Green
-	cancelNegButton.getBackground().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
-	cancelNegButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	    	if (negCallback) {
-	    		negCallback();
-	    	}
-	        exports.removeCancelLockDialog();
-	    }
-	}));
-    windowManager.addView(cancelNegButton, negButtonParams);
+		// add positive button
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
+			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
+			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		cancelNegButton = new Button(context);
+		cancelNegButton.setText(neg);
+		cancelNegButton.setTextColor(Color.parseColor("#69BD68")); //Green
+		cancelNegButton.getBackground().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.MULTIPLY);
+		cancelNegButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (negCallback) {
+					negCallback();
+				}
+				exports.removeCancelLockDialog();
+			}
+		}));
+		windowManager.addView(cancelNegButton, negButtonParams);
+	} else {
+		permissions.launchSystemOverlayIntent();
+	}
 }
 
 
@@ -257,87 +261,92 @@ var snoozeText;
 var snoozePosButton;
 var snoozeNegButton;
 exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, negCallback) {
-	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    snoozeDialog = new CancelSnoozeDialog(context);
-    windowManager.addView(snoozeDialog, viewParams);
+	if (permissions.checkSystemOverlayPermission()) {
+		// add whole screen view
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+		snoozeDialog = new CancelSnoozeDialog(context);
+		windowManager.addView(snoozeDialog, viewParams);
 
-     // add title
-    var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    titleParams.gravity = Gravity.LEFT | Gravity.TOP;
-    snoozeTitle = new TextView(context);
-    snoozeTitle.setText(title);
-    snoozeTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    snoozeTitle.setTextColor(Color.WHITE);
-    snoozeTitle.setHorizontallyScrolling(false);
-    snoozeTitle.setGravity(Gravity.CENTER);
-    windowManager.addView(snoozeTitle, titleParams);
-
-
-    // add text
-    var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT, 0, PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    snoozeText = new TextView(context);
-    snoozeText.setText(msg);
-    snoozeText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
-    snoozeText.setTextColor(Color.parseColor("#808080")); //grey
-    snoozeText.setHorizontallyScrolling(false);
-    snoozeText.setGravity(Gravity.CENTER);
-    windowManager.addView(snoozeText, textParams);
-
-    // add positive button
-    var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-    	0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
-    	TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    snoozePosButton = new Button(context);
-    snoozePosButton.getBackground().setColorFilter(Color.parseColor("#51b270"), android.graphics.PorterDuff.Mode.MULTIPLY); //green
-	snoozePosButton.setText(pos);
-	snoozePosButton.setTextColor(Color.WHITE);
-	snoozePosButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        if (posCallback) {
-	    		posCallback();
-	    	}
-	        exports.removeCancelSnoozeDialog();
-	    }
-	}));
-    windowManager.addView(snoozePosButton, posButtonParams);
+		// add title
+		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
+		snoozeTitle = new TextView(context);
+		snoozeTitle.setText(title);
+		snoozeTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+		snoozeTitle.setTextColor(Color.WHITE);
+		snoozeTitle.setHorizontallyScrolling(false);
+		snoozeTitle.setGravity(Gravity.CENTER);
+		windowManager.addView(snoozeTitle, titleParams);
 
 
-        // add positive button
-    var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-    	0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
-    	TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    snoozeNegButton = new Button(context);
-    snoozeNegButton.getBackground().setColorFilter(Color.parseColor("#d13b49"), android.graphics.PorterDuff.Mode.MULTIPLY); //red
-	snoozeNegButton.setText(neg);
-	snoozeNegButton.setTextColor(Color.WHITE);
-	snoozeNegButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        if (negCallback) {
-	    		negCallback();
-	    	}
-	        exports.removeCancelSnoozeDialog();
-	    }
-	}));
-    windowManager.addView(snoozeNegButton, negButtonParams);
+		// add text
+		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+		textParams.gravity = Gravity.LEFT | Gravity.TOP;
+		snoozeText = new TextView(context);
+		snoozeText.setText(msg);
+		snoozeText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
+		snoozeText.setTextColor(Color.parseColor("#808080")); //grey
+		snoozeText.setHorizontallyScrolling(false);
+		snoozeText.setGravity(Gravity.CENTER);
+		windowManager.addView(snoozeText, textParams);
+
+		// add positive button
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
+			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
+			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		snoozePosButton = new Button(context);
+		snoozePosButton.getBackground().setColorFilter(Color.parseColor("#51b270"), android.graphics.PorterDuff.Mode.MULTIPLY); //green
+		snoozePosButton.setText(pos);
+		snoozePosButton.setTextColor(Color.WHITE);
+		snoozePosButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (posCallback) {
+					posCallback();
+				}
+				exports.removeCancelSnoozeDialog();
+			}
+		}));
+		windowManager.addView(snoozePosButton, posButtonParams);
+
+
+			// add positive button
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
+			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
+			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		snoozeNegButton = new Button(context);
+		snoozeNegButton.getBackground().setColorFilter(Color.parseColor("#d13b49"), android.graphics.PorterDuff.Mode.MULTIPLY); //red
+		snoozeNegButton.setText(neg);
+		snoozeNegButton.setTextColor(Color.WHITE);
+		snoozeNegButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (negCallback) {
+					negCallback();
+				}
+				exports.removeCancelSnoozeDialog();
+			}
+		}));
+		windowManager.addView(snoozeNegButton, negButtonParams);
+	} else {
+		permissions.launchSystemOverlayIntent();
+	}
+	
 }
 
 
