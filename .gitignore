@@ -1,5 +1,6 @@
-platforms/
-platforms
 node_modules
 .DS_Store
 *.keystore
+build
+.gradle
+libs
