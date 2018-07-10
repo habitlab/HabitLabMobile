@@ -1,0 +1,41 @@
+.app-cell-img {
+  width: 60%;
+  transform: translate(25%, 0%);
+}
+
+.app-cell-lbl {
+  color: black;
+  text-align: center;
+  font-size: 15%;
+}
+
+.app-cell-selector {
+  width: 30%;
+  transform: translate(80%, -5%);
+}
+
+.grid-cell-layout {
+  padding-bottom: 15%;
+  padding-top: 15%;
+}
+
+#done-button {
+  background-color: #69BD68;
+  color: white;
+  height: 10%;
+}
+
+#title {
+  font-size: 20%;
+  text-align: center;
+  padding: 10%;
+  background-color: #F7BBC3;
+  color: #747F89;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 17%;
+  color: gray;
+  padding-top: 15%;
+}

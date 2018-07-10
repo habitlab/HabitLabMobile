@@ -1,0 +1,33 @@
+<Page loaded="pageLoaded" navigatingTo="navigatingTo" id="settings" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Feedback" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <StackLayout orientation="vertical" >
+        <Label text="Help us improve" class="contact-header" />
+        <Button text="Take Our Survey" tap="goToSurvey" class="contact-button"/>
+        <Button text="Email Us" tap="composeEmail" class="contact-button"/>
+
+        <Label text="Learn more about HabitLab" class="contact-header" textWrap="true" />
+        <Button text="Visit the Chrome extension" tap="goToChromeExtension" class="contact-button"/>
+        <Button text="Visit the GitHub Wiki" tap="goToGitHubWiki" class="contact-button"/>
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+
+</Page>

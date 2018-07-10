@@ -1,0 +1,37 @@
+<Page loaded="pageLoaded" id="settings" unloaded="pageUnloaded"
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns:sidedrawer="shared/sd">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Settings" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem tap="onInfo" icon="res://ic_about" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+
+    <sd:RadSideDrawer.drawerContent>
+				<sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent>
+      <ListView items="{{settings}}" itemTap="onItemTap" separatorColor="#FFFFFF">
+        <ListView.itemTemplate>
+
+          <GridLayout columns="auto,*,auto" rows="auto,auto" class="settings-grid" >
+            <Image class="settings-button-img" src="{{icon}}" rowSpan="2" verticalAlignment="center"/>
+            <Label text="{{title}}" col="1" class="settings-label" rowSpan="{{subtitle ? 1 : 2}}" />
+            <Label text="{{subtitle}}" visibility="{{subtitle ? 'visible' : 'collapse'}}" col="1" row="1" class="settings-sub-label"/>
+            <Image visibility="{{hasArrow ? 'visible' : 'collapse'}}" class="settings-button-icon" src="res://ic_arrow_right" col="2" rowSpan="2" verticalAlignment="center"/>
+          </GridLayout>
+          
+        </ListView.itemTemplate>
+      </ListView>
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+
+</Page>

@@ -1,0 +1,66 @@
+Page {
+	background-color: #67D4C9;
+}
+
+Label {
+	text-align: center;
+	width: 90%;
+	color: white;
+}
+
+#main {
+	height: 100%;
+}
+
+
+.title {
+	font-size: 23%;
+	margin-bottom: 4%;
+	margin-top: 5%;
+	padding: 5%;
+
+}
+
+.subtitle {
+	margin-top: 1%;
+	margin-bottom: 2%;
+	font-size: 15%;
+
+}
+
+.mainImage {
+	height: 90%;
+	margin-bottom: 4%;
+}
+
+.next {
+	margin-top: 3%;
+  height: 35%;
+  background-color: #FF9F1C;
+  color: white;
+}
+
+.smallText {
+	font-size: 14%;
+  overflow: visible;
+}
+
+.small-carousel-dot {
+  background-color: #DCDCDC;
+  margin: 5%;
+  padding: 15%;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.large-carousel-dot {
+  margin: 1%;
+  background-color: #FFA730;
+  padding: 12%;
+  padding-top: 0;
+  padding-bottom: 0;
+  vertical-align: middle;
+  border-radius: 50%;
+}

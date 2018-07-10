@@ -1,0 +1,76 @@
+{
+  "_from": "tns-core-modules@latest",
+  "_id": "tns-core-modules@4.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-ZTpH7/zHfARrJ+1bPwbBYyqFVQO+2unnygfLW8Bu3clzpTkdwwW++1DS+Qbzw7r84+dzdVPZ7zwEVkjpfAFogw==",
+  "_location": "/tns-core-modules",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "tns-core-modules@latest",
+    "name": "tns-core-modules",
+    "escapedName": "tns-core-modules",
+    "rawSpec": "latest",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/tns-core-modules/-/tns-core-modules-4.1.0.tgz",
+  "_shasum": "f838f0e040b9cdef8d361ba7392dfece51762fc2",
+  "_spec": "tns-core-modules@latest",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
+  "bundleDependencies": false,
+  "dependencies": {
+    "tns-core-modules-widgets": "4.1.0"
+  },
+  "deprecated": false,
+  "description": "Telerik NativeScript Core Modules",
+  "devDependencies": {
+    "@types/node": "~7.0.5",
+    "tns-platform-declarations": "*"
+  },
+  "files": [
+    "**/*.d.ts",
+    "**/*.js",
+    "**/package.json",
+    "!android17.d.ts",
+    "!ios.d.ts",
+    "!bin/",
+    "!apps/",
+    "!build/",
+    "!node-tests/",
+    "!declarations.android.d.ts",
+    "!declarations.ios.d.ts",
+    "!gruntfile.js",
+    "!org.nativescript.widgets.d.ts"
+  ],
+  "homepage": "https://www.nativescript.org",
+  "license": "Apache-2.0",
+  "name": "tns-core-modules",
+  "nativescript": {
+    "platforms": {
+      "ios": "4.0.0",
+      "android": "4.0.0"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NativeScript/NativeScript/commit/86f9d3870688f1e7a759fa72061ea07d5d488e09"
+  },
+  "snapshot": {
+    "android": {
+      "tns-java-classes": {
+        "modules": [
+          "ui/frame/activity",
+          "ui/frame/fragment"
+        ]
+      }
+    }
+  },
+  "typings": "tns-core-modules.d.ts",
+  "version": "4.1.0"
+}

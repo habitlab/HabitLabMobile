@@ -1,0 +1,40 @@
+Page{
+  background-color: #67D4C9;
+}
+
+Label {
+	width: 90%;
+	color: white;
+}
+
+Button {
+	padding: 5%;
+	width: 70%;
+	margin: 3%;
+	background-color: #FF9F1C;
+	color: white;
+}
+
+.information-image {
+	width: 85%;
+	padding-top: 10%;
+	padding-bottom: 10%;
+}
+
+.title {
+	text-align: center;
+	font-size: 28%;
+	margin: 5%;
+	padding: 5%;
+	padding-top: 7%;
+}
+
+.information {
+	padding-top: 6%;
+	padding-bottom: 4%;
+	font-size: 18%;
+}
+
+.firstVideo {
+	height: 60%;
+}

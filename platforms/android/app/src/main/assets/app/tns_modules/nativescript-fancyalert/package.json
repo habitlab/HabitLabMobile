@@ -1,0 +1,78 @@
+{
+  "_args": [
+    [
+      "nativescript-fancyalert@1.1.2",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-fancyalert@1.1.2",
+  "_id": "nativescript-fancyalert@1.1.2",
+  "_inBundle": false,
+  "_integrity": "sha1-ESqnKVfIwvJ+3r6XDBsTXoGCTIE=",
+  "_location": "/nativescript-fancyalert",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "nativescript-fancyalert@1.1.2",
+    "name": "nativescript-fancyalert",
+    "escapedName": "nativescript-fancyalert",
+    "rawSpec": "1.1.2",
+    "saveSpec": null,
+    "fetchSpec": "1.1.2"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nativescript-fancyalert/-/nativescript-fancyalert-1.1.2.tgz",
+  "_spec": "1.1.2",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
+  "author": {
+    "name": "Nathan Walker",
+    "email": "walkerrunpdx@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/NathanWalker/nativescript-fancyalert/issues"
+  },
+  "contributors": [
+    {
+      "name": "Brad Martin",
+      "email": "bradwaynemartin@gmail.com",
+      "url": "https://github.com/bradmartin"
+    }
+  ],
+  "description": "Fancy alerts for NativeScript.",
+  "homepage": "https://github.com/NathanWalker/nativescript-fancyalert",
+  "keywords": [
+    "NativeScript",
+    "iOS",
+    "Android",
+    "alert",
+    "dialogs"
+  ],
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/NathanWalker/nativescript-fancyalert/blob/master/LICENSE"
+  },
+  "main": "fancyalert",
+  "name": "nativescript-fancyalert",
+  "nativescript": {
+    "platforms": {
+      "ios": "2.4.0",
+      "android": "2.4.0"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NathanWalker/nativescript-fancyalert.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "demo.android": "npm run preparedemo && cd demo && tns run android",
+    "demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
+    "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-fancyalert && tns plugin add .. && tns install",
+    "setup": "npm i && cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd .."
+  },
+  "typings": "index.d.ts",
+  "version": "1.1.2"
+}

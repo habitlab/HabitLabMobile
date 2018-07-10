@@ -1,0 +1,57 @@
+<Page loaded="pageLoaded" id="nudges" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Nudges" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem id="search-icon" tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+	    <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+   	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
+      <StackLayout>
+        <SearchBar text="{{filter}}" hint="Search..." id="search-bar" visibility="collapse" submit="closeKeyboard"/>
+        <Label text="no results" class="no-results" id="no-results" visibility="collapse" />
+        
+        <StackLayout>
+          <Button text="Make Your Own Nudge!" tap ="ownNudge" />
+        </StackLayout>
+
+        <StackLayout>
+          <ListView items="{{nudges}}" itemTemplateSelector="isHeader ? 'header' : 'item'" id="nudges-list" separatorColor="#FFFFFF" itemTap="onItemTap" tap="headerTap">
+            <ListView.itemTemplates>
+              <template key="item" >
+                <StackLayout class="padded-wrapper" >
+                  <GridLayout columns="auto,*,auto" rows="auto" id="firstrow" class="{{'level-' + level}}">
+                    <Image src="{{icon}}" col="0" verticalAlignment="center" class="intervention-icon"/>
+                    <StackLayout orientation="vertical" col="1" >
+                      <Label text='{{name}}' class='intervention-label' />
+                      <Label text='{{summary}}' class='intervention-description'/>
+                    </StackLayout>
+                    <Image id="arrow" col="3" src="res://ic_arrow_right" />
+                  </GridLayout>
+                </StackLayout>
+              </template>
+              <template key="header" >
+                <StackLayout orientation="horizontal" id="headers">
+                  <Label class="nudges-section-title" text='{{title}}'/>
+                  <!-- Weird things happening with the info button -->
+                  <!-- <Image src="res://ic_about" id="aboutIcon" verticalAlignment="middle"/> -->
+                </StackLayout>
+              </template>
+            </ListView.itemTemplates>
+          </ListView>
+          <Button id="finish" tap="goToProgress" visibility="collapse" text="finish tutorial" class="finish-tutorial-btn" />
+        </StackLayout>
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>

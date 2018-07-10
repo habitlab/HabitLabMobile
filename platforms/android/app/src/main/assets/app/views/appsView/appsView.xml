@@ -1,0 +1,65 @@
+<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="watchlist" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="{{header}}" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+    <ActionItem tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <StackLayout id="main-layout">
+        <SearchBar hint="Search..." text="{{filter}}" id="search-bar" visibility="collapse" submit="closeKeyboard"/>
+        <Label id="title" text="{{title}}"/>
+        <StackLayout id="sub-layout">
+          <Label text="no results" class="no-results" id="no-results" visibility="collapse" height="90%" />
+
+          <ListView items="{{apps}}" separatorColor="#FFFFFF" height="90%" id="app-list-view" visibility="{{apps.length ? 'visible' : 'collapse'}}">
+            <ListView.itemTemplate>
+              <GridLayout columns="*,*,*" rows="auto" backgroundColor="#FFFFFF">
+
+                <StackLayout orientation="vertical" class="grid-cell-layout" col="0" row="0">
+                  <AbsoluteLayout>
+                    <Image tap="itemTap" id="one" class="app-cell-img" horizontalAlignment="center" imageSource="{{one.iconSource}}" />
+                    <Image class="app-cell-selector" src='~/images/selected.png' visibility="{{one.isSelected ? 'visible' : 'collapse'}}" />
+                  </AbsoluteLayout>
+                  <Label class="app-cell-lbl" text="{{one.label}}" />
+                </StackLayout>
+
+                <StackLayout orientation="vertical" class="grid-cell-layout" col="1" row="0">
+                  <AbsoluteLayout>
+                    <Image tap="itemTap" id="two" class="app-cell-img" horizontalAlignment="center" imageSource="{{two.iconSource}}" />
+                    <Image class="app-cell-selector" src='~/images/selected.png' visibility="{{two.isSelected ? 'visible' : 'collapse'}}" />
+                  </AbsoluteLayout>
+                  <Label class="app-cell-lbl" text="{{two.label}}" />
+                </StackLayout>
+
+                <StackLayout orientation="vertical" class="grid-cell-layout" col="2" row="0">
+                  <AbsoluteLayout>
+                    <Image tap="itemTap" id="three" class="app-cell-img" horizontalAlignment="center" imageSource="{{three.iconSource}}" />
+                    <Image class="app-cell-selector" src='~/images/selected.png' visibility="{{three.isSelected ? 'visible' : 'collapse'}}" />
+                  </AbsoluteLayout>
+                  <Label class="app-cell-lbl" text="{{three.label}}" />
+                </StackLayout>
+                
+              </GridLayout>
+            </ListView.itemTemplate>
+          </ListView>
+          <Button text="save" id="done-button" tap="onDone"/>
+        </StackLayout>
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+
+</Page>

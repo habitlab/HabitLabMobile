@@ -1,0 +1,9 @@
+demo/
+ss/
+scripts/
+*.gif
+*.png
+*.log
+*.map
+*.ts
+!*.d.ts

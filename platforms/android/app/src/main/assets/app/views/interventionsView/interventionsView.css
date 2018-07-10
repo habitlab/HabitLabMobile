@@ -1,0 +1,72 @@
+.intervention-label {
+  font-size: 18%;
+  vertical-align: middle;
+  padding: 0;
+}
+
+.padded-wrapper {
+  padding: 10%;
+  border-color: lightgray;
+  border-bottom-width: 1px;
+}
+
+.nudges-section-title {
+  font-size: 22%;
+  color: #FFA730;
+  padding-left: 10%;
+}
+
+.intervention-icon {
+  padding: 5%;
+  background-color: gray;
+  border-radius: 50%;
+  margin: 2%;
+  margin-right: 4%;
+}
+
+#aboutIcon {
+  height: 15;
+  background-color: #ffcd30;
+  border-radius: 50%;
+  margin: 2%;
+}
+
+#headers {
+  padding-left: 10%;
+  padding-top: 10%;
+  padding-bottom: 5%;
+}
+
+.level-easy {
+  border-color: green;
+  border-left-width: 10px;
+}
+
+.level-medium {
+  border-color: orange;
+  border-left-width: 10px;
+}
+
+.level-hard {
+  border-color: red;
+  border-left-width: 10px;
+}
+
+.finish-tutorial-btn {
+  background-color: #69BD68;
+  color: white;
+  height: 10%;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 17%;
+  color: gray;
+  padding-top: 15%;
+}
+
+Button {
+  background-color: transparent;
+  color: rgb(7, 7, 7);
+  font-size: 18%;
+}

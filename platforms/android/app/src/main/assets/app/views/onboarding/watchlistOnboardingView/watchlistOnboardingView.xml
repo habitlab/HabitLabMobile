@@ -1,0 +1,12 @@
+<Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating" actionBarHidden="true">
+	<StackLayout>
+		<Label text="Create your watchlist" class="title"/>
+		<Label text= "Which apps would you like to spend less time on?" class="subtitle" />
+		<StackLayout class="scroll-button-container">
+      <ScrollView orientation="vertical" class="app-list-scroll">
+        <GridLayout id="grid" columns="*,*,*" unloaded="gridUnloaded" class="apps-grid" />
+      </ScrollView>
+      <Button text="done" id="done-button" tap="onDone"/>
+    </StackLayout>
+  </StackLayout>
+</Page>

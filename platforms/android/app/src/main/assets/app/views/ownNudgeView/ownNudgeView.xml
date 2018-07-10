@@ -1,0 +1,78 @@
+<Page loaded="pageLoaded" id="createNudge" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
+  xmlns:lv="nativescript-pro-ui/listview">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Create Your Own Nudge" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+	    <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+   	<sd:RadSideDrawer.mainContent horizontalAlignment="center" >
+
+        <StackLayout>
+      
+            <StackLayout>
+            <StackLayout>
+                      <StackLayout>
+                        <Label text="Select an Image" class="header"/>
+                      </StackLayout>
+                      <StackLayout>
+                      <ListView items="{{images}}"  separatorColor="#FFFFFF" orientation="Horizontal" >
+             
+                <ListView.itemTemplate>
+
+                  <StackLayout class="padded-wrapper" orientation="horizontal">
+                          <DockLayout columns="*" rows="auto" width="20" height="20"  >
+                          <StackLayout style.backgroundColor="green" orientation="vertical">
+                            <Image src="{{icon}}" />
+                          </StackLayout>
+                        </DockLayout>
+                      </StackLayout>
+                      </ListView.itemTemplate>
+                      </ListView>
+</StackLayout>
+              </StackLayout>
+
+              <StackLayout>
+              <ListView items="{{messages}}" itemTemplateSelector="isHeader ? 'header' : 'item'" separatorColor="#FFFFFF" itemTap="onMessageTap" tap="headerTap" >
+              <!-- Edit below -->
+                <ListView.itemTemplates>
+
+                    <template key="header">
+                      <StackLayout>
+                        <Label text='{{title}}' class="header"/>
+                      </StackLayout>
+                    </template>
+
+                    <template key="item">
+                        <StackLayout class="padded-wrapper">
+                          <GridLayout columns="auto,*,auto" rows="auto" class="settings-grid" >
+                          <StackLayout>
+                            <Label text="{{message}}" col="1" class="message-label" />
+                          </StackLayout>
+                        </GridLayout>
+                      </StackLayout>
+                    </template>
+
+                </ListView.itemTemplates>
+              </ListView>
+            </StackLayout>
+
+            <StackLayout>
+              <Button text="Add a Message" tap ="addMessage" />
+            </StackLayout>
+            </StackLayout>
+        </StackLayout>
+
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>

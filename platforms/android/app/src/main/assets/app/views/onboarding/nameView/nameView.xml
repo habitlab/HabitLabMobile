@@ -1,0 +1,12 @@
+<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
+  actionBarHidden="true">
+
+	<StackLayout id="first">
+        <Image src="res://ic_habitlab_white" id="icon" />
+        <Label text="Welcome to HabitLab," class='title' textWrap='true' />
+        <TextField hint="Enter your name" text="{{ name }}" autocorrect="false" autocapitalization="none" style="color:white" id="name" returnPress="checkNameNextPage"/>
+        <Label text="Design your time on your phone" textWrap='true' id="welcome" />
+         <!-- <Button text="Get started" id="start-button" tap="checkNameNextPage"/> -->
+     </StackLayout>
+
+</Page>

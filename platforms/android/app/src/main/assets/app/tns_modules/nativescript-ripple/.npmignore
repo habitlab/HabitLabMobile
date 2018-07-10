@@ -1,0 +1,16 @@
+demo/
+*.png
+*.log
+*.map
+*.ts
+.vs
+.vs/
+screens/
+*.png
+!ripple.d.ts
+*.map
+tsconfig.json
+*.log
+.idea/
+.vscode/
+README.md

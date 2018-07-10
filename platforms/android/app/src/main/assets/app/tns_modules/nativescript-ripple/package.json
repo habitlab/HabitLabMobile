@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      "nativescript-ripple@2.0.0",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-ripple@2.0.0",
+  "_id": "nativescript-ripple@2.0.0",
+  "_inBundle": false,
+  "_integrity": "sha1-WVB9sUMF8RKUDyxQugndjqTxop8=",
+  "_location": "/nativescript-ripple",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "nativescript-ripple@2.0.0",
+    "name": "nativescript-ripple",
+    "escapedName": "nativescript-ripple",
+    "rawSpec": "2.0.0",
+    "saveSpec": null,
+    "fetchSpec": "2.0.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nativescript-ripple/-/nativescript-ripple-2.0.0.tgz",
+  "_spec": "2.0.0",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
+  "author": {
+    "name": "Brad Martin",
+    "email": "bradwaynemartin@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/bradmartin/nativescript-ripple/issues"
+  },
+  "contributors": [
+    {
+      "name": "Morten Sjøgren",
+      "url": "https://github.com/m-abs"
+    },
+    {
+      "name": "Jorge Luis Malaquias",
+      "url": "https://github.com/jgraffite"
+    }
+  ],
+  "description": "NativeScript plugin to add Material Design ripple effects to any layout.",
+  "devDependencies": {
+    "typescript": "^2.0.10"
+  },
+  "homepage": "https://github.com/bradmartin/nativescript-ripple",
+  "keywords": [
+    "NativeScript",
+    "JavaScript",
+    "Android",
+    "Material Design",
+    "Ripple",
+    "bradmartin",
+    "thorum",
+    "TypeScript"
+  ],
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/bradmartin/nativescript-ripple/blob/master/LICENSE"
+  },
+  "main": "ripple",
+  "name": "nativescript-ripple",
+  "nativescript": {
+    "platforms": {
+      "android": "3.0.0",
+      "ios": "3.0.0"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradmartin/nativescript-ripple.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "demo.android": "npm run preparedemo && cd demo && tns run android",
+    "demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
+    "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-ripple && tns plugin add .. && tns install",
+    "setup": "cd demo && npm install && cd .. && npm run build && cd demo && tns plugin add .. && cd .."
+  },
+  "typings:": "ripple.d.ts",
+  "version": "2.0.0"
+}

@@ -1,0 +1,58 @@
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+def computeCompileSdkVersion = { -> project.hasProperty("compileSdk") ? compileSdk : 24 }
+def computeBuildToolsVersion = { ->
+    project.hasProperty("buildToolsVersion") ? buildToolsVersion : "27.0.3"
+}
+
+android {
+    compileSdkVersion computeCompileSdkVersion()
+    buildToolsVersion computeBuildToolsVersion()
+
+    defaultConfig {
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    def supportVer = "27.0.1"
+    if (project.hasProperty("supportVersion")) {
+        supportVer = supportVersion
+    }
+    compileOnly "com.android.support:support-v4:$supportVer"
+    compileOnly "com.android.support:appcompat-v7:$supportVer"
+}
+
+dependencies {
+    // Describe plugin native Android dependencies like
+	// compile "groupName:pluginName:ver" 
+    // EXAMPLE: compile "com.facebook.fresco:fresco:0.9.0+"
+}

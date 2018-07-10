@@ -1,0 +1,36 @@
+.settings-label {
+	font-size: 18%;
+	vertical-align: middle;
+	margin-left: 4%;
+}
+
+.settings-grid {
+	padding: 10%;
+	margin-left: 2%;
+	margin-right: 2%;
+	border-color: lightgray;
+  	border-bottom-width: 1px;
+}
+
+.settings-button-icon {
+	width: 10%;
+}
+
+.settings-button-img {
+	width: 11%;
+	padding: 8%;
+	padding-top: 0;
+	padding-bottom: 0;
+	border-radius: 50%;
+	background-color: #FFA730;
+}
+
+.main-container {
+	margin-top: 1%;
+}
+
+.settings-sub-label {
+	font-size: 13%;
+	vertical-align: middle;
+	margin-left: 4%;
+}

@@ -1,0 +1,6 @@
+demo/
+screenshots/
+*.png
+*.log
+*.ts
+!*.d.ts

@@ -1,0 +1,54 @@
+.manage-button {
+  background-color: #69BD68;
+  color: white;
+  height: 10%;
+}
+
+.watchlist-elem {
+  border-color: lightgray;
+  border-bottom-width: 1px;
+  padding: 7%;
+}
+
+.watchlist-icon {
+  padding: 5%;
+  width: 15%;
+}
+
+.watchlist-label {
+  font-size: 18%;
+  margin-left: 4%;
+  vertical-align: middle;
+}
+
+.tutorial-header {
+  font-size: 20%;
+  width: 90%;
+  text-align: center;
+  word-wrap: normal;
+  height: 10%;
+  margin-top: 5%;
+}
+
+#noneSelectedMessage {
+  font-size: 20%;
+  width: 90%;
+  text-align: center;
+  word-wrap: normal;
+  /*padding-top: 100%;*/
+  margin-top: 35%;
+  height: 10%;
+  margin-bottom: 45%;
+}
+
+#tutorial-image {
+  height: 60%;
+  margin-top:7.5%;
+  margin-bottom: 7.5%;
+}
+
+#nextTutorial {
+  background-color: #2EC4B6;
+  height: 10%;
+  color: white;
+}

@@ -1,0 +1,35 @@
+<Page loaded="pageLoaded" id="settings" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Active Range" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd/>
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <StackLayout orientation="vertical" >
+        <StackLayout orientation="vertical" class="scroll-layout" >
+          <GridLayout rows="auto" columns="*,*,*,*,*,*,*" id="days-grid" class="week-layout" />
+          <Label class="picker-label" text="Start Time" />
+          <TimePicker id="start-picker" class="picker"/>
+          <Label class="picker-label" text="End Time" />
+          <TimePicker id="end-picker" class="picker" />
+          <Label id="active-text" textWrap="true" class="active-label" text="Active 24 hours a day, 7 days a week" />
+        </StackLayout>
+        <Button class="save-button" tap="onSave" text="save changes" />
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+
+  </sd:RadSideDrawer>
+
+</Page>

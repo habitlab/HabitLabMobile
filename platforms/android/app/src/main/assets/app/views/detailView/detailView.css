@@ -1,0 +1,66 @@
+.detail-label-title {
+  font-size: 25%;
+  text-align: center;
+  color: steelblue;
+}
+
+.app-list-item {
+  border-color: lightgray;
+  border-bottom-width: 1px;
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+
+.detail-label-description {
+  text-align: center;
+  font-size: 15%;
+  padding: 4%;
+}
+
+.detail-icon {
+  width: 14%;
+}
+
+.detail-label-app {
+  font-size: 18%;
+  vertical-align: middle;
+  padding-left: 5%;
+}
+
+.try-me-button {
+  margin: 3%;
+  background-color: #FFA730;
+  color: white;
+}
+
+.detail-label {
+  font-size: 20%;
+  padding: 4%;
+}
+
+.easy {
+  color: green;
+}
+
+.medium {
+  color: orange;
+}
+
+.hard {
+  color: red;
+}
+
+.level-layout {
+  flex-direction: row;
+  justify-content: center;
+}
+
+.disable-layout {
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 2%;
+}
+
+.main-container {
+  padding: 3%;
+}

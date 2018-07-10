@@ -1,0 +1,151 @@
+{
+  "_from": "nativescript-videoplayer@latest",
+  "_id": "nativescript-videoplayer@4.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-EkF8UmX+nczF53ZarZ9BCIiJhT49+Kgx/a0mDCoeEdxodH2chlue9wKNaBumZfSFYrx59V7FSAzr0Xn2UbKmNQ==",
+  "_location": "/nativescript-videoplayer",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "nativescript-videoplayer@latest",
+    "name": "nativescript-videoplayer",
+    "escapedName": "nativescript-videoplayer",
+    "rawSpec": "latest",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nativescript-videoplayer/-/nativescript-videoplayer-4.1.0.tgz",
+  "_shasum": "8845504e6795ef4134c8d566358ffa5d99af37a5",
+  "_spec": "nativescript-videoplayer@latest",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
+  "author": {
+    "name": "Brad Martin",
+    "email": "bmartin@nstudio.io",
+    "url": "https://github.com/bradmartin"
+  },
+  "bugs": {
+    "url": "https://github.com/bradmartin/nativescript-videoplayer/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Nathanael Anderson",
+      "email": "nanderson@nstudio.io",
+      "url": "https://github.com/nathanaela"
+    },
+    {
+      "name": "Alexander Ziskind",
+      "email": "alex@nuvious.com",
+      "url": "https://github.com/alexziskind1"
+    },
+    {
+      "name": "Blake Nussey",
+      "email": "blake@stageme.com",
+      "url": "https://github.com/bnussey"
+    },
+    {
+      "name": "Juan Manuel Campos Olvera",
+      "email": "juan4106@hotmail.com",
+      "url": "https://github.com/juanmcampos"
+    },
+    {
+      "name": "Ivo Georgiev",
+      "email": "ivo@strem.io",
+      "url": "https://github.com/Ivshti"
+    },
+    {
+      "name": "Ophir Stern",
+      "email": "souly01@gmail.com",
+      "url": "https://github.com/souly1"
+    },
+    {
+      "name": "markhatchell",
+      "url": "https://github.com/markhatchell"
+    },
+    {
+      "name": "Eddy Verbruggen",
+      "email": "eddyverbruggen@gmail.com",
+      "url": "https://github.com/EddyVerbruggen"
+    },
+    {
+      "name": "https://github.com/RobertGardner",
+      "email": "robert@rdgardnerfamily.com",
+      "url": "https://github.com/RobertGardner"
+    }
+  ],
+  "deprecated": false,
+  "description": "A NativeScript plugin that uses the native video players to play local and remote videos.",
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.4",
+    "prettier": "^1.12.0",
+    "tns-core-modules": "^4.0.0",
+    "tns-platform-declarations": "~4.0.0",
+    "tslint": "~5.9.1",
+    "typescript": "^2.8.1"
+  },
+  "gitHead": "7a5addbe9192a7708fbaac9db42e33f2a156fea6",
+  "homepage": "https://github.com/bradmartin/nativescript-videoplayer",
+  "keywords": [
+    "NativeScript",
+    "Android",
+    "iOS",
+    "TypeScript",
+    "video",
+    "video player",
+    "movie",
+    "bradmartin",
+    "nStudio"
+  ],
+  "license": "MIT",
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "main": "videoplayer",
+  "name": "nativescript-videoplayer",
+  "nativescript": {
+    "platforms": {
+      "android": "3.0.0",
+      "ios": "3.0.0"
+    },
+    "plugin": {
+      "nan": "true",
+      "pan": "true",
+      "core3": "true",
+      "category": "Interface"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bradmartin/nativescript-videoplayer.git"
+  },
+  "scripts": {
+    "build": "npm i && tsc && npm run build.native",
+    "build.native": "node scripts/build-native.js",
+    "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**'",
+    "clean": "cd ../demo && rimraf hooks node_modules platforms && cd ../src && rimraf node_modules && npm run plugin.link",
+    "demo.android": "npm i && npm run tsc && cd ../demo && tns run android --syncAllFiles",
+    "demo.ios": "npm i && npm run tsc && cd ../demo && tns run ios --syncAllFiles",
+    "demo.reset": "cd ../demo && rimraf platforms",
+    "plugin.link": "npm link && cd ../demo && npm link nativescript-videoplayer && cd ../src",
+    "plugin.prepare": "npm run build && cd ../demo && tns plugin remove nativescript-videoplayer && tns plugin add ../src",
+    "plugin.tscwatch": "npm run tsc -- -w",
+    "postclone": "npm i && node scripts/postclone.js && cd ../demo && npm i && cd ../src && npm run plugin.link",
+    "precommit": "lint-staged",
+    "prepack": "npm run build.native",
+    "test.android": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
+    "test.ios": "npm i && npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
+    "tsc": "tsc -skipLibCheck",
+    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\""
+  },
+  "typings": "videoplayer.d.ts",
+  "version": "4.1.0"
+}

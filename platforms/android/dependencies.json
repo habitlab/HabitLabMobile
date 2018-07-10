@@ -1,0 +1,70 @@
+[
+    {
+        "name": "nativescript-dom",
+        "directory": "../../node_modules/nativescript-dom"
+    },
+    {
+        "name": "nativescript-effects",
+        "directory": "../../node_modules/nativescript-effects"
+    },
+    {
+        "name": "nativescript-fancyalert",
+        "directory": "../../node_modules/nativescript-fancyalert"
+    },
+    {
+        "name": "nativescript-loading-indicator",
+        "directory": "../../node_modules/nativescript-loading-indicator"
+    },
+    {
+        "name": "nativescript-loading-indicator-new",
+        "directory": "../../node_modules/nativescript-loading-indicator-new"
+    },
+    {
+        "name": "nativescript-localstorage",
+        "directory": "../../node_modules/nativescript-localstorage"
+    },
+    {
+        "name": "nativescript-ripple",
+        "directory": "../../node_modules/nativescript-ripple"
+    },
+    {
+        "name": "nativescript-slides",
+        "directory": "../../node_modules/nativescript-slides"
+    },
+    {
+        "name": "nativescript-telerik-ui",
+        "directory": "../../node_modules/nativescript-telerik-ui"
+    },
+    {
+        "name": "nativescript-theme-core",
+        "directory": "../../node_modules/nativescript-theme-core"
+    },
+    {
+        "name": "nativescript-toast",
+        "directory": "../../node_modules/nativescript-toast"
+    },
+    {
+        "name": "nativescript-tooltip",
+        "directory": "../../node_modules/nativescript-tooltip"
+    },
+    {
+        "name": "nativescript-version-number",
+        "directory": "../../node_modules/nativescript-version-number"
+    },
+    {
+        "name": "nativescript-videoplayer",
+        "directory": "../../node_modules/nativescript-videoplayer"
+    },
+    {
+        "name": "tns-core-modules",
+        "directory": "../../node_modules/tns-core-modules"
+    },
+    {
+        "name": "tns-core-modules-snapshot",
+        "directory": "../../node_modules/tns-core-modules-snapshot"
+    },
+    {
+        "name": "tns-core-modules-widgets",
+        "directory": "../../node_modules/tns-core-modules-widgets"
+    }
+]

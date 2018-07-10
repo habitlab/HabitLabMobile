@@ -1,0 +1,61 @@
+.bottom-button {
+  background-color: #69BD68;
+  color: white;
+}
+
+.app-icon {
+  width: 15%;
+  margin-left: 2%;
+}
+
+.app-name {
+  width: 35%;
+  font-size: 15%;
+  margin-left: 2%;
+}
+
+.goal-label {
+  width: 15%;
+  font-size: 17%;
+  margin-left: 1%;
+}
+
+.phone-goal-label {
+  font-size: 17%;
+  margin-left: 1%;
+}
+
+.np-text {
+  width: 30%;
+  text-align: center;
+  color: black;
+  font-size: 16%;
+}
+
+.np-button {
+  width: 35%;
+  font-size: 12%;
+  background-color: #2EC4B6;
+  color: white;
+  margin: 0;
+}
+
+.np {
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  margin-left: 2%;
+}
+
+.flex {
+  justify-content: center;
+  align-items: center;
+  padding: 3%;
+}
+
+.phone-info-icon {
+  width: 7%;
+  margin: 1%;
+  background-color: #A0E4DD;
+  border-radius: 50%
+}

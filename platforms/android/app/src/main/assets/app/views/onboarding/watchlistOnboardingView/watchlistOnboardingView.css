@@ -1,0 +1,70 @@
+Page {
+	background-color: #67D4C9;
+	text-align: center;
+}
+
+Label {
+	color: white;
+	text-align: center;
+}
+
+.title {
+	font-size: 28%;
+	margin-top: 5%;
+	padding: 5%;
+}
+
+.subtitle {
+	margin-top:1%;
+	font-size: 15%;
+	padding-top:5%;
+	margin-bottom: 3%;
+}
+
+Button {
+	width: 100%;
+  height: 10%;
+	background-color: #FF9F1C;
+	color: white;
+}
+
+.app-cell-img {
+  width: 50%;
+  left: 28%;
+}
+
+.app-cell-lbl {
+  color: black;
+  text-align: center;
+  font-size: 10%;
+}
+
+.app-cell-selector {
+  width: 30%;
+  transform: translate(68%, -7%);
+}
+
+.app-cell {
+  align-contents: middle;
+}
+
+.grid-cell-layout {
+  padding-bottom: 10%;
+  padding-top: 10%;
+}
+
+.app-list-scroll {
+  height: 90%;
+  background-color: rgba(255,255,255,0.4);
+  border-radius: 20%;
+}
+
+.scroll-button-container {
+  padding-right: 10%;
+  padding-left: 10%;
+}
+
+.apps-grid {
+  padding-top: 5%;
+  padding-bottom: 5%;
+}

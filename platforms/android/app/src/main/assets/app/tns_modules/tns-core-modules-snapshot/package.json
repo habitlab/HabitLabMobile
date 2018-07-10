@@ -1,0 +1,42 @@
+{
+  "_args": [
+    [
+      "tns-core-modules-snapshot@3.0.1-5.5.372.32",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "tns-core-modules-snapshot@3.0.1-5.5.372.32",
+  "_id": "tns-core-modules-snapshot@3.0.1-5.5.372.32",
+  "_inBundle": false,
+  "_integrity": "sha1-UgLtgNqB2B60DGV3ZNzRQztRB3k=",
+  "_location": "/tns-core-modules-snapshot",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "tns-core-modules-snapshot@3.0.1-5.5.372.32",
+    "name": "tns-core-modules-snapshot",
+    "escapedName": "tns-core-modules-snapshot",
+    "rawSpec": "3.0.1-5.5.372.32",
+    "saveSpec": null,
+    "fetchSpec": "3.0.1-5.5.372.32"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/tns-core-modules-snapshot/-/tns-core-modules-snapshot-3.0.1-5.5.372.32.tgz",
+  "_spec": "3.0.1-5.5.372.32",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
+  "license": "Apache-2.0",
+  "name": "tns-core-modules-snapshot",
+  "nativescript": {
+    "platforms": {
+      "android": "2.0.0"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NativeScript/NativeScript/commit/77c3ea8dc30847721006743c25a0f2d7ca1bf6e7"
+  },
+  "version": "3.0.1-5.5.372.32"
+}

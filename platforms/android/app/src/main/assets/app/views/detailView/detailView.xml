@@ -1,0 +1,45 @@
+<Page loaded="pageLoaded" id="nudges" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sd="nativescript-telerik-ui/sidedrawer">
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="Nudge Details" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <StackLayout orientation="vertical" id="detail" class="main-container">
+        <Label class="detail-label-title" text="{{name}}" />
+        <Label class="detail-label-description" text="{{description}}" textWrap="true" />
+        <FlexboxLayout orientation="horizontal" class="level-layout">
+          <Label text="Level: " class="detail-label" />
+          <Label className="{{'detail-label ' + level}}" text="{{levelLabel}}" />
+        </FlexboxLayout>
+        <Button class="try-me-button" text="Show Me a Demo" tap="onButtonTap"/>
+        <FlexboxLayout orientation="horizontal" className="{{target === 'phone' ? 'level-layout' : 'disable-layout'}}">
+          <Label text="{{enabled ? 'Nudge Enabled' : 'Nudge Disabled'}}" class="detail-label small" />
+          <Switch id="main-toggle" checked="{{enabled}}" tap="onMainToggle" />
+        </FlexboxLayout>
+
+        <ListView id="app-list-view" items="{{apps}}" separatorColor="#FFFFFF" class="padded-list">
+          <ListView.itemTemplate>
+            <GridLayout columns="auto,*,auto" rows="auto" class="app-list-item">
+              <Image imageSource="{{icon}}" col="0" class="detail-icon" verticalAlignment="center" />
+              <Label text="{{appName}}" col="1" class="detail-label-app" />
+              <Switch col="2" tap="onItemTap" checked='{{enabled}}'/>
+            </GridLayout>
+          </ListView.itemTemplate>
+        </ListView>
+
+      </StackLayout>
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>

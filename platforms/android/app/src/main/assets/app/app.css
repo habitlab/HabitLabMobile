@@ -1,0 +1,35 @@
+@import "nativescript-theme-core/css/core.light.css";
+@import url('~/platform.css');
+
+Page.onboarding {
+  background-color: #67D4C9;
+}
+
+.action-bar {
+	background-color: #2EC4B6;
+	color: white;
+}
+
+.slide-indicator-inactive {
+    background-color: white;
+    opacity : 0.4;
+    width : 8;
+    height : 8;
+    margin-left : 3;
+    margin-right : 3;
+    border-radius : 4;
+}
+ 
+.slide-indicator-active {
+    background-color: white;
+    opacity : 0.9;
+    width : 14;
+    height : 14;
+    margin-left : 3;
+    margin-right : 3;
+    border-radius : 7;
+}
+
+.action-bar-title {
+  font-size: 20%;
+}

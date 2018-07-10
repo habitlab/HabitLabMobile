@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "declaration": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noEmitHelpers": true,
+        "noEmitOnError": true,
+        "noImplicitAny": false,
+        "skipLibCheck": true,
+        "lib": [
+            "es2016"
+        ]
+    },
+    "exclude": [
+        "demo",
+        "node_modules",
+        "platforms",
+        "typings",
+        "typings*",
+        "**/*.aot.ts"
+    ]
+}

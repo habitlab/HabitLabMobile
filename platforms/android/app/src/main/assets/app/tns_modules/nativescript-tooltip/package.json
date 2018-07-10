@@ -1,0 +1,80 @@
+{
+  "_args": [
+    [
+      "nativescript-tooltip@2.1.0",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-tooltip@2.1.0",
+  "_id": "nativescript-tooltip@2.1.0",
+  "_inBundle": false,
+  "_integrity": "sha1-F0HOEoBrScKboh0YS6SyKk7egYo=",
+  "_location": "/nativescript-tooltip",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "nativescript-tooltip@2.1.0",
+    "name": "nativescript-tooltip",
+    "escapedName": "nativescript-tooltip",
+    "rawSpec": "2.1.0",
+    "saveSpec": null,
+    "fetchSpec": "2.1.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nativescript-tooltip/-/nativescript-tooltip-2.1.0.tgz",
+  "_spec": "2.1.0",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
+  "author": {
+    "name": "Osei Fortune",
+    "email": "fortune.osei@yahoo.com"
+  },
+  "bugs": {
+    "url": "https://github.com/triniwiz/nativescript-tooltip/issues"
+  },
+  "description": "NativeScript plugin to create tooltips",
+  "devDependencies": {
+    "prompt": "^1.0.0",
+    "rimraf": "^2.5.0",
+    "tns-core-modules": "^2.3.0",
+    "tns-platform-declarations": "^2.3.0",
+    "typescript": "^2.0.7"
+  },
+  "homepage": "https://github.com/triniwiz/nativescript-tooltip",
+  "keywords": [
+    "NativeScript",
+    "JavaScript",
+    "Android",
+    "iOS",
+    "tooltip"
+  ],
+  "license": "MIT",
+  "main": "tooltip",
+  "name": "nativescript-tooltip",
+  "nativescript": {
+    "platforms": {
+      "android": "2.3.0",
+      "ios": "2.3.0"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/triniwiz/nativescript-tooltip.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "demo.android": "npm run preparedemo && cd demo && tns run android",
+    "demo.ios": "npm run preparedemo && cd demo && tns emulate ios",
+    "demo.ios.device": "npm run preparedemo && cd demo && tns run ios",
+    "postclone": "npm i && node scripts/postclone.js",
+    "preparedemo": "npm run build && cd demo && tns plugin remove nativescript-tooltip && tns plugin add .. && tns install",
+    "setup": "npm i && cd demo && npm i && cd .. && npm run build && cd demo && tns plugin add .. && cd ..",
+    "test.android": "cd demo && tns test android",
+    "test.ios": "cd demo && tns test ios --emulator",
+    "test.ios.device": "cd demo && tns test ios"
+  },
+  "typings": "index.d.ts",
+  "version": "2.1.0"
+}

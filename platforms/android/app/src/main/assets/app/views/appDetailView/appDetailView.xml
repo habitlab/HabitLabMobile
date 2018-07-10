@@ -1,0 +1,58 @@
+<Page loaded="pageLoaded" navigatingTo="pageNavigating" id="watchlist" unloaded="pageUnloaded"
+  xmlns:sidedrawer="shared/sd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:Slides="nativescript-slides"
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
+  xmlns:goalelem="shared/goalelem">
+
+
+  <ActionBar class="action-bar">
+    <ActionBar.titleView>
+      <Label text="App Details" horizontalAlignment="center" class="action-bar-title" />
+    </ActionBar.titleView>
+    <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
+  </ActionBar>
+
+  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+    <sd:RadSideDrawer.drawerContent>
+      <sidedrawer:sd />
+    </sd:RadSideDrawer.drawerContent>
+
+    <sd:RadSideDrawer.mainContent horizontalAlignment="center">
+      <StackLayout orientation="vertical" id="app-detail" >
+        <FlexboxLayout orientation="horizontal" class="app-detail-flex-layout" id="title-layout">
+          <Image id="app-detail-icon" class="app-detail-icon" />
+          <Label id="app-detail-title" class="app-detail-title"/>
+        </FlexboxLayout>
+
+        <ScrollView orientation="vertical">
+          <StackLayout orientation="vertical">
+
+            <Slides:SlideContainer id="slides" pageIndicators="false" height="50%">
+
+              <Slides:Slide>
+                <StackLayout>
+                  <Label text="Week" class="app-detail-subtitle" horizontalAlignment="center"/>
+                  <Placeholder creatingView="weekView"/>
+                  <Image class="arrowRight" col="2" src="res://ic_arrow_right" tap="goToMonth"/>
+                </StackLayout>
+              </Slides:Slide>
+              <Slides:Slide> 
+                <Label text="Month" class="app-detail-subtitle" horizontalAlignment="center"/>
+                <Placeholder creatingView="monthView"/>
+                <Image class="arrowLeft" col="2" src="res://ic_arrow_left" tap ="goToWeek"/>
+              </Slides:Slide>
+            </Slides:SlideContainer>
+            <Label text="App Goals" class='app-detail-subtitle top-padded' />
+            <goalelem:goalelem id="goal-changer" />
+
+            <Label id="nudges" text="Nudges" class='app-detail-subtitle top-padded' />
+            <StackLayout orientation="vertical" id="list" />
+          </StackLayout>
+          
+        </ScrollView>
+      </StackLayout>
+
+    </sd:RadSideDrawer.mainContent>
+  </sd:RadSideDrawer>
+</Page>
