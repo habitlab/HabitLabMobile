@@ -95,7 +95,7 @@ exports.showCountUpTimer = function() {
     if (permissions.checkSystemOverlayPermission()) {
 		// layout params for wrapped content overlay (background clickable)
 		var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
-			startX, startY, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			startX, startY, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -117,7 +117,7 @@ exports.showCountUpTimer = function() {
 
 		var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
 				WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-				SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 
+				SCREEN_HEIGHT - TIMER_HEIGHT, permissions.getOverlayType(), 
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		windowManager.addView(textView, textParams);
@@ -265,7 +265,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
 	// layout params for wrapped content overlay (background clickable)
 	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
-		startX, startY, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+		startX, startY, permissions.getOverlayType(),
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 	startParams.gravity = Gravity.LEFT | Gravity.TOP;
@@ -296,7 +296,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
     var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
 			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-	    	SCREEN_HEIGHT - TIMER_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+	    	SCREEN_HEIGHT - TIMER_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 	    	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;

@@ -95,7 +95,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -106,7 +106,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
 			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelTitle = new TextView(context);
 		cancelTitle.setText(title);
@@ -119,7 +119,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
 			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelText = new TextView(context);
 		cancelText.setText(msg);
@@ -132,7 +132,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
 			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
-			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -154,7 +154,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 		// add positive button
 		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
 			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
-			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -264,7 +264,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -275,7 +275,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
 			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozeTitle = new TextView(context);
 		snoozeTitle.setText(title);
@@ -289,7 +289,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
 			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozeText = new TextView(context);
 		snoozeText.setText(msg);
@@ -302,7 +302,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
 			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
-			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -325,7 +325,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 			// add positive button
 		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
 			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
-			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);

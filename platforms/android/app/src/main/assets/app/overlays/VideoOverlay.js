@@ -74,7 +74,7 @@ exports.showYoutube = function(width, height, pos, neg) {
     if (permissions.checkSystemOverlayPermission()) {
 			// overlay to block video
 		var overlayParams = new WindowManager.LayoutParams(width, height, 0, 0,
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+			permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_FULLSCREEN, 
 			PixelFormat.TRANSLUCENT);
 		overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlay = new OverlayView(context);
@@ -82,7 +82,7 @@ exports.showYoutube = function(width, height, pos, neg) {
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * width, 0.2 * height, 0.1 * width, 0.1 * height, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		text = new TextView(context);
 		text.setText("Keep Watching?");
@@ -95,7 +95,7 @@ exports.showYoutube = function(width, height, pos, neg) {
 
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.3 * width, 
-			0.25 * height, 0.14 * width, 0.625 * height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.25 * height, 0.14 * width, 0.625 * height, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -117,7 +117,7 @@ exports.showYoutube = function(width, height, pos, neg) {
 
 		// add negative button
 		var negButtonParams = new WindowManager.LayoutParams(0.3 * width, 
-			0.25 * height, 0.56 * width, 0.625 * height, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.25 * height, 0.56 * width, 0.625 * height, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);

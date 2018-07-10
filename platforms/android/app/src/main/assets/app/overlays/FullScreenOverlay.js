@@ -118,7 +118,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
     if (permissions.checkSystemOverlayPermission()) {
 		// add view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayView = new DialogView(context);
@@ -128,7 +128,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, WindowManager.LayoutParams.WRAP_CONTENT,
 			0.1 * SCREEN_WIDTH, 0.375 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayTitle = new TextView(context);
 		overlayTitle.setText(title);
@@ -141,7 +141,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, WindowManager.LayoutParams.WRAP_CONTENT,
 			0.1 * SCREEN_WIDTH, 0.475 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayText = new TextView(context);
 		overlayText.setText(msg);
@@ -154,7 +154,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 		//Add exit button
 		var linkParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, WindowManager.LayoutParams.WRAP_CONTENT,
 			0.1 * SCREEN_WIDTH, 0.7 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, 
+			permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, 
 			PixelFormat.TRANSLUCENT);
 		linkParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayLink = new TextView(context);
@@ -176,7 +176,7 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback) 
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.6 * SCREEN_WIDTH, 
 			0.08 * SCREEN_HEIGHT, 0.2 * SCREEN_WIDTH, 0.6 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -205,7 +205,7 @@ exports.showInterstitial = function(title, msg, button, callback) {
     if (permissions.checkSystemOverlayPermission()) {
 		// add view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayView = new InterstitialView(context);
@@ -214,7 +214,7 @@ exports.showInterstitial = function(title, msg, button, callback) {
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, WindowManager.LayoutParams.WRAP_CONTENT,
 			0.1 * SCREEN_WIDTH, 0.35 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayTitle = new TextView(context);
 		overlayTitle.setText(title);
@@ -227,7 +227,7 @@ exports.showInterstitial = function(title, msg, button, callback) {
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, WindowManager.LayoutParams.WRAP_CONTENT,
 			0.1 * SCREEN_WIDTH, 0.435 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlayText = new TextView(context);
 		overlayText.setText(msg);
@@ -240,7 +240,7 @@ exports.showInterstitial = function(title, msg, button, callback) {
 		//Progress bar 
 		var progParams = new WindowManager.LayoutParams(0.8 * SCREEN_WIDTH, android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 			0, 0.1 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		progBar = new android.widget.ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
 		progBar.setMax(10000);
 		progBar.setProgress(0);
@@ -249,7 +249,7 @@ exports.showInterstitial = function(title, msg, button, callback) {
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.6 * SCREEN_WIDTH, 
 			0.08 * SCREEN_HEIGHT, 0.2 * SCREEN_WIDTH, 0.63 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);

@@ -119,7 +119,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 
 		// add whole screen view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -130,7 +130,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.2*DIALOG_HEIGHT,
 			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.26*SCREEN_HEIGHT + 0.10*DIALOG_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		text = new TextView(context);
 		text.setText(msg);
@@ -148,7 +148,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		//radio group
 		var rgparams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.5*DIALOG_HEIGHT,
 			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.25*SCREEN_HEIGHT + 0.32*DIALOG_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		rgparams.gravity = Gravity.LEFT | Gravity.TOP;
 		rg = new RadioGroup(context);
 		rg.setOrientation(RadioGroup.VERTICAL);
@@ -213,7 +213,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
 			0.15 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
-			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -267,7 +267,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		// add positive button
 		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
 			0.15 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
-			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);

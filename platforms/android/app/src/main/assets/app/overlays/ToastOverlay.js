@@ -128,7 +128,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 	imageBitmap = iconBitmap;
 	// add whole screen view
 	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+		WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);
@@ -143,7 +143,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
     	LEFT+0.1*DIALOG_WIDTH, TOP + 0.13*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+    	permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
     	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
@@ -167,7 +167,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
     // add neg button
     var closeButtonParams = new WindowManager.LayoutParams(0.1*SCREEN_WIDTH, 
     	0.1*SCREEN_WIDTH, RIGHT - DIALOG_HEIGHT, 
-    	TOP, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+    	TOP, permissions.getOverlayType(),
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 		PixelFormat.TRANSLUCENT);

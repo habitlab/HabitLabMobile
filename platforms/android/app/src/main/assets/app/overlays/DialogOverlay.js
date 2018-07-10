@@ -90,7 +90,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -101,7 +101,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
 			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		twoOptionText = new TextView(context);
 		twoOptionText.setText(msg);
@@ -114,7 +114,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
 			0.3 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
-			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -136,7 +136,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 		// add positive button
 		var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
 			0.3 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
-			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -192,7 +192,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
     if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);
@@ -203,7 +203,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
 			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
-			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, 0, PixelFormat.TRANSLUCENT);
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		oneOptionText = new TextView(context);
 		oneOptionText.setText(msg);
@@ -216,7 +216,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 		// add positive button
 		var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
 			0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
-			0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 			PixelFormat.TRANSLUCENT);

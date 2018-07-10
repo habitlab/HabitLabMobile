@@ -49,7 +49,7 @@ exports.grayOut = function(rect) {
 	if (!overlay && rect.left > 0 && rect.right < SCREEN_WIDTH) {
 	    if (permissions.checkSystemOverlayPermission()) {
 			overlayParams = new WindowManager.LayoutParams(width, height, rect.left, rect.top - getStatusBarHeight(),
-				WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+				permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
 				PixelFormat.TRANSLUCENT);
 			overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 			overlay = new OverlayView(context);
