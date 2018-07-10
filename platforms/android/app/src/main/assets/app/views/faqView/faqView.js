@@ -51,7 +51,7 @@ var QandA = [{
   answer: "HabitLab starts working as soon as you install the app. If you've recently installed the app or wiped your data, you will not have past data."
 }, {
   question: "I'm worried that HabitLab is accessing my data?",
-  answer: "HabitLab does not use your data or send out any information. All your habit stats are stored on your device and remain there 100% of the time so no one else can see any of your information."
+  answer: "By using HabitLab, you are helping the Stanford HCI Group help improve the product and better understand how to develop better online habits. All data being collected is anonymous. For more information, visit please visit https://github.com/habitlab/habitlab/wiki/Privacy#stanford-irb."
 }, {
   question: "What happens if I erase my data?",
   answer: "This resets HabitLab back to the state it was when you started using it. Only do this if you understand that you will lose all your progress and updated goals and nudges."

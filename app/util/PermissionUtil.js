@@ -83,13 +83,13 @@ exports.launchAccessibilityServiceIntent = function () {
  * --------------
  * Returns the overlay type used for dialogs.
  * If the phone has a new API version, 
- * permissions.getOverlayType() is returned.
+ * WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY is returned.
  * If the phone has an old API version, 
  * WindowManager.LayoutParams.TYPE_SYSTEM_ALERT is returned.
  */
 exports.getOverlayType = function() {
 	if (android.os.Build.VERSION.SDK_INT < 26)
 		return WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-	return permissions.getOverlayType();
+	return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 }
 
