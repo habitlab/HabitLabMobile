@@ -10,6 +10,9 @@ var Intent = android.content.Intent;
 var context = application.android.context;
 
 exports.sendNotification = function(context, title, msg, id, timeout) {
+    console.log("Trying to send a notification here");
+    console.log("Title: " + title);
+    console.log("Message: " + msg)
 	var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE);
     var notificationBuilder = new NotificationCompat.Builder(context);
 
