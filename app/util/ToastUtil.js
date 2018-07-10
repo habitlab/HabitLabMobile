@@ -4,7 +4,7 @@ exports.show = function(context, msg, length, bkgdColorHex, textColorHex) {
 	var toastLength = (length === 0) ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG;
 	var customToast = Toast.makeText(context, msg, toastLength);
 	var view = customToast.getView();
-	if (bkgdColorHex) {
+	if (bkgdColorHex && view.getBackground() != null) {
 		view.getBackground().setColorFilter(android.graphics.Color.parseColor(bkgdColorHex), android.graphics.PorterDuff.Mode.SRC_IN);
 	}
  	
