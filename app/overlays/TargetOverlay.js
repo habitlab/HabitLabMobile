@@ -1,5 +1,5 @@
 var app = require("application");
-
+var permissions = require('~/util/PermissionUtil');
 //This is a full screen overlay under tabs, with a dialog in the center. Used in target onboarding.
 
 // native APIs
@@ -79,100 +79,102 @@ var lastX;
 var lastY;
 //Redirect occurs when the user taps outside of the overlay area. Call back occurs when the user presses the button
 exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
-	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, 
-		PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    dialog = new IntroDialog(context);
-    dialog.setOnTouchListener(new android.view.View.OnTouchListener({
-	 	onTouch: function (v, event) {
-	 		var action = event.getAction();
-			var currentX = event.getX();
-			var currentY = event.getY();
-			//If taps above the dialog height
-	 		if(currentY < 0.145 * SCREEN_HEIGHT){
-	 			if (redirect) {
-	 				redirect();
-	 			}
-	 			exports.removeIntroDialog();
-	 		}
-	 		if (action === android.view.MotionEvent.ACTION_DOWN) {
-				lastX = currentX;
-				lastY = currentY;
-			} else if (action === android.view.MotionEvent.ACTION_UP) {
-				//swipe left to change tab
-				if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+	if (permissions.checkSystemOverlayPermission()) {
+		// add whole screen view
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+			WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, 
+			PixelFormat.TRANSLUCENT);
+		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+		dialog = new IntroDialog(context);
+		dialog.setOnTouchListener(new android.view.View.OnTouchListener({
+			onTouch: function (v, event) {
+				var action = event.getAction();
+				var currentX = event.getX();
+				var currentY = event.getY();
+				//If taps above the dialog height
+				if(currentY < 0.145 * SCREEN_HEIGHT){
 					if (redirect) {
 						redirect();
 					}
 					exports.removeIntroDialog();
 				}
+				if (action === android.view.MotionEvent.ACTION_DOWN) {
+					lastX = currentX;
+					lastY = currentY;
+				} else if (action === android.view.MotionEvent.ACTION_UP) {
+					//swipe left to change tab
+					if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
+						if (redirect) {
+							redirect();
+						}
+						exports.removeIntroDialog();
+					}
+				}
+				return false;
 			}
-	 		return false;
-	 	}
 
-			
+				
 
-	 }));
-    windowManager.addView(dialog, viewParams);
+		}));
+		windowManager.addView(dialog, viewParams);
 
-     // add title
-    var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.15 * DIALOG_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-    titleParams.gravity = Gravity.LEFT | Gravity.TOP;
-    title = new TextView(context);
-    title.setText(titleMsg);
-    title.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    title.setTextColor(Color.WHITE);
-    title.setHorizontallyScrolling(false);
-    title.setGravity(Gravity.CENTER);
-    windowManager.addView(title, titleParams);
+		// add title
+		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.15 * DIALOG_HEIGHT,
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
+		title = new TextView(context);
+		title.setText(titleMsg);
+		title.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+		title.setTextColor(Color.WHITE);
+		title.setHorizontallyScrolling(false);
+		title.setGravity(Gravity.CENTER);
+		windowManager.addView(title, titleParams);
 
 
-    // add text
-    var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
-    	WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    text = new TextView(context);
-    text.setText(msg);
-    text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
-    text.setTextColor(Color.parseColor("#808080")); //grey
-    text.setHorizontallyScrolling(false);
-    text.setGravity(Gravity.CENTER);
-    windowManager.addView(text, textParams);
+		// add text
+		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
+			WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		textParams.gravity = Gravity.LEFT | Gravity.TOP;
+		text = new TextView(context);
+		text.setText(msg);
+		text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
+		text.setTextColor(Color.parseColor("#808080")); //grey
+		text.setHorizontallyScrolling(false);
+		text.setGravity(Gravity.CENTER);
+		windowManager.addView(text, textParams);
 
-    // add positive button
-    var buttonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
-    	0.2 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
-    	TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	buttonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    button = new Button(context);
-    button.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY); //turqouise
-	button.setText(butt);
-	button.setVisibility(android.view.Visible);
-	button.setTextColor(Color.WHITE);
-	button.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        if (callback) {
-	    		callback();
-	    	}
-	        exports.removeIntroDialog();
-	    }
-	}));
-
-    windowManager.addView(button, buttonParams);
-
-
+		// add positive button
+		var buttonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
+			0.2 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
+			TOP+0.75*DIALOG_HEIGHT, WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		buttonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		button = new Button(context);
+		button.getBackground().setColorFilter(Color.parseColor("#2EC4B6"), android.graphics.PorterDuff.Mode.MULTIPLY); //turqouise
+		button.setText(butt);
+		button.setVisibility(android.view.Visible);
+		button.setTextColor(Color.WHITE);
+		button.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (callback) {
+					callback();
+				}
+				exports.removeIntroDialog();
+			}
+		}));
+		windowManager.addView(button, buttonParams);
+	} else {
+		permissions.launchSystemOverlayIntent();
+	}
+	
   
 }
 
