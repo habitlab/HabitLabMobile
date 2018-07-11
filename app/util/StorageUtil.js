@@ -391,7 +391,7 @@ exports.setEmail = function(email) {
  * ---------------
  * Gets the personalized email.
  */
-exports.getName = function() {
+exports.getEmail = function() {
   return appSettings.getString('email');
 };
 

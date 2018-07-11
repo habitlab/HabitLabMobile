@@ -36,6 +36,7 @@ Button {
     animation-name: opacity;
     animation-duration: 3;
 }
+
 @keyframes opacity {
     from { opacity: 0; }
     to { opacity: 1; }

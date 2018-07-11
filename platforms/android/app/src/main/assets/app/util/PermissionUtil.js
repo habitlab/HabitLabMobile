@@ -76,6 +76,7 @@ exports.launchAccessibilityServiceIntent = function () {
 	var foreground = application.android.foregroundActivity;
 	if (foreground) {
 		foreground.startActivity(int);
+		foreground.finish();
 	}
 }
 
@@ -97,21 +98,28 @@ exports.getOverlayType = function() {
 /**
  * Prompt User to Associate Email with User Account
  * For now, just ask if we can for our data collection purposes.
- * TODO: Find incentives.
+ * @param callback: callback function to be executed after email sucess.
+ * @return Promise instance to fetch email.
  */
 exports.promptUserForEmail = function() {
-	var context = application.android.context.getApplicationContext();
-	permission.requestPermission(android.Manifest.permission.GET_ACCOUNTS, 
-		"Can we associate your data with your email address? This will be used to sync" +
-		" cross-device interent usage in a future release!").then(function() {
-			//Great! So, let's fetch it.
-			var manager = AccountManager.get(context);
-			var accounts = manager.getAccounts();
-			if (accounts.length > 0) {
-				//We got it! Now, let's add it to local storage for safekeeping.
-				storage.setEmail(accounts[0].name);
-			}
-		}).catch(function() {
-			//Error here (or permission not granted). We just don't do anything then.
-		});
-}
+	return new Promise(function(resolve, reject){
+		var context = application.android.context.getApplicationContext();
+		permission.requestPermission(android.Manifest.permission.GET_ACCOUNTS, 
+			"Can we associate your data with your email address? This will be used to sync" +
+			" cross-device interent usage in a future release!").then(function() {
+				//Great! So, let's fetch it.
+				var manager = AccountManager.get(context);
+				var accounts = manager.getAccounts();
+				if (accounts.length > 0) {
+					//We got it! Now, let's add it to local storage for safekeeping.
+					storage.setEmail(accounts[0].name);
+					resolve(accounts[0].name);
+				} else {
+					reject("Couldn't get your email.")
+				}
+			}).catch(function() {
+				//Error here (or permission not granted). We just don't do anything then.
+				reject("You did not give us permission to view your email.");
+			});
+	});	
+} 
