@@ -1,0 +1,10 @@
+<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" actionBarHidden="true">
+
+<StackLayout id="first">
+	
+	<Label text="Sync Accounts With Your Email?" class='title' textWrap='true'></Label>
+	<Label text="Do you use the Chrome extension as well? Giving us your email allows us to sync your internet data across devices." textWrap="true"></Label>
+	 <Button text="I Don't Like Cool Features" onTap="moveOn" ></Button> <Button text="Syncing? Count Me in!" onTap="getEmail"></Button>
+</StackLayout>
+
+</Page>

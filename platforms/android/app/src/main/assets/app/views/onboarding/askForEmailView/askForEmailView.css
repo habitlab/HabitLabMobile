@@ -1,0 +1,49 @@
+Page {
+	background-color: #67D4C9;
+}
+
+.title {
+	font-size: 28%;
+	margin-top: 5%;
+}
+
+Label {
+	color: white;
+	text-align: center;
+	width: 90%;
+	font-size: 20%;
+}
+
+TextField {
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+Button {
+	padding: 5%;
+	width: 70%;
+	margin: 3%;
+	background-color: #FF9F1C;
+	color: white;
+}
+
+#icon{
+	height: 10%;
+	margin: 5%;
+	margin-top: 20%;
+    animation-name: opacity;
+    animation-duration: 3;
+}
+@keyframes opacity {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#name {
+	border-bottom-color: #FFFFFF;
+	border-color: #FFFFFF;
+	text-align: center;
+	font-size: 25%;
+}
