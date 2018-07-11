@@ -17,6 +17,7 @@
     "nativescript-loading-indicator": "^2.3.2",
     "nativescript-loading-indicator-new": "^2.1.0",
     "nativescript-localstorage": "^1.1.5",
+    "nativescript-permissions": "^1.2.3",
     "nativescript-ripple": "^2.0.0",
     "nativescript-slides": "^2.2.11",
     "nativescript-telerik-ui": "^3.0.1",

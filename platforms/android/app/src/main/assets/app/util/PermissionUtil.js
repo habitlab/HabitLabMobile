@@ -1,14 +1,15 @@
 var application = require("application");
-
+var permission = require('nativescript-permissions');
+var storage = require("~/util/StorageUtil");
 // expose native APIs
 var Intent = android.content.Intent;
 var Settings = android.provider.Settings;
 var AppOpsManager = android.app.AppOpsManager;
 var Process = android.os.Process;
 var Context = android.content.Context;
-var AccessibilityServiceInfo = 	android.accessibilityservice.AccessibilityServiceInfo;
+var AccessibilityServiceInfo = android.accessibilityservice.AccessibilityServiceInfo;
 var WindowManager = android.view.WindowManager;
-
+var AccountManager = android.accounts.AccountManager;
 
 /* 
  * checkSystemOverlayPermission
@@ -93,3 +94,24 @@ exports.getOverlayType = function() {
 	return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 }
 
+/**
+ * Prompt User to Associate Email with User Account
+ * For now, just ask if we can for our data collection purposes.
+ * TODO: Find incentives.
+ */
+exports.promptUserForEmail = function() {
+	var context = application.android.context.getApplicationContext();
+	permission.requestPermission(android.Manifest.permission.GET_ACCOUNTS, 
+		"Can we associate your data with your email address? This will be used to sync" +
+		" cross-device interent usage in a future release!").then(function() {
+			//Great! So, let's fetch it.
+			var manager = AccountManager.get(context);
+			var accounts = manager.getAccounts();
+			if (accounts.length > 0) {
+				//We got it! Now, let's add it to local storage for safekeeping.
+				storage.setEmail(accounts[0].name);
+			}
+		}).catch(function() {
+			//Error here (or permission not granted). We just don't do anything then.
+		});
+}

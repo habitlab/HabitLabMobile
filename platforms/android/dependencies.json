@@ -24,6 +24,10 @@
         "directory": "../../node_modules/nativescript-localstorage"
     },
     {
+        "name": "nativescript-permissions",
+        "directory": "../../node_modules/nativescript-permissions"
+    },
+    {
         "name": "nativescript-ripple",
         "directory": "../../node_modules/nativescript-ripple"
     },

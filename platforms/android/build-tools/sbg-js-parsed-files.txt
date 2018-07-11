@@ -62,6 +62,7 @@
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-dom/dom.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-telerik-ui/scripts/email-prompt.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-telerik-ui/scripts/eula-prompt.js
+/Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-permissions/permissions.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-effects/tns-effects.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-effects/tns-effects-common.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/tns_modules/nativescript-version-number/version-number.js

@@ -379,6 +379,21 @@ exports.getName = function() {
   return appSettings.getString('name');
 };
 
+/* export: setEmail
+ * ---------------
+ * Sets the personalized email.
+ */
+exports.setEmail = function(email) {
+  appSettings.setString('email', email);
+};
+
+/* export: getEmail
+ * ---------------
+ * Gets the personalized email.
+ */
+exports.getName = function() {
+  return appSettings.getString('email');
+};
 
 /***********************************
  *           WATCHLIST             *

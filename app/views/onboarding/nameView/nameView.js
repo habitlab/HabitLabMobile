@@ -48,6 +48,7 @@ exports.checkNameNextPage = function(args) {
 	if (name === "") {
 	  fancyAlert.TNSFancyAlert.showError("Not so fast!", "Please enter your name to continue", "OK");
 	} else {
+    PermissionUtil.promptUserForEmail();
 		StorageUtil.setName(name.trim());
 		frameModule.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
 	}	
