@@ -2,11 +2,13 @@ var frame = require('ui/frame');
 var permissionUtil = require('~/util/PermissionUtil');
 var FancyAlert = require("~/util/FancyAlert");
 var application = require('application');
+var credentials = require('~/credentials');
 
 var GoogleSignInOptions = com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 var GoogleSignInOptionsBuilder = com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder;
 var GoogleSignIn = com.google.android.gms.auth.api.signin.GoogleSignIn;
 var GoogleSignInAccount = com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+var ApiException = com.google.android.gms.common.api.ApiException;
 
 console.log("GoogleSignIn object: ")
 console.log(GoogleSignIn);
@@ -14,7 +16,9 @@ console.log("GoogleSignInOptions object: ");
 console.log(GoogleSignInOptions);
 
 let RC_SIGN_IN = 1;
-
+//TODO: Replace client with production-level client. Also, SHA fingerprint is in development mode.
+// See https://developers.google.com/android/guides/client-auth
+// https://developers.google.com/identity/sign-in/android/start-integrating
 
 //To override startActivityForResult, we need to extend the activity:
 
@@ -64,19 +68,20 @@ exports.getEmail = function () {
     // Configure sign-in to request the user's ID, email address, and basic
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
     var gso = new GoogleSignInOptionsBuilder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-    .requestEmail()
+    .requestIdToken(credentials.clientId)
     .build();
 
     // Build a GoogleSignInClient with the options specified by gso.
+    console.log(application.android.context.getApplicationContext().getPackageName())
     var mGoogleSignInClient = GoogleSignIn.getClient(application.android.context.getApplicationContext(), gso);
     var account = GoogleSignIn.getLastSignedInAccount(application.android.context.getApplicationContext());
     if (account == null) {
         var signInIntent = mGoogleSignInClient.getSignInIntent();
         application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN);
+    } else {
+        console.log("Acct: ");
+        console.log(account.getIdToken());
     }
-
-    console.log("Acct: ");
-    console.log(account);
 };
 
 exports.moveOn = function () {
@@ -88,15 +93,21 @@ exports.moveOn = function () {
  * @param data: Task<GoogleSignInAccount> from GoogleSignIn.getSignedInAccountFromIntent()
  */
 signInResult = function(data) {
-    try {
-        var account = completedTask.getResult(ApiException.class);
-        
-        // Signed in successfully, show authenticated UI.
-        updateUI(account);
-    } catch (e) {
-        // The ApiException status code indicates the detailed failure reason.
-        // Please refer to the GoogleSignInStatusCodes class reference for more information.
-        console.log(TAG, "signInResult:failed code=" + e.getStatusCode());
-        
-    }
+        console.log(data);
+        console.log(JSON.stringify(data));
+        console.log("resolve called");
+        try {
+            var account = data.getResult();
+            // Signed in successfully, show authenticated UI.
+            console.log(account);
+            console.log(account.getEmail());
+            FancyAlert.show(FancyAlert.type.SUCCESS, "Success!", "We found your email to be " + account.getEmail(), "Awesome!"); 
+            console.log("What about here?");
+            console.log("reject called");
+        } catch (e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            FancyAlert.show(FancyAlert.type.WARNING, "Oops!", "An error occurred.", "OK");
+            console.log("signInResult:failed code=" + JSON.stringify(e));
+        }
 }
