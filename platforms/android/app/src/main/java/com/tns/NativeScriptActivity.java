@@ -5,7 +5,7 @@
  */
 package com.tns;
 
-@com.tns.JavaScriptImplementation(javaScriptFile = "./tns_modules/tns-core-modules/ui/frame/activity.js")
+@com.tns.JavaScriptImplementation(javaScriptFile = "./views/onboarding/askForEmailView/askForEmailView.js")
 public class NativeScriptActivity extends android.app.Activity implements com.tns.NativeScriptHashCodeProvider {
 	public NativeScriptActivity(){
 		super();
@@ -23,12 +23,6 @@ public class NativeScriptActivity extends android.app.Activity implements com.tn
 		args[0] = param_0;
 		args[1] = param_1;
 		com.tns.Runtime.callJSMethod(this, "onCreate", void.class, args);
-	}
-
-	protected void onNewIntent(android.content.Intent param_0)  {
-		java.lang.Object[] args = new java.lang.Object[1];
-		args[0] = param_0;
-		com.tns.Runtime.callJSMethod(this, "onNewIntent", void.class, args);
 	}
 
 	protected void onSaveInstanceState(android.os.Bundle param_0)  {

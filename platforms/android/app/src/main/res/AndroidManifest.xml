@@ -46,7 +46,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:name="com.tns.ErrorReportActivity"/>
-
 		<service
 			android:name="com.habitlab.AccessibilityService"
 			android:enabled = "true"
