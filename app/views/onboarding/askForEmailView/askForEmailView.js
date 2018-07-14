@@ -79,6 +79,8 @@ exports.getEmail = function () {
     }
 };
 
+
+
 exports.moveOn = function () {
     frame.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
 };
