@@ -10,13 +10,8 @@ var GoogleSignIn = com.google.android.gms.auth.api.signin.GoogleSignIn;
 var GoogleSignInAccount = com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 var ApiException = com.google.android.gms.common.api.ApiException;
 
-console.log("GoogleSignIn object: ")
-console.log(GoogleSignIn);
-console.log("GoogleSignInOptions object: ");
-console.log(GoogleSignInOptions);
-
 let RC_SIGN_IN = 1;
-//TODO: Replace client with production-level client. Also, SHA fingerprint is in development mode.
+// TODO: Replace client with production-level client. Also, SHA fingerprint is in development mode.
 // See https://developers.google.com/android/guides/client-auth
 // https://developers.google.com/identity/sign-in/android/start-integrating
 
@@ -56,6 +51,7 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
         if (requestCode == RC_SIGN_IN) {
             //They signed in! Or at least tried to.
             var task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            console.log("Calling signInResult");
             signInResult(task);
         }
         console.log('Now running onActiviyResult');
@@ -72,7 +68,6 @@ exports.getEmail = function () {
     .build();
 
     // Build a GoogleSignInClient with the options specified by gso.
-    console.log(application.android.context.getApplicationContext().getPackageName())
     var mGoogleSignInClient = GoogleSignIn.getClient(application.android.context.getApplicationContext(), gso);
     var account = GoogleSignIn.getLastSignedInAccount(application.android.context.getApplicationContext());
     if (account == null) {
@@ -93,21 +88,18 @@ exports.moveOn = function () {
  * @param data: Task<GoogleSignInAccount> from GoogleSignIn.getSignedInAccountFromIntent()
  */
 signInResult = function(data) {
-        console.log(data);
-        console.log(JSON.stringify(data));
-        console.log("resolve called");
         try {
+            console.log(data);
+            console.log("About to try getting account.");
             var account = data.getResult();
+            console.log(JSON.stringify(account))
             // Signed in successfully, show authenticated UI.
-            console.log(account);
-            console.log(account.getEmail());
-            FancyAlert.show(FancyAlert.type.SUCCESS, "Success!", "We found your email to be " + account.getEmail(), "Awesome!"); 
-            console.log("What about here?");
-            console.log("reject called");
+            FancyAlert.show(FancyAlert.type.SUCCESS, "Success!", "Now your data will be synced for a future feature!", "Awesome!", exports.moveOn); 
         } catch (e) {
+            console.log(e);
+            console.log(JSON.stringify(e));
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             FancyAlert.show(FancyAlert.type.WARNING, "Oops!", "An error occurred.", "OK");
-            console.log("signInResult:failed code=" + JSON.stringify(e));
         }
 }

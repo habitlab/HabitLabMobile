@@ -18,6 +18,7 @@
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/overlays/DialogOverlay.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/overlays/FullScreenOverlay.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/overlays/SliderOverlay.js
+/Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/credentials.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/shared/sd/sd.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/receivers/RestartReceiver.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/receivers/NewPackageReceiver.js
