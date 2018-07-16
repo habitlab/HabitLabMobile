@@ -1,6 +1,6 @@
 var frame = require('ui/frame');
 var permissionUtil = require('~/util/PermissionUtil');
-var FancyAlert = require("~/util/FancyAlert");
+var FancyAlert = require("nativescript-fancyalert");
 var application = require('application');
 var credentials = require('~/credentials');
 
@@ -48,45 +48,40 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
         this._callbacks.onRequestPermissionsResult(this, requestCode, permissions, grantResults, undefined);
     },
     onActivityResult: function (requestCode, resultCode, data) {
+        this._callbacks.onActivityResult(this, requestCode, resultCode, data, superProto.onActivityResult);
         if (requestCode == RC_SIGN_IN) {
             //They signed in! Or at least tried to.
             var task = GoogleSignIn.getSignedInAccountFromIntent(data);
             console.log("Calling signInResult");
-            signInResult(task);
+            return signInResult(task);
         }
         console.log('Now running onActiviyResult');
-        this._callbacks.onActivityResult(this, requestCode, resultCode, data, superProto.onActivityResult);
+        
     }
 });
 
-
-exports.getEmail = async function () {
-    console.log('Do we get here?')
+exports.getIdToken = async function() {
+    console.log('getidtokentapped')
     // Configure sign-in to request the user's ID, email address, and basic
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
     var gso = new GoogleSignInOptionsBuilder(GoogleSignInOptions.DEFAULT_SIGN_IN)
     .requestIdToken(credentials.clientId)
     .requestEmail()
-    .build();
+    .build()
 
     // Build a GoogleSignInClient with the options specified by gso.
     var mGoogleSignInClient = GoogleSignIn.getClient(application.android.context.getApplicationContext(), gso)
     var task = await mGoogleSignInClient.silentSignIn()
-    console.log(task)
-    console.log('Do we get past here?')
-    console.log("we got pas there..")
     if (task.isSuccessful()) {
         //Cool! We can just get the id.
-        console.log("Here's the token, that we didn't need to sign in for.")
-        console.log(task.getResult().getIdToken())
+        exports.moveOn()
+        return task.getResult().getIdToken()
     } else {
-        console.log("We need to manually make user sign in.")
         // We need to have the user sign in.
         var signInIntent = mGoogleSignInClient.getSignInIntent()
-        application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
+        return await application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-};
-
+}
 
 
 exports.moveOn = function () {
@@ -97,25 +92,18 @@ exports.moveOn = function () {
  * Saves sign in data, notifies user of result.
  * @param data: Task<GoogleSignInAccount> from GoogleSignIn.getSignedInAccountFromIntent()
  */
-signInResult = function(data) {
+signInResult = async function(data) {
         try {
-            console.log(data);
-            console.log("About to try getting account.");
-            var account = data.getResult();
-            console.log(JSON.stringify(account))
-            console.log("Acct: ")
+            var account = data.getResult()
             var token = account.getIdToken()
-            for (var i = 0; i < token.length; i += 200) {
-                console.log(token.substring(i,i + 200))
-            }
-            console.log(token.substring(i - 200))
             // Signed in successfully, show authenticated UI.
-            FancyAlert.show(FancyAlert.type.SUCCESS, "Success!", "Now your data will be synced for a future feature!", "Awesome!", exports.moveOn); 
+            FancyAlert.TNSFancyAlert.showSuccess("Success!", "Now your data will be synced for a future release!", "Awesome!")
+            exports.moveOn()
+            return token
         } catch (e) {
-            console.log(e);
-            console.log(JSON.stringify(e));
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            FancyAlert.show(FancyAlert.type.WARNING, "Oops!", "An error occurred.", "OK");
+            FancyAlert.TNSFancyAlert.showError("Oops!", "An error occurred.", "OK")
+            return undefined
         }
 }
