@@ -60,24 +60,34 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
 });
 
 
-exports.getEmail = function () {
+exports.getEmail = async function () {
+    console.log('Do we get here?')
     // Configure sign-in to request the user's ID, email address, and basic
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
     var gso = new GoogleSignInOptionsBuilder(GoogleSignInOptions.DEFAULT_SIGN_IN)
     .requestIdToken(credentials.clientId)
+    .requestEmail()
     .build();
 
     // Build a GoogleSignInClient with the options specified by gso.
-    var mGoogleSignInClient = GoogleSignIn.getClient(application.android.context.getApplicationContext(), gso);
-    var account = GoogleSignIn.getLastSignedInAccount(application.android.context.getApplicationContext());
-    if (account == null) {
-        var signInIntent = mGoogleSignInClient.getSignInIntent();
-        application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN);
+    var mGoogleSignInClient = GoogleSignIn.getClient(application.android.context.getApplicationContext(), gso)
+    var task = await mGoogleSignInClient.silentSignIn()
+    console.log(task)
+    console.log('Do we get past here?')
+    console.log("we got pas there..")
+    if (task.isSuccessful()) {
+        //Cool! We can just get the id.
+        console.log("Here's the token, that we didn't need to sign in for.")
+        console.log(task.getResult().getIdToken())
     } else {
-        console.log("Acct: ");
-        console.log(account.getIdToken());
+        console.log("We need to manually make user sign in.")
+        // We need to have the user sign in.
+        var signInIntent = mGoogleSignInClient.getSignInIntent()
+        application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 };
+
+
 
 exports.moveOn = function () {
     frame.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
@@ -93,6 +103,12 @@ signInResult = function(data) {
             console.log("About to try getting account.");
             var account = data.getResult();
             console.log(JSON.stringify(account))
+            console.log("Acct: ")
+            var token = account.getIdToken()
+            for (var i = 0; i < token.length; i += 200) {
+                console.log(token.substring(i,i + 200))
+            }
+            console.log(token.substring(i - 200))
             // Signed in successfully, show authenticated UI.
             FancyAlert.show(FancyAlert.type.SUCCESS, "Success!", "Now your data will be synced for a future feature!", "Awesome!", exports.moveOn); 
         } catch (e) {
