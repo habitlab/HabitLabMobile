@@ -62,7 +62,6 @@ exports.checkAccessibilityPermission = function () {
 		console.log("is this label habitlab? " + label)
 		if (label === "HabitLab") { return true; }
 	}
-
 	return false;
 }
 

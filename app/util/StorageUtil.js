@@ -1,6 +1,7 @@
 var appSettings = require("application-settings");
 var ID = require('~/interventions/InterventionData');
 var http = require('http');
+var askForEmail = require("~/views/onboarding/askForEmailView/askForEmailView")
 
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
@@ -343,6 +344,7 @@ exports.setOnboardingComplete = function() {
  * Checks if the user has finished the in-app onboarding yet.
  */
 exports.isTutorialComplete = function() {
+  console.log(JSON.parse(appSettings.getString("selectedPackages")))
   return appSettings.getBoolean('tutorialComplete');
 };
 
@@ -686,22 +688,32 @@ exports.updateAppTime = function(packageName, time) {
   var start = new Date();
   start.setMilliseconds(today.getMilliseconds() - time);
   var appInfo = JSON.parse(appSettings.getString(packageName));
+  
   if (start.getDay() !== today.getDay()) {
     today.setHours(0, 0, 0, 0); // calculate today's midnight
     var diff = today.getTime() - start.getTime();
     appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
     time = time - diff;
+    next_day_session_object = ({timestamp: today - time - diff, duration: diff, domain: packageName})
+    http.request({
+      url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      content: JSON.stringify(next_day_session_object)
+    })
+    tryToLogExternalStats(next_day_session_object)
   } 
   //We could also use some per session data as well :-)
-  session_object = ({start: today - time, duration: time, package: packageName})
+  session_object = ({timestamp: today - time, duration: time, domain: packageName})
   http.request({
-    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + appSettings.getString('userID'),
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
     method: "POST",
     headers: { "Content-Type": "application/json" },
     content: JSON.stringify(session_object)
   })
   appInfo['stats'][idx]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString(packageName, JSON.stringify(appInfo));
+  tryToLogExternalStats(session_object)
 };
 
 /* export: getAppTime
@@ -1309,7 +1321,7 @@ exports.addLogEvents = function(events) {
   log.data = data
   //finally, send the log!
   http.request({
-    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=stats&userid=" + appSettings.getString('userID'),
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=stats&userid=" + exports.getUserID(),
     method: "POST",
     headers: { "Content-Type": "application/json" },
     content: JSON.stringify(log)
@@ -1360,5 +1372,21 @@ exports.setTargetPresets = function() {
     });
 }
 
+/**
+ * This function checks if the user is signed into their Google Account.
+ * If so, the function calls an HTTP POST to account_external_stats
+ */
+tryToLogExternalStats = function(session_object) {
+  idToken = askForEmail.getIdToken()
+  session_object.userId = exports.getUserID()
+  if (idToken != null) {
+    http.request({
+      url: "https://habitlab-mobile-website.herokuapp.com/addsessiontototal" ,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      content: JSON.stringify(session_object)
+    })
+  }
+}
 
 exports.sendLog = sendLog
