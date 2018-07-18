@@ -26,6 +26,7 @@ exports.giveAccessibilityPermission = function(args) {
     console.log('we dont have permission')
    	PermissionUtil.launchAccessibilityServiceIntent();
  	} else {
+    console.log('trying to navigate to goalsView')
     frameModule.topmost().navigate({
       moduleName: 'views/goalsView/goalsView',
       clearHistory: true
