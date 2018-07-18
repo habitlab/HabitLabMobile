@@ -17,6 +17,7 @@ let RC_SIGN_IN = 1;
 
 //To override startActivityForResult, we need to extend the activity:
 
+
 const superProto = android.app.Activity.prototype;
 android.app.Activity.extend("com.tns.NativeScriptActivity", {
     onCreate: function(savedInstanceState) {
@@ -60,7 +61,7 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
     }
 });
 
-exports.getIdToken = async function() {
+exports.getIdToken = async function(nextFunction) {
     console.log('getidtokentapped')
     // Configure sign-in to request the user's ID, email address, and basic
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -74,7 +75,11 @@ exports.getIdToken = async function() {
     var task = await mGoogleSignInClient.silentSignIn()
     if (task.isSuccessful()) {
         //Cool! We can just get the id.
-        exports.moveOn()
+        if (nextFunction == null || "view" in nextFunction) {
+            exports.moveOn()
+        } else {
+            nextFunction()
+        }
         return task.getResult().getIdToken()
     } else {
         // We need to have the user sign in.
@@ -82,7 +87,6 @@ exports.getIdToken = async function() {
         return await application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 }
-
 
 exports.moveOn = function () {
     frame.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');

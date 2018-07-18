@@ -37,9 +37,9 @@ function send_error(error) {
   return send_log({error: error, time: time});
 }
 
-function send_log(data) {
+function send_log(endpoint, data) {
   return http.request({
-    url: "http://logs-01.loggly.com/inputs/6566b577-246e-4530-89b0-cbe1ee219c24/tag/http/",
+    url: "https://habitlab-mobile-website.herokuapp.com/" + endpoint,
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     content: JSON.stringify(data)

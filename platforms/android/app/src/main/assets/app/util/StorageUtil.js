@@ -32,6 +32,16 @@ var index = function() {
   return daysSinceEpoch() % 28;
 };
 
+/**
+ * Generates 24-character hex string as unique id.
+ */
+var genUserId = function() {
+  userID = ''
+  for (var i = 0; i < 24; i++) {
+    userID += '0123456789abcdef'[Math.floor(Math.random() * 16)]
+  }
+  return userID
+}
 /* helpers: PkgStat, PkgGoal, PhStat, PhGoal
  * -----------------------------------------
  * To be used for setting up empty data in the database. Each app and the phone get a
@@ -120,7 +130,8 @@ var createPackageData = function(packageName) {
   appSettings.setString(packageName, JSON.stringify({
       goals: PkgGoal(), 
       stats: Array(28).fill(PkgStat()),
-      enabled: Array(ID.interventionDetails.length).fill(true)
+      enabled: Array(ID.interventionDetails.length).fill(true),
+      sessions: Array(28).fill([])
     }));
 };
 
@@ -264,7 +275,7 @@ exports.setUpDB = function(erasingData) {
   }
 
   if (!appSettings.getString('userID')) {
-    appSettings.setString('userID', 'U' + Date.now() + '' + randBW(100, 999));
+    appSettings.setString('userID', genUserId());
   }
 
   var watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
@@ -681,7 +692,14 @@ exports.updateAppTime = function(packageName, time) {
     appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
     time = time - diff;
   } 
-
+  //We could also use some per session data as well :-)
+  session_object = ({start: today - time, duration: time, package: packageName})
+  http.request({
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + appSettings.getString('userID'),
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    content: JSON.stringify(session_object)
+  })
   appInfo['stats'][idx]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
@@ -1243,7 +1261,7 @@ exports.addLogEvents = function(events) {
 
 /* exports: sendLog
  * ----------------
- * Sends the log to Loggly whenever the day is changed
+ * Sends the log to habitlab-mobile-website whenever the day is changed
  */
  var sendLog = function() {
   if (!appSettings.getString('deviceID')) {
@@ -1259,7 +1277,6 @@ exports.addLogEvents = function(events) {
   log['index'] = index();
 
   var data = {};
-  data['name'] = appSettings.getString('name');
   data['lastActive'] = appSettings.getString('lastActive');
 
   var list = JSON.parse(appSettings.getString('selectedPackages'));
@@ -1268,17 +1285,35 @@ exports.addLogEvents = function(events) {
   list.push('activeHours');
   list.forEach(function (pkg) {
     data[pkg] = JSON.parse(appSettings.getString(pkg));
+    //This whole "send past 28 days of visits" seems redundant, so let's make stats just for today
+    if (data[pkg]['stats'] != null) {
+      data[pkg]['stats'] = data[pkg]['stats'][index()]
+    }
+    //Also, a list of 'true' doesn't  really give much information about which interventions are enabled.
+    if (data[pkg]['enabled'] != null) {
+      enabled_list = data[pkg]['enabled']
+      data[pkg]['enabled'] = []
+      for (var i = 0; i < enabled_list.length; i++) {
+        if (enabled_list[i]) {
+          data[pkg]['enabled'].push(ID.interventionDetails[i]['shortname'])
+        }
+      }
+    }
   });
-
-  log.data = data;
+  //Same thing with nudge counts:
+  if (log['nudges']) {
+    for (var i = 0; i < ID.interventionDetails.length;  i++) { 
+      log['nudges'][i] = {name: ID.interventionDetails[i]['shortname'], count: log['nudges'][i]}
+    }
+  }
+  log.data = data
+  //finally, send the log!
   http.request({
-    url: "http://logs-01.loggly.com/inputs/6566b577-246e-4530-89b0-cbe1ee219c24/tag/http/",
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=stats&userid=" + appSettings.getString('userID'),
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: { "Content-Type": "application/json" },
     content: JSON.stringify(log)
-  }).then(function() {
-    setUpLogging();
-  });
+  })
 };
 
 exports.getUserID = function() {
@@ -1325,3 +1360,5 @@ exports.setTargetPresets = function() {
     });
 }
 
+
+exports.sendLog = sendLog

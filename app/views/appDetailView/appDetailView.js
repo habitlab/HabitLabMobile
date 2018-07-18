@@ -80,6 +80,7 @@ exports.pageNavigating = function(args) {
   if (page.navigationContext) {
     pkg = page.navigationContext.packageName;
     appStats = StorageUtil.getAppStats(pkg);
+    console.log("App Stats: " + JSON.stringify(appStats)) 
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
     isWatchlist = page.navigationContext.isWatchlist;
