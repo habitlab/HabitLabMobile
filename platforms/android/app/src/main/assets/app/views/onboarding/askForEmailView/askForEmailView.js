@@ -46,14 +46,12 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
         this._callbacks.onRequestPermissionsResult(this, requestCode, permissions, grantResults, undefined);
     },
     onActivityResult: function (requestCode, resultCode, data) {
-        
+        this._callbacks.onActivityResult(this, requestCode, resultCode, data, superProto.onActivityResult);
         if (requestCode == RC_SIGN_IN) {
             //They signed in! Or at least tried to.
             var task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            moveOn()
-
+            signInResult(task)
         }
-        this._callbacks.onActivityResult(this, requestCode, resultCode, data, superProto.onActivityResult);
     }
 });
 
@@ -111,7 +109,8 @@ signInResult = function(data) {
         } catch (e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            moveOn()
+            var Toast = require("nativescript-toast");
+            Toast.makeText("Oops! An error occurred. Please try signing in again").show();
             return undefined
         }
 }
