@@ -21,14 +21,11 @@ let RC_SIGN_IN = 1;
 const superProto = android.app.Activity.prototype;
 android.app.Activity.extend("com.tns.NativeScriptActivity", {
     onCreate: function(savedInstanceState) {
-        console.log('Now running onCreate');
         if(!this._callbacks) {
             frame.setActivityCallbacks(this);
         }
         // Modules will take care of calling super.onCreate, do not call it here
         this._callbacks.onCreate(this, savedInstanceState, superProto.onCreate);
-
-        // Add custom initialization logic here
     },
     onSaveInstanceState: function(outState) {
         this._callbacks.onSaveInstanceState(this, outState, superProto.onSaveInstanceState);
@@ -49,19 +46,27 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
         this._callbacks.onRequestPermissionsResult(this, requestCode, permissions, grantResults, undefined);
     },
     onActivityResult: function (requestCode, resultCode, data) {
-        this._callbacks.onActivityResult(this, requestCode, resultCode, data, superProto.onActivityResult);
+        
         if (requestCode == RC_SIGN_IN) {
             //They signed in! Or at least tried to.
             var task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            console.log("Calling signInResult");
-            return signInResult(task);
+            moveOn()
+
         }
-        console.log('Now running onActiviyResult');
-        
+        this._callbacks.onActivityResult(this, requestCode, resultCode, data, superProto.onActivityResult);
     }
 });
 
-exports.getIdToken = async function(nextFunction) {
+exports.requestIdToken = async function() {
+    var token = await exports.getIdToken()
+    if (token == undefined) {
+        //exports.showError()
+    } else {
+        exports.moveOn()
+    }
+}
+
+exports.getIdToken = async function() {
     // Configure sign-in to request the user's ID, email address, and basic
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
     var gso = new GoogleSignInOptionsBuilder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -74,20 +79,16 @@ exports.getIdToken = async function(nextFunction) {
     var task = await mGoogleSignInClient.silentSignIn()
     if (task.isSuccessful()) {
         //Cool! We can just get the id.
-        if (nextFunction == null || "view" in nextFunction) {
-            exports.moveOn()
-        } else {
-            nextFunction()
-        }
         return task.getResult().getIdToken()
     } else {
         // We need to have the user sign in.
         var signInIntent = mGoogleSignInClient.getSignInIntent()
-        return await application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
+        application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
+        return undefined
     }
 }
 
-exports.moveOn = function () {
+moveOn = function () {
     frame.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
 };
 
@@ -100,17 +101,19 @@ exports.showError = function() {
  * Saves sign in data, notifies user of result.
  * @param data: Task<GoogleSignInAccount> from GoogleSignIn.getSignedInAccountFromIntent()
  */
-signInResult = async function(data) {
+signInResult = function(data) {
         try {
             var account = data.getResult()
             var token = account.getIdToken()
             // Signed in successfully, show authenticated UI.
-            exports.moveOn()
+            moveOn()
             return token
         } catch (e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            exports.showError()
+            moveOn()
             return undefined
         }
 }
+
+exports.moveOn = moveOn

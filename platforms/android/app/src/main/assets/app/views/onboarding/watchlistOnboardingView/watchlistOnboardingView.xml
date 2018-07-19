@@ -1,12 +1,14 @@
 <Page loaded="pageLoaded" id="watchlistOnboarding" navigatingTo="pageNavigating" actionBarHidden="true">
 	<StackLayout>
-		<Label text="Create your watchlist" class="title"/>
-		<Label text= "Which apps would you like to spend less time on?" class="subtitle" />
+		<Label text="Create your watchlist" class="title" ></Label>
+		<Label text="{{prompt_text}}" class="subtitle" ></Label>
 		<StackLayout class="scroll-button-container">
-      <ScrollView orientation="vertical" class="app-list-scroll">
-        <GridLayout id="grid" columns="*,*,*" unloaded="gridUnloaded" class="apps-grid" />
-      </ScrollView>
-      <Button text="done" id="done-button" tap="onDone"/>
-    </StackLayout>
-  </StackLayout>
+			<Progress width="100%" height="5%" visibility="{{progress_visibility}}" value="{{progress_value}}"></Progress>
+			<ScrollView orientation="vertical" class="app-list-scroll">
+				<GridLayout id="grid" columns="*,*,*" unloaded="gridUnloaded" class="apps-grid" >
+				</GridLayout>
+			</ScrollView>
+			<Button text="done" visibility="{{done_visibility}}" id="done-button" tap="onDone" ></Button>
+		</StackLayout>
+	</StackLayout>
 </Page>

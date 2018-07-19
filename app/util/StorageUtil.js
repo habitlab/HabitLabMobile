@@ -128,10 +128,17 @@ var FakePhGoal = function() {
  * Updates storage to include data for newly added packages.
  */
 var createPackageData = function(packageName) {
+  // If the conservation experiment is active, we want to toggle 
+  // some goals with ALL nudges enabled and some goals with NO nudges enabled.
+  var enabled = true
+  if (appSettings.getString("experiment") == "conservation") {
+    enabled = Math.random() < .5 ? true : false
+  }
+  console.log("Creating package data for " + packageName + ": nudges are enabled?" + enabled)
   appSettings.setString(packageName, JSON.stringify({
       goals: PkgGoal(), 
       stats: Array(28).fill(PkgStat()),
-      enabled: Array(ID.interventionDetails.length).fill(true),
+      enabled: Array(ID.interventionDetails.length).fill(enabled),
       sessions: Array(28).fill([])
     }));
 };
@@ -681,7 +688,7 @@ exports.glanced = function() {
  * Called when an app has been visited to update the time spent on that app for the 
  * day (time is in minutes).
  */
-exports.updateAppTime = function(packageName, time) {
+exports.updateAppTime = async function(packageName, time) {
   var idx = index();
   var today = new Date();
   var start = new Date();
@@ -1376,8 +1383,8 @@ exports.setTargetPresets = function() {
  * This function checks if the user is signed into their Google Account.
  * If so, the function calls an HTTP POST to account_external_stats
  */
-tryToLogExternalStats = function(session_object) {
-  idToken = askForEmail.getIdToken()
+tryToLogExternalStats = async function(session_object) {
+  idToken = await askForEmail.getIdToken()
   object_to_return = {userid: exports.getUserID(), timestamp: session_object.timestamp, domains_time: {}}
   object_to_return.domains_time["" + session_object.domain] = session_object.duration
   if (idToken != null) {

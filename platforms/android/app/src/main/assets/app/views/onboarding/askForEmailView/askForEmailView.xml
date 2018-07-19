@@ -4,7 +4,7 @@
 	
 	<Label text="Sign In" class='title' textWrap='true'></Label>
 	<Label text="Sign in with your Google Account. Don't worry: your data will be anonymized." textWrap="true"></Label>
-	 <Button text="Sign In" onTap="getIdToken"></Button>
+	<Button text="Sign In" onTap="requestIdToken"></Button>
 </StackLayout>
 
 </Page>
