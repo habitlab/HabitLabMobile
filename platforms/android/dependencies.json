@@ -64,10 +64,6 @@
         "directory": "../../node_modules/tns-core-modules"
     },
     {
-        "name": "tns-core-modules-snapshot",
-        "directory": "../../node_modules/tns-core-modules-snapshot"
-    },
-    {
         "name": "tns-core-modules-widgets",
         "directory": "../../node_modules/tns-core-modules-widgets"
     }

@@ -344,7 +344,6 @@ exports.setOnboardingComplete = function() {
  * Checks if the user has finished the in-app onboarding yet.
  */
 exports.isTutorialComplete = function() {
-  console.log(JSON.parse(appSettings.getString("selectedPackages")))
   return appSettings.getBoolean('tutorialComplete');
 };
 
@@ -694,7 +693,8 @@ exports.updateAppTime = function(packageName, time) {
     var diff = today.getTime() - start.getTime();
     appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
     time = time - diff;
-    next_day_session_object = ({timestamp: today - time - diff, duration: diff, domain: packageName})
+    next_day_session_object = ({timestamp: today - time - diff, duration: Math.round(diff/1000), domain: packageName})
+    
     http.request({
       url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
       method: "POST",
@@ -704,7 +704,7 @@ exports.updateAppTime = function(packageName, time) {
     tryToLogExternalStats(next_day_session_object)
   } 
   //We could also use some per session data as well :-)
-  session_object = ({timestamp: today - time, duration: time, domain: packageName})
+  session_object = ({timestamp: today - time, duration: Math.round(time/1000), domain: packageName})
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
     method: "POST",
@@ -1378,15 +1378,30 @@ exports.setTargetPresets = function() {
  */
 tryToLogExternalStats = function(session_object) {
   idToken = askForEmail.getIdToken()
-  session_object.userId = exports.getUserID()
+  object_to_return = {userid: exports.getUserID(), timestamp: session_object.timestamp, domains_time: {}}
+  object_to_return.domains_time["" + session_object.domain] = session_object.duration
   if (idToken != null) {
     http.request({
       url: "https://habitlab-mobile-website.herokuapp.com/addsessiontototal" ,
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      content: JSON.stringify(session_object)
+      content: JSON.stringify(object_to_return)
     })
   }
+}
+
+let experiments = {
+  "conservation": ["random_enabled"]
+}
+
+/**
+ * At install, the user is assigned to an experiment group. 
+ * @param {String} experiment_name 
+ */
+exports.assignExperiment = function(experiment_name) {
+  appSettings.setString("experiment", experiment_name)
+  var num_groups = experiments[experiment_name].length
+  appSettings.setString("experiment_group", experiments[experiment_name][Math.floor(Math.random() * num_groups)])
 }
 
 exports.sendLog = sendLog

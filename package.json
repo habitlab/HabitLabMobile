@@ -27,7 +27,6 @@
     "nativescript-version-number": "^1.1.0",
     "nativescript-videoplayer": "^4.1.0",
     "tns-core-modules": "^4.1.0",
-    "tns-core-modules-snapshot": "3.0.1-5.5.372.32",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

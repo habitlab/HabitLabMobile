@@ -2,9 +2,9 @@
 
 <StackLayout id="first">
 	
-	<Label text="Sync Accounts With Your Google Account?" class='title' textWrap='true'></Label>
-	<Label text="Do you use the Chrome extension as well? Signing in with your Google Account allows us to sync your internet data across devices." textWrap="true"></Label>
-	 <Button text="I Don't Like Cool Features" onTap="moveOn" ></Button> <Button text="Syncing? Count Me in!" onTap="getIdToken"></Button>
+	<Label text="Sign In" class='title' textWrap='true'></Label>
+	<Label text="Sign in with your Google Account. Don't worry: your data will be anonymized." textWrap="true"></Label>
+	 <Button text="Sign In" onTap="getIdToken"></Button>
 </StackLayout>
 
 </Page>

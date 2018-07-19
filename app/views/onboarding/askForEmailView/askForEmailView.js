@@ -62,7 +62,6 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
 });
 
 exports.getIdToken = async function(nextFunction) {
-    console.log('getidtokentapped')
     // Configure sign-in to request the user's ID, email address, and basic
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
     var gso = new GoogleSignInOptionsBuilder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -92,6 +91,11 @@ exports.moveOn = function () {
     frame.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
 };
 
+
+exports.showError = function() {
+    FancyAlert.TNSFancyAlert.showError("Oops!", "An error occurred. Please try signing in again", "OK")
+}
+
 /**
  * Saves sign in data, notifies user of result.
  * @param data: Task<GoogleSignInAccount> from GoogleSignIn.getSignedInAccountFromIntent()
@@ -101,13 +105,12 @@ signInResult = async function(data) {
             var account = data.getResult()
             var token = account.getIdToken()
             // Signed in successfully, show authenticated UI.
-            FancyAlert.TNSFancyAlert.showSuccess("Success!", "Now your data will be synced for a future release!", "Awesome!")
             exports.moveOn()
             return token
         } catch (e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            FancyAlert.TNSFancyAlert.showError("Oops!", "An error occurred.", "OK")
+            exports.showError()
             return undefined
         }
 }

@@ -12,6 +12,9 @@ if (StorageUtil.isTutorialComplete()) {
 } else if (StorageUtil.isOnboardingComplete()) {
   viewFile = "goalsView";
   view = 'goalsView';
+} else {
+  // Assign the user to an experimental group!!
+  StorageUtil.assignExperiment("conservation")
 }
 
 var getErrorDetails = function (args) {
@@ -37,11 +40,11 @@ function send_error(error) {
   return send_log({error: error, time: time});
 }
 
-function send_log(endpoint, data) {
+function send_log(data) {
   return http.request({
-    url: "https://habitlab-mobile-website.herokuapp.com/" + endpoint,
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + StorageUtil.getUserID() + "&logname=error",
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: { "Content-Type": "application/json" },
     content: JSON.stringify(data)
   });
 }
