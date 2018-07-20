@@ -88,23 +88,23 @@ exports.pageLoaded = function(args) {
   }
 
 
-  // } else if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
-  //   console.warn("no packages selected")
-  //   var list = page.getViewById("targetList");
-  //   list.visibility = "collapse";
-  //   var msg = page.getViewById("noneSelectedMessage");
-  //   msg.visibility = "visible";
-  //   var manageTargets = page.getViewById("manageTargets");
-  //   manageTargets.visibility = "visible";
-  //   console.warn(manageTargets.visibility)
-  // } else {
-  //   var list = page.getViewById("targetList");
-  //   list.visibility = "visible";
-  //   var manageTargets = page.getViewById("manageTargets");
-  //   manageTargets.visibility = "visible";
-  //   var msg = page.getViewById("noneSelectedMessage");
-  //   msg.visibility = "collapse";
-  // }
+    // } else if (StorageUtil.getTargetSelectedPackages().length === 0) { //If no target packages selected 
+    //   console.warn("no packages selected")
+    //   var list = page.getViewById("targetList");
+    //   list.visibility = "collapse";
+    //   var msg = page.getViewById("noneSelectedMessage");
+    //   msg.visibility = "visible";
+    //   var manageTargets = page.getViewById("manageTargets");
+    //   manageTargets.visibility = "visible";
+    //   console.warn(manageTargets.visibility)
+    // } else {
+    //   var list = page.getViewById("targetList");
+    //   list.visibility = "visible";
+    //   var manageTargets = page.getViewById("manageTargets");
+    //   manageTargets.visibility = "visible";
+    //   var msg = page.getViewById("noneSelectedMessage");
+    //   msg.visibility = "collapse";
+    // }
 };
 
 exports.onIndexChange = function(args) {

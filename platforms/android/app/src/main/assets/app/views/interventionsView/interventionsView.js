@@ -130,7 +130,6 @@ exports.ownNudge = function() {
 var setList = function() {
   var styleCounts = {toast: -1, notification: -1, dialog: -1, overlay: -1};
   var filter = pageData.get('filter');
-  alert(filter);
   tempList = interventionList.filter(function (nudge) {
     // check if the filter is included in the nudge (or if it is a header)
     var include = nudge.isHeader || !filter || nudge.name.toLowerCase().includes(filter) || nudge.style.includes(filter) || nudge.description.toLowerCase().includes(filter) || nudge.summary.toLowerCase().includes(filter);

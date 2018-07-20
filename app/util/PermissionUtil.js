@@ -59,7 +59,6 @@ exports.checkAccessibilityPermission = function () {
 		var service = runningServices.get(i);
 		var resolveInfo = service.getResolveInfo();
 		var label = resolveInfo.loadLabel(pm).toString();
-		console.log("is this label habitlab? " + label)
 		if (label === "HabitLab") { return true; }
 	}
 	return false;

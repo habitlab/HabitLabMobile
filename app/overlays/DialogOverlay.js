@@ -190,6 +190,8 @@ var oneOptionButton;
 exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 	var color = changeIconColor(5);
     if (permissions.checkSystemOverlayPermission()) {
+		// In case there already was an overlay dialog, remove it.
+		exports.removeOneOptionDialog()
 		// add whole screen view
 		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
@@ -227,6 +229,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 		oneOptionButton.setTextColor(Color.WHITE);
 		oneOptionButton.setOnClickListener(new android.view.View.OnClickListener({
 			onClick: function() {
+				console.log("This button is pressed.")
 				exports.removeOneOptionDialog();
 			}
 		}));

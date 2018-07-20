@@ -80,7 +80,6 @@ exports.pageNavigating = function(args) {
   if (page.navigationContext) {
     pkg = page.navigationContext.packageName;
     appStats = StorageUtil.getAppStats(pkg);
-    console.log("App Stats: " + JSON.stringify(appStats)) 
     name = page.navigationContext.name;
     icon = page.navigationContext.icon;
     isWatchlist = page.navigationContext.isWatchlist;
@@ -126,11 +125,7 @@ var setUpDetail = function() {
   
   number = goalChanger.getViewById('number');
   number.text = StorageUtil.getMinutesGoal(pkg) + "";
-  console.log("Number.text=??")
-  console.log(number.text);
   number.on("unloaded", function(args) {
-    console.log("Within listener, Number.text=??")
-    console.log(number.text);
     StorageUtil.changeAppGoal(pkg, parseInt(number.text.replace(/[^0-9]/g, '') || 0), 'minutes');
     if (goalChanged) {
       events.push({category: "features", index: "watchlist_detail_appgoal_change"});

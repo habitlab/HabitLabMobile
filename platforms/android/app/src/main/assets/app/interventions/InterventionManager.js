@@ -74,7 +74,6 @@ const THRESHOLD_INTERSTITIAL_OVR = 15;
 const THRESHOLD_FLIPPER_OVR = 15;
 const THRESHOLD_POSITIVE_TST = 15;
 
-
 var MIN_IN_MS = 60000;
 
 var shouldPersonalize = function() {

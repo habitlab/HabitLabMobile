@@ -128,13 +128,7 @@ var FakePhGoal = function() {
  * Updates storage to include data for newly added packages.
  */
 var createPackageData = function(packageName) {
-  // If the conservation experiment is active, we want to toggle 
-  // some goals with ALL nudges enabled and some goals with NO nudges enabled.
   var enabled = true
-  if (appSettings.getString("experiment") == "conservation") {
-    enabled = Math.random() < .5 ? true : false
-  }
-  console.log("Creating package data for " + packageName + ": nudges are enabled?" + enabled)
   appSettings.setString(packageName, JSON.stringify({
       goals: PkgGoal(), 
       stats: Array(28).fill(PkgStat()),
@@ -285,9 +279,24 @@ exports.setUpDB = function(erasingData) {
   if (!appSettings.getString('userID')) {
     appSettings.setString('userID', genUserId());
   }
-
-  var watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
-
+  var watchlistPreset = appSettings.getString("installedPresets", "null")
+  if (watchlistPreset != "null") {
+    watchlistPreset = JSON.parse(watchlistPreset)
+  } else {
+    watchlistOptions = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;  
+    if (appSettings.getString("experiment") == "conservation") {
+      // we need to randomly recommend installed presets.
+      watchlistPreset = []
+      for (var option of watchlistOptions) {
+        if (Math.random() < .5) {
+          watchlistPreset.push(option)
+        }
+      }
+    } else {
+      watchlistPreset = watchListOptions
+    }
+  }
+  appSettings.setString("watchlistPreset", JSON.stringify(watchlistPreset))
   appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
   appSettings.setString('targetPackages', JSON.stringify([]));
   appSettings.setString('lastActive', daysSinceEpoch() + '');
@@ -1380,6 +1389,21 @@ exports.setTargetPresets = function() {
 }
 
 /**
+ * This registers the user under their google account so we can associate different devices
+ * with the same account
+ * @param {string} token the Google Id token to pass to the server.
+ */
+exports.registerUser = function(token) {
+  object = {userid: userid = exports.getUserID(), token: token, from: "android", type: exports.getExperiment}
+  http.request({
+    url: "https://habitlab-mobile-website.herokuapp.com/register_user_with_email" ,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    content: JSON.stringify(object) 
+  })
+}
+
+/**
  * This function checks if the user is signed into their Google Account.
  * If so, the function calls an HTTP POST to account_external_stats
  */
@@ -1411,4 +1435,7 @@ exports.assignExperiment = function(experiment_name) {
   appSettings.setString("experiment_group", experiments[experiment_name][Math.floor(Math.random() * num_groups)])
 }
 
+exports.getExperiment = function() {
+  return appSettings.getString("experiment", "null") + "-" + appSettings.getString("experiment_group", "null")
+}
 exports.sendLog = sendLog

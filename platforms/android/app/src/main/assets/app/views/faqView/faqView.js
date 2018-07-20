@@ -36,7 +36,7 @@ var QandA = [{
   answer: "Open the menu and click 'Goals'. Use the plus and minus buttons in the Watchlist Goals section to change your goals."
 }, {
   question: "There was an issue with HabitLab, what should I do?",
-  answer: "Sorry for the error! If you are willing, please send us a short description of the issue using the button below!"
+  answer: "Sorry for the error! If you are willing, please send us a short description of the issue here: https://github.com/habitlab/HabitLabMobile/issues"
 }, {
   question: "How can I see which apps have a certain nudge enabled?",
   answer: "Open the menu and click 'Nudges'. Then click on a nudge and it will take you to a page that allows you to see which apps have the nudge enabled."

@@ -25,7 +25,7 @@ exports.pageLoaded = function(args) {
     done_visibility: "collapsed"
   })
   page.bindingContext = source
-	pkgs = StorageUtil.getSelectedPackages();
+  pkgs = StorageUtil.getSelectedPackages();
   toToggle = {};
 
   timer.setTimeout(() => {
@@ -46,16 +46,13 @@ var createGrid = function() {
       return -1;
     } else if (!aIsSelected && bIsSelected) {
       return 1;
-    }  else {
+    } else {
       return a.label.toUpperCase() < b.label.toUpperCase() ? -1 : 1;
     }
   });
   source.set("progress_value", "80")
-
   var grid = page.getViewById('grid');
   list.forEach(function (item, i) {
-    
-    
     if (i % 3 === 0) {
       grid.addRow(new layout.ItemSpec(1, layout.GridUnitType.AUTO));
     }

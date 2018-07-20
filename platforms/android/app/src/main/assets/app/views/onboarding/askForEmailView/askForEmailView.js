@@ -3,6 +3,7 @@ var permissionUtil = require('~/util/PermissionUtil');
 var FancyAlert = require("nativescript-fancyalert");
 var application = require('application');
 var credentials = require('~/credentials');
+var StorageUtil = require("~/util/StorageUtil");
 
 var GoogleSignInOptions = com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 var GoogleSignInOptionsBuilder = com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder;
@@ -103,7 +104,11 @@ signInResult = function(data) {
         try {
             var account = data.getResult()
             var token = account.getIdToken()
-            // Signed in successfully, show authenticated UI.
+            // Signed in successfully! show authenticated UI.
+            //We should also register the user with this Id token.
+            console.log(StorageUtil.getUserID() + " w/ this token:")
+            console.log(token)
+            StorageUtil.registerUser(token)
             moveOn()
             return token
         } catch (e) {
