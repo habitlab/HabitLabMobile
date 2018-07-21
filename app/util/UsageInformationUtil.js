@@ -120,7 +120,8 @@ exports.getInstalledPresets = function() {
 		"com.snapchat.android", "com.instagram.android", "com.netflix.mediaclient", "com.pinterest",
 		"com.twitter.android", "com.reddit.frontpage", "com.buzzfeed.android", "com.ninegag.android.app", 
 		"com.amazon.mShop.android.shopping", "com.hulu.plus", "com.tinder", "com.espn.score_center", 
-		"com.whatsapp", "com.google.android.gm", "com.microsoft.office.outlook", "com.youku.phone"];
+		"com.whatsapp", "com.google.android.gm", "com.microsoft.office.outlook", "com.youku.phone",
+		"com.android.chrome"];
 	var installedPresets = [];
 	var targetPresets = ["com.quora.android", "com.curiosity.dailycuriosity", "com.wonder", "com.memrise.android.memrisecompanion",
 						"bbc.mobile.news.ww", "com.duolingo", "com.blinkslabs.blinkist.android", "com.nytimes.android",

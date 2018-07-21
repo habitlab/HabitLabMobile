@@ -274,87 +274,91 @@ var targetText;
 var targetPosButton;
 var targetNegButton;
 exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
-	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-		WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-    targetDialog = new TargetEnableDialog(context);
-    windowManager.addView(targetDialog, viewParams);
+	if (permissions.checkSystemOverlayPermission()) {
+		// add whole screen view
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+		targetDialog = new TargetEnableDialog(context);
+		windowManager.addView(targetDialog, viewParams);
 
-     // add title
-    var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * TARGET_HEIGHT,
-    	0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TARGETTOP + 0.075*TARGET_HEIGHT, 
-    	permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
-    titleParams.gravity = Gravity.LEFT | Gravity.TOP;
-    targetTitle = new TextView(context);
-    targetTitle.setText(title);
-    targetTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-    targetTitle.setTextColor(Color.WHITE);
-    targetTitle.setHorizontallyScrolling(false);
-    targetTitle.setGravity(Gravity.CENTER);
-    windowManager.addView(targetTitle, titleParams);
-
-
-    // add text
-    var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * TARGET_HEIGHT,
-    	LEFT + 0.075 * DIALOG_WIDTH, TARGETTOP+0.22*TARGET_HEIGHT, 
-    	permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    targetText = new TextView(context);
-    targetText.setText(msg);
-    targetText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
-    targetText.setTextColor(Color.parseColor("#808080")); //grey
-    targetText.setHorizontallyScrolling(false);
-    targetText.setGravity(Gravity.CENTER);
-    windowManager.addView(targetText, textParams);
-
-    // add positive button
-    var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-    	0.18 * TARGET_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
-    	TARGETTOP+0.75*TARGET_HEIGHT, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    targetPosButton = new Button(context);
-    targetPosButton.getBackground().setColorFilter(Color.parseColor("#51b270"), android.graphics.PorterDuff.Mode.MULTIPLY); //green
-	targetPosButton.setText(pos);
-	targetPosButton.setTextColor(Color.WHITE);
-	targetPosButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        if (posCallback) {
-	    		posCallback();
-	    	}
-	        exports.removeTargetDialog();
-	    }
-	}));
-    windowManager.addView(targetPosButton, posButtonParams);
+		// add title
+		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * TARGET_HEIGHT,
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TARGETTOP + 0.075*TARGET_HEIGHT, 
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
+		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
+		targetTitle = new TextView(context);
+		targetTitle.setText(title);
+		targetTitle.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+		targetTitle.setTextColor(Color.WHITE);
+		targetTitle.setHorizontallyScrolling(false);
+		targetTitle.setGravity(Gravity.CENTER);
+		windowManager.addView(targetTitle, titleParams);
 
 
-        // add positive button
-    var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-    	0.18 * TARGET_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
-    	TARGETTOP+0.75*TARGET_HEIGHT, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
-		PixelFormat.TRANSLUCENT);
-   	negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    targetNegButton = new Button(context);
-    targetNegButton.getBackground().setColorFilter(Color.parseColor("#d13b49"), android.graphics.PorterDuff.Mode.MULTIPLY); //red
-	targetNegButton.setText(neg);
-	targetNegButton.setTextColor(Color.WHITE);
-	targetNegButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        if (negCallback) {
-	    		negCallback();
-	    	}
-	        exports.removeTargetDialog();
-	    }
-	}));
-    windowManager.addView(targetNegButton, negButtonParams);
+		// add text
+		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * TARGET_HEIGHT,
+			LEFT + 0.075 * DIALOG_WIDTH, TARGETTOP+0.22*TARGET_HEIGHT, 
+			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
+		textParams.gravity = Gravity.LEFT | Gravity.TOP;
+		targetText = new TextView(context);
+		targetText.setText(msg);
+		targetText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 9);
+		targetText.setTextColor(Color.parseColor("#808080")); //grey
+		targetText.setHorizontallyScrolling(false);
+		targetText.setGravity(Gravity.CENTER);
+		windowManager.addView(targetText, textParams);
+
+		// add positive button
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
+			0.18 * TARGET_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
+			TARGETTOP+0.75*TARGET_HEIGHT, permissions.getOverlayType(),
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		targetPosButton = new Button(context);
+		targetPosButton.getBackground().setColorFilter(Color.parseColor("#51b270"), android.graphics.PorterDuff.Mode.MULTIPLY); //green
+		targetPosButton.setText(pos);
+		targetPosButton.setTextColor(Color.WHITE);
+		targetPosButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (posCallback) {
+					posCallback();
+				}
+				exports.removeTargetDialog();
+			}
+		}));
+		windowManager.addView(targetPosButton, posButtonParams);
+
+
+			// add positive button
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
+			0.18 * TARGET_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
+			TARGETTOP+0.75*TARGET_HEIGHT, permissions.getOverlayType(),
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			PixelFormat.TRANSLUCENT);
+		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+		targetNegButton = new Button(context);
+		targetNegButton.getBackground().setColorFilter(Color.parseColor("#d13b49"), android.graphics.PorterDuff.Mode.MULTIPLY); //red
+		targetNegButton.setText(neg);
+		targetNegButton.setTextColor(Color.WHITE);
+		targetNegButton.setOnClickListener(new android.view.View.OnClickListener({
+			onClick: function() {
+				if (negCallback) {
+					negCallback();
+				}
+				exports.removeTargetDialog();
+			}
+		}));
+		windowManager.addView(targetNegButton, negButtonParams);
+	} else {
+		permissions.launchSystemOverlayIntent();
+	}
 }
 
 

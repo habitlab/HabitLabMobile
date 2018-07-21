@@ -698,16 +698,21 @@ exports.glanced = function() {
  * day (time is in minutes).
  */
 exports.updateAppTime = async function(packageName, time) {
+  console.log("updating app time for package" + packageName)
   var idx = index();
   var today = new Date();
   var start = new Date();
   start.setMilliseconds(today.getMilliseconds() - time);
-  var appInfo = JSON.parse(appSettings.getString(packageName));
-  
+  var appInfo = appSettings.getString(packageName, "null");
+  if (appInfo != "null") {
+    appInfo = JSON.parse(appInfo)
+  }
   if (start.getDay() !== today.getDay()) {
     today.setHours(0, 0, 0, 0); // calculate today's midnight
     var diff = today.getTime() - start.getTime();
-    appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
+    if (appInfo != "null") {
+      appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
+    }
     time = time - diff;
     next_day_session_object = ({timestamp: today - time - diff, duration: Math.round(diff/1000), domain: packageName})
     
@@ -721,6 +726,7 @@ exports.updateAppTime = async function(packageName, time) {
   } 
   //We could also use some per session data as well :-)
   session_object = ({timestamp: today - time, duration: Math.round(time/1000), domain: packageName})
+  console.log("about to send request: " + JSON.stringify(session_object))
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
     method: "POST",

@@ -26,7 +26,10 @@ const ignore = ["com.android.systemui",
     "com.syntellia.fleksy.keyboard",
     "com.whirlscape.minuumkeyboard",
     "com.whirlscape.minuumfree",
-    "android"
+    "android",
+    "com.google.android.googlequicksearchbox",
+    "com.android.vending",
+    ""
 ];
 
 
@@ -123,7 +126,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             if (screenOnTime) {
                 storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
             }
-            
+
             screenOnTime = now;
             return; // skip over habitlab
         } 
@@ -147,6 +150,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         }
         // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            console.log("swtiching from application " + currentApplication.packageName + " to " + activePackage)
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
 
@@ -198,8 +202,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  * length information to StorageUtil.
  */
 function closeRecentVisit(now) {
-    if (currentApplication.isBlacklisted) {
-        var timeSpent = now - currentApplication.visitStart;
+    var timeSpent = now - currentApplication.visitStart;
+    if (packageName) {
         storage.updateAppTime(currentApplication.packageName, timeSpent);
     }
 }
