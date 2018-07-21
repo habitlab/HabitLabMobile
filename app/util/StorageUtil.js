@@ -697,45 +697,30 @@ exports.glanced = function() {
  * Called when an app has been visited to update the time spent on that app for the 
  * day (time is in minutes).
  */
-exports.updateAppTime = async function(packageName, time) {
-  console.log("updating app time for package" + packageName)
-  var idx = index();
+exports.updateAppTime = async function(currentApplication, time) {
+  let packageName = currentApplication.packageName
   var today = new Date();
   var start = new Date();
   start.setMilliseconds(today.getMilliseconds() - time);
+  var idx = index()
+  //Let's store this session information locally if this app is on our watchlist.
   var appInfo = appSettings.getString(packageName, "null");
   if (appInfo != "null") {
     appInfo = JSON.parse(appInfo)
+    // In case this session crosses over to a different day, we should break it up when storing it locally
+    if (start.getDay() !== today.getDay()) {
+      today.setHours(0, 0, 0, 0); // calculate today's midnight
+      var yesterdayTime = today.getTime() - start.getTime();
+      var time = time - yesterdayTime;
+      // duration is in seconds, but the local storage saves it in minutes.
+      appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(yesterdayTime / MIN_IN_MS )
+    } 
+    appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(time / MIN_IN_MS) 
+    appSettings.setString(packageName, JSON.stringify(appInfo));
   }
-  if (start.getDay() !== today.getDay()) {
-    today.setHours(0, 0, 0, 0); // calculate today's midnight
-    var diff = today.getTime() - start.getTime();
-    if (appInfo != "null") {
-      appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(diff * 100 / MIN_IN_MS) / 100;
-    }
-    time = time - diff;
-    next_day_session_object = ({timestamp: today - time - diff, duration: Math.round(diff/1000), domain: packageName})
-    
-    http.request({
-      url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      content: JSON.stringify(next_day_session_object)
-    })
-    tryToLogExternalStats(next_day_session_object)
-  } 
-  //We could also use some per session data as well :-)
-  session_object = ({timestamp: today - time, duration: Math.round(time/1000), domain: packageName})
-  console.log("about to send request: " + JSON.stringify(session_object))
-  http.request({
-    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    content: JSON.stringify(session_object)
-  })
-  appInfo['stats'][idx]['time'] += Math.round(time * 100 / MIN_IN_MS) / 100;
-  appSettings.setString(packageName, JSON.stringify(appInfo));
-  tryToLogExternalStats(session_object)
+  // Now, log today's portion of the session.
+  var session_object = {timestamp: start.getTime(), duration: Math.round(time /SEC_IN_MS), domain: packageName, interventions: currentApplication.interventions}
+  logSession(session_object)
 };
 
 /* export: getAppTime
@@ -1427,6 +1412,23 @@ tryToLogExternalStats = async function(session_object) {
   }
 }
 
+/**
+ * Saves the session on the server.
+ * @param session_object: {domain: "", 
+ *                        timestamp: Number (ms since epoch), duration: Number (sec),
+ *                        interventions: [{intervention: "", timestamp: Number}]}
+ */
+logSession = function(session_object) {
+  //Let's also send this off to the server.
+  http.request({
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    content: JSON.stringify(session_object)
+  })
+  tryToLogExternalStats(session_object)
+}
+
 let experiments = {
   "conservation": ["random_enabled"]
 }
@@ -1436,6 +1438,7 @@ let experiments = {
  * @param {String} experiment_name 
  */
 exports.assignExperiment = function(experiment_name) {
+  
   appSettings.setString("experiment", experiment_name)
   var num_groups = experiments[experiment_name].length
   appSettings.setString("experiment_group", experiments[experiment_name][Math.floor(Math.random() * num_groups)])

@@ -33,6 +33,20 @@ const ignore = ["com.android.systemui",
 ];
 
 
+
+/**************************************
+ *       TRACKING FUNCTIONALITY       *
+ **************************************/
+
+// tracking metadata
+var currentApplication = {
+    packageName: "",
+    isBlacklisted: false,
+    visitStart: 0,
+    interventions: []
+};
+
+
 /***************************************
  *           SCREEN RECEIVER           *
  ***************************************/
@@ -53,11 +67,11 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
 
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
             storage.glanced();
-            interventionManager.nextScreenOnIntervention();
+            logSessionIntervention(interventionManager.nextScreenOnIntervention())
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
             screenOnTime = Date.now();
             storage.unlocked();
-            interventionManager.nextScreenUnlockIntervention();
+            logSessionIntervention(interventionManager.nextScreenUnlockIntervention())
 
             var versionName = new VersionNumber().get();
             if (versionName !== storage.checkVersionName()) {
@@ -85,17 +99,6 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
     }
 });
 
-
-/**************************************
- *       TRACKING FUNCTIONALITY       *
- **************************************/
-
-// tracking metadata
-var currentApplication = {
-    packageName: "",
-    isBlacklisted: false,
-    visitStart: 0
-};
 
 /*
  * AccessibilityService
@@ -150,16 +153,13 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         }
         // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            console.log("swtiching from application " + currentApplication.packageName + " to " + activePackage)
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
-
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
-
             if (currentApplication.isBlacklisted) {
-                interventionManager.nextOnLaunchIntervention(currentApplication.packageName);
+                logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName))
             }
         } else if (currentApplication.isBlacklisted) {
             interventionManager.interventions[ID.interventionIDs.VIDEO_BLOCKER](true, event.getSource(), currentApplication.packageName); // youtube only
@@ -203,8 +203,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  */
 function closeRecentVisit(now) {
     var timeSpent = now - currentApplication.visitStart;
-    if (packageName) {
-        storage.updateAppTime(currentApplication.packageName, timeSpent);
+    if (currentApplication.packageName) {
+        storage.updateAppTime(currentApplication, timeSpent);
     }
 }
 
@@ -218,6 +218,7 @@ function closeRecentVisit(now) {
 function openNewVisit(now, pkg) {
     currentApplication.packageName = pkg;
     currentApplication.visitStart = now;
+    currentApplication.interventions = []
 
     if (storage.isPackageSelected(pkg)) {
         currentApplication.isBlacklisted = true;
@@ -269,5 +270,12 @@ function removeLockdown() {
     toast.makeText("Lockdown Mode disabled").show();
 }
 
+/**
+ * appends assigned intervention to this session
+ */
+logSessionIntervention = function(shortName) {
+    currentApplication.interventions.push({"intervention": shortName, "timestamp": Date.now()})
+
+}
 
 

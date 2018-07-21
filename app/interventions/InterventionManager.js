@@ -1058,10 +1058,11 @@ var nextOnLaunchIntervention = function(pkg) {
     } else {  // easy
       index = randBW(0, onLaunchInterventions.easy.length - 1);
       func_and_name = onLaunchInterventions.easy[index];
-    }
+    }    
     if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname], pkg)) {
       func_and_name.func(true, pkg);
     }
+    return func_and_name.shortname
   }
 };
 
@@ -1070,6 +1071,7 @@ var nextScreenOnIntervention = function() {
   if (run < 0.075) {
     code.GLANCE_NOTIFICATION(true);
   }
+  return "GLANCE_NOTIFICATION"
 }
 
 var nextScreenUnlockIntervention = function() {
@@ -1089,6 +1091,7 @@ var nextScreenUnlockIntervention = function() {
     if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname])) {
       func_and_name.func(true);
     }
+    return func_and_name.shortname
   }
 }
 
