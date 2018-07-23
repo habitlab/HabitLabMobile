@@ -111,7 +111,6 @@ exports.promptUserForEmail = function() {
 				var accounts = manager.getAccounts();
 				if (accounts.length > 0) {
 					//We got it! Now, let's add it to local storage for safekeeping.
-					storage.setEmail(accounts[0].name);
 					resolve(accounts[0].name);
 				} else {
 					reject("Couldn't get your email.")

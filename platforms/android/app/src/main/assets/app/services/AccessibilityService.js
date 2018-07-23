@@ -26,7 +26,6 @@ const ignore = ["com.android.systemui",
     "com.syntellia.fleksy.keyboard",
     "com.whirlscape.minuumkeyboard",
     "com.whirlscape.minuumfree",
-    "android",
     "com.google.android.googlequicksearchbox",
     "com.android.vending",
     ""
@@ -40,7 +39,7 @@ const ignore = ["com.android.systemui",
 
 // tracking metadata
 var currentApplication = {
-    packageName: "",
+    packageName: "android",
     isBlacklisted: false,
     visitStart: 0,
     interventions: []
@@ -203,7 +202,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  */
 function closeRecentVisit(now) {
     var timeSpent = now - currentApplication.visitStart;
-    if (currentApplication.packageName) {
+    if (currentApplication.packageName != null && currentApplication.packageName != "android") {
         storage.updateAppTime(currentApplication, timeSpent);
     }
 }
@@ -274,8 +273,9 @@ function removeLockdown() {
  * appends assigned intervention to this session
  */
 logSessionIntervention = function(shortName) {
-    currentApplication.interventions.push({"intervention": shortName, "timestamp": Date.now()})
-
+    if (shortName != null) {
+        currentApplication.interventions.push({"intervention": shortName, "timestamp": Date.now()})
+    }
 }
 
 

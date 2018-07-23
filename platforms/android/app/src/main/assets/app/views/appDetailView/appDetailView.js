@@ -19,7 +19,7 @@ var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
 var Entry = com.github.mikephil.charting.data.Entry
 var Color = android.graphics.Color
-var ArrayList = java.util.ArrayList 
+var ArrayList = java.util.ArrayList
 var BarDataSet = com.github.mikephil.charting.data.BarDataSet
 var BarData = com.github.mikephil.charting.data.BarData
 var IBarDataSet = com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -60,13 +60,15 @@ var open;
 var number;
 
 var getGoal = function(txt, add) {
+    console.log("txt:" + txt)
+    txt = txt + ""
   var num = txt.replace(/[^0-9]/g, '') || 0;
 
   var newNum = parseInt(num) - 5;
   if (add) {
     newNum += 10;
   }
-  
+
   if (newNum > 1440) {
     newNum = 1440;
   } else if (newNum < 0) {
@@ -122,10 +124,11 @@ var setUpDetail = function() {
   goalChanger.getViewById('name').visibility = 'collapse';
   goalChanger.getViewById('icon').visibility = 'hidden';
   goalChanger.getViewById('label').text = 'mins';
-  
+
   number = goalChanger.getViewById('number');
   number.text = StorageUtil.getMinutesGoal(pkg) + "";
   number.on("unloaded", function(args) {
+      number.text += "" //ensures it's a string for replace
     StorageUtil.changeAppGoal(pkg, parseInt(number.text.replace(/[^0-9]/g, '') || 0), 'minutes');
     if (goalChanged) {
       events.push({category: "features", index: "watchlist_detail_appgoal_change"});
@@ -152,7 +155,7 @@ var setUpDetail = function() {
   }).sort(function (a, b) {
     return (order[a.level] - order[b.level]) || (a.name < b.name ? -1 : 1);
   });
-  
+
   var first = true;
   interventionList.forEach(function (item) {
     list.addChild(createItem(interventions[item.id], item.id, first));
@@ -238,7 +241,7 @@ var createItem = function(enabled, id, first)  {
       }
     }
   });
-  
+
   return item;
 }
 
@@ -288,7 +291,7 @@ exports.weekView = function(args) {
     var legend = barchart.getLegend();
     legend.setEnabled(false);
 
-     //goal and average lines 
+     //goal and average lines
     var avg = Math.round(getTotalTimeAppWeek(appStats, 0)/(7));
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
@@ -344,7 +347,7 @@ exports.monthView = function(args) {
   var dataset = new BarDataSet(entries, "");
   dataset.setColor(Color.parseColor("#F18391"));
   var xLabels = getMonthLabels();
-  
+
   IbarSet.add(dataset);
   var data = new BarData(IbarSet);
    let dataFormatter = new IValueFormatter({
@@ -380,7 +383,7 @@ exports.monthView = function(args) {
     var legend = barchart.getLegend();
     legend.setEnabled(false);
 
-    //goal and average lines 
+    //goal and average lines
     var avg = Math.round(getTotalTimeAppMonth(appStats)/(28));
     var avgLine = new LimitLine(avg, "Average");
     avgLine.setLineWidth(2);
@@ -411,7 +414,7 @@ exports.monthView = function(args) {
     barchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
     barchart.invalidate();
     args.view = barchart;
-    
+
   };
 
 

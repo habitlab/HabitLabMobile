@@ -16,7 +16,7 @@ if (StorageUtil.isTutorialComplete()) {
   // Assign the user to an experimental group!!
   StorageUtil.assignExperiment("conservation")
   // For the "conservation" experiment, we choose a random subset of goals.
-  
+
 }
 
 var getErrorDetails = function (args) {
@@ -36,12 +36,6 @@ var getErrorDetails = function (args) {
   };
 }
 
-function send_error(error) {
-  var now = new Date();
-  var time = now.toLocaleDateString() + " " + now.toLocaleTimeString();
-  return send_log({error: error, time: time});
-}
-
 function send_log(data) {
   return http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + StorageUtil.getUserID() + "&logname=error",
@@ -50,6 +44,13 @@ function send_log(data) {
     content: JSON.stringify(data)
   });
 }
+
+function send_error(error) {
+  var now = new Date();
+  var time = now.toLocaleDateString() + " " + now.toLocaleTimeString();
+  return send_log({error: error, time: time});
+}
+
 
 applicationModule.on(applicationModule.uncaughtErrorEvent, args => {
 	let errordetails = getErrorDetails(args);
@@ -79,7 +80,7 @@ function backEvent(args) {
     var currentPage = frame.topmost().currentPage;
     if (currentPage && currentPage.exports && typeof currentPage.exports.backEvent === "function") {
          currentPage.exports.backEvent(args);
-   }   
+   }
 }
 
 applicationModule.start("views/" + viewFile + "/" + view);

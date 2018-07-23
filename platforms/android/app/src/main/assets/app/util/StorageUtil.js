@@ -1,6 +1,7 @@
 var appSettings = require("application-settings");
 var ID = require('~/interventions/InterventionData');
 var http = require('http');
+var app = require('~/app')
 var askForEmail = require("~/views/onboarding/askForEmailView/askForEmailView")
 
 var Calendar = java.util.Calendar;
@@ -16,7 +17,7 @@ var SEC_IN_MS = 1000;
 
 /* helper: daysSinceEpoch
  * ----------------------
- * Returns the number of days since UTC time began (THIS IS COORDINATED TO 
+ * Returns the number of days since UTC time began (THIS IS COORDINATED TO
  * LOCAL TIME). To be used for indexing.
  */
 var daysSinceEpoch = function() {
@@ -110,7 +111,7 @@ var FakePhStats = function() {
     });
 
     phStats.push({
-      glances: randBW(numUnlocks, numUnlocks*2), 
+      glances: randBW(numUnlocks, numUnlocks*2),
       unlocks: numUnlocks,
       totalTime: randBW(total, total + 30)
     });
@@ -130,11 +131,12 @@ var FakePhGoal = function() {
 var createPackageData = function(packageName) {
   var enabled = true
   appSettings.setString(packageName, JSON.stringify({
-      goals: PkgGoal(), 
+      goals: PkgGoal(),
       stats: Array(28).fill(PkgStat()),
       enabled: Array(ID.interventionDetails.length).fill(enabled),
       sessions: Array(28).fill([])
     }));
+
 };
 
 /* helper: createPhoneData
@@ -143,7 +145,7 @@ var createPackageData = function(packageName) {
  */
 var createPhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
-      goals: PhGoal(), 
+      goals: PhGoal(),
       stats: Array(28).fill(PhStat()),
       enabled: Array(ID.interventionDetails.length).fill(true)
     }));
@@ -159,7 +161,7 @@ var createFakePackageData = function(packageName) {
     stats.push(FakePkgStat());
   }
   appSettings.setString(packageName, JSON.stringify({
-      goals: FakePkgGoal(), 
+      goals: FakePkgGoal(),
       stats: stats,
       enabled: Array(ID.interventionDetails.length).fill(true)
     }));
@@ -171,7 +173,7 @@ var createFakePackageData = function(packageName) {
  */
 var createFakePhoneData = function() {
   appSettings.setString('phone', JSON.stringify({
-      goals: FakePhGoal(), 
+      goals: FakePhGoal(),
       stats: FakePhStats(),
       enabled: Array(ID.interventionDetails.length).fill(true)
     }));
@@ -179,7 +181,7 @@ var createFakePhoneData = function() {
 
 /* helper: ActiveHours
  * -------------------
- * Returns an object to be used for managing active hours. If the start and end 
+ * Returns an object to be used for managing active hours. If the start and end
  * are the same, interventions are active all the time (as long as the day is a
  * selected day).
  */
@@ -283,7 +285,7 @@ exports.setUpDB = function(erasingData) {
   if (watchlistPreset != "null") {
     watchlistPreset = JSON.parse(watchlistPreset)
   } else {
-    watchlistOptions = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;  
+    watchlistOptions = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
     if (appSettings.getString("experiment") == "conservation") {
       // we need to randomly recommend installed presets.
       watchlistPreset = []
@@ -407,21 +409,6 @@ exports.getName = function() {
   return appSettings.getString('name');
 };
 
-/* export: setEmail
- * ---------------
- * Sets the personalized email.
- */
-exports.setEmail = function(email) {
-  appSettings.setString('email', email);
-};
-
-/* export: getEmail
- * ---------------
- * Gets the personalized email.
- */
-exports.getEmail = function() {
-  return appSettings.getString('email');
-};
 
 /***********************************
  *           WATCHLIST             *
@@ -446,6 +433,8 @@ exports.addPackage = function(packageName) {
     list.push(packageName);
     createPackageData(packageName);
     appSettings.setString('selectedPackages', JSON.stringify(list));
+    send_setting_change_log({type: "added package: " + packageName,
+                            packages: list})
   }
 };
 
@@ -464,6 +453,8 @@ exports.removePackage = function(packageName) {
   appSettings.remove(packageName);
   appSettings.setString('selectedPackages', JSON.stringify(list));
   appSettings.setString('targetPackages', JSON.stringify(targetlist));
+  send_setting_change_log({type: "removed package: " + packageName,
+                            packages: list})
 };
 
 /* export: togglePackage
@@ -488,6 +479,8 @@ exports.togglePackage = function(packageName) {
   }
 
   appSettings.setString('selectedPackages', JSON.stringify(list));
+  send_setting_change_log({type: 'toggled package ' + packageName,
+                        packages: list})
   return !removed;
 };
 
@@ -524,7 +517,9 @@ exports.addTargetPackage = function(packageName) {
     createPackageData(packageName);
     appSettings.setString('targetPackages', JSON.stringify(list));
   }
-};
+  send_setting_change_log({type: "added target package " + packageName,
+                        targets: list})
+}
 
 // /* export: removeTargetPackage
 //  * ---------------------
@@ -537,6 +532,8 @@ exports.removeTargetPackage = function(packageName) {
   sendLog();
   appSettings.remove(packageName);
   appSettings.setString('targetPackages', JSON.stringify(list));
+  send_setting_change_log({type: "removed target package " + packageName,
+                        targets: list})
 };
 
 // /* export: toggleTargetPackage
@@ -561,6 +558,8 @@ exports.toggleTargetPackage = function(packageName) {
   }
 
   appSettings.setString('targetPackages', JSON.stringify(list));
+  send_setting_change_log({type: "toggled target package " + packageName,
+                        targets: list})
   return !removed;
 };
 
@@ -580,7 +579,7 @@ exports.isTargetPackageSelected = function(packageName) {
 
 /* helper: arrangeData
  * -------------------
- * Depending on the index passed in gives the user, the desired data. If it is with flag ALL, 
+ * Depending on the index passed in gives the user, the desired data. If it is with flag ALL,
  * arranges the data so it is from least recent to most recent (for graphs, etc.).
  */
 var arrangeData = function(dataArr) {
@@ -593,7 +592,7 @@ var arrangeData = function(dataArr) {
  * Gets number of visits to the specified packageName.
  */
 exports.getVisits = function(packageName) {
-  return JSON.parse(appSettings.getString(packageName)).stats[index()]['visits']; 
+  return JSON.parse(appSettings.getString(packageName)).stats[index()]['visits'];
 };
 
 /* export: visited
@@ -624,7 +623,7 @@ exports.decrementVisits = function(packageName) {
  * either a number or an array of numbers (with today as the last index).
  */
 exports.getUnlocks = function() {
-  return JSON.parse(appSettings.getString('phone')).stats[index()]['unlocks']; 
+  return JSON.parse(appSettings.getString('phone')).stats[index()]['unlocks'];
 };
 
 /* export: unlocked
@@ -643,7 +642,7 @@ exports.unlocked = function() {
  * either a number or an array of numbers (with today as the last index).
  */
 exports.getGlances = function() {
-  return JSON.parse(appSettings.getString('phone')).stats[index()]['glances']; 
+  return JSON.parse(appSettings.getString('phone')).stats[index()]['glances'];
 };
 
 // called on every glance to determine whether to start a new day of data
@@ -694,7 +693,7 @@ exports.glanced = function() {
 
 /* export: updateAppTime
  * ---------------------
- * Called when an app has been visited to update the time spent on that app for the 
+ * Called when an app has been visited to update the time spent on that app for the
  * day (time is in minutes).
  */
 exports.updateAppTime = async function(currentApplication, time) {
@@ -706,9 +705,7 @@ exports.updateAppTime = async function(currentApplication, time) {
   //Let's store this session information locally if this app is on our watchlist.
   var appInfo = appSettings.getString(packageName, "null");
   if (appInfo != "null") {
-    console.log(appInfo)
     appInfo = JSON.parse(appInfo)
-    console.log("we get beyond parsing")
     // In case this session crosses over to a different day, we should break it up when storing it locally
     if (start.getDay() !== today.getDay()) {
       today.setHours(0, 0, 0, 0); // calculate today's midnight
@@ -716,8 +713,8 @@ exports.updateAppTime = async function(currentApplication, time) {
       var time = time - yesterdayTime;
       // duration is in seconds, but the local storage saves it in minutes.
       appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(yesterdayTime / MIN_IN_MS )
-    } 
-    appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(time / MIN_IN_MS) 
+    }
+    appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
   }
   // Now, log today's portion of the session.
@@ -750,7 +747,7 @@ var getTargetTime = function() {
  * -----------------------
  * Called when the phone has been used. Updates the total time for the day (time is in minutes).
  */
-exports.updateTotalTime = function(time) {  
+exports.updateTotalTime = function(time) {
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
   phoneInfo['stats'][index()]['totalTime'] += Math.round(time * 100 / MIN_IN_MS) / 100;
   appSettings.setString('phone', JSON.stringify(phoneInfo));
@@ -796,6 +793,7 @@ exports.enableForAll = function(id) {
       appSettings.setString(item, JSON.stringify(appInfo));
     }
   });
+  send_setting_change_log({type: "enabled intervention for all packages: " + id})
 };
 
 /* export: disableForAll
@@ -821,6 +819,7 @@ exports.disableForAll = function(id) {
       appSettings.setString(item, JSON.stringify(appInfo));
     }
   });
+  send_setting_change_log({type: "disabled intervention for all packages: " + id})
 };
 
 /* export: toggleForAll
@@ -846,6 +845,7 @@ exports.toggleForAll = function(id) {
       appSettings.setString(item, JSON.stringify(appInfo));
     }
   });
+  send_setting_change_log({type: "toggled intervention for all packages: " + id})
 };
 
 /* export: enableForApp
@@ -864,6 +864,8 @@ exports.enableForApp = function(id, packageName) {
     enabled[id] = true;
     appSettings.setString('enabled', JSON.stringify(enabled));
   }
+  send_setting_change_log({type: "enabled intervention " + id + " for " + packageName,
+                            packages: enabled})
 };
 
 /* export: disableForApp
@@ -896,7 +898,9 @@ exports.disableForApp = function(id, packageName) {
       var enabled = JSON.parse(appSettings.getString('enabled'));
       enabled[id] = false;
       appSettings.setString('enabled', JSON.stringify(enabled));
-    } 
+    }
+    send_setting_change_log(({type: "disabled intervention " + id + " for " + packageName,
+                            packages: enabled}))
   }
 };
 
@@ -916,6 +920,8 @@ exports.toggleForApp = function(id, packageName) {
     if (!enabled1[id]) {
       enabled1[id] = true;
       appSettings.setString('enabled', JSON.stringify(enabled1));
+      send_setting_change_log(({type: "toggled intervention " + id + " for " + packageName,
+                            packages: enabled1}))
     }
   } else { // intervention just disabled for app
     // check if overall disable is necessary
@@ -933,7 +939,9 @@ exports.toggleForApp = function(id, packageName) {
       var enabled2 = JSON.parse(appSettings.getString('enabled'));
       enabled2[id] = false;
       appSettings.setString('enabled', JSON.stringify(enabled2));
-    } 
+      send_setting_change_log(({type: "toggled  intervention " + id + " for " + packageName,
+                            packages: enabled2}))
+    }
   }
 };
 
@@ -959,6 +967,7 @@ exports.isEnabledForAll = function(id) {
  * milliseconds when HabitLab can send inteverventions again.
  */
 exports.setLockdown = function(duration) {
+  send_setting_change_log({type: "starting lockdown"})
   appSettings.setString('lockdownEnd', JSON.stringify(Date.now() + duration * 60000));
   appSettings.setNumber('lockdownDuration', duration);
 };
@@ -994,6 +1003,7 @@ exports.inLockdownMode = function() {
  * Removes the lockdown from the watchlist
  */
 exports.removeLockdown = function() {
+  send_setting_change_log({type: "removed lockdown"})
   appSettings.setString('lockdownEnd', "" + Date.now());
 };
 
@@ -1003,6 +1013,7 @@ exports.removeLockdown = function() {
  * milliseconds when HabitLab can send inteverventions again.
  */
 exports.setSnooze = function(duration) {
+  send_setting_change_log({type: "started snooze"})
   appSettings.setString('snoozeEnd', JSON.stringify(Date.now() + duration * 60000));
 };
 
@@ -1027,6 +1038,7 @@ exports.inSnoozeMode = function() {
  * Removes the snooze from HabitLab
  */
 exports.removeSnooze = function() {
+  send_setting_change_log({type: "removed snooze"})
   appSettings.setString('snoozeEnd', "" + Date.now());
 };
 
@@ -1067,6 +1079,7 @@ var withinActiveHours = function() {
  */
 exports.setActiveHours = function(activeHours) {
   appSettings.setString('activeHours', JSON.stringify(activeHours));
+  send_setting_change_log(activeHours)
 };
 
 /* export: getActiveHours
@@ -1099,10 +1112,10 @@ exports.canIntervene = function(id, packageName) {
  *           GOALS           *
  *****************************/
 
-/* export: chagneAppGoal
+/* export: changeAppGoal
  * ---------------------
  * Used to update the goals for specific apps. Give the package name, the new goal amount
- * (e.g. 20 if the new goal is 20 minutes), and the type of goal that is being set (can be 
+ * (e.g. 20 if the new goal is 20 minutes), and the type of goal that is being set (can be
  * only minutes for now).
  */
 exports.changeAppGoal = function(packageName, newGoal, type) {
@@ -1111,13 +1124,14 @@ exports.changeAppGoal = function(packageName, newGoal, type) {
   }
   var appInfo = JSON.parse(appSettings.getString(packageName));
   appInfo.goals[type] = newGoal;
+  send_setting_change_log({type: "changed " + packageName + " " + type + " goal to " + newGoal})
   appSettings.setString(packageName, JSON.stringify(appInfo));
 };
 
 /* export: changePhoneGoal
  * -----------------------
  * Used to update the goals for phone usage. Give the new goal amount
- * (e.g. 20 if the new goal is 20 minutes), and the type of goal that is being set (can be 
+ * (e.g. 20 if the new goal is 20 minutes), and the type of goal that is being set (can be
  * only minutes, glances, or unlocks for now).
  */
 exports.changePhoneGoal = function(newGoal, type) {
@@ -1126,6 +1140,7 @@ exports.changePhoneGoal = function(newGoal, type) {
   }
   var phoneInfo = JSON.parse(appSettings.getString('phone'));
   phoneInfo.goals[type] = newGoal;
+  send_setting_change_log({type: "changed phone " + type + " goal to " + newGoal})
   appSettings.setString('phone', JSON.stringify(phoneInfo));
 };
 
@@ -1180,7 +1195,7 @@ exports.getMinutesGoal = function(packageName) {
 /* export: getProgressViewInfo
  * ---------------------------
  * Gets all the details for progress view (to minimize the number of database reads).
- * 
+ *
  * returns: {
  *   phoneStats: [] // array of 28 objects --> {glances, unlocks, time, totalTime}
  *   appStats: [[]] // array of arrays
@@ -1193,7 +1208,7 @@ exports.getProgressViewInfo = function() {
   retObj.phoneStats.forEach(function (phoneStat) {
     phoneStat.totalTime = Math.ceil(phoneStat.totalTime);
   });
-  
+
   var list = JSON.parse(appSettings.getString('selectedPackages'));
   retObj.appStats = [];
   var targetTime = 0;
@@ -1323,7 +1338,7 @@ exports.addLogEvents = function(events) {
   });
   //Same thing with nudge counts:
   if (log['nudges']) {
-    for (var i = 0; i < ID.interventionDetails.length;  i++) { 
+    for (var i = 0; i < ID.interventionDetails.length;  i++) {
       log['nudges'][i] = {name: ID.interventionDetails[i]['shortname'], count: log['nudges'][i]}
     }
   }
@@ -1392,7 +1407,7 @@ exports.registerUser = function(token) {
     url: "https://habitlab-mobile-website.herokuapp.com/register_user_with_email" ,
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    content: JSON.stringify(object) 
+    content: JSON.stringify(object)
   })
 }
 
@@ -1416,7 +1431,7 @@ tryToLogExternalStats = async function(session_object) {
 
 /**
  * Saves the session on the server.
- * @param session_object: {domain: "", 
+ * @param session_object: {domain: "",
  *                        timestamp: Number (ms since epoch), duration: Number (sec),
  *                        interventions: [{intervention: "", timestamp: Number}]}
  */
@@ -1436,11 +1451,11 @@ let experiments = {
 }
 
 /**
- * At install, the user is assigned to an experiment group. 
- * @param {String} experiment_name 
+ * At install, the user is assigned to an experiment group.
+ * @param {String} experiment_name
  */
 exports.assignExperiment = function(experiment_name) {
-  
+
   appSettings.setString("experiment", experiment_name)
   var num_groups = experiments[experiment_name].length
   appSettings.setString("experiment_group", experiments[experiment_name][Math.floor(Math.random() * num_groups)])
@@ -1449,4 +1464,21 @@ exports.assignExperiment = function(experiment_name) {
 exports.getExperiment = function() {
   return appSettings.getString("experiment", "null") + "-" + appSettings.getString("experiment_group", "null")
 }
+
+/**
+ * When the user changes a relevant (affects behavior, so user-specific information such as
+ * name don't count) setting, we send it to the server.
+ * @param {} data
+ */
+function send_setting_change_log(data) {
+    console.log(JSON.stringify(data))
+    console.log("Our data:")
+  return http.request({
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
+    method: "POST",
+    headers: { "Content-Type": "application/json"},
+    content: JSON.stringify(data)
+  })
+}
+
 exports.sendLog = sendLog
