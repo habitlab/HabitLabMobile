@@ -60,9 +60,9 @@ const THRESHOLD_USAGE_NTF = 5;
 const THRESHOLD_USAGE_DLG = 5;
 
 // visit duration interventions
-const INTERVAL_DURATION_TST = 2000;
-const INTERVAL_DURATION_NTF = 6000;
-const INTERVAL_DURATION_DLG = 9000;
+const INTERVAL_DURATION_TST = 5000;
+const INTERVAL_DURATION_NTF = 10000;
+const INTERVAL_DURATION_DLG = 20000;
 
 // overlay interventions
 const THRESHOLD_FULLSCREEN_OVR = 12;
@@ -516,12 +516,11 @@ var resetDurationInterventions = function() {
  * Displays a toast after INTERVAL_DURATION_TST ms on the
  * specified package.
  */
-code.DURATION_TOAST = function (real, pkg, factor) {
+code.DURATION_TOAST = function (real, pkg) {
   if (!real) {
     Toast.show(context, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
     return;
   }
-  console.log("Setting up DURATION TOAST for " + pkg + " w/ factor" + factor)
   var now = System.currentTimeMillis();
   if (!durationToastID) {
     durationToastID = Timer.setTimeout(() => {
@@ -530,9 +529,7 @@ code.DURATION_TOAST = function (real, pkg, factor) {
       var msg = "You've been on " + applicationName + " for " + Math.ceil((Date.now() - sessionStart )/ MIN_IN_MS) + " minutes this visit";
       Toast.show(context, msg, 1, "#2EC4B6");
       durationToastID = 0;
-      code.DURATION_TOAST(true, pkg, factor)
-    }, Date.now() - sessionStart > INTERVAL_DURATION_TST * factor ?
-        INTERVAL_DURATION_TST * 3 * factor : INTERVAL_DURATION_TST * factor);
+    }, INTERVAL_DURATION_TST);
   }
 };
 
@@ -542,7 +539,7 @@ code.DURATION_TOAST = function (real, pkg, factor) {
  * Displays a notification after INTERVAL_DURATION_NTF ms
  * on the specified package.
  */
-code.DURATION_NOTIFICATION = function (real, pkg, factor) {
+code.DURATION_NOTIFICATION = function (real, pkg) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Visit Length",
       "You've been using Facebook for 10 minutes", notificationID.DURATION, 10);
@@ -559,9 +556,7 @@ code.DURATION_NOTIFICATION = function (real, pkg, factor) {
       msg += " been using " + applicationName + " for " + Math.ceil((Date.now() - sessionStart) / MIN_IN_MS) + " minutes";
       NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
       durationNotifID = 0;
-      code.DURATION_NOTIFICATION(true, pkg, factor)
-    }, Date.now() - sessionStart > INTERVAL_DURATION_NTF * factor?
-        INTERVAL_DURATION_NTF * 3.0/2 * factor : INTERVAL_DURATION_NTF * factor);
+    }, INTERVAL_DURATION_NTF)
   }
 };
 
@@ -572,14 +567,13 @@ code.DURATION_NOTIFICATION = function (real, pkg, factor) {
  * Displays a toast after INTERVAL_DURATION_DLG ms on the
  * specified package.
  */
-code.DURATION_DIALOG = function (real, pkg, factor) {
+code.DURATION_DIALOG = function (real, pkg) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay");
     return;
   }
   var now = System.currentTimeMillis();
   if (!durationDialogID) {
-    console.log("Setting up DURATION DIALOG for " + pkg + " w/ factor" + factor)
     durationDialogID = Timer.setTimeout(() => {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_DIALOG}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
@@ -587,8 +581,8 @@ code.DURATION_DIALOG = function (real, pkg, factor) {
       msg += " been using " + applicationName + " for " + Math.ceil((Date.now() - sessionStart) / MIN_IN_MS) + " minutes";
       DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
       durationDialogID = 0;
-      code.DURATION_DIALOG(true, pkg, factor)
-    }, INTERVAL_DURATION_DLG * factor);
+      code.DURATION_DIALOG(true, pkg)
+    }, INTERVAL_DURATION_DLG);
   }
 }
 
@@ -1048,13 +1042,12 @@ var nextOnLaunchIntervention = function(pkg) {
   }
   // set up duration interventions
   for (var duration_intervention of durationInterventions) {
-    durationFactor = 1
     if (StorageUtil.getExperiment().includes("conservation") &&
         !StorageUtil.isPackageFrequent(pkg)) {
-          //We want the "infrequent" goals to have much more spaced out interventions.
-          durationFactor = 5
+          //We want the "infrequent/easy" goals to have no duration interventions
+          continue
     }
-    duration_intervention.func(true, pkg, durationFactor);
+    duration_intervention.func(true, pkg);
   }
   var randomDifficulty = Math.random();
   var index;

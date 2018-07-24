@@ -177,7 +177,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                   console.log(activePackage + " is not frequent, so canRun is " + canRun + " is time")
             }
 
-
             if (currentApplication.isBlacklisted && canRun) {
                 logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName))
             }
