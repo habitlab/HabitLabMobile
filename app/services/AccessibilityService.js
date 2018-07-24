@@ -27,6 +27,7 @@ const ignore = ["com.android.systemui",
     "com.whirlscape.minuumkeyboard",
     "com.whirlscape.minuumfree",
     "com.android.vending",
+    "com.android.systemui"
 ];
 
 
@@ -114,8 +115,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         if (!activePackage) {
             return;
         }
-        console.log("Current Active Package: " + activePackage)
-
         // packages to ignore
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
