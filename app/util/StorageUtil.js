@@ -130,12 +130,19 @@ var FakePhGoal = function() {
  */
 var createPackageData = function(packageName) {
   var enabled = true
-  appSettings.setString(packageName, JSON.stringify({
+  packageData = JSON.stringify({
       goals: PkgGoal(),
       stats: Array(28).fill(PkgStat()),
       enabled: Array(ID.interventionDetails.length).fill(enabled),
       sessions: Array(28).fill([])
-    }));
+  })
+  if (appSettings.getString("experiment", "null") == "conservation") {
+    /* Let's add a param. The parameter determines whether the package should
+     * be given frequent interventions or infrequent interventions.
+     */
+     packageData.frequent = Math.random() < .5 ? true : false
+  }
+  appSettings.setString(packageName, JSON.stringify(packageData))
 
 };
 
@@ -285,18 +292,7 @@ exports.setUpDB = function(erasingData) {
   if (watchlistPreset != "null") {
     watchlistPreset = JSON.parse(watchlistPreset)
   } else {
-    watchlistOptions = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
-    if (appSettings.getString("experiment") == "conservation") {
-      // we need to randomly recommend installed presets.
-      watchlistPreset = []
-      for (var option of watchlistOptions) {
-        if (Math.random() < .5) {
-          watchlistPreset.push(option)
-        }
-      }
-    } else {
-      watchlistPreset = watchListOptions
-    }
+    watchlistPreset = require("~/util/UsageInformationUtil").getInstalledPresets().watchlist;
   }
   appSettings.setString("watchlistPreset", JSON.stringify(watchlistPreset))
   appSettings.setString('selectedPackages', JSON.stringify(watchlistPreset));
@@ -1402,7 +1398,7 @@ exports.setTargetPresets = function() {
  * @param {string} token the Google Id token to pass to the server.
  */
 exports.registerUser = function(token) {
-  object = {userid: userid = exports.getUserID(), token: token, from: "android", type: exports.getExperiment}
+  object = {userid: userid = exports.getUserID(), token: token, from: "android", type: exports.getExperiment()}
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/register_user_with_email" ,
     method: "POST",
@@ -1482,3 +1478,16 @@ function send_setting_change_log(data) {
 }
 
 exports.sendLog = sendLog
+
+/**
+ * Checks if this package is denoted as deserving a "frequent" assignment
+ * of interventions according to the conservation experiment.
+ */
+var isPackageFrequent = function(packageName) {
+  if (appSettings.getString(packageName, "null") == null) return false
+  return JSON.parse(appSettings.getString(packageName, "null")).frequent
+}
+
+if (exports.getExperiment().includes("conservation")) {
+  exports.isPackageFrequent = isPackageFrequent
+}

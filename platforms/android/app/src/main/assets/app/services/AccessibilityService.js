@@ -5,7 +5,7 @@ var timer = require("timer");
 var {VersionNumber} = require("nativescript-version-number");
 
 
-// utils 
+// utils
 const usage = require("~/util/UsageInformationUtil");
 const storage = require("~/util/StorageUtil");
 const interventionManager = require("~/interventions/InterventionManager");
@@ -19,8 +19,8 @@ const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
 const AccessibilityService = android.accessibilityservice.AccessibilityService;
 
 // packages to ignore (might need to compile a list as time goes on)
-const ignore = ["com.android.systemui", 
-    "com.nuance.swype.trial", 
+const ignore = ["com.android.systemui",
+    "com.nuance.swype.trial",
     "com.nuance.swype.dtc",
     "com.touchtype.swiftkey",
     "com.syntellia.fleksy.keyboard",
@@ -57,11 +57,13 @@ var lockdownSeen = 0;
 /*
  * ScreenReceiver
  * --------------
- * Receiver that listens to screen on, off, and 
+ * Receiver that listens to screen on, off, and
  * unlocked events.
  */
 var ScreenReceiver = android.content.BroadcastReceiver.extend({
     onReceive: function(context, intent) {
+        // decide whether or not to run an on-launch intervention
+
         var action = intent.getAction();
 
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
@@ -83,7 +85,7 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             var now = Date.now();
             closeRecentVisit(now);
             var timeSpentOnPhone = now - screenOnTime;
-            
+
             if (screenOnTime) {
                 storage.updateTotalTime(timeSpentOnPhone);
             }
@@ -94,7 +96,7 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
             currentApplication.isBlacklisted = false;
             currentApplication.visitStart = 0;
             screenOnTime = 0; // reset (otherwise glances cause inaccurate data)
-        }  
+        }
     }
 });
 
@@ -109,19 +111,19 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
 android.accessibilityservice.AccessibilityService.extend("com.habitlab.AccessibilityService", {
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
-        var eventType = event.getEventType(); 
+        var eventType = event.getEventType();
 
         if (!activePackage) {
             return;
         }
-        
+
         // packages to ignore
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
-        }  
+        }
 
         // inside habitlab or habitlab intervention showing
-        if (activePackage === "com.stanfordhci.habitlab") { 
+        if (activePackage === "com.stanfordhci.habitlab") {
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
 
@@ -131,10 +133,23 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
             screenOnTime = now;
             return; // skip over habitlab
-        } 
+        }
+
+        // This logic is for the "conservation" experiment.
+        var canRun = true
+        if (storage.getExperiment().includes("conservation") &&
+            !storage.isPackageFrequent(activePackage)) {
+              // If packages the conservation experiment is running and the packages
+              // is labeled as infrequent, interventions should be given out on
+              // average one out of every 5 times.
+              canRun = interventionRequestCounter % 5 == 4 ? true : false
+              interventionRequestCounter += 1
+        }
 
         // Lockdown Mode
         if (storage.inLockdownMode() && storage.isPackageSelected(activePackage) && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            closeRecentVisit(Date.now())
+            openNewVisit(Date.now(), activePackage)
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME); // exit app
             if (lockdownSeen % 3 === 0) {
                 var goal = storage.getLockdownDuration();
@@ -143,13 +158,15 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
                 var msg = "You have " + remaining + " minutes remaining in Lockdown Mode. All apps on your watchlist are off-limits.";
                 var closeMsg = "Got it";
-                lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);   
+                lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);
             }
-            lockdownSeen++;
+            logSessionIntervention("LOCKDOWN")
+            lockdownSeen++
             return;
         } else if (lockdownSeen && !storage.inLockdownMode()) {
             lockdownSeen = 0;
         }
+
         // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
@@ -157,7 +174,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
-            if (currentApplication.isBlacklisted) {
+            if (currentApplication.isBlacklisted && canRun) {
                 logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName))
             }
         } else if (currentApplication.isBlacklisted) {
@@ -169,13 +186,13 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         // do nothing
     },
 
-    onServiceConnected: function() {   
+    onServiceConnected: function() {
         this.super.onServiceConnected();
         setUpScreenReceiver(); // set up unlock receiver on startup
 
         if (!storage.isOnboardingComplete()) {
             storage.setOnboardingComplete();
-            storage.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);   
+            storage.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
         }
 
         var count = 0;
@@ -197,7 +214,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  * closeRecentVisit
  * ----------------
  * Close the most recent visit to a blacklisted
- * application (if there was one). Send visit 
+ * application (if there was one). Send visit
  * length information to StorageUtil.
  */
 function closeRecentVisit(now) {
@@ -231,7 +248,7 @@ function openNewVisit(now, pkg) {
 /*
  * setUpScreenReceiver
  * -------------------
- * Register ScreenReceiver object to listen for 
+ * Register ScreenReceiver object to listen for
  * screen on, off, and unlock events.
  */
 function setUpScreenReceiver() {
@@ -240,7 +257,7 @@ function setUpScreenReceiver() {
     var filterOn = new android.content.IntentFilter(android.content.Intent.ACTION_SCREEN_ON);
     var filterOff = new android.content.IntentFilter(android.content.Intent.ACTION_SCREEN_OFF);
     var filterUnlocked = new android.content.IntentFilter(android.content.Intent.ACTION_USER_PRESENT);
-    
+
     context.registerReceiver(receiver, filterOn);
     context.registerReceiver(receiver, filterOff);
     context.registerReceiver(receiver, filterUnlocked);
@@ -250,7 +267,7 @@ function setUpScreenReceiver() {
 /**
  * markMidnight
  * ------------
- * Function to be called at midnight. Closes any visits that 
+ * Function to be called at midnight. Closes any visits that
  * are active at midnight (so that they are part of that day).
  */
  exports.markMidnight = function () {
@@ -259,7 +276,7 @@ function setUpScreenReceiver() {
 
 
 function lockdownCb() {
-    CancelOverlay.showCancelLockDialog("Unlock apps", "Are you sure you want to stop lockdown mode?", 
+    CancelOverlay.showCancelLockDialog("Unlock apps", "Are you sure you want to stop lockdown mode?",
         "Yes", "Cancel", removeLockdown ,null);
 }
 
@@ -277,5 +294,3 @@ logSessionIntervention = function(shortName) {
         currentApplication.interventions.push({"intervention": shortName, "timestamp": Date.now()})
     }
 }
-
-
