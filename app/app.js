@@ -85,5 +85,3 @@ function backEvent(args) {
 
 applicationModule.start("views/" + viewFile + "/" + view);
 applicationModule.setCssFileName("app.css");
-
-

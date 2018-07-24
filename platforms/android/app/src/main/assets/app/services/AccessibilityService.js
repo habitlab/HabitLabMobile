@@ -44,6 +44,7 @@ var currentApplication = {
     visitStart: 0,
     interventions: []
 };
+var interventionRequestCounter = 0
 
 
 /***************************************

@@ -1451,7 +1451,6 @@ let experiments = {
  * @param {String} experiment_name
  */
 exports.assignExperiment = function(experiment_name) {
-
   appSettings.setString("experiment", experiment_name)
   var num_groups = experiments[experiment_name].length
   appSettings.setString("experiment_group", experiments[experiment_name][Math.floor(Math.random() * num_groups)])
@@ -1479,15 +1478,13 @@ function send_setting_change_log(data) {
 
 exports.sendLog = sendLog
 
-/**
- * Checks if this package is denoted as deserving a "frequent" assignment
- * of interventions according to the conservation experiment.
- */
-var isPackageFrequent = function(packageName) {
-  if (appSettings.getString(packageName, "null") == null) return false
-  return JSON.parse(appSettings.getString(packageName, "null")).frequent
-}
-
 if (exports.getExperiment().includes("conservation")) {
-  exports.isPackageFrequent = isPackageFrequent
+  /**
+   * Checks if this package is denoted as deserving a "frequent" assignment
+   * of interventions according to the conservation experiment.
+   */
+  exports.isPackageFrequent = function(packageName) {
+    if (appSettings.getString(packageName, "null") == "null") return false
+    return JSON.parse(appSettings.getString(packageName, "null")).frequent
+  }
 }
