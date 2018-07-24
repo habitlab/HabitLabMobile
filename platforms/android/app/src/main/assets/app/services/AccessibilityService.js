@@ -143,8 +143,10 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
               // If packages the conservation experiment is running and the packages
               // is labeled as infrequent, interventions should be given out on
               // average one out of every 5 times.
+
               canRun = interventionRequestCounter % 5 == 4 ? true : false
               interventionRequestCounter += 1
+              console.log(activePackage + " is not frequent, so canRun is " + canRun + " is time")
         }
 
         // Lockdown Mode

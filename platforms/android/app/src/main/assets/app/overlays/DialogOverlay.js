@@ -17,7 +17,7 @@ var TypedValue = android.util.TypedValue;
 
 
 /******************************
- *          PAINTS            *                           
+ *          PAINTS            *
  ******************************/
 
 var iconBackgrounds = ["#FFA730", "#E71D36", "#2EC4B6", "#4ce500", "#011627"];
@@ -50,7 +50,7 @@ var CORNER_RADIUS = 15;
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
@@ -72,7 +72,7 @@ var DialogView = android.view.View.extend({
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -89,10 +89,10 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 	var color = changeIconColor(4);
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		twoOptionView = new DialogView(context);
@@ -100,7 +100,7 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		twoOptionText = new TextView(context);
@@ -112,11 +112,11 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 		windowManager.addView(twoOptionText, textParams);
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-			0.3 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
+		var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH,
+			0.3 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH),
 			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		twoOptionPosButton = new Button(context);
@@ -134,11 +134,11 @@ exports.showTwoOptionDialogOverlay = function (msg, pos, neg, posCallback, negCa
 		windowManager.addView(twoOptionPosButton, posButtonParams);
 
 		// add positive button
-		var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-			0.3 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
+		var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH,
+			0.3 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH,
 			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		twoOptionNegButton = new Button(context);
@@ -193,10 +193,10 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 		// In case there already was an overlay dialog, remove it.
 		exports.removeOneOptionDialog()
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		oneOptionView = new DialogView(context);
@@ -204,7 +204,7 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		oneOptionText = new TextView(context);
@@ -216,11 +216,11 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 		windowManager.addView(oneOptionText, textParams);
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
-			0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
+		var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH,
+			0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH,
 			0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		oneOptionButton = new Button(context);
@@ -229,7 +229,6 @@ exports.showOneOptionDialogOverlay = function (msg, buttonText) {
 		oneOptionButton.setTextColor(Color.WHITE);
 		oneOptionButton.setOnClickListener(new android.view.View.OnClickListener({
 			onClick: function() {
-				console.log("This button is pressed.")
 				exports.removeOneOptionDialog();
 			}
 		}));

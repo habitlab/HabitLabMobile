@@ -60,9 +60,9 @@ const THRESHOLD_USAGE_NTF = 5;
 const THRESHOLD_USAGE_DLG = 5;
 
 // visit duration interventions
-const THRESHOLD_DURATION_TST = 2000;
-const THRESHOLD_DURATION_NTF = 6000;
-const THRESHOLD_DURATION_DLG = 9000;
+const INTERVAL_DURATION_TST = 2000;
+const INTERVAL_DURATION_NTF = 6000;
+const INTERVAL_DURATION_DLG = 9000;
 
 // overlay interventions
 const THRESHOLD_FULLSCREEN_OVR = 12;
@@ -513,35 +513,36 @@ var resetDurationInterventions = function() {
 /**
  * popToastVisitLength
  * -------------------
- * Displays a toast after THRESHOLD_DURATION_TST ms on the
+ * Displays a toast after INTERVAL_DURATION_TST ms on the
  * specified package.
  */
-code.DURATION_TOAST = function (real, pkg) {
+code.DURATION_TOAST = function (real, pkg, factor) {
   if (!real) {
     Toast.show(context, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
     return;
   }
-
+  console.log("Setting up DURATION TOAST for " + pkg + " w/ factor" + factor)
   var now = System.currentTimeMillis();
   if (!durationToastID) {
     durationToastID = Timer.setTimeout(() => {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = "You've been on " + applicationName + " for " + Math.ceil(Date.now() - sessionStart / MIN_IN_MS) + " minutes this visit";
+      var msg = "You've been on " + applicationName + " for " + Math.ceil((Date.now() - sessionStart )/ MIN_IN_MS) + " minutes this visit";
       Toast.show(context, msg, 1, "#2EC4B6");
       durationToastID = 0;
-    }, Date.now() - sessionStart > THRESHOLD_DURATION_TST ?
-        THRESHOLD_DURATION_TST * 3 : THRESHOLD_DURATION_TST);
+      code.DURATION_TOAST(true, pkg, factor)
+    }, Date.now() - sessionStart > INTERVAL_DURATION_TST * factor ?
+        INTERVAL_DURATION_TST * 3 * factor : INTERVAL_DURATION_TST * factor);
   }
 };
 
 /**
  * sendNotificationVisitLength
  * ---------------------------
- * Displays a notification after THRESHOLD_DURATION_NTF ms
+ * Displays a notification after INTERVAL_DURATION_NTF ms
  * on the specified package.
  */
-code.DURATION_NOTIFICATION = function (real, pkg) {
+code.DURATION_NOTIFICATION = function (real, pkg, factor) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Facebook Visit Length",
       "You've been using Facebook for 10 minutes", notificationID.DURATION, 10);
@@ -550,16 +551,18 @@ code.DURATION_NOTIFICATION = function (real, pkg) {
 
   var now = System.currentTimeMillis();
   if (!durationNotifID) {
+    console.log("Setting up DURATION NOTIFICATION for " + pkg + " w/ factor" + factor)
     durationNotifID = Timer.setTimeout(() => {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_NOTIFICATION}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = applicationName + " Visit Length";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil(Date.now() - sessionStart / MIN_IN_MS) + " minutes";
+      msg += " been using " + applicationName + " for " + Math.ceil((Date.now() - sessionStart) / MIN_IN_MS) + " minutes";
       NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
       durationNotifID = 0;
-    }, Date.now() - sessionStart > THRESHOLD_DURATION_NTF ?
-        THRESHOLD_DURATION_NTF * 3.0/2 : THRESHOLD_DURATION_NTF);
+      code.DURATION_NOTIFICATION(true, pkg, factor)
+    }, Date.now() - sessionStart > INTERVAL_DURATION_NTF * factor?
+        INTERVAL_DURATION_NTF * 3.0/2 * factor : INTERVAL_DURATION_NTF * factor);
   }
 };
 
@@ -567,25 +570,26 @@ code.DURATION_NOTIFICATION = function (real, pkg) {
 /**
  * showDialogVisitLength
  * ---------------------
- * Displays a toast after THRESHOLD_DURATION_DLG ms on the
+ * Displays a toast after INTERVAL_DURATION_DLG ms on the
  * specified package.
  */
-code.DURATION_DIALOG = function (real, pkg) {
+code.DURATION_DIALOG = function (real, pkg, factor) {
   if (!real) {
     DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay");
     return;
   }
-
   var now = System.currentTimeMillis();
   if (!durationDialogID) {
+    console.log("Setting up DURATION DIALOG for " + pkg + " w/ factor" + factor)
     durationDialogID = Timer.setTimeout(() => {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_DIALOG}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil(Date.now() - sessionStart / MIN_IN_MS) + " minutes";
+      msg += " been using " + applicationName + " for " + Math.ceil((Date.now() - sessionStart) / MIN_IN_MS) + " minutes";
       DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
       durationDialogID = 0;
-    }, THRESHOLD_DURATION_DLG);
+      code.DURATION_DIALOG(true, pkg, factor)
+    }, INTERVAL_DURATION_DLG * factor);
   }
 }
 
@@ -1045,7 +1049,13 @@ var nextOnLaunchIntervention = function(pkg) {
   }
   // set up duration interventions
   for (var duration_intervention of durationInterventions) {
-    duration_intervention.func(true, pkg);
+    durationFactor = 1
+    if (StorageUtil.getExperiment().includes("conservation") &&
+        !StorageUtil.isPackageFrequent(pkg)) {
+          //We want the "infrequent" goals to have much more spaced out interventions.
+          durationFactor = 5
+    }
+    duration_intervention.func(true, pkg, durationFactor);
   }
   var randomDifficulty = Math.random();
   var index;
@@ -1071,7 +1081,6 @@ var nextScreenOnIntervention = function() {
   if (run < 0.075) {
     code.GLANCE_NOTIFICATION(true);
   }
-  console.log("for nextScreenOnkIntervention, shortname is " + func_and_name.shortname)
   return "GLANCE_NOTIFICATION"
 }
 
