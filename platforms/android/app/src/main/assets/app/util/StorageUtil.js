@@ -130,12 +130,12 @@ var FakePhGoal = function() {
  */
 var createPackageData = function(packageName) {
   var enabled = true
-  packageData = JSON.stringify({
+  packageData = {
       goals: PkgGoal(),
       stats: Array(28).fill(PkgStat()),
       enabled: Array(ID.interventionDetails.length).fill(enabled),
       sessions: Array(28).fill([])
-  })
+  }
   if (appSettings.getString("experiment", "null") == "conservation") {
     /* Let's add a param. The parameter determines whether the package should
      * be given frequent interventions or infrequent interventions.
