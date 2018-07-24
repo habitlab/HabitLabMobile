@@ -26,9 +26,7 @@ const ignore = ["com.android.systemui",
     "com.syntellia.fleksy.keyboard",
     "com.whirlscape.minuumkeyboard",
     "com.whirlscape.minuumfree",
-    "com.google.android.googlequicksearchbox",
     "com.android.vending",
-    ""
 ];
 
 
@@ -113,10 +111,10 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
     onAccessibilityEvent: function(event) {
         var activePackage = event.getPackageName();
         var eventType = event.getEventType();
-
         if (!activePackage) {
             return;
         }
+        console.log("Current Active Package: " + activePackage)
 
         // packages to ignore
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
@@ -136,23 +134,12 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             return; // skip over habitlab
         }
 
-        // This logic is for the "conservation" experiment.
-        var canRun = true
-        if (storage.getExperiment().includes("conservation") &&
-            !storage.isPackageFrequent(activePackage)) {
-              // If packages the conservation experiment is running and the packages
-              // is labeled as infrequent, interventions should be given out on
-              // average one out of every 5 times.
 
-              canRun = interventionRequestCounter % 5 == 4 ? true : false
-              interventionRequestCounter += 1
-              console.log(activePackage + " is not frequent, so canRun is " + canRun + " is time")
-        }
 
         // Lockdown Mode
         if (storage.inLockdownMode() && storage.isPackageSelected(activePackage) && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            logSessionIntervention("LOCKDOWN")
             closeRecentVisit(Date.now())
-            openNewVisit(Date.now(), activePackage)
             this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_HOME); // exit app
             if (lockdownSeen % 3 === 0) {
                 var goal = storage.getLockdownDuration();
@@ -163,7 +150,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 var closeMsg = "Got it";
                 lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);
             }
-            logSessionIntervention("LOCKDOWN")
             lockdownSeen++
             return;
         } else if (lockdownSeen && !storage.inLockdownMode()) {
@@ -177,6 +163,21 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
+
+            // This logic is for the "conservation" experiment.
+            var canRun = true
+            if (storage.getExperiment().includes("conservation") &&
+                !storage.isPackageFrequent(activePackage)) {
+                  // If packages the conservation experiment is running and the packages
+                  // is labeled as infrequent, interventions should be given out on
+                  // average one out of every 5 times.
+
+                  canRun = interventionRequestCounter % 5 == 4 ? true : false
+                  interventionRequestCounter += 1
+                  console.log(activePackage + " is not frequent, so canRun is " + canRun + " is time")
+            }
+
+
             if (currentApplication.isBlacklisted && canRun) {
                 logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName))
             }

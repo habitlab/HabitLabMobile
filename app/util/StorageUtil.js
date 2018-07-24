@@ -34,6 +34,8 @@ var index = function() {
   return daysSinceEpoch() % 28;
 };
 
+exports.index = index
+
 /**
  * Generates 24-character hex string as unique id.
  */
@@ -708,9 +710,9 @@ exports.updateAppTime = async function(currentApplication, time) {
       var yesterdayTime = today.getTime() - start.getTime();
       var time = time - yesterdayTime;
       // duration is in seconds, but the local storage saves it in minutes.
-      appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(yesterdayTime / MIN_IN_MS )
+      appInfo['stats'][idx % 28]['time'] += (yesterdayTime / MIN_IN_MS )
     }
-    appInfo['stats'][(idx + 27) % 28]['time'] += Math.round(time / MIN_IN_MS)
+    appInfo['stats'][ idx % 28]['time'] += (time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
   }
   // Now, log today's portion of the session.
@@ -1412,17 +1414,14 @@ exports.registerUser = function(token) {
  * If so, the function calls an HTTP POST to account_external_stats
  */
 tryToLogExternalStats = async function(session_object) {
-  idToken = await askForEmail.getIdToken()
   object_to_return = {userid: exports.getUserID(), timestamp: session_object.timestamp, domains_time: {}}
   object_to_return.domains_time["" + session_object.domain] = session_object.duration
-  if (idToken != null) {
-    http.request({
-      url: "https://habitlab-mobile-website.herokuapp.com/addsessiontototal" ,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      content: JSON.stringify(object_to_return)
-    })
-  }
+  http.request({
+    url: "https://habitlab-mobile-website.herokuapp.com/addsessiontototal" ,
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    content: JSON.stringify(object_to_return)
+  })
 }
 
 /**

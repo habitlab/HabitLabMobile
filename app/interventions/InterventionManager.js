@@ -551,7 +551,6 @@ code.DURATION_NOTIFICATION = function (real, pkg, factor) {
 
   var now = System.currentTimeMillis();
   if (!durationNotifID) {
-    console.log("Setting up DURATION NOTIFICATION for " + pkg + " w/ factor" + factor)
     durationNotifID = Timer.setTimeout(() => {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_NOTIFICATION}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
