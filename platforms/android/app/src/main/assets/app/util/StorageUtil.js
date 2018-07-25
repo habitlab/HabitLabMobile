@@ -1477,8 +1477,13 @@ function send_setting_change_log(data) {
 
 exports.sendLog = sendLog
 
-// Assign the user to an experimental group!!
-exports.assignExperiment("conservation")
+if (exports.isTutorialComplete() && (exports.getExperiment().includes("null"))) {
+  // Old user. let's make them retake the tutorial so they can sign in.
+  // Assign the user to an experimental group!!
+  exports.assignExperiment("conservation")
+  appSettings.setBoolean('tutorialComplete', false);
+  appSettings.setBoolean('onboardingComplete', false);
+}
 
 if (exports.getExperiment().includes("conservation")) {
   /**
