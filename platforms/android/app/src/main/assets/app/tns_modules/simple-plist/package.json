@@ -1,0 +1,67 @@
+{
+  "_from": "simple-plist@^0.3.0",
+  "_id": "simple-plist@0.3.0",
+  "_inBundle": false,
+  "_integrity": "sha512-zHzV7TxUsVzHv8Nt+eStifDNCNIOuS92POdFf/5MHAxtWA7IASzVawCasxNIT4bn5IfrrnMB1eXpagJMLWbG5w==",
+  "_location": "/simple-plist",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "simple-plist@^0.3.0",
+    "name": "simple-plist",
+    "escapedName": "simple-plist",
+    "rawSpec": "^0.3.0",
+    "saveSpec": null,
+    "fetchSpec": "^0.3.0"
+  },
+  "_requiredBy": [
+    "/nativescript-localize"
+  ],
+  "_resolved": "https://registry.npmjs.org/simple-plist/-/simple-plist-0.3.0.tgz",
+  "_shasum": "929b0e81e826b47929f7561c324a3d348e700a09",
+  "_spec": "simple-plist@^0.3.0",
+  "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile/node_modules/nativescript-localize",
+  "author": {
+    "name": "Joe Wollard"
+  },
+  "bugs": {
+    "url": "https://github.com/wollardj/node-simple-plist/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "bplist-creator": "0.0.7",
+    "bplist-parser": "0.1.1",
+    "plist": "2.1.0"
+  },
+  "deprecated": false,
+  "description": "A wrapper utility for interacting with plist data.",
+  "devDependencies": {
+    "coffee-script": "^1.11.1",
+    "jest": "^16.0.2"
+  },
+  "files": [
+    "simple-plist.js"
+  ],
+  "homepage": "https://github.com/wollardj/node-simple-plist.git",
+  "keywords": [
+    "plist",
+    "binary",
+    "bplist",
+    "xml"
+  ],
+  "license": "MIT",
+  "main": "simple-plist.js",
+  "name": "simple-plist",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wollardj/node-simple-plist.git"
+  },
+  "scripts": {
+    "build": "coffee -c .",
+    "clean": "rm -rf *.js __tests__/*.js __tests__/write-test* coverage",
+    "prepublish": "npm run test",
+    "test": "npm run clean && npm run build && jest --coverage"
+  },
+  "version": "0.3.0"
+}

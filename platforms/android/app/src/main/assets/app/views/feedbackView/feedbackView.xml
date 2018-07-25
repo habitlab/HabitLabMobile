@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded" navigatingTo="navigatingTo" id="settings" unloaded="pageUnloaded"
   xmlns:sidedrawer="shared/sd"
-  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns="http://schemas.nativescript.org/tns.xsd"
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
   <ActionBar class="action-bar">
@@ -19,7 +19,7 @@
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
       <StackLayout orientation="vertical" >
         <Label text="Help us improve" class="contact-header" />
-        <Button text="Take Our Survey" tap="goToSurvey" class="contact-button"/>
+        <Button text="Send Us Feedback" tap="goToSurvey" class="contact-button"/>
         <Button text="Email Us" tap="composeEmail" class="contact-button"/>
 
         <Label text="Learn more about HabitLab" class="contact-header" textWrap="true" />

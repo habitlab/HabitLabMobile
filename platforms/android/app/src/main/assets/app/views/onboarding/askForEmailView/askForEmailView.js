@@ -57,7 +57,7 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
 });
 
 exports.requestIdToken = async function() {
-
+    moveOn()
     var token = await exports.getIdToken()
 }
 
