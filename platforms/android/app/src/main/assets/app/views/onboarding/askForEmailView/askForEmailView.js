@@ -103,8 +103,6 @@ signInResult = function(data) {
             var token = account.getIdToken()
             // Signed in successfully! show authenticated UI.
             //We should also register the user with this Id token.
-            console.log(StorageUtil.getUserID() + " w/ this token:")
-            console.log(token)
             StorageUtil.registerUser(token)
             moveOn()
             return token

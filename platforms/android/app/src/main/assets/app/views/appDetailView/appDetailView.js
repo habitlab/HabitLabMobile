@@ -60,7 +60,6 @@ var open;
 var number;
 
 var getGoal = function(txt, add) {
-    console.log("txt:" + txt)
     txt = txt + ""
   var num = txt.replace(/[^0-9]/g, '') || 0;
 

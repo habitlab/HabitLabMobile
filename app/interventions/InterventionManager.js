@@ -1093,7 +1093,6 @@ var nextScreenUnlockIntervention = function() {
     if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname])) {
       func_and_name.func(true);
     }
-    console.log("for nextScreenUnlockIntervention, shortname is " + func_and_name.shortname)
     return func_and_name.shortname
   }
 }

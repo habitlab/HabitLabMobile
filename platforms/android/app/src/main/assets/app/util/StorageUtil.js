@@ -1465,8 +1465,6 @@ exports.getExperiment = function() {
  * @param {} data
  */
 function send_setting_change_log(data) {
-    console.log(JSON.stringify(data))
-    console.log("Our data:")
   return http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
     method: "POST",

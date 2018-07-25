@@ -173,7 +173,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
 
                   canRun = interventionRequestCounter % 5 == 4 ? true : false
                   interventionRequestCounter += 1
-                  console.log(activePackage + " is not frequent, so canRun is " + canRun + " is time")
             }
 
             if (currentApplication.isBlacklisted && canRun) {
