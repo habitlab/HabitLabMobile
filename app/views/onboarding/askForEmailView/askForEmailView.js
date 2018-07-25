@@ -59,11 +59,6 @@ android.app.Activity.extend("com.tns.NativeScriptActivity", {
 exports.requestIdToken = async function() {
 
     var token = await exports.getIdToken()
-    if (token == undefined) {
-        exports.showError()
-    } else {
-        exports.moveOn()
-    }
 }
 
 exports.getIdToken = async function() {
@@ -71,6 +66,7 @@ exports.getIdToken = async function() {
     // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
     var gso = new GoogleSignInOptionsBuilder(GoogleSignInOptions.DEFAULT_SIGN_IN)
     .requestIdToken(credentials.clientId)
+    .requestEmail()
     .build()
 
     // Build a GoogleSignInClient with the options specified by gso.
@@ -81,7 +77,6 @@ exports.getIdToken = async function() {
         //Cool! We can just get the id.
         return task.getResult().getIdToken()
     } else {
-      console.log("task not successful")
         // We need to have the user sign in.
         var signInIntent = mGoogleSignInClient.getSignInIntent()
         application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)

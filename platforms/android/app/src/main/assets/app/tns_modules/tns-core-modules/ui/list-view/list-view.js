@@ -101,6 +101,12 @@ var ListView = (function (_super) {
             nativeView.setSelection(index);
         }
     };
+    ListView.prototype.scrollToIndexAnimated = function (index) {
+        var nativeView = this.nativeViewProtected;
+        if (nativeView) {
+            nativeView.smoothScrollToPosition(index);
+        }
+    };
     Object.defineProperty(ListView.prototype, "_childrenCount", {
         get: function () {
             return this._realizedItems.size;

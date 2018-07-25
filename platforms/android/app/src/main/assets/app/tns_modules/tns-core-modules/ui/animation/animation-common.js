@@ -55,10 +55,10 @@ var AnimationBase = (function () {
         });
     };
     AnimationBase.prototype.play = function () {
-        var _this = this;
+        var _this_1 = this;
         var animationFinishedPromise = new Promise(function (resolve, reject) {
-            _this._resolve = resolve;
-            _this._reject = reject;
+            _this_1._resolve = resolve;
+            _this_1._reject = reject;
         });
         this.fixupAnimationPromise(animationFinishedPromise);
         this._isPlaying = true;

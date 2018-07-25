@@ -90,6 +90,14 @@ var ImageBase = (function (_super) {
                         _this.imageSource = r;
                         _this.isLoading = false;
                     }
+                }, function (err) {
+                    _this.isLoading = false;
+                    if (view_1.traceEnabled()) {
+                        if (typeof err === "object" && err.message) {
+                            err = err.message;
+                        }
+                        view_1.traceWrite(err, view_1.traceCategories.Debug);
+                    }
                 });
             }
         }

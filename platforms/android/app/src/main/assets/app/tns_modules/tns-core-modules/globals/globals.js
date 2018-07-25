@@ -166,7 +166,7 @@ function Deprecated(target, key, descriptor) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            console.log(key + " is deprecated");
+            console.log(key.toString() + " is deprecated");
             return originalMethod.apply(this, args);
         };
         return descriptor;
@@ -186,7 +186,7 @@ function Experimental(target, key, descriptor) {
             for (var _i = 0; _i < arguments.length; _i++) {
                 args[_i] = arguments[_i];
             }
-            console.log(key + " is experimental");
+            console.log(key.toString() + " is experimental");
             return originalMethod.apply(this, args);
         };
         return descriptor;

@@ -10,7 +10,7 @@ var trace_1 = require("../../trace");
 var sdkVersion = lazy_1.default(function () { return parseInt(platform_1.device.sdkVersion); });
 var intEvaluator = lazy_1.default(function () { return new android.animation.IntEvaluator(); });
 var defaultInterpolator = lazy_1.default(function () { return new android.view.animation.AccelerateDecelerateInterpolator(); });
-var isAndroidP = lazy_1.default(function () { return sdkVersion() >= 27; });
+var isAndroidP = lazy_1.default(function () { return sdkVersion() > 27; });
 exports.waitingQueue = new Map();
 exports.completedEntries = new Map();
 var TransitionListener;

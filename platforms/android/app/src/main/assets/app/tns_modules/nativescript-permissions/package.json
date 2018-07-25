@@ -1,27 +1,31 @@
 {
-  "_from": "nativescript-permissions",
+  "_args": [
+    [
+      "nativescript-permissions@1.2.3",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-permissions@1.2.3",
   "_id": "nativescript-permissions@1.2.3",
   "_inBundle": false,
   "_integrity": "sha1-4+ZVRfmP5IjdVXj3/5DrrjCI5wA=",
   "_location": "/nativescript-permissions",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "nativescript-permissions",
+    "raw": "nativescript-permissions@1.2.3",
     "name": "nativescript-permissions",
     "escapedName": "nativescript-permissions",
-    "rawSpec": "",
+    "rawSpec": "1.2.3",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "1.2.3"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/nativescript-permissions/-/nativescript-permissions-1.2.3.tgz",
-  "_shasum": "e3e65545f98fe488dd5578f7ff90ebae3088e700",
-  "_spec": "nativescript-permissions",
+  "_spec": "1.2.3",
   "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
   "author": {
     "name": "Nathanael Anderson",
@@ -30,8 +34,6 @@
   "bugs": {
     "url": "https://github.com/nathanaela/nativescript-permissions/issues"
   },
-  "bundleDependencies": false,
-  "deprecated": false,
   "description": "A NativeScript plugin to deal with Android permissions",
   "homepage": "https://github.com/nathanaela/nativescript-permissions",
   "keywords": [

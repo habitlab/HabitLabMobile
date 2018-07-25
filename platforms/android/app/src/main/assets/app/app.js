@@ -12,11 +12,6 @@ if (StorageUtil.isTutorialComplete()) {
 } else if (StorageUtil.isOnboardingComplete()) {
   viewFile = "goalsView";
   view = 'goalsView';
-} else {
-  // Assign the user to an experimental group!!
-  StorageUtil.assignExperiment("conservation")
-  // For the "conservation" experiment, we choose a random subset of goals.
-
 }
 
 var getErrorDetails = function (args) {

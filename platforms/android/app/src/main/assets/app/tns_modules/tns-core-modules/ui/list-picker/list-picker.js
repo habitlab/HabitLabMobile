@@ -34,6 +34,7 @@ function initializeNativeClasses() {
         }
         ValueChangeListenerImpl.prototype.onValueChange = function (picker, oldValue, newValue) {
             list_picker_common_1.selectedIndexProperty.nativeValueChange(this.owner, newValue);
+            this.owner.updateSelectedValue(newValue);
         };
         ValueChangeListenerImpl = __decorate([
             Interfaces([android.widget.NumberPicker.OnValueChangeListener])

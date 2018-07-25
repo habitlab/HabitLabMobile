@@ -430,6 +430,7 @@ var FrameBase = (function (_super) {
         this.navigate(newEntry);
         return true;
     };
+    var FrameBase_1;
     FrameBase.androidOptionSelectedEvent = "optionSelected";
     FrameBase.defaultAnimatedNavigation = true;
     __decorate([
@@ -445,7 +446,6 @@ var FrameBase = (function (_super) {
         view_1.CSSType("Frame")
     ], FrameBase);
     return FrameBase;
-    var FrameBase_1;
 }(view_1.CustomLayoutView));
 exports.FrameBase = FrameBase;
 function getFrameById(id) {

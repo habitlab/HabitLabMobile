@@ -2,6 +2,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
+var _a, _b, _c, _d, _e, _f;
 var flexbox_layout_common_1 = require("./flexbox-layout-common");
 __export(require("./flexbox-layout-common"));
 var widgetFlexboxLayout;
@@ -141,5 +142,4 @@ var FlexboxLayout = (function (_super) {
     return FlexboxLayout;
 }(flexbox_layout_common_1.FlexboxLayoutBase));
 exports.FlexboxLayout = FlexboxLayout;
-var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=flexbox-layout.js.map

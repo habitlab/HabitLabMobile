@@ -1,28 +1,32 @@
 {
-  "_from": "nativescript-dom@latest",
+  "_args": [
+    [
+      "nativescript-dom@2.0.1",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-dom@2.0.1",
   "_id": "nativescript-dom@2.0.1",
   "_inBundle": false,
   "_integrity": "sha512-XCnoE0Pr/ubOLvQYf4UsBG7L3RJqqwLUHfst5ySuy05bf1DCWm/Wcr6UMitZkhd/ptzoVvT7MsqJRnU36HD0fQ==",
   "_location": "/nativescript-dom",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "nativescript-dom@latest",
+    "raw": "nativescript-dom@2.0.1",
     "name": "nativescript-dom",
     "escapedName": "nativescript-dom",
-    "rawSpec": "latest",
+    "rawSpec": "2.0.1",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "2.0.1"
   },
   "_requiredBy": [
-    "#USER",
     "/",
     "/nativescript-slides"
   ],
   "_resolved": "https://registry.npmjs.org/nativescript-dom/-/nativescript-dom-2.0.1.tgz",
-  "_shasum": "1d86436173a01b72ed462a1a9c4664b8e2c390ca",
-  "_spec": "nativescript-dom@latest",
+  "_spec": "2.0.1",
   "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
   "author": {
     "name": "Nathanael Anderson",
@@ -31,7 +35,6 @@
   "bugs": {
     "url": "https://github.com/nathanaela/nativescript-dom/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Brad Martin",
@@ -44,7 +47,6 @@
       "url": "https://github.com/ludwiktrammer"
     }
   ],
-  "deprecated": false,
   "description": "A NativeScript module for DOM Emulation",
   "homepage": "https://github.com/nathanaela/nativescript-dom",
   "keywords": [

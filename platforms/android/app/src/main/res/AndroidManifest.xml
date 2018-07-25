@@ -57,7 +57,7 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility"/>
 		 </service>
-		<receiver 
+		<receiver
 			android:name="com.habitlab.RestartReceiver"
 			android:enabled="true"
 		    android:exported="false"
@@ -68,7 +68,7 @@
 		        <category android:name="android.intent.category.DEFAULT" />
 		    </intent-filter>
 		</receiver>
-		<receiver 
+		<receiver
 			android:name="com.habitlab.NewPackageReceiver"
 			android:enabled="true"
 		    android:exported="false">

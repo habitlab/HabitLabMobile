@@ -1,27 +1,31 @@
 {
-  "_from": "nativescript-version-number@latest",
+  "_args": [
+    [
+      "nativescript-version-number@1.1.0",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-version-number@1.1.0",
   "_id": "nativescript-version-number@1.1.0",
   "_inBundle": false,
   "_integrity": "sha1-kBYMU6Qfh35KFZWYZG5pGtsIEFI=",
   "_location": "/nativescript-version-number",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "nativescript-version-number@latest",
+    "raw": "nativescript-version-number@1.1.0",
     "name": "nativescript-version-number",
     "escapedName": "nativescript-version-number",
-    "rawSpec": "latest",
+    "rawSpec": "1.1.0",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "1.1.0"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/nativescript-version-number/-/nativescript-version-number-1.1.0.tgz",
-  "_shasum": "90160c53a41f877e4a159598646e691adb081052",
-  "_spec": "nativescript-version-number@latest",
+  "_spec": "1.1.0",
   "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
   "author": {
     "name": "TJ VanToll",
@@ -31,9 +35,7 @@
   "bugs": {
     "url": "https://github.com/tjvantoll/nativescript-version-number/issues"
   },
-  "bundleDependencies": false,
   "dependencies": {},
-  "deprecated": false,
   "description": "A dead-simple plugin for retrieving the version number of your NativeScript app.",
   "devDependencies": {
     "prompt": "^1.0.0",

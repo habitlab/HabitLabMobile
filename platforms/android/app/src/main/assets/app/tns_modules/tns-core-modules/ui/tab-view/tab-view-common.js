@@ -213,12 +213,12 @@ var TabViewBase = (function (_super) {
     TabViewBase.prototype.onSelectedIndexChanged = function (oldIndex, newIndex) {
         this.notify({ eventName: TabViewBase_1.selectedIndexChangedEvent, object: this, oldIndex: oldIndex, newIndex: newIndex });
     };
+    var TabViewBase_1;
     TabViewBase.selectedIndexChangedEvent = "selectedIndexChanged";
     TabViewBase = TabViewBase_1 = __decorate([
         view_1.CSSType("TabView")
     ], TabViewBase);
     return TabViewBase;
-    var TabViewBase_1;
 }(view_1.View));
 exports.TabViewBase = TabViewBase;
 exports.selectedIndexProperty = new view_1.CoercibleProperty({

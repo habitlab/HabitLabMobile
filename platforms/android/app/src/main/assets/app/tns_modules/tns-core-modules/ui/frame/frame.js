@@ -20,7 +20,7 @@ var sdkVersion = lazy_1.default(function () { return parseInt(platform_1.device.
 var navDepth = -1;
 var fragmentId = -1;
 if (global && global.__inspector) {
-    var devtools = require("tns-core-modules/debugger/devtools-elements");
+    var devtools = require("tns-core-modules/debugger/devtools-elements.js");
     devtools.attachDOMInspectorEventCallbacks(global.__inspector);
     devtools.attachDOMInspectorCommandCallbacks(global.__inspector);
 }
@@ -198,7 +198,9 @@ var Frame = (function (_super) {
                     entry.resolvedPage._setupUI(context_1);
                 }
                 entry.recreated = false;
-                current.recreated = false;
+                if (current) {
+                    current.recreated = false;
+                }
             }
             _super.prototype.setCurrent.call(this, entry, isBack);
             this._processNavigationQueue(entry.resolvedPage);

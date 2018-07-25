@@ -77,6 +77,7 @@ var ScrollViewBase = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    var ScrollViewBase_1;
     ScrollViewBase.scrollEvent = "scroll";
     __decorate([
         profiling_1.profile
@@ -85,7 +86,6 @@ var ScrollViewBase = (function (_super) {
         content_view_1.CSSType("ScrollView")
     ], ScrollViewBase);
     return ScrollViewBase;
-    var ScrollViewBase_1;
 }(content_view_1.ContentView));
 exports.ScrollViewBase = ScrollViewBase;
 var converter = content_view_1.makeParser(content_view_1.makeValidator("horizontal", "vertical"));

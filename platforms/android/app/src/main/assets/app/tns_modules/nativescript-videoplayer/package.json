@@ -1,27 +1,32 @@
 {
-  "_from": "nativescript-videoplayer@latest",
+  "_args": [
+    [
+      "nativescript-videoplayer@4.1.0",
+      "/Users/drewgregory/Documents/CURIS/HabitLabMobile"
+    ]
+  ],
+  "_from": "nativescript-videoplayer@4.1.0",
   "_id": "nativescript-videoplayer@4.1.0",
   "_inBundle": false,
   "_integrity": "sha512-EkF8UmX+nczF53ZarZ9BCIiJhT49+Kgx/a0mDCoeEdxodH2chlue9wKNaBumZfSFYrx59V7FSAzr0Xn2UbKmNQ==",
   "_location": "/nativescript-videoplayer",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "nativescript-videoplayer@latest",
+    "raw": "nativescript-videoplayer@4.1.0",
     "name": "nativescript-videoplayer",
     "escapedName": "nativescript-videoplayer",
-    "rawSpec": "latest",
+    "rawSpec": "4.1.0",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "4.1.0"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/nativescript-videoplayer/-/nativescript-videoplayer-4.1.0.tgz",
-  "_shasum": "8845504e6795ef4134c8d566358ffa5d99af37a5",
-  "_spec": "nativescript-videoplayer@latest",
+  "_shasum": "7bdee571649168a79ded1bf63beb6d7b4b9cfa2a",
+  "_spec": "4.1.0",
   "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
   "author": {
     "name": "Brad Martin",
@@ -31,7 +36,6 @@
   "bugs": {
     "url": "https://github.com/bradmartin/nativescript-videoplayer/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Nathanael Anderson",
@@ -78,7 +82,6 @@
       "url": "https://github.com/RobertGardner"
     }
   ],
-  "deprecated": false,
   "description": "A NativeScript plugin that uses the native video players to play local and remote videos.",
   "devDependencies": {
     "husky": "^0.14.3",

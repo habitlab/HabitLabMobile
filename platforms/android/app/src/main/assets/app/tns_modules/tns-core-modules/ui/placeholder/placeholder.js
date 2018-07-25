@@ -11,12 +11,12 @@ var Placeholder = (function (_super) {
         this.notify(args);
         return args.view;
     };
+    var Placeholder_1;
     Placeholder.creatingViewEvent = "creatingView";
     Placeholder = Placeholder_1 = __decorate([
         view_1.CSSType("Placeholder")
     ], Placeholder);
     return Placeholder;
-    var Placeholder_1;
 }(view_1.View));
 exports.Placeholder = Placeholder;
 //# sourceMappingURL=placeholder.js.map

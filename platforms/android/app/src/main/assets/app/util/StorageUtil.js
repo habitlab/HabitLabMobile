@@ -1477,6 +1477,10 @@ function send_setting_change_log(data) {
 
 exports.sendLog = sendLog
 
+// Assign the user to an experimental group!!
+exports.assignExperiment("conservation")
+
+
 if (exports.getExperiment().includes("conservation")) {
   /**
    * Checks if this package is denoted as deserving a "frequent" assignment
