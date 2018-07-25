@@ -4,6 +4,7 @@ var Intent = android.content.Intent;
 var Uri = android.net.Uri;
 var StorageUtil = require('~/util/StorageUtil');
 var http = require('http');
+var FancyAlert = require("~/util/FancyAlert");
 
 
 var drawer;
@@ -43,9 +44,12 @@ exports.goToSurvey = function() {
         content: JSON.stringify({feedback: r.text, userid: StorageUtil.getUserID(),
                                 timestamp: Date.now()})
       })
+      FancyAlert.show(FancyAlert.type.SUCCESS, "Thanks!", "We received your feedback!"
+      + " Thank you for taking the time to write to us.", "OK")
     }
   }).catch(function (r) {
-    //TODO: Alert user with dialog about submission error.
+    FancyAlert.show(FancyAlert.type.WARNING, "Error.", "Unfortunately, there was an error in submitting"
+   + " your feedback. You could alternatively email us.", "OK")
   });
 
 };
