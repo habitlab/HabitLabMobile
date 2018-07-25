@@ -33,7 +33,7 @@ exports.goToSurvey = function() {
     message: "Help us make HabitLab better! What could we improve on?",
     okButtonText: "Submit",
     cancelButtonText: "Cancel",
-    defaultText: "Feedback",
+    defaultText: "",
     inputType: dialogs.inputType.text
   }).then(function (r) {
     if (r.result) {
