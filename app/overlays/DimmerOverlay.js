@@ -26,7 +26,7 @@ var iconFills = ["#FFA730", "#E71D36", "#2EC4B6", "#72e500", "#011627"];
 
 var context = app.android.context;
 
-// Custom DialogView 
+// Custom DialogView
 var OverlayView = android.view.View.extend({
 	onDraw: function (canvas) {
 		var BACKGROUND = new Paint();
@@ -37,8 +37,8 @@ var OverlayView = android.view.View.extend({
 });
 
 // dimmer view
-var overlayParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
-	WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+var overlayParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
+	WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(TYPE_SYSTEM_OVERLAY),
 	WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
 overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
@@ -46,10 +46,10 @@ var overlay;
 var timerID;
 
 // icon view
-var iconParams = new WindowManager.LayoutParams(ICON_SIDE, ICON_SIDE, SCREEN_WIDTH - ICON_SIDE,  
-	0, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+var iconParams = new WindowManager.LayoutParams(ICON_SIDE, ICON_SIDE, SCREEN_WIDTH - ICON_SIDE,
+	0, permissions.getOverlayType(TYPE_SYSTEM_OVERLAY),
 	WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
-var icon_id = context.getResources().getIdentifier("ic_lightbulb", 
+var icon_id = context.getResources().getIdentifier("ic_lightbulb",
 		"drawable", context.getPackageName());
 var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
 var iconView;
@@ -109,4 +109,3 @@ exports.removeDimmer = function() {
 		iconView = undefined;
 	}
 }
-
