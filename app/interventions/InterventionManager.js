@@ -464,15 +464,16 @@ code.TIME_NOTIFICATION = function (real, pkg) {
     "You've used your targeted apps for 55 minutes today", notificationID.USAGE, 10);
     return;
   }
-
-  var minutes = StorageUtil.getAppTime(pkg);
-  if (minutes >= THRESHOLD_USAGE_NTF) {
-    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
-    var app = UsageInformationUtil.getBasicInfo(pkg).name;
-    var title = app + " Usage Alert"
-    var msg = "You've used " + app + " for " + minutes + " minutes today.";
-    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
+  StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
+  var packages =  StorageUtil.getSelectedPackages()
+  var totalUsage = 0
+  for (var i = 0; i < packages.length; i++) {
+    totalUsage += StorageUtil.getAppTime(pkg);
   }
+  var app = UsageInformationUtil.getBasicInfo(pkg).name;
+  var title = "Usage Alert"
+  var msg = "You've used your targeted apps for " + totalUsage + " minutes today.";
+  NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
 };
 
 /**************************************

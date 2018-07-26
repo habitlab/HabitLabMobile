@@ -56,10 +56,10 @@ var iconView;
 var iconTimerID;
 
 exports.dim = function(interval) {
+	exports.removeDimmer()
 	var brightness = android.provider.Settings.System.getInt(context.getContentResolver(),
         android.provider.Settings.System.SCREEN_BRIGHTNESS) / 255;
 	overlayParams.screenBrightness = brightness;
-
 	overlay = new OverlayView(context);
 	windowManager.addView(overlay, overlayParams);
 
