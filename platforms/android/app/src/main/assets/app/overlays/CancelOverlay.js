@@ -41,7 +41,7 @@ ICON_FILL.setColor(Color.parseColor("#ffad74")); //orange
 
 
 /******************************
- *     CANCEL PAINTS            *                           
+ *     CANCEL PAINTS            *
  ******************************/
 
 var LOCK_DIALOG_FILL = new Paint();
@@ -53,13 +53,13 @@ LOCK_DIALOG_HEADER.setColor(Color.parseColor("#d13b49")); //dark red
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var CancelLockDialog = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, LOCK_DIALOG_FILL);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, HEADER_BOTTOM, CORNER_RADIUS, CORNER_RADIUS, LOCK_DIALOG_HEADER);
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, LOCK_DIALOG_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, HEADER_BOTTOM, LOCK_DIALOG_HEADER);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
@@ -77,7 +77,7 @@ var CancelLockDialog = android.view.View.extend({
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -94,10 +94,10 @@ var cancelNegButton;
 exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negCallback) {
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelDialog = new CancelLockDialog(context);
@@ -105,7 +105,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelTitle = new TextView(context);
@@ -118,7 +118,7 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
+			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelText = new TextView(context);
@@ -130,11 +130,11 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 		windowManager.addView(cancelText, textParams);
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH,
 			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelPosButton = new Button(context);
@@ -152,11 +152,11 @@ exports.showCancelLockDialog = function (title, msg, pos, neg, posCallback, negC
 		windowManager.addView(cancelPosButton, posButtonParams);
 
 		// add positive button
-		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH,
 			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		cancelNegButton = new Button(context);
@@ -218,13 +218,13 @@ SNOOZE_HEADER_FILL.setColor(Color.parseColor("#51b270")); //green
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var CancelSnoozeDialog = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, SNOOZE_DIALOG_FILL);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, HEADER_BOTTOM, CORNER_RADIUS, CORNER_RADIUS, SNOOZE_HEADER_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, SNOOZE_DIALOG_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, HEADER_BOTTOM, SNOOZE_HEADER_FILL);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
@@ -242,7 +242,7 @@ var CancelSnoozeDialog = android.view.View.extend({
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -263,10 +263,10 @@ var snoozeNegButton;
 exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, negCallback) {
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozeDialog = new CancelSnoozeDialog(context);
@@ -274,7 +274,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozeTitle = new TextView(context);
@@ -288,7 +288,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
+			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozeText = new TextView(context);
@@ -300,11 +300,11 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 		windowManager.addView(snoozeText, textParams);
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.18 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH,
 			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozePosButton = new Button(context);
@@ -323,11 +323,11 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 
 
 			// add positive button
-		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.18 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH,
 			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		snoozeNegButton = new Button(context);
@@ -346,7 +346,7 @@ exports.showCancelSnoozeDialog = function (title, msg, pos, neg, posCallback, ne
 	} else {
 		permissions.launchSystemOverlayIntent();
 	}
-	
+
 }
 
 
@@ -376,4 +376,3 @@ exports.removeCancelSnoozeDialog = function () {
 		snoozeNegButton = undefined;
 	}
 }
-

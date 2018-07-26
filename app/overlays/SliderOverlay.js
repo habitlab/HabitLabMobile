@@ -21,7 +21,7 @@ var LayoutParams = android.view.ViewGroup.LayoutParams;
 
 
 /******************************
- *          PAINTS            *                           
+ *          PAINTS            *
  ******************************/
 
 
@@ -53,12 +53,12 @@ var CORNER_RADIUS = 15;
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, DIALOG_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, DIALOG_FILL);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
@@ -75,7 +75,7 @@ var DialogView = android.view.View.extend({
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -94,10 +94,10 @@ var setTime = 10;
 exports.showSliderOverlay = function (msg, callback) {
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
-		var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		dialogParams.gravity = Gravity.LEFT | Gravity.TOP;
 		dialog = new DialogView(context);
@@ -105,7 +105,7 @@ exports.showSliderOverlay = function (msg, callback) {
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.30 * SCREEN_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.30 * SCREEN_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		text = new TextView(context);
@@ -119,7 +119,7 @@ exports.showSliderOverlay = function (msg, callback) {
 
 		//Time label
 		var labelParams = new WindowManager.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
-			0.25*SCREEN_WIDTH, 0.15 * DIALOG_HEIGHT, 
+			0.25*SCREEN_WIDTH, 0.15 * DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		labelText = new TextView(context);
 		labelText.setText(setTime + " mins");
@@ -131,7 +131,7 @@ exports.showSliderOverlay = function (msg, callback) {
 
 		//add seek bar
 		var seekParams = new WindowManager.LayoutParams( 0.8 * DIALOG_WIDTH, LayoutParams.WRAP_CONTENT,
-			0, 0.1*DIALOG_HEIGHT, 
+			0, 0.1*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		seekBar = new SeekBar(context);
 		seekBar.setMax(30);
@@ -153,11 +153,11 @@ exports.showSliderOverlay = function (msg, callback) {
 
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-			0.2 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
+		var posButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH,
+			0.2 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH),
 			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		posButton = new Button(context);
@@ -176,11 +176,11 @@ exports.showSliderOverlay = function (msg, callback) {
 		windowManager.addView(posButton, posButtonParams);
 
 		// add neg button
-		var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH, 
-			0.2 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
+		var negButtonParams = new WindowManager.LayoutParams(0.35 * DIALOG_WIDTH,
+			0.2 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH,
 			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		negButtons = new Button(context);
@@ -233,6 +233,3 @@ exports.removeSliderOverlay = function () {
 
 	setTime = 10;
 }
-
-
-

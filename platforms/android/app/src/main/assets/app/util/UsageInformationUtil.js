@@ -1,13 +1,13 @@
 var application = require("application");
 var imageSource = require("image-source");
 
-// global vars 
+// global vars
 const DAY_MS = 86400000;
 var context = application.android.context;
 
 
 /****** LIST OF ALL LAUNCHABLE APPLICATIONS *****/
-var pm = context.getPackageManager();	
+var pm = context.getPackageManager();
 var mainIntent = new android.content.Intent(android.content.Intent.ACTION_MAIN, null);
 mainIntent.addCategory(android.content.Intent.CATEGORY_LAUNCHER);
 var applications = pm.queryIntentActivities(mainIntent, 0); // all launchable packages
@@ -37,13 +37,13 @@ function convertToBitmap(drawable) {
 
 /* getApplicationList
  * ------------------
- * Returns list of objects containing following fields: 
- * 
+ * Returns list of objects containing following fields:
+ *
  *     packageName: package name,
  *     label: application label,
  *     iconSource: icon bitmap that can be assigned to <Image> src field,
  *     averageUsage: average usage over last 4 weeks or since installation,
- *     
+ *
  * for every application in the system.
  */
 exports.getApplicationList = function() {
@@ -51,20 +51,20 @@ exports.getApplicationList = function() {
 	for (var i = 0; i < applications.size(); i++) {
 		var info = applications.get(i);
 		var packageName = info.activityInfo.packageName;
-		
+
 		// filter out habitlab and duplicates
 		if (packageName === "com.stanfordhci.habitlab") { continue; }
-		
+
 		var label = info.loadLabel(pm).toString();
 		if (label === "Voice Search") { continue; }
 
-        let bitmap = convertToBitmap(info.loadIcon(pm))
-        var iconSource = imageSource.fromNativeSource(bitmap);
-		
+    let bitmap = convertToBitmap(info.loadIcon(pm))
+    var iconSource = imageSource.fromNativeSource(bitmap);
+
 		// construct object
 		var applicationObj = {
 			packageName: packageName,
-			label: label, 
+			label: label,
 			iconSource: iconSource
 		};
 
@@ -78,7 +78,7 @@ exports.getApplicationList = function() {
 /*
  * getBasicInfo
  * ------------
- * Returns the application name and icon of the specified 
+ * Returns the application name and icon of the specified
  * packageName. Returns null if no such package exists.
  */
 exports.getBasicInfo = function(packageName) {
@@ -116,10 +116,10 @@ exports.getBasicInfo = function(packageName) {
  * getInstalledPresets.targets returns the installed presets for the targets
  */
 exports.getInstalledPresets = function() {
-	var presets = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca", 
+	var presets = ["com.facebook.katana", "com.google.android.youtube", "com.facebook.orca",
 		"com.snapchat.android", "com.instagram.android", "com.netflix.mediaclient", "com.pinterest",
-		"com.twitter.android", "com.reddit.frontpage", "com.buzzfeed.android", "com.ninegag.android.app", 
-		"com.amazon.mShop.android.shopping", "com.hulu.plus", "com.tinder", "com.espn.score_center", 
+		"com.twitter.android", "com.reddit.frontpage", "com.buzzfeed.android", "com.ninegag.android.app",
+		"com.amazon.mShop.android.shopping", "com.hulu.plus", "com.tinder", "com.espn.score_center",
 		"com.whatsapp", "com.google.android.gm", "com.microsoft.office.outlook", "com.youku.phone",
 		"com.android.chrome"];
 	var installedPresets = [];
@@ -133,7 +133,7 @@ exports.getInstalledPresets = function() {
 		var packageName = info.activityInfo.packageName;
 		if (presets.includes(packageName)) {
 			installedPresets.push(packageName);
-		} 
+		}
 		if (targetPresets.includes(packageName)) {
 			installedTargets.push(packageName);
 		}

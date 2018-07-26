@@ -41,7 +41,7 @@ DIM_BACKGROUND.setColor(Color.BLACK);
 
 
 /******************************
- *     CANCEL PAINTS            *                           
+ *     CANCEL PAINTS            *
  ******************************/
 
 var DIALOG_FILL = new Paint();
@@ -54,15 +54,15 @@ HEADER_FILL.setColor(Color.parseColor("#ffad74")); //orange
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var IntroDialog = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		DIALOG_FILL.setAlpha = (170);
 
 		canvas.drawRect(0, 0.145*SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, DIALOG_FILL);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, HEADER_BOTTOM, CORNER_RADIUS, CORNER_RADIUS, HEADER_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, DIALOG_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, HEADER_BOTTOM, HEADER_FILL);
 
 		canvas.drawRect(LEFT, HEADER_BOTTOM - 0.01*DIALOG_HEIGHT, RIGHT, HEADER_BOTTOM + 0.01*DIALOG_HEIGHT, DIALOG_FILL);
 	}
@@ -81,9 +81,9 @@ var lastY;
 exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		dialog = new IntroDialog(context);
@@ -114,16 +114,16 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 				return false;
 			}
 
-				
+
 
 		}));
 		windowManager.addView(dialog, viewParams);
 
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.15 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TOP + 0.075*DIALOG_HEIGHT,
 			permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		title = new TextView(context);
@@ -137,9 +137,9 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT, 
+			LEFT + 0.075 * DIALOG_WIDTH, TOP+0.22*DIALOG_HEIGHT,
 			permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		text = new TextView(context);
@@ -151,10 +151,10 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 		windowManager.addView(text, textParams);
 
 		// add positive button
-		var buttonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH, 
-			0.2 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.2 * DIALOG_WIDTH, 
+		var buttonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH,
+			0.2 * DIALOG_HEIGHT, 0.1* SCREEN_WIDTH + 0.2 * DIALOG_WIDTH,
 			TOP+0.75*DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		buttonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		button = new Button(context);
@@ -174,8 +174,8 @@ exports.showIntroDialog = function (titleMsg, msg, butt, callback, redirect) {
 	} else {
 		permissions.launchSystemOverlayIntent();
 	}
-	
-  
+
+
 }
 
 
@@ -233,13 +233,13 @@ TARGET_HEADER_FILL.setColor(Color.parseColor("#FF9F1C")); //yellow
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var TargetEnableDialog = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TARGETTOP, RIGHT, TARGETBOTTOM, CORNER_RADIUS, CORNER_RADIUS, TARGET_DIALOG_FILL);
-		canvas.drawRoundRect(LEFT, TARGETTOP, RIGHT, HEADER_BOTTOM, CORNER_RADIUS, CORNER_RADIUS, TARGET_HEADER_FILL);
+		canvas.drawRect(LEFT, TARGETTOP, RIGHT, TARGETBOTTOM, TARGET_DIALOG_FILL);
+		canvas.drawRect(LEFT, TARGETTOP, RIGHT, HEADER_BOTTOM, TARGET_HEADER_FILL);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
@@ -257,7 +257,7 @@ var TargetEnableDialog = android.view.View.extend({
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -276,10 +276,10 @@ var targetNegButton;
 exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, negCallback) {
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		targetDialog = new TargetEnableDialog(context);
@@ -287,7 +287,7 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
 
 		// add title
 		var titleParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.1 * TARGET_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TARGETTOP + 0.075*TARGET_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), TARGETTOP + 0.075*TARGET_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		titleParams.gravity = Gravity.LEFT | Gravity.TOP;
 		targetTitle = new TextView(context);
@@ -301,7 +301,7 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.85 * DIALOG_WIDTH, 0.65 * TARGET_HEIGHT,
-			LEFT + 0.075 * DIALOG_WIDTH, TARGETTOP+0.22*TARGET_HEIGHT, 
+			LEFT + 0.075 * DIALOG_WIDTH, TARGETTOP+0.22*TARGET_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		targetText = new TextView(context);
@@ -313,11 +313,11 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
 		windowManager.addView(targetText, textParams);
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.18 * TARGET_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH, 
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.18 * TARGET_HEIGHT, 0.1* SCREEN_WIDTH + 0.067 * DIALOG_WIDTH,
 			TARGETTOP+0.75*TARGET_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		targetPosButton = new Button(context);
@@ -336,11 +336,11 @@ exports.showTargetEnableOverlay = function (title, msg, pos, neg, posCallback, n
 
 
 			// add positive button
-		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.18 * TARGET_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH, 
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.18 * TARGET_HEIGHT, 0.1 * SCREEN_WIDTH + 0.534 * DIALOG_WIDTH,
 			TARGETTOP+0.75*TARGET_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		targetNegButton = new Button(context);
@@ -388,7 +388,3 @@ exports.removeTargetDialog = function () {
 		targetNegButton = undefined;
 	}
 }
-
-
-
-

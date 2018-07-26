@@ -25,7 +25,7 @@ const RADIO_MARGIN = 0.025
 
 
 /******************************
- *          PAINTS            *                           
+ *          PAINTS            *
  ******************************/
 
 //turqouise (default), yellow, red
@@ -60,12 +60,12 @@ var CORNER_RADIUS = 15;
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, DIALOG_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, DIALOG_FILL);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
@@ -82,7 +82,7 @@ var DialogView = android.view.View.extend({
 		var newHeight = 1.5 * ICON_RADIUS;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -118,10 +118,10 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		}
 
 		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 		fullScreen = new DialogView(context);
@@ -129,7 +129,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 
 		// add text
 		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.2*DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.26*SCREEN_HEIGHT + 0.10*DIALOG_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.26*SCREEN_HEIGHT + 0.10*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		text = new TextView(context);
@@ -139,7 +139,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		} else {
 			text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
 		}
-		
+
 		text.setTextColor(Color.BLACK);
 		text.setHorizontallyScrolling(false);
 		text.setGravity(Gravity.CENTER);
@@ -147,7 +147,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 
 		//radio group
 		var rgparams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.5*DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.25*SCREEN_HEIGHT + 0.32*DIALOG_HEIGHT, 
+			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.25*SCREEN_HEIGHT + 0.32*DIALOG_HEIGHT,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		rgparams.gravity = Gravity.LEFT | Gravity.TOP;
 		rg = new RadioGroup(context);
@@ -158,7 +158,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 				selected = rb.getText();
 			}
 		}));
-		
+
 
 		//option 1
 		var opt1 = new RadioButton(context);
@@ -211,11 +211,11 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.15 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 
+		var posButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.15 * DIALOG_HEIGHT, 0.1 * (SCREEN_WIDTH + DIALOG_WIDTH),
 			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		posButton = new Button(context);
@@ -231,7 +231,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 				if (snoozeMode) {
 					Toast.makeText("HabitLab snoozed for " + selected).show();
 					var value = parseInt(selected.substr(0, selected.indexOf(" ")));
-					if (value === 8 || value === 24) { 			
+					if (value === 8 || value === 24) {
 						StorageUtil.setSnooze(value*60);
 					} else {
 						StorageUtil.setSnooze(value);
@@ -244,7 +244,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 				} else if (lockdownMode) {
 					Toast.makeText("Lockdown mode enabled for " + selected).show();
 					var value = parseInt(selected.substr(0, selected.indexOf(" ")));
-					if (value === 1 || value === 2) { 			
+					if (value === 1 || value === 2) {
 						StorageUtil.setLockdown(value*60);
 					} else {
 						StorageUtil.setLockdown(value);
@@ -265,11 +265,11 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 		windowManager.addView(posButton, posButtonParams);
 
 		// add positive button
-		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH, 
-			0.15 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH, 
+		var negButtonParams = new WindowManager.LayoutParams(0.4 * DIALOG_WIDTH,
+			0.15 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.55 * DIALOG_WIDTH,
 			0.35 * SCREEN_HEIGHT + 0.6 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		negButton = new Button(context);
@@ -288,7 +288,7 @@ exports.showOverlay = function (msg, op1, op2, op3, op4, snoozeMode, lockdownMod
 	} else {
 		permissions.launchSystemOverlayIntent();
 	}
-	
+
 }
 
 
@@ -319,4 +319,3 @@ exports.removeDialog = function () {
 		negButton = undefined;
 	}
 }
-

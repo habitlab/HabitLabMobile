@@ -28,13 +28,13 @@ var iconFills = ["#FFA730", "#E71D36", "#2EC4B6", "#72e500", "#011627"];
 
 var context = app.android.context;
 
-// Custom DialogView 
+// Custom DialogView
 var OverlayView = android.view.View.extend({
 	onDraw: function (canvas) {
 		var BACKGROUND = new Paint();
 		BACKGROUND.setColor(Color.BLACK);
 		BACKGROUND.setAlpha(50);
-		canvas.drawRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), 15, 15, BACKGROUND);
+		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(),BACKGROUND);
 	}
 });
 
@@ -49,7 +49,7 @@ exports.grayOut = function(rect) {
 	if (!overlay && rect.left > 0 && rect.right < SCREEN_WIDTH) {
 	    if (permissions.checkSystemOverlayPermission()) {
 			overlayParams = new WindowManager.LayoutParams(width, height, rect.left, rect.top - getStatusBarHeight(),
-				permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+				permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
 			overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 			overlay = new OverlayView(context);
@@ -65,12 +65,12 @@ exports.grayOut = function(rect) {
 
 					return true;
 				}
-			})); 
+			}));
 	    } else {
 	        permissions.launchSystemOverlayIntent(); 
 	    }
-		
-		
+
+
 
 	} else {
 
@@ -80,7 +80,7 @@ exports.grayOut = function(rect) {
 			windowManager.updateViewLayout(overlay, overlayParams);
 		} else {
 			exports.removeGrayOut();
-		}	
+		}
 	}
 }
 
@@ -100,5 +100,3 @@ var getStatusBarHeight = function() {
     }
     return null;
 }
-
-

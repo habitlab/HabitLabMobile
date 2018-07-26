@@ -22,7 +22,7 @@ var imageBitmap;
 
 
 /******************************
- *          PAINTS            *                           
+ *          PAINTS            *
  ******************************/
 
 
@@ -35,7 +35,7 @@ TOAST_OUTLINE_FILL.setColor(Color.parseColor("#337332")); // Green
 
 var DIM_BACKGROUND = new Paint();
 DIM_BACKGROUND.setColor(Color.BLACK);
-DIM_BACKGROUND.setAlpha(70); 
+DIM_BACKGROUND.setAlpha(70);
 
 var ICON_FILL = new Paint();
 ICON_FILL.setColor(Color.parseColor("#2EC4B6")); //turquoise
@@ -67,20 +67,20 @@ var PADDING = 0.01 * SCREEN_WIDTH;
 var context = app.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
-// Custom DialogView 
+// Custom DialogView
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
-		canvas.drawRoundRect(RIGHT - DIALOG_HEIGHT - PADDING, TOP + PADDING, RIGHT - PADDING, BOTTOM - PADDING, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, TOAST_OUTLINE_FILL); //outline
+		canvas.drawRect(RIGHT - DIALOG_HEIGHT - PADDING, TOP + PADDING, RIGHT - PADDING, BOTTOM - PADDING, CLOSE_FILL); //grey
 		canvas.drawRect(LEFT + PADDING, TOP + PADDING, RIGHT - DIALOG_HEIGHT + PADDING, BOTTOM - PADDING, TOAST_FILL); //green main
-		
+
 		// // add icon frame
 		var iconLeft = LEFT +  2 * PADDING;
 		var iconRight = iconLeft + DIALOG_HEIGHT;
 		var iconTop = TOP + 2 * PADDING;
 		var iconBottom = BOTTOM - 2 * PADDING;
-		canvas.drawRoundRect(iconLeft, iconTop, iconRight, iconBottom, CORNER_RADIUS, CORNER_RADIUS, ICON_BACK_FILL);
+		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, ICON_BACK_FILL);
 
 		// // add icon
 		if (imageBitmap === null) return;
@@ -89,19 +89,19 @@ var DialogView = android.view.View.extend({
 		var newHeight = ICON_HEIGHT - 4 * PADDING;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		canvas.drawBitmap(icon, iconLeft, iconTop, ICON_FILL);
 	}
 });
 
 
-// Custom DialogView 
+// Custom DialogView
 var FakeDialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		canvas.drawRoundRect(0.24*SCREEN_WIDTH, TOP-0.01*SCREEN_WIDTH, RIGHT+0.11*SCREEN_WIDTH, BOTTOM+0.01*SCREEN_WIDTH, CORNER_RADIUS, CORNER_RADIUS, TOAST_OUTLINE_FILL); //outline
 		canvas.drawRoundRect(RIGHT, TOP, RIGHT+0.1*SCREEN_WIDTH, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, CLOSE_FILL); //grey
 		canvas.drawRect(LEFT-0.01*SCREEN_WIDTH, TOP, RIGHT+0.01*SCREEN_WIDTH, BOTTOM, TOAST_FILL); //green main
-		
+
 		// // add icon frame
 		var iconLeft = 0.25*SCREEN_WIDTH;
 		var iconRight = LEFT;
@@ -116,7 +116,7 @@ var FakeDialogView = android.view.View.extend({
 		var newHeight = ICON_HEIGHT;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		canvas.drawBitmap(icon, iconLeft, TOP, ICON_FILL);
 	}
 });
@@ -127,10 +127,10 @@ var closeButton;
 exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 	imageBitmap = iconBitmap;
 	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, 
+	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
 		WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
 		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 		PixelFormat.TRANSLUCENT);
 	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
 	if (!real) {
@@ -142,8 +142,8 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 
     // add text
     var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	LEFT+0.1*DIALOG_WIDTH, TOP + 0.13*DIALOG_HEIGHT, 
-    	permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+    	LEFT+0.1*DIALOG_WIDTH, TOP + 0.13*DIALOG_HEIGHT,
+    	permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
     	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
     text = new TextView(context);
@@ -165,11 +165,11 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 
 
     // add neg button
-    var closeButtonParams = new WindowManager.LayoutParams(0.1*SCREEN_WIDTH, 
-    	0.1*SCREEN_WIDTH, RIGHT - DIALOG_HEIGHT, 
+    var closeButtonParams = new WindowManager.LayoutParams(0.1*SCREEN_WIDTH,
+    	0.1*SCREEN_WIDTH, RIGHT - DIALOG_HEIGHT,
     	TOP, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 		PixelFormat.TRANSLUCENT);
    	closeButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
     closeButton = new Button(context);
@@ -204,6 +204,3 @@ exports.removeOverlay = function () {
 		closeButton = undefined;
 	}
 }
-
-
-

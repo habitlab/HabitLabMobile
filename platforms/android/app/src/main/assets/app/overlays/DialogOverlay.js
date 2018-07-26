@@ -55,7 +55,7 @@ var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		DIM_BACKGROUND.setAlpha(128); // 50% dimness
 		canvas.drawRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, DIM_BACKGROUND);
-		canvas.drawRoundRect(LEFT, TOP, RIGHT, BOTTOM, CORNER_RADIUS, CORNER_RADIUS, DIALOG_FILL);
+		canvas.drawRect(LEFT, TOP, RIGHT, BOTTOM, DIALOG_FILL);
 
 		// add icon frame
 		var iconLeft = SCREEN_WIDTH / 2 - ICON_RADIUS;
