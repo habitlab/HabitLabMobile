@@ -1,11 +1,11 @@
 {
-	"time": "Thu Jul 26 2018 17:25:03 GMT-0700 (PDT)",
+	"time": "Thu Jul 26 2018 17:28:15 GMT-0700 (PDT)",
 	"nativePlatformStatus": "3",
 	"bundle": false,
-	"release": false,
-	"changesRequireBuild": false,
+	"release": true,
+	"changesRequireBuild": true,
 	"projectFileHash": "e5e36c202ae0b602c89d6e3ec2ae952d306c6aaa1ef8054c35ca8935a58356ba",
-	"changesRequireBuildTime": "Thu Jul 26 2018 14:14:58 GMT-0700 (PDT)",
+	"changesRequireBuildTime": "Thu Jul 26 2018 17:28:15 GMT-0700 (PDT)",
 	"appFilesHashes": {
 		"/Users/drewgregory/Documents/CURIS/HabitLabMobile/app/.DS_Store": "1c4d49aa545d7bfb3e8e9a0942d90a652174e60f",
 		"/Users/drewgregory/Documents/CURIS/HabitLabMobile/app/README.md": "c6d550a2f77eb68587dea464b008d9216fa7790d",
