@@ -15,7 +15,6 @@ if (StorageUtil.isTutorialComplete()) {
   viewFile = "goalsView";
   view = 'goalsView';
 }
-//
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {

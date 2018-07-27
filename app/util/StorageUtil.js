@@ -145,7 +145,7 @@ var createPackageData = function(packageName) {
      packageData.frequent = Math.random() < .5 ? true : false
   }
   appSettings.setString(packageName, JSON.stringify(packageData))
-  send_setting_change_log({type: "added package", data: packageData})
+  send_setting_change_log({type: "added package", name: packageName, frequent: packageData.frequent})
 };
 
 /* helper: createPhoneData
@@ -304,6 +304,8 @@ exports.setUpDB = function(erasingData) {
 
   watchlistPreset.forEach(function (item) {
     createPackageData(item);
+    send_setting_change_log({type: "added watchlist package " + item, watchlist: watchlistPreset
+    })
   });
 
 
@@ -702,6 +704,8 @@ exports.updateAppTime = async function(currentApplication, time) {
   var idx = index()
   //Let's store this session information locally if this app is on our watchlist.
   var appInfo = appSettings.getString(packageName, "null");
+  let enabled = false
+  let frequent = false
   if (appInfo != "null") {
     appInfo = JSON.parse(appInfo)
     // In case this session crosses over to a different day, we should break it up when storing it locally
@@ -712,11 +716,18 @@ exports.updateAppTime = async function(currentApplication, time) {
       // duration is in seconds, but the local storage saves it in minutes.
       appInfo['stats'][idx % 28]['time'] += (yesterdayTime / MIN_IN_MS )
     }
+    enabled = true
+    console.log(JSON.stringify(appInfo))
     appInfo['stats'][ idx % 28]['time'] += (time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
+    if (exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName, false)) {
+      frequent =  true
+    }
   }
   // Now, log today's portion of the session.
-  var session_object = {timestamp: start.getTime(), duration: Math.round(time /SEC_IN_MS), domain: packageName, interventions: currentApplication.interventions}
+  var session_object = {timestamp: start.getTime(), duration: Math.round(time / SEC_IN_MS),
+    enabled: enabled, frequent: frequent, domain: packageName,
+    interventions: currentApplication.interventions}
   logSession(session_object)
 };
 
@@ -1475,7 +1486,7 @@ function send_setting_change_log(data) {
 
 exports.sendLog = sendLog
 
-if (exports.isTutorialComplete() && (exports.getExperiment().includes("null"))) {
+if ((exports.getExperiment().includes("null"))) {
   // Old user. let's make them retake the tutorial so they can sign in.
   // Assign the user to an experimental group!!
   exports.assignExperiment("conservation")
