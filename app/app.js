@@ -7,15 +7,15 @@ var viewFile = 'onboarding/nameView';
 var view = 'nameView';
 
 if (StorageUtil.isTutorialComplete()) {
-  console.log('tutorial complete')
+  //
   viewFile = "progressView";
   view = "progressView";
 } else if (StorageUtil.isOnboardingComplete()) {
-  console.log('onboarding complete but not tutorial')
+  //
   viewFile = "goalsView";
   view = 'goalsView';
 }
-console.log('passed tutorial and onboarding check')
+//
 
 var getErrorDetails = function (args) {
 	if (typeof args === 'string') {

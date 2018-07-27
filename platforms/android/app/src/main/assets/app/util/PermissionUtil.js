@@ -95,7 +95,7 @@ exports.launchAccessibilityServiceIntent = function () {
  */
 exports.getOverlayType = function(otherOverlay) {
 	if (android.os.Build.VERSION.SDK_INT < 26)
-		return otherOverlay != null ? otherOvelay : otherWindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+		return otherOverlay != null ? otherOverlay : otherWindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 	return WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
 }
 

@@ -110,7 +110,7 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
  */
 android.accessibilityservice.AccessibilityService.extend("com.habitlab.AccessibilityService", {
     onAccessibilityEvent: function(event) {
-        console.log('is this working??')
+        //
         var activePackage = event.getPackageName();
         var eventType = event.getEventType();
         if (!activePackage) {

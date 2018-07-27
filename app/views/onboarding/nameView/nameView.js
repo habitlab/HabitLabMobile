@@ -25,7 +25,7 @@ exports.pageLoaded = function(args) {
     viewFile = 'goalsView';
     view = 'goalsView';
     if (!StorageUtil.isOnboardingComplete()) {
-      console.log('setting onboarding complete')
+      //
       StorageUtil.setOnboardingComplete();
       StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'finished_onboarding'}]);
     }
