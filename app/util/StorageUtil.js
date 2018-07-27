@@ -145,7 +145,7 @@ var createPackageData = function(packageName) {
      packageData.frequent = Math.random() < .5 ? true : false
   }
   appSettings.setString(packageName, JSON.stringify(packageData))
-
+  send_setting_change_log({type: "added package", data: packageData})
 };
 
 /* helper: createPhoneData
