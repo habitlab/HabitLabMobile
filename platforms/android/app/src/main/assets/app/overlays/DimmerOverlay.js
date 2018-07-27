@@ -1,5 +1,6 @@
 var app = require("application");
 var timer = require("timer");
+var permissions = require("~/util/PermissionUtil")
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -38,7 +39,7 @@ var OverlayView = android.view.View.extend({
 
 // dimmer view
 var overlayParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
-	WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(TYPE_SYSTEM_OVERLAY),
+	WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY),
 	WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
 overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
@@ -47,7 +48,7 @@ var timerID;
 
 // icon view
 var iconParams = new WindowManager.LayoutParams(ICON_SIDE, ICON_SIDE, SCREEN_WIDTH - ICON_SIDE,
-	0, permissions.getOverlayType(TYPE_SYSTEM_OVERLAY),
+	0, permissions.getOverlayType(WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY),
 	WindowManager.LayoutParams.FLAG_FULLSCREEN, PixelFormat.TRANSLUCENT);
 var icon_id = context.getResources().getIdentifier("ic_lightbulb",
 		"drawable", context.getPackageName());

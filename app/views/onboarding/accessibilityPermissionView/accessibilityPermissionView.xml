@@ -1,4 +1,4 @@
-<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
+<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo"
   actionBarHidden="true" xmlns:VideoPlayer="nativescript-videoplayer">
 		<StackLayout>
         <Label text=" How to Enable Services" textWrap='true' class="title"/>
@@ -9,7 +9,8 @@
               <Label textWrap="true" text="2. Once there, tap on 'HabitLab' to get to HabitLab's service page." class="information"/>
               <Image src="~/images/accessibility_example.jpg" class="information-image" />
               <Label textWrap="true" text="3. Tap on the toggle to switch it to the 'on' position!" class="information"/>
-              <Label textWrap="true" text="4. Start the app again." class="information"/>
+              <Label textWrap="true" text="4. If your Android version is less than 6.0, restart your phone." class="information"/>
+              <Label textWrap="true" text="5. Start the app again." class="information"/>
             </StackLayout>
           </ScrollView>
         <Button id="accessibilityButton" text="Give Accessibility Permission" tap="giveAccessibilityPermission"/>

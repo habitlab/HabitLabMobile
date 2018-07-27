@@ -110,6 +110,7 @@ signInResult = function(data) {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             var Toast = require("nativescript-toast");
             Toast.makeText("Oops! An error occurred. Please try signing in again").show();
+            moveOn()
             return undefined
         }
 }

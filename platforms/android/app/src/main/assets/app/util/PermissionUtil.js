@@ -51,16 +51,21 @@ exports.launchSystemOverlayIntent = function () {
  * false otherwise.
  */
 exports.checkAccessibilityPermission = function () {
+	console.log("checking accessibility permission")
 	var context = application.android.context;
 	var pm = context.getPackageManager();
 	var accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-	var runningServices = accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+	var runningServices = accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
+	console.log("about to iterate through running services")
+	console.log(runningServices.size() + " running services")
 	for (var i = 0; i < runningServices.size(); i++) {
 		var service = runningServices.get(i);
 		var resolveInfo = service.getResolveInfo();
 		var label = resolveInfo.loadLabel(pm).toString();
+		console.log(label + " is a running service")
 		if (label === "HabitLab") { return true; }
 	}
+	console.log("finished loop")
 	return false;
 }
 
