@@ -12,7 +12,6 @@ var GoogleSignInAccount = com.google.android.gms.auth.api.signin.GoogleSignInAcc
 var ApiException = com.google.android.gms.common.api.ApiException;
 
 let RC_SIGN_IN = 1;
-// TODO: Replace client with production-level client. Also, SHA fingerprint is in development mode.
 // See https://developers.google.com/android/guides/client-auth
 // https://developers.google.com/identity/sign-in/android/start-integrating
 
@@ -110,7 +109,6 @@ signInResult = function(data) {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             var Toast = require("nativescript-toast");
             Toast.makeText("Oops! An error occurred. Please try signing in again").show();
-            moveOn()
             return undefined
         }
 }
