@@ -717,7 +717,6 @@ exports.updateAppTime = async function(currentApplication, time) {
       appInfo['stats'][idx % 28]['time'] += (yesterdayTime / MIN_IN_MS )
     }
     enabled = true
-    console.log(JSON.stringify(appInfo))
     appInfo['stats'][ idx % 28]['time'] += (time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
     if (exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName, false)) {
