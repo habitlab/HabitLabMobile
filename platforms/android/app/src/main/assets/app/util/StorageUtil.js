@@ -3,10 +3,11 @@ var ID = require('~/interventions/InterventionData');
 var http = require('http');
 var app = require('~/app')
 var askForEmail = require("~/views/onboarding/askForEmailView/askForEmailView")
-
+var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
+var APP_VERSION = 18;
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var SEC_IN_MS = 1000;
@@ -137,12 +138,6 @@ var createPackageData = function(packageName) {
       stats: Array(28).fill(PkgStat()),
       enabled: Array(ID.interventionDetails.length).fill(enabled),
       sessions: Array(28).fill([])
-  }
-  if (appSettings.getString("experiment", "null") == "conservation") {
-    /* Let's add a param. The parameter determines whether the package should
-     * be given frequent interventions or infrequent interventions.
-     */
-     packageData.frequent = Math.random() < .5 ? true : false
   }
   appSettings.setString(packageName, JSON.stringify(packageData))
   send_setting_change_log({type: "added package", name: packageName, frequent: packageData.frequent})
@@ -704,6 +699,7 @@ exports.updateAppTime = async function(currentApplication, time) {
   var idx = index()
   //Let's store this session information locally if this app is on our watchlist.
   var appInfo = appSettings.getString(packageName, "null");
+
   let enabled = false
   let frequent = false
   if (appInfo != "null") {
@@ -720,7 +716,7 @@ exports.updateAppTime = async function(currentApplication, time) {
     appInfo['stats'][ idx % 28]['time'] += (time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
     if (exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName, false)) {
-      frequent =  true
+      frequent = true
     }
   }
   // Now, log today's portion of the session.
@@ -1351,13 +1347,6 @@ exports.addLogEvents = function(events) {
     }
   }
   log.data = data
-  //finally, send the log!
-  http.request({
-    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=stats&userid=" + exports.getUserID(),
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    content: JSON.stringify(log)
-  })
 };
 
 exports.getUserID = function() {
@@ -1441,6 +1430,7 @@ tryToLogExternalStats = async function(session_object) {
  *                        interventions: [{intervention: "", timestamp: Number}]}
  */
 logSession = function(session_object) {
+  session.version = APP_VERSION
   //Let's also send this off to the server.
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
@@ -1475,6 +1465,7 @@ exports.getExperiment = function() {
  * @param {} data
  */
 function send_setting_change_log(data) {
+  data.version = APP_VERSION
   return http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
     method: "POST",
@@ -1497,9 +1488,20 @@ if (exports.getExperiment().includes("conservation")) {
   /**
    * Checks if this package is denoted as deserving a "frequent" assignment
    * of interventions according to the conservation experiment.
+   * This value is changed each week, local user's time.
+   * @param packageName: name of app package.
    */
   exports.isPackageFrequent = function(packageName) {
+    // If not enabled package, it's definitely not frequent.
     if (appSettings.getString(packageName, "null") == "null") return false
-    return JSON.parse(appSettings.getString(packageName, "null")).frequent
+    appInfo = JSON.parse(appSettings.getString(packageName, "null"))
+    week = moment().isoWeek()
+    if (appInfo.frequentAssignmentWeek == null || appInfo.frequentAssignmentWeek
+    != week) {
+      appInfo.frequentAssignmentWeek = week
+      appInfo.frequent = Math.random() < .5 ? true : false
+      appSettings.setString(packageName, JSON.stringify(appInfo))
+    }
+    return appInfo.frequent
   }
 }

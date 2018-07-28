@@ -87,10 +87,6 @@ moveOn = function () {
 };
 
 
-exports.showError = function() {
-    FancyAlert.TNSFancyAlert.showError("Oops!", "An error occurred. Please try signing in again", "OK")
-}
-
 /**
  * Saves sign in data, notifies user of result.
  * @param data: Task<GoogleSignInAccount> from GoogleSignIn.getSignedInAccountFromIntent()
@@ -109,7 +105,6 @@ signInResult = function(data) {
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             var Toast = require("nativescript-toast");
             Toast.makeText("Oops! An error occurred. Please try signing in again").show();
-            moveOn()
             return undefined
         }
 }
