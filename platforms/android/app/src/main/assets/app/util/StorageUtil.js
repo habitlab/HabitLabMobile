@@ -1415,6 +1415,7 @@ exports.registerUser = function(token) {
 tryToLogExternalStats = async function(session_object) {
   object_to_return = {userid: exports.getUserID(), timestamp: session_object.timestamp, domains_time: {}}
   object_to_return.domains_time["" + session_object.domain] = session_object.duration
+  object_to_return.utcOffset = moment().utcOffset()
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addsessiontototal" ,
     method: "POST",
@@ -1430,7 +1431,8 @@ tryToLogExternalStats = async function(session_object) {
  *                        interventions: [{intervention: "", timestamp: Number}]}
  */
 logSession = function(session_object) {
-  session.version = APP_VERSION
+  console.log('Logging sessions')
+  session_object.version = APP_VERSION
   //Let's also send this off to the server.
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?logname=sessions&userid=" + exports.getUserID(),
@@ -1466,6 +1468,7 @@ exports.getExperiment = function() {
  */
 function send_setting_change_log(data) {
   data.version = APP_VERSION
+  data.utcOffset = moment().utcOffset()
   return http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
     method: "POST",

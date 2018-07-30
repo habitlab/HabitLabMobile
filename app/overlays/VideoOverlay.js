@@ -1,6 +1,6 @@
 var app = require("application");
 var timer = require("timer");
-var permission = require("~/util/PermissionUtil")
+var permissions = require("~/util/PermissionUtil")
 
 // native APIs
 var WindowManager = android.view.WindowManager;
@@ -28,7 +28,7 @@ iconPaint.setStyle(Paint.Style.STROKE);
 
 var context = app.android.context;
 
-// Custom DialogView 
+// Custom DialogView
 var OverlayView = android.view.View.extend({
 	onDraw: function (canvas) {
 		canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
@@ -41,9 +41,9 @@ var OverlayView = android.view.View.extend({
 		var iconTop = canvas.getHeight() * 0.35;
 		var iconBottom = iconTop + diameter;
 
-		canvas.drawLine(0.07 * canvas.getWidth(), iconTop + diameter / 2, 
+		canvas.drawLine(0.07 * canvas.getWidth(), iconTop + diameter / 2,
 			iconLeft - canvas.getWidth() * 0.01, iconTop + diameter / 2, iconPaint);
-		canvas.drawLine(iconRight + canvas.getWidth() * 0.01, iconTop + diameter / 2, 
+		canvas.drawLine(iconRight + canvas.getWidth() * 0.01, iconTop + diameter / 2,
 			0.93 * canvas.getWidth(), iconTop + diameter / 2, iconPaint);
 
 		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, iconPaint);
@@ -55,7 +55,7 @@ var OverlayView = android.view.View.extend({
 		var newHeight = 0.75 * diameter;
 		var newWidth = newHeight * hToWRatio;
 		var icon = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, false);
-		
+
 		var bitmapLeft = iconLeft + (iconRight - iconLeft) / 2 - newWidth / 2;
 		var bitmapTop = iconTop + (iconBottom - iconTop) / 2 - newHeight * 9 / 16;
 
@@ -74,14 +74,14 @@ exports.showYoutube = function(width, height, pos, neg) {
     if (permissions.checkSystemOverlayPermission()) {
 			// overlay to block video
 		var overlayParams = new WindowManager.LayoutParams(width, height, 0, 0,
-			permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_FULLSCREEN, 
+			permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_FULLSCREEN,
 			PixelFormat.TRANSLUCENT);
 		overlayParams.gravity = Gravity.LEFT | Gravity.TOP;
 		overlay = new OverlayView(context);
 		windowManager.addView(overlay, overlayParams);
 
 		// add text
-		var textParams = new WindowManager.LayoutParams(0.8 * width, 0.2 * height, 0.1 * width, 0.1 * height, 
+		var textParams = new WindowManager.LayoutParams(0.8 * width, 0.2 * height, 0.1 * width, 0.1 * height,
 			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		text = new TextView(context);
@@ -94,10 +94,10 @@ exports.showYoutube = function(width, height, pos, neg) {
 
 
 		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.3 * width, 
+		var posButtonParams = new WindowManager.LayoutParams(0.3 * width,
 			0.25 * height, 0.14 * width, 0.625 * height, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		posButton = new Button(context);
@@ -116,10 +116,10 @@ exports.showYoutube = function(width, height, pos, neg) {
 
 
 		// add negative button
-		var negButtonParams = new WindowManager.LayoutParams(0.3 * width, 
+		var negButtonParams = new WindowManager.LayoutParams(0.3 * width,
 			0.25 * height, 0.56 * width, 0.625 * height, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		negButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
 		negButton = new Button(context);
@@ -163,4 +163,3 @@ exports.removeVideoBlocker = function() {
 		text = undefined;
 	}
 }
-
