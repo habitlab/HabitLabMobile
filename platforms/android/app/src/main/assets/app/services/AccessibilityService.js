@@ -180,7 +180,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName))
             }
         } else if (currentApplication.isBlacklisted) {
-            interventionManager.interventions[ID.interventionIDs.VIDEO_BLOCKER](true, event.getSource(), currentApplication.packageName); // youtube only
+            //TODO: Get video blocker working. interventionManager.interventions[ID.interventionIDs.VIDEO_BLOCKER](true, event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 
