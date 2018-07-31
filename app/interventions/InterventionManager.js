@@ -879,7 +879,7 @@ code.POSITIVE_TOAST = function(real, pkg) {
     var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
     //var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     //var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
-    ToastOverlay.showToastOverlay("Open " + appName, bitmap, null, true);
+    ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
     return;
   }
   if (StorageUtil.isTargetOn()) {

@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 20
+var APP_VERSION = 21
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var SEC_IN_MS = 1000;
@@ -722,7 +722,7 @@ exports.updateAppTime = async function(currentApplication, time) {
   // Now, log today's portion of the session.
   var session_object = {timestamp: start.getTime(), duration: Math.round(time / SEC_IN_MS),
     enabled: enabled, frequent: frequent, domain: packageName,
-    interventions: currentApplication.interventions}
+    interventions: currentApplication.intervention, isoWeek: moment().isoWeeks()}
   logSession(session_object)
 };
 
@@ -1431,7 +1431,6 @@ tryToLogExternalStats = async function(session_object) {
  *                        interventions: [{intervention: "", timestamp: Number}]}
  */
 logSession = function(session_object) {
-  console.log('Logging sessions')
   session_object.version = APP_VERSION
   //Let's also send this off to the server.
   http.request({

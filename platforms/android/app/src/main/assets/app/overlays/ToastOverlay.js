@@ -125,65 +125,71 @@ var fullScreen;
 var text;
 var closeButton;
 exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
-	imageBitmap = iconBitmap;
-	// add whole screen view
-	var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
-		WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-		PixelFormat.TRANSLUCENT);
-	viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-	if (!real) {
-		fullScreen = new FakeDialogView(context);
+	if (permissions.checkSystemOverlayPermission()) {
+		exports.removeOverlay()
+		imageBitmap = iconBitmap;
+		// add whole screen view
+		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
+			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+					WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+			PixelFormat.TRANSLUCENT);
+		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+		if (!real) {
+			fullScreen = new FakeDialogView(context);
+		} else {
+			fullScreen = new DialogView(context);
+		}
+		windowManager.addView(fullScreen, viewParams);
+
+			// add text
+		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+				LEFT+0.1*DIALOG_WIDTH, TOP + 0.13*DIALOG_HEIGHT,
+				permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				PixelFormat.TRANSLUCENT);
+			textParams.gravity = Gravity.LEFT | Gravity.TOP;
+			text = new TextView(context);
+			text.setText(msg);
+			text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 7);
+			text.setTextColor(Color.WHITE);
+			text.setHorizontallyScrolling(false);
+			text.setGravity(Gravity.CENTER);
+			text.setOnClickListener(new android.view.View.OnClickListener({
+				onClick: function() {
+					if (callback) {
+						callback();
+					}
+						exports.removeOverlay();
+				}
+		}));
+
+		windowManager.addView(text, textParams);
+
+
+			// add neg button
+		var closeButtonParams = new WindowManager.LayoutParams(0.1*SCREEN_WIDTH,
+				0.1*SCREEN_WIDTH, RIGHT - DIALOG_HEIGHT,
+				TOP, permissions.getOverlayType(),
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+			PixelFormat.TRANSLUCENT);
+			closeButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+			closeButton = new Button(context);
+		closeButton.setText("X");
+		closeButton.setTextColor(Color.WHITE);
+		closeButton.setStateListAnimator(null);
+		closeButton.getBackground().setColorFilter(Color.parseColor("#8d978d"), android.graphics.PorterDuff.Mode.MULTIPLY);
+		closeButton.getBackground().setAlpha(170);
+		closeButton.setOnClickListener(new android.view.View.OnClickListener({
+				onClick: function() {
+						exports.removeOverlay();
+				}
+		}));
+		windowManager.addView(closeButton, closeButtonParams);
 	} else {
-		fullScreen = new DialogView(context);
+		permissions.launchSystemOverlayIntent()
 	}
-    windowManager.addView(fullScreen, viewParams);
 
-    // add text
-    var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-    	LEFT+0.1*DIALOG_WIDTH, TOP + 0.13*DIALOG_HEIGHT,
-    	permissions.getOverlayType(), WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-    	PixelFormat.TRANSLUCENT);
-    textParams.gravity = Gravity.LEFT | Gravity.TOP;
-    text = new TextView(context);
-    text.setText(msg);
-    text.setTextSize(TypedValue.COMPLEX_UNIT_PT, 7);
-    text.setTextColor(Color.WHITE);
-    text.setHorizontallyScrolling(false);
-    text.setGravity(Gravity.CENTER);
-    text.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	    	if (callback) {
-	    		callback();
-	    	}
-	        exports.removeOverlay();
-	    }
-	}));
-
-    windowManager.addView(text, textParams);
-
-
-    // add neg button
-    var closeButtonParams = new WindowManager.LayoutParams(0.1*SCREEN_WIDTH,
-    	0.1*SCREEN_WIDTH, RIGHT - DIALOG_HEIGHT,
-    	TOP, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-		PixelFormat.TRANSLUCENT);
-   	closeButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-    closeButton = new Button(context);
-	closeButton.setText("X");
-	closeButton.setTextColor(Color.WHITE);
-	closeButton.setStateListAnimator(null);
-	closeButton.getBackground().setColorFilter(Color.parseColor("#8d978d"), android.graphics.PorterDuff.Mode.MULTIPLY);
-	closeButton.getBackground().setAlpha(170);
-	closeButton.setOnClickListener(new android.view.View.OnClickListener({
-	    onClick: function() {
-	        exports.removeOverlay();
-	    }
-	}));
-    windowManager.addView(closeButton, closeButtonParams);
 }
 
 

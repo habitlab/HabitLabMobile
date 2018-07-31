@@ -90,8 +90,8 @@ exports.getBasicInfo = function(packageName) {
 	}
 
 	if (appInfo) {
-        var applicationName = pm.getApplicationLabel(appInfo);
-        var bitmap = convertToBitmap(appInfo.loadIcon(pm))
+      var applicationName = pm.getApplicationLabel(appInfo);
+      var bitmap = exports.getApplicationBitmap(packageName)
   		var iconSource = imageSource.fromNativeSource(bitmap);
   		return {
   			name: applicationName,
@@ -149,12 +149,6 @@ exports.getInstalledPresets = function() {
 
 
 exports.getApplicationBitmap = function(pkg) {
-	var appInfo;
-	try {
-		appInfo = pm.getApplicationInfo(pkg, 0);
-	} catch (e) {
-		appInfo = null;
-	}
-
-	return appInfo ? appInfo.loadIcon(pm).getBitmap() : null;
+	let icon = pm.getApplicationIcon(pkg)
+	return icon ? convertToBitmap(icon): null
 }

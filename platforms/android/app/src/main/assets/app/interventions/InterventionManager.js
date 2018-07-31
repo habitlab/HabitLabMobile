@@ -879,10 +879,9 @@ code.POSITIVE_TOAST = function(real, pkg) {
     var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
     //var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
     //var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
-    ToastOverlay.showToastOverlay("Open " + appName, bitmap, null, true);
+    ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
     return;
   }
-
   if (StorageUtil.isTargetOn()) {
     var visits = StorageUtil.getVisits(pkg);
     if (visits > THRESHOLD_POSITIVE_TST) {
@@ -890,17 +889,17 @@ code.POSITIVE_TOAST = function(real, pkg) {
       if (targets.length === 0) { return; }
       var index = randBW(0, targets.length - 1);
       var targetPkg = targets[index];
-      var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
-      var cb = function () {
-        var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-        if (foreground) {
-          foreground.startActivity(launchIntent);
+      if (targetPkg.length > 2) {
+        var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
+        var cb = function () {
+          var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+          if (foreground) {
+            foreground.startActivity(launchIntent);
+          }
         }
+        var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
       }
-
-      var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-
-      ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
     }
   } else {
     show_target_enabler()
