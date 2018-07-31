@@ -438,14 +438,11 @@ code.QUOTE_NOTIFICATION = function (real, pkg) {
   for (let {quoteAuthor, quoteText} of quoteData) {
     quoteArray[quoteText + ' (' + quoteAuthor + ')']
   }
-  var minutes = StorageUtil.getAppTime(pkg);
-  if (minutes >= THRESHOLD_USAGE_NTF) {
-    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
-    var app = UsageInformationUtil.getBasicInfo(pkg).name;
-    var title = app + " Usage Alert";
-    var msg = quoteArray[Math.floor(Math.random() * quoteArray.length)];
-    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
-  }
+  StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
+  var app = UsageInformationUtil.getBasicInfo(pkg).name;
+  var title = app + " Usage Alert";
+  var msg = quoteArray[Math.floor(Math.random() * quoteArray.length)];
+  NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
 };
 
 

@@ -77,7 +77,6 @@ exports.getIdToken = async function() {
     } else {
         // We need to have the user sign in.
         var signInIntent = mGoogleSignInClient.getSignInIntent()
-        moveOn() //TODO REMOVE
         application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)
         return undefined
     }
