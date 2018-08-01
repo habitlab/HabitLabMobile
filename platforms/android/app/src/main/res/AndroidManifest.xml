@@ -3,7 +3,8 @@
 	package="__PACKAGE__"
 	android:versionCode="21"
 	android:versionName="1.5.2">
-
+	<!-- NOTE: When updating version code, be sure to also update the APP_VERSION field
+				in StorageUtil.js so the logging reflects the correct version.-->
 	<supports-screens
 		android:smallScreens="true"
 		android:normalScreens="true"
