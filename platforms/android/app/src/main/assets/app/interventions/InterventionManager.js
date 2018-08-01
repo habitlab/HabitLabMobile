@@ -840,7 +840,7 @@ var flipScreen = function(real, pkg) {
   // }
 }
 
-function show_target_enabler() {
+function show_target_enabler(service) {
   var title = "Target Acquired!";
   var msg = "You've unlocked Targets! Would you like to check it out?";
   var pos = "Let's do it!";
@@ -848,8 +848,8 @@ function show_target_enabler() {
   var cb = function() {
     var intent = context.getPackageManager().getLaunchIntentForPackage("com.stanfordhci.habitlab");
     intent.putExtra("goToTarget", "true");
-    if (foreground) {
-      foreground.startActivity(intent);
+    if (service) {
+      service.startActivity(intent);
     }
   };
 
@@ -900,7 +900,7 @@ code.POSITIVE_TOAST = function(real, pkg, service) {
       ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
     }
   } else {
-    show_target_enabler()
+    show_target_enabler(service)
   }
 }
 
@@ -955,7 +955,7 @@ code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg, service) {
       FullScreenOverlay.showOverlay(title, msg, linkMsg, "Go to " + targetAppName, null, cb);
     }
   } else {
-    show_target_enabler()
+    show_target_enabler(service)
   }
 }
 
