@@ -28,7 +28,7 @@ var BORDER_WIDTH = 0.01 * TIMER_WIDTH;
 
 
 /******************************
- *          PAINTS            *                           
+ *          PAINTS            *
  ******************************/
 
 var timerFills = ["#FFA730", "#E71D36", "#2EC4B6", "#72e500", "#011627"];
@@ -49,21 +49,21 @@ var context = application.android.context;
 var windowManager = context.getSystemService(Context.WINDOW_SERVICE);
 
 
-// Custom DialogView 
+// Custom DialogView
 var DialogView = android.view.View.extend({
 	onDraw: function (canvas) {
 		// timer box
-		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_WIDTH - BORDER_WIDTH, 
+		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_WIDTH - BORDER_WIDTH,
 			TIMER_HEIGHT - BORDER_WIDTH, TIMER_FILL);
-		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_WIDTH - BORDER_WIDTH, 
+		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_WIDTH - BORDER_WIDTH,
 			TIMER_HEIGHT - BORDER_WIDTH, BORDER);
 
 		// icon box
-		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_HEIGHT, 
+		canvas.drawRect(BORDER_WIDTH, BORDER_WIDTH, TIMER_HEIGHT,
 			TIMER_HEIGHT - BORDER_WIDTH, ICON_FILL);
 
 		// add icon
-		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", 
+		var icon_id = context.getResources().getIdentifier("ic_habitlab_white",
 			"drawable", context.getPackageName());
 		var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
 		var hToWRatio = bitmap.getWidth() / bitmap.getHeight();
@@ -83,7 +83,7 @@ var timerID;
 var textView;
 var view;
 exports.showCountUpTimer = function() {
-	changeTimerColor();	
+	changeTimerColor();
 	var time = 0;
 
 	var timerOpen = true;
@@ -96,8 +96,8 @@ exports.showCountUpTimer = function() {
 		// layout params for wrapped content overlay (background clickable)
 		var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
 			startX, startY, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 			PixelFormat.TRANSLUCENT);
 		startParams.gravity = Gravity.LEFT | Gravity.TOP;
 
@@ -105,7 +105,7 @@ exports.showCountUpTimer = function() {
 		view = new DialogView(context);
 		windowManager.addView(view, startParams);
 
-		// add timer text    
+		// add timer text
 		textView = new TextView(context);
 		textView.setText("00:00");
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
@@ -115,9 +115,9 @@ exports.showCountUpTimer = function() {
 		textView.setWidth(TIMER_WIDTH - TIMER_HEIGHT);
 		textView.setHeight(TIMER_HEIGHT);
 
-		var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
-				WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
-				SCREEN_HEIGHT - TIMER_HEIGHT, permissions.getOverlayType(), 
+		var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+				WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT,
+				SCREEN_HEIGHT - TIMER_HEIGHT, permissions.getOverlayType(),
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 		textParams.gravity = Gravity.LEFT | Gravity.TOP;
 		windowManager.addView(textView, textParams);
@@ -149,7 +149,7 @@ exports.showCountUpTimer = function() {
 					} else {
 						// swipe
 						if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
-							startParams.x = 0; 
+							startParams.x = 0;
 							textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
 						} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
 							startParams.x = SCREEN_WIDTH - startParams.width;
@@ -171,7 +171,7 @@ exports.showCountUpTimer = function() {
 
 				return true;
 			}
-		})); 
+		}));
 
 		textView.setOnTouchListener(new android.view.View.OnTouchListener({
 			onTouch: function (v, event) {
@@ -199,7 +199,7 @@ exports.showCountUpTimer = function() {
 					} else {
 						// swipe
 						if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
-							startParams.x = 0; 
+							startParams.x = 0;
 							textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
 						} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
 							startParams.x = SCREEN_WIDTH - startParams.width;
@@ -221,7 +221,7 @@ exports.showCountUpTimer = function() {
 
 				return true;
 			}
-		})); 
+		}));
 
 
 		timerID = timer.setInterval(() => {
@@ -234,24 +234,24 @@ exports.showCountUpTimer = function() {
 				textView.setTextColor(Color.parseColor("#FF7538"));
 			} else if (minutes === 10) {
 				textView.setTextColor(Color.parseColor("#C41E3A"));
-			} 
+			}
 
 			minutes = "0" + minutes;
 			seconds = "0" + seconds;
 
 			minutes = minutes.substr(minutes.length - 2, 2);
-			seconds = seconds.substr(seconds.length - 2, 2); 
+			seconds = seconds.substr(seconds.length - 2, 2);
 
 			textView.setText(minutes + ":" + seconds);
 		}, 1000);
     } else {
         permissions.launchSystemOverlayIntent(); 
     }
-	
+
 }
 
 
-exports.showCountDownTimer = function (timeInMins, callback) {
+exports.showCountDownTimer = function (timeInMins, callback, service) {
 	changeTimerColor();
 	var time = timeInMins * 60;
 
@@ -266,7 +266,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 	// layout params for wrapped content overlay (background clickable)
 	var startParams = new WindowManager.LayoutParams(TIMER_WIDTH, TIMER_HEIGHT,
 		startX, startY, permissions.getOverlayType(),
-		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | 
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
 		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
 	startParams.gravity = Gravity.LEFT | Gravity.TOP;
 
@@ -274,7 +274,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
     view = new DialogView(context);
     windowManager.addView(view, startParams);
 
-    // add timer text    
+    // add timer text
     textView = new TextView(context);
 
     var initMins = Math.floor(time / 60);
@@ -284,7 +284,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
     initSecs = "0" + initSecs;
 
     initMins = initMins.substr(initMins.length - 2, 2);
-    initSecs = initSecs.substr(initSecs.length - 2, 2); 
+    initSecs = initSecs.substr(initSecs.length - 2, 2);
 
     textView.setText(initMins + ":" + initSecs);
     textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
@@ -294,10 +294,10 @@ exports.showCountDownTimer = function (timeInMins, callback) {
     textView.setWidth(TIMER_WIDTH - TIMER_HEIGHT);
     textView.setHeight(TIMER_HEIGHT);
 
-    var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, 
-			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT, 
+    var textParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+			WindowManager.LayoutParams.WRAP_CONTENT, SCREEN_WIDTH - TIMER_WIDTH - BORDER_WIDTH + TIMER_HEIGHT,
 	    	SCREEN_HEIGHT - TIMER_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, 
+			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 	    	PixelFormat.TRANSLUCENT);
     textParams.gravity = Gravity.LEFT | Gravity.TOP;
    	windowManager.addView(textView, textParams);
@@ -329,7 +329,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 				} else {
 					// swipe
 					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
-						startParams.x = 0; 
+						startParams.x = 0;
 						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
 					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
 						startParams.x = SCREEN_WIDTH - startParams.width;
@@ -351,7 +351,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
 			return true;
 		}
-	})); 
+	}));
 
 
 	textView.setOnTouchListener(new android.view.View.OnTouchListener({
@@ -380,7 +380,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 				} else {
 					// swipe
 					if (currentX - lastX < (-0.05 * SCREEN_WIDTH)) {
-						startParams.x = 0; 
+						startParams.x = 0;
 						textParams.x = TIMER_HEIGHT - BORDER_WIDTH;
 					} else if (currentX - lastX > (0.05 * SCREEN_WIDTH)) {
 						startParams.x = SCREEN_WIDTH - startParams.width;
@@ -402,7 +402,7 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
 			return true;
 		}
-	})); 
+	}));
 
 
     timerID = timer.setInterval(() => {
@@ -413,7 +413,8 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 
 	    if (minutes === 0 && seconds === 0) {
 			exports.dismissTimer();
-			if (callback) { callback(); }
+			if (callback && service) { callback(service); }
+			else if (callback) {callback()}
 			return;
 	    }
 
@@ -421,13 +422,13 @@ exports.showCountDownTimer = function (timeInMins, callback) {
 	    	textView.setTextColor(Color.parseColor("#FF7538"));
 	    } else if (time === 30) {
 	    	textView.setTextColor(Color.parseColor("#C41E3A"));
-	    } 
+	    }
 
 	    minutes = "0" + minutes;
 	    seconds = "0" + seconds;
 
 	    minutes = minutes.substr(minutes.length - 2, 2);
-	    seconds = seconds.substr(seconds.length - 2, 2); 
+	    seconds = seconds.substr(seconds.length - 2, 2);
 
 	    textView.setText(minutes + ":" + seconds);
 	}, 1000);

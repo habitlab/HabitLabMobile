@@ -177,12 +177,12 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             }
 
             if (currentApplication.isBlacklisted && canRun) {
+              console.log(JSON.stringify(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this)))
               //TODO: Fix this
-              interventionManager.interventions[ID.interventionIDs.POSITIVE_TOAST](true, currentApplication.packageName, this)
-                //logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName))
+              //logSessionIntervention()
             }
         } else if (currentApplication.isBlacklisted) {
-            //TODO: Get video blocker working. interventionManager.interventions[ID.interventionIDs.VIDEO_BLOCKER](true, event.getSource(), currentApplication.packageName); // youtube only
+            //TODO: Get video blocker working. (true, event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 
