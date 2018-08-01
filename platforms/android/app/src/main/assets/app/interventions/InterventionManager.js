@@ -861,7 +861,7 @@ function show_target_enabler() {
  * ----------------
  * Pops toast to go to positive app/
  */
-code.POSITIVE_TOAST = function(real, pkg) {
+code.POSITIVE_TOAST = function(real, pkg, service) {
   if (!real) {
     var targetPkg = 'com.stanfordhci.habitlab';
     var targets = StorageUtil.getTargetSelectedPackages();
@@ -883,23 +883,21 @@ code.POSITIVE_TOAST = function(real, pkg) {
     return;
   }
   if (StorageUtil.isTargetOn()) {
+    console.log("pkg: " + pkg)
     var visits = StorageUtil.getVisits(pkg);
     if (visits > THRESHOLD_POSITIVE_TST) {
       var targets = StorageUtil.getTargetSelectedPackages();
+      targets.push('com.stanfordhci.habitlab')
       if (targets.length === 0) { return; }
       var index = randBW(0, targets.length - 1);
       var targetPkg = targets[index];
-      if (targetPkg.length > 2) {
-        var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
-        var cb = function () {
-          var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
-          if (foreground) {
-            foreground.startActivity(launchIntent);
-          }
-        }
-        var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
-        ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
+      var bitmap = UsageInformationUtil.getApplicationBitmap(pkg);
+      var cb = function () {
+        var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+        service.startActivity(launchIntent)
       }
+      var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+      ToastOverlay.showToastOverlay("Open " + appName, bitmap, cb, true);
     }
   } else {
     show_target_enabler()
@@ -1032,9 +1030,9 @@ var durationInterventions = [];
   }
 })();
 
-var nextOnLaunchIntervention = function(pkg) {
+var nextOnLaunchIntervention = function(pkg, service) {
   if (GlobalUtil.getVar('override_launch_intervention')) {
-    code[GlobalUtil.getVar('override_launch_intervention')](true, pkg)
+    code[GlobalUtil.getVar('override_launch_intervention')](true, pkg, service)
     return
   }
   // set up duration interventions
@@ -1044,7 +1042,7 @@ var nextOnLaunchIntervention = function(pkg) {
           //We want the "infrequent/easy" goals to have no duration interventions
           continue
     }
-    duration_intervention.func(true, pkg);
+    duration_intervention.func(true, pkg, service);
   }
   var randomDifficulty = Math.random();
   var index;
@@ -1060,7 +1058,7 @@ var nextOnLaunchIntervention = function(pkg) {
     func_and_name = onLaunchInterventions.easy[index];
   }
   if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname], pkg)) {
-    func_and_name.func(true, pkg);
+    func_and_name.func(true, pkg, service);
   }
   return func_and_name.shortname
 };
@@ -1068,7 +1066,7 @@ var nextOnLaunchIntervention = function(pkg) {
 var nextScreenOnIntervention = function() {
   var run = Math.random();
   if (run < 0.075) {
-    code.GLANCE_NOTIFICATION(true);
+    code.GLANCE_NOTIFICATION(true, service);
   }
   return "GLANCE_NOTIFICATION"
 }
@@ -1088,7 +1086,7 @@ var nextScreenUnlockIntervention = function() {
     }
     // TODO there are no hard interventions for screen unlock (phone) type
     if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname])) {
-      func_and_name.func(true);
+      func_and_name.func(true, service);
     }
     return func_and_name.shortname
   }
