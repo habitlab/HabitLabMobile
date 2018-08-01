@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded" id="settings" unloaded="pageUnloaded"
-  xmlns="http://schemas.nativescript.org/tns.xsd" 
-  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:sidedrawer="shared/sd">
 
   <ActionBar class="action-bar">
@@ -11,7 +11,7 @@
     <ActionItem tap="onInfo" icon="res://ic_about" />
   </ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer" >
 
     <sd:RadSideDrawer.drawerContent>
 				<sidedrawer:sd/>
@@ -27,7 +27,7 @@
             <Label text="{{subtitle}}" visibility="{{subtitle ? 'visible' : 'collapse'}}" col="1" row="1" class="settings-sub-label"/>
             <Image visibility="{{hasArrow ? 'visible' : 'collapse'}}" class="settings-button-icon" src="res://ic_arrow_right" col="2" rowSpan="2" verticalAlignment="center"/>
           </GridLayout>
-          
+
         </ListView.itemTemplate>
       </ListView>
     </sd:RadSideDrawer.mainContent>

@@ -1,7 +1,7 @@
 <Page loaded="pageLoaded" navigatingTo="pageNavigating" id="progress" unloaded="pageUnloaded"
-  xmlns:sidedrawer="shared/sd" 
-  xmlns="http://schemas.nativescript.org/tns.xsd" 
-  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:taskPie="nativescript-taskpie"
   xmlns:lv="nativescript-telerik-ui/listview"
   xmlns:RL="nativescript-ripple">
@@ -13,18 +13,18 @@
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer" >
     <sd:RadSideDrawer.drawerContent>
       <sidedrawer:sd/>
     </sd:RadSideDrawer.drawerContent>
-    
+
     <sd:RadSideDrawer.mainContent horizontalAlignment="center">
 			<TabView androidSelectedTabHighlightColor="#FFA730" selectedIndexChanged="onIndexChange">
 				<TabView.items>
 
 					<!-- DAY VIEW -->
 					<TabViewItem title="Day">
-					  <TabViewItem.view >  
+					  <TabViewItem.view >
 					   		<StackLayout>
 
 					   			<!-- DAY VIEW GRAPH -->
@@ -68,7 +68,7 @@
 
 						</TabViewItem.view>
 					</TabViewItem>
-			
+
 					<!-- WEEK VIEW -->
 		 			<TabViewItem title="Week" >
 			 			<TabViewItem.view>
@@ -119,7 +119,7 @@
 				   			</StackLayout>
 					  </TabViewItem.view>
 				  </TabViewItem>
-							   
+
 					<!-- MONTH VIEW -->
 					<TabViewItem title="Month">
 						<TabViewItem.view>
@@ -142,7 +142,7 @@
 		   			            		</StackLayout>
 			   			        	</lv:RadListView.itemTemplate>
 			   			    </lv:RadListView>
-				   			    
+
 				   			 <!-- MONTH VIEW DETAIL LIST -->
 			   			    <lv:RadListView id="monthList" class="list-group" items="{{ monthItems }}" itemTap="goToDetailApps">
 				   				<lv:RadListView.listViewLayout>
@@ -166,7 +166,7 @@
 				    </TabViewItem.view>
 					</TabViewItem>
 				</TabView.items>
-			</TabView>     
+			</TabView>
 	  </sd:RadSideDrawer.mainContent>
 	</sd:RadSideDrawer>
 </Page>

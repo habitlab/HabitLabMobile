@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded" navigatingTo="pageNavigating" id="watchlist" unloaded="pageUnloaded"
-  xmlns:sidedrawer="shared/sd" 
-  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd"
   xmlns:Slides="nativescript-slides"
   xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:goalelem="shared/goalelem">
@@ -13,7 +13,7 @@
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer">
     <sd:RadSideDrawer.drawerContent>
       <sidedrawer:sd />
     </sd:RadSideDrawer.drawerContent>
@@ -37,7 +37,7 @@
                   <Image class="arrowRight" col="2" src="res://ic_arrow_right" tap="goToMonth"/>
                 </StackLayout>
               </Slides:Slide>
-              <Slides:Slide> 
+              <Slides:Slide>
                 <Label text="Month" class="app-detail-subtitle" horizontalAlignment="center"/>
                 <Placeholder creatingView="monthView"/>
                 <Image class="arrowLeft" col="2" src="res://ic_arrow_left" tap ="goToWeek"/>
@@ -49,7 +49,7 @@
             <Label id="nudges" text="Nudges" class='app-detail-subtitle top-padded' />
             <StackLayout orientation="vertical" id="list" />
           </StackLayout>
-          
+
         </ScrollView>
       </StackLayout>
 

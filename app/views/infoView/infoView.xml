@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded"  id="settings" unloaded="pageUnloaded"
-  xmlns="http://schemas.nativescript.org/tns.xsd" 
-  xmlns:sd="nativescript-telerik-ui/sidedrawer" 
+  xmlns="http://schemas.nativescript.org/tns.xsd"
+  xmlns:sd="nativescript-telerik-ui/sidedrawer"
   xmlns:sidedrawer="shared/sd">
 
   <ActionBar class="action-bar">
@@ -10,7 +10,7 @@
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer" >
 
     <sd:RadSideDrawer.drawerContent>
         <sidedrawer:sd/>

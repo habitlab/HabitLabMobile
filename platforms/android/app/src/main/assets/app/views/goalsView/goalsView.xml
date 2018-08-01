@@ -11,7 +11,7 @@
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
 	</ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer" >
 
     <sd:RadSideDrawer.drawerContent>
 			<sidedrawer:sd/>
@@ -81,7 +81,7 @@
         </TabView.items>
       </TabView>
       <Button text="Next Step" height="9%" visibility="{{tutorialFinished ? 'collapse' : 'visible'}}" class="bottom-button" tap="nextStep"/>
-      </StackLayout> 
+      </StackLayout>
     </sd:RadSideDrawer.mainContent>
 
   </sd:RadSideDrawer>

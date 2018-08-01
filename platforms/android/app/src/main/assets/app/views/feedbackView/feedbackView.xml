@@ -10,7 +10,7 @@
     <NavigationButton tap="toggleDrawer" icon="res://ic_hamburger" />
   </ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer" >
 
     <sd:RadSideDrawer.drawerContent>
       <sidedrawer:sd/>

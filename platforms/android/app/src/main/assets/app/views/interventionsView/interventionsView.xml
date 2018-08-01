@@ -1,6 +1,6 @@
 <Page loaded="pageLoaded" id="nudges" unloaded="pageUnloaded"
-  xmlns:sidedrawer="shared/sd" 
-  xmlns="http://schemas.nativescript.org/tns.xsd" 
+  xmlns:sidedrawer="shared/sd"
+  xmlns="http://schemas.nativescript.org/tns.xsd"
   xmlns:sd="nativescript-telerik-ui/sidedrawer">
 
   <ActionBar class="action-bar">
@@ -11,7 +11,7 @@
     <ActionItem id="search-icon" tap="onShowSearch" icon="res://ic_search" tap="onShowSearch"/>
   </ActionBar>
 
-  <sd:RadSideDrawer id="sideDrawer" showOverNavigation="true">
+  <sd:RadSideDrawer id="sideDrawer" >
     <sd:RadSideDrawer.drawerContent>
 	    <sidedrawer:sd />
     </sd:RadSideDrawer.drawerContent>
@@ -20,7 +20,7 @@
       <StackLayout>
         <SearchBar text="{{filter}}" hint="Search..." id="search-bar" visibility="collapse" submit="closeKeyboard"/>
         <Label text="no results" class="no-results" id="no-results" visibility="collapse" />
-        
+
         <!-- TODO: Implement this feature: <StackLayout>
           <Button text="Make Your Own Nudge!" tap ="ownNudge" />
         </StackLayout>-->
