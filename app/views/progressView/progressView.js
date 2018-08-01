@@ -19,7 +19,7 @@ var BarChart = com.github.mikephil.charting.charts.BarChart
 var BarEntry = com.github.mikephil.charting.data.BarEntry
 var Entry = com.github.mikephil.charting.data.Entry
 var Color = android.graphics.Color
-var ArrayList = java.util.ArrayList 
+var ArrayList = java.util.ArrayList
 var BarDataSet = com.github.mikephil.charting.data.BarDataSet
 var BarData = com.github.mikephil.charting.data.BarData
 var IBarDataSet = com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -74,11 +74,11 @@ exports.pageNavigating = function(args) {
     }
     //Progress info is the array of objects containing all info needed for progress view
     progressInfo = storageUtil.getProgressViewInfo();
-    //Gets arrays for the 'basic' info of the apps - names and icons    
+    //Gets arrays for the 'basic' info of the apps - names and icons
     basic = getBasic();
     //Gets the top 5 apps to display on graphs
     trackApps = getTrackableApps();
-    
+
 }
 
 var cb = function() {
@@ -99,15 +99,16 @@ exports.pageLoaded = function(args) {
                     index: 1,
                     fromGoals: false
                     }
-                } 
+                }
                 frameModule.topmost().navigate(options);
             }
         }
     }
-    
+
+
 
     if (!permissionUtil.checkAccessibilityPermission()) {
-        FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!", 
+        FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!",
             "Take me there!", cb);
     }
 
@@ -115,6 +116,12 @@ exports.pageLoaded = function(args) {
     page.bindingContext = pageData;
     progressInfo = storageUtil.getProgressViewInfo();
     trackApps = getTrackableApps();
+    if (trackApps.length == 0) {
+      //Somehow, the user did not choose any watchlist apps. They should be forced
+      // to choose some.
+      frameModule.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
+      return
+    }
     setUp();
 };
 
@@ -158,30 +165,31 @@ function rerender_dayview() {
         getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
             return Math.round(value)+"";
         }
-     })     
-    // Customize appearence of the pie chart 
+     })
+    // Customize appearence of the pie chart
     var data = new PieData(dataset);
     data.setValueFormatter(dataFormatter);
-    data.setValueTextSize(11);  
+    data.setValueTextSize(11);
     data.setValueTextColor(Color.WHITE);
     var desc = piechart.getDescription();
     piechart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
     desc.setEnabled(Description.false);
     piechart.setDrawSliceText(false);
-    piechart.setHoleRadius(70); 
+    piechart.setHoleRadius(70);
     piechart.setTransparentCircleRadius(75);
     piechart.setCenterText(getSpannableString());
     var legend = piechart.getLegend();
     legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
     dataset.setColors(getColors());
 
-    // Initialize and set pie chart 
+    // Initialize and set pie chart
     piechart.setData(data);
 }
 
 
 //Entries for the pie chart
 getDayEntries = function() {
+    console.log("trackApps:" + JSON.stringify(trackApps))
     var total = progressInfo.phoneStats[TODAY].time;
     var entries = new ArrayList();
      for(var i = 0; i < trackApps.length; i++) {
@@ -218,53 +226,57 @@ exports.weekView = function(args) {
 //Refresh view for week
 function rerender_weekview() {
     var entries = getWeekEntries();
-    var dataset = new BarDataSet(entries, "");
-    dataset.setStackLabels(getAppNames());
-    dataset.setColors(getColors(trackApps.length));
-     //array of datasets
-    var IbarSet = new ArrayList();
-    IbarSet.add(dataset);
-    var data = new BarData(IbarSet);
-    data.setValueTextColor(Color.WHITE);
+    if (entries.size() > 0) {
+      var dataset = new BarDataSet(entries, "");
+      dataset.setStackLabels(getAppNames());
+      dataset.setColors(getColors(trackApps.length));
+       //array of datasets
+      var IbarSet = new ArrayList();
+      IbarSet.add(dataset);
+      var data = new BarData(IbarSet);
+      data.setValueTextColor(Color.WHITE);
 
-    let dataFormatter = new IValueFormatter({
-        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
-            return Math.round(value)+"";
-        }
-     })
-     data.setValueFormatter(dataFormatter);
+      let dataFormatter = new IValueFormatter({
+          getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+              return Math.round(value)+"";
+          }
+       })
+       data.setValueFormatter(dataFormatter);
 
 
-    //set axis labels
-    var xLabels = getDayLabels();
-     let axisformatter = new IAxisValueFormatter({
-        getFormattedValue: function(value, axis) {
-            return xLabels[value]
-        },
-        getDecimalDigits: function() {
-            return 0
-        }
-     })
-    // Customize appearence of the axis
-    var xAxis = barchart.getXAxis()
-    var yAxis = barchart.getAxisLeft()
-    yAxis.setAxisMinimum(0)
-    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-    xAxis.setGranularity(1)
-    xAxis.setDrawGridLines(false);
-    barchart.getAxisRight().setEnabled(false);
-    xAxis.setValueFormatter(axisformatter)
-    var desc = barchart.getDescription();
-    desc.setEnabled(Description.false);
-    yAxis.setStartAtZero(true);
-    barchart.setDrawValueAboveBar(false);
-    var legend = barchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+      //set axis labels
+      var xLabels = getDayLabels();
+       let axisformatter = new IAxisValueFormatter({
+          getFormattedValue: function(value, axis) {
+              return xLabels[value]
+          },
+          getDecimalDigits: function() {
+              return 0
+          }
+       })
+      // Customize appearence of the axis
+      var xAxis = barchart.getXAxis()
+      var yAxis = barchart.getAxisLeft()
+      yAxis.setAxisMinimum(0)
+      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+      xAxis.setGranularity(1)
+      xAxis.setDrawGridLines(false);
+      barchart.getAxisRight().setEnabled(false);
+      xAxis.setValueFormatter(axisformatter)
+      var desc = barchart.getDescription();
+      desc.setEnabled(Description.false);
+      yAxis.setStartAtZero(true);
+      barchart.setDrawValueAboveBar(false);
+      var legend = barchart.getLegend();
+      legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
-    //Setting up barchart
-    barchart.setData(data);
-    barchart.animateY(3000);
-    barchart.setFitBars(true);
+      //Setting up barchart
+      if (data)
+      barchart.setData(data);
+      barchart.animateY(3000);
+      barchart.setFitBars(true);
+    }
+
 }
 
 
@@ -277,6 +289,7 @@ getWeekEntries = function() {
     for (var day = 6; day >=0; day--) {
         //array of values for each week
         var appValues = [];
+        console.log()
         for (var app = 0; app < trackApps.length; app++) {
             if (trackApps[app].name === "Other") {
                 appValues.push(other[TODAY-day]);
@@ -301,7 +314,7 @@ getWeekEntries = function() {
 
 //Creates a stacked bar chart for the month view
 exports.monthView = function(args) {
-    monthchart = new BarChart(args.context);  
+    monthchart = new BarChart(args.context);
     monthchartMade = true;
     rerender_monthchart();
     monthchart.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0.42*SCREEN_HEIGHT, 0.5));
@@ -315,50 +328,53 @@ exports.monthView = function(args) {
 rerender_monthchart = function() {
     //array of BarEntries
     var entries = getMonthEntries();
-    var dataset = new BarDataSet(entries, "");
-    dataset.setStackLabels(getAppNames());
-    dataset.setColors(getColors(trackApps.length));
-    //array of datasets
-    var IbarSet = new ArrayList();
-    IbarSet.add(dataset);
-    var data = new BarData(IbarSet);
-    data.setValueTextColor(Color.WHITE);
-    //Label formatters
-    let dataFormatter = new IValueFormatter({
-        getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
-            return Math.round(value)+"";
-        }
-     })
-     data.setValueFormatter(dataFormatter);
-    var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
-     let axisformatter = new IAxisValueFormatter({
-        getFormattedValue: function(value, axis) {
-            return xLabels[value]
-        },
-        getDecimalDigits: function() {
-            return 0
-        }
-     })
-     //Customize appearence of the axis
-    var xAxis = monthchart.getXAxis()
-    var yAxis = monthchart.getAxisLeft()
-    yAxis.setAxisMinimum(0)
-    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-    xAxis.setGranularity(1)
-    xAxis.setDrawGridLines(false);
-    monthchart.getAxisRight().setEnabled(false);
-    xAxis.setValueFormatter(axisformatter)
-    var desc = monthchart.getDescription();
-    desc.setEnabled(Description.false);
-    yAxis.setStartAtZero(true);
-    monthchart.setDrawValueAboveBar(false);
-    var legend = monthchart.getLegend();
-    legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);   
+    if (entries.size() > 0) {
+      var dataset = new BarDataSet(entries, "");
+      dataset.setStackLabels(getAppNames());
+      dataset.setColors(getColors(trackApps.length));
+      //array of datasets
+      var IbarSet = new ArrayList();
+      IbarSet.add(dataset);
+      var data = new BarData(IbarSet);
+      data.setValueTextColor(Color.WHITE);
+      //Label formatters
+      let dataFormatter = new IValueFormatter({
+          getFormattedValue: function(value, entry, dataSetIndex, viewPortHandler) {
+              return Math.round(value)+"";
+          }
+       })
+       data.setValueFormatter(dataFormatter);
+      var xLabels = toJavaStringArray(["4 weeks ago", "3 weeks ago", "2 weeks ago", "Last Week", "This Week" ])
+       let axisformatter = new IAxisValueFormatter({
+          getFormattedValue: function(value, axis) {
+              return xLabels[value]
+          },
+          getDecimalDigits: function() {
+              return 0
+          }
+       })
+       //Customize appearence of the axis
+      var xAxis = monthchart.getXAxis()
+      var yAxis = monthchart.getAxisLeft()
+      yAxis.setAxisMinimum(0)
+      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+      xAxis.setGranularity(1)
+      xAxis.setDrawGridLines(false);
+      monthchart.getAxisRight().setEnabled(false);
+      xAxis.setValueFormatter(axisformatter)
+      var desc = monthchart.getDescription();
+      desc.setEnabled(Description.false);
+      yAxis.setStartAtZero(true);
+      monthchart.setDrawValueAboveBar(false);
+      var legend = monthchart.getLegend();
+      legend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
 
-    //Setting up barchart 
-    monthchart.setData(data);
-    monthchart.animateY(3000);
-    monthchart.setFitBars(true);
+      //Setting up barchart
+      monthchart.setData(data);
+      monthchart.animateY(3000);
+      monthchart.setFitBars(true);
+    }
+
 }
 
 
@@ -393,12 +409,12 @@ getMonthEntries = function() {
 
 
 
-//Creates a list view for the dayView, showing name, #times opened, and minutes 
-populateListViewsDay = function() {   
+//Creates a list view for the dayView, showing name, #times opened, and minutes
+populateListViewsDay = function() {
      var unlocks = progressInfo.phoneStats[TODAY].unlocks;
      var glances = progressInfo.phoneStats[TODAY].glances;
      var total = progressInfo.phoneStats[TODAY].totalTime;
-    
+
 	//If less than 1 hour, show minutes instead of 0.2hrs
     var totalReport;
     var timeTotalDesc;
@@ -410,7 +426,7 @@ populateListViewsDay = function() {
         totalTimeDesc = "hrs on phone"
     }
 
-    //'buttons' that show the usage daily overall phone usage 
+    //'buttons' that show the usage daily overall phone usage
 	var dayStats = [];
 	dayStats.push(
 	{
@@ -439,7 +455,7 @@ populateListViewsWeek = function() {
     var timeOnPhoneWeek = totalTimeWeek(0, "total")
     var timeOnWatchlistAppsWeek = totalTimeWeek(0, "watchlist");
     var unlocks = totalTimeWeek(0, "unlocks");
-  
+
     var watchlistReport;
     var timeWatchlistDesc;
     if (timeOnWatchlistAppsWeek <= 60) {
@@ -489,7 +505,7 @@ populateListViewsWeek = function() {
 populateListViewMonth = function () {
 	var totalTimePhoneMonth = totalTimeMonth("total");
     var totalWatchlistMonth = totalTimeMonth("watchlist");
-    var unlocks = totalTimeMonth("unlocks"); 
+    var unlocks = totalTimeMonth("unlocks");
 
     //If less than 1 hour, show minutes instead of 0.2hrs
     var watchlistReport;
@@ -540,14 +556,14 @@ populateListViewMonth = function () {
  *          HELPER FUNCTIONS        *
  ************************************/
 
-//Sets up the progress view 
+//Sets up the progress view
 setUp = function() {
     //Initialize all 'show/hide' buttons of the graphs
     pageData.set("showDayGraph", true);
     pageData.set("showWeekGraph", true);
     pageData.set("showMonthGraph", true);
 
-    //populate all lists 
+    //populate all lists
     populateListViewsDay();
     populateListViewsWeek();
     populateListViewMonth();
@@ -571,14 +587,14 @@ setUp = function() {
     storageUtil.updateTargetDB();
 }
 
-//Allows the list to be pressable 
+//Allows the list to be pressable
 exports.goToDetailApps = function(args) {
     var tappedItem = args.view.bindingContext;
     events.push({category: "navigation", index: "progress_to_detail"});
 
     frameModule.topmost().navigate({
     moduleName: 'views/appDetailView/appDetailView',
-    context: { 
+    context: {
         packageName: getPackageName(tappedItem.name),
         name: tappedItem.name,
         icon: tappedItem.image,
@@ -608,13 +624,13 @@ getOther = function() {
 }
 
 
-//Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
+// Gets the reduced list of up to 5 app (objects) to track. Eack app is an object with a:
 // name: name,
 // visits: visits,
 // image: icon,
 // mins: mins,
 // index: index
-//Apart from other, which has a name, and mins
+// Apart from other, which has a name, and mins
 getTrackableApps = function() {
     var appsToday = getAppsToday();
     if (appsToday.length <= 5) {
@@ -719,6 +735,7 @@ totalTimeMonth = function(value) {
 //Returns a list of apps used today with their name, visits, icon and minutes in ascending order
 getAppsToday = function() {
     var list = [];
+    console.log("progressInfo " + JSON.stringify(progressInfo.appStats) )
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = progressInfo.appStats[i][TODAY].time;
         var visits = progressInfo.appStats[i][TODAY].visits;
@@ -735,12 +752,12 @@ getAppsToday = function() {
     }
     // sort appsToday
     list.sort(function compare(a, b) {
-    if (a.mins < b.mins) {
-      return 1;
-    } else if (a.mins > b.mins) {
-      return -1;
-    }
-    return 0;
+      if (a.mins < b.mins) {
+        return 1;
+      } else if (a.mins > b.mins) {
+        return -1;
+      }
+      return 0;
     })
     return list;
 };
@@ -819,7 +836,7 @@ getBasic = function() {
 
 
 
-//Colors to be used in graphs 
+//Colors to be used in graphs
 getColors = function(stacksize) {
     var colors = [];
     //Deep yellow
@@ -827,14 +844,14 @@ getColors = function(stacksize) {
     //Red
     colors.push(new java.lang.Integer(Color.parseColor("#E71D36")));
      //Turquoise
-    colors.push(new java.lang.Integer(Color.parseColor("#2EC4B6"))); 
+    colors.push(new java.lang.Integer(Color.parseColor("#2EC4B6")));
     //Light blue
-     colors.push(new java.lang.Integer(Color.parseColor("#A0E4DD")));     
+     colors.push(new java.lang.Integer(Color.parseColor("#A0E4DD")));
      //Pink
     colors.push(new java.lang.Integer(Color.parseColor("#F18391")));
     //Grey
     colors.push(new java.lang.Integer(Color.parseColor("#747F89")));
-     //Light blue 
+     //Light blue
      colors.push(new java.lang.Integer(Color.parseColor("#DAECF3")));
     var sublist = colors.slice(0,stacksize);
     return toJavaIntArray(sublist);
@@ -932,7 +949,7 @@ function getSpannableString() {
     } else {
         myString.setSpan(new ForegroundColorSpan(Color.RED), 6,myString.length()-5,0);
     }
-  
+
     //mins
     myString.setSpan( new RelativeSizeSpan(0.9), myString.length()-5, myString.length(), 0);
     myString.setSpan(new ForegroundColorSpan(Color.GRAY), myString.length()-5, myString.length(), 0);
@@ -988,7 +1005,7 @@ exports.backEvent = function(args) {
    }
 }
 
-//Checks if the pernission service is running 
+//Checks if the pernission service is running
 var permissionServiceIsRunning = function () {
     var manager = app.android.context.getSystemService(android.content.Context.ACTIVITY_SERVICE);
     var services = manager.getRunningServices(java.lang.Integer.MAX_VALUE);
@@ -1000,8 +1017,3 @@ var permissionServiceIsRunning = function () {
     }
     return false;
 };
-
-
-
-
-
