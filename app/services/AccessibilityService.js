@@ -40,7 +40,7 @@ const ignore = ["com.android.systemui",
 var currentApplication = {
     packageName: "android",
     isBlacklisted: false,
-    visitStart: 0,
+    visitStart: Date.now(),
     interventions: []
 };
 var interventionRequestCounter = 0
