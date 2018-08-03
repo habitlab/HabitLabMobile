@@ -933,9 +933,10 @@ code.POSITIVE_FULL_SCREEN_OVERLAY = function(real, pkg, service) {
   var targetPkg = 'com.stanfordhci.habitlab';
   var targets = StorageUtil.getTargetSelectedPackages();
   if (targets.length > 0) {
-    targetPkg = Math.floor(Math.random() * targets.length);
+    targetPkg = targets[Math.floor(Math.random() * targets.length)];
   }
   var targetAppName = UsageInformationUtil.getBasicInfo(targetPkg).name;
+
   var cb = function () {
     var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
     if (service) {

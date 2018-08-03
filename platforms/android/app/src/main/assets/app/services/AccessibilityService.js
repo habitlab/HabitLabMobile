@@ -177,7 +177,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             }
 
             if (currentApplication.isBlacklisted && canRun) {
-              logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
+              interventionManager.interventions[ID.interventionIDs.POSITIVE_FULL_SCREEN_OVERLAY](true, currentApplication.packageName, this)
+              //logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
             }
         } else if (currentApplication.isBlacklisted) {
             //TODO: Get video blocker working. (true, event.getSource(), currentApplication.packageName); // youtube only
