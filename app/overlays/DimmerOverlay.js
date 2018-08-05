@@ -58,39 +58,44 @@ var iconTimerID;
 
 exports.dim = function(interval) {
 	exports.removeDimmer()
-	var brightness = android.provider.Settings.System.getInt(context.getContentResolver(),
+	if (permissions.checkSystemOverlayPermission()) {
+		var brightness = android.provider.Settings.System.getInt(context.getContentResolver(),
         android.provider.Settings.System.SCREEN_BRIGHTNESS) / 255;
-	overlayParams.screenBrightness = brightness;
-	overlay = new OverlayView(context);
-	windowManager.addView(overlay, overlayParams);
+		overlayParams.screenBrightness = brightness;
+		overlay = new OverlayView(context);
+		windowManager.addView(overlay, overlayParams);
 
-	var randomIndex = Math.floor(Math.random() * 5);
-	iconView = new ImageView(context);
-	iconView.setImageBitmap(bitmap);
-	iconView.setBackgroundColor(Color.parseColor(iconFills[randomIndex]));
-	iconView.setPadding(ICON_SIDE * 0.15, ICON_SIDE * 0.15, ICON_SIDE * 0.15, ICON_SIDE * 0.15);
-	windowManager.addView(iconView, iconParams);
+		var randomIndex = Math.floor(Math.random() * 5);
+		iconView = new ImageView(context);
+		iconView.setImageBitmap(bitmap);
+		iconView.setBackgroundColor(Color.parseColor(iconFills[randomIndex]));
+		iconView.setPadding(ICON_SIDE * 0.15, ICON_SIDE * 0.15, ICON_SIDE * 0.15, ICON_SIDE * 0.15);
+		windowManager.addView(iconView, iconParams);
 
-	iconTimerID = timer.setTimeout(() => {
-		if (iconView) {
-			windowManager.removeView(iconView);
-			iconView = undefined;
-		}
-	}, 5000);
+		iconTimerID = timer.setTimeout(() => {
+			if (iconView) {
+				windowManager.removeView(iconView);
+				iconView = undefined;
+			}
+		}, 5000);
 
 
-	timerID = timer.setInterval(() => {
-		brightness = brightness - interval;
-		if (brightness > 0) {
-			overlayParams.screenBrightness = brightness;
-			windowManager.updateViewLayout(overlay, overlayParams);
-		} else {
-			overlayParams.screenBrightness = 0;
-			windowManager.updateViewLayout(overlay, overlayParams);
-			timer.clearInterval(timerID);
-			timerID = 0;
-		}
-	}, 1000);
+		timerID = timer.setInterval(() => {
+			brightness = brightness - interval;
+			if (brightness > 0) {
+				overlayParams.screenBrightness = brightness;
+				windowManager.updateViewLayout(overlay, overlayParams);
+			} else {
+				overlayParams.screenBrightness = 0;
+				windowManager.updateViewLayout(overlay, overlayParams);
+				timer.clearInterval(timerID);
+				timerID = 0;
+			}
+		}, 1000);
+	} else {
+		permissions.launchSystemOverlayIntent();
+	}
+	
 }
 
 

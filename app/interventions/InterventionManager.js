@@ -96,7 +96,7 @@ var code = {};
  */
 code.VISIT_TOAST = function(real, pkg, service) {
   if (!real) {
-    Toast.show(context, "You've visited Facebook 8 times today", 1, "#E71D36");
+    Toast.show(service, "You've visited Facebook 8 times today", 1, "#E71D36");
     return;
   }
 
@@ -105,7 +105,7 @@ code.VISIT_TOAST = function(real, pkg, service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_TOAST}]);
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-    Toast.show(context, msg, 1, "#E71D36");
+    Toast.show(service, msg, 1, "#E71D36");
   }
 };
 
@@ -198,7 +198,7 @@ code.GLANCE_NOTIFICATION = function(real) {
  */
 code.UNLOCK_TOAST = function(real) {
   if (!real) {
-    Toast.show(context, "You've unlocked your phone 7 times today", 1, "#72E500");
+    Toast.show(service, "You've unlocked your phone 7 times today", 1, "#72E500");
     return;
   }
 
@@ -206,7 +206,7 @@ code.UNLOCK_TOAST = function(real) {
   if (unlocks >= THRESHOLD_UNLOCKS_TST) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_TOAST}]);
     var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today";
-    Toast.show(context, msg, 1, "#72E500");
+    Toast.show(service, msg, 1, "#72E500");
   }
 };
 
@@ -277,7 +277,7 @@ const THRESHOLD_PHONE_USAGE_DLG = 180; // 3 hours
  */
 code.PHONE_USAGE_TOAST = function(real, service) {
   if (!real) {
-    Toast.show(context, "You've spent 3.6 hours on your phone today", 1, "#011627");
+    Toast.show(service, "You've spent 3.6 hours on your phone today", 1, "#011627");
     return;
   }
 
@@ -286,7 +286,7 @@ code.PHONE_USAGE_TOAST = function(real, service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_TOAST}]);
     var hours = Math.round(10 * (time / 60)) / 10;
     var msg = "You've spent " + hours + " hours on your phone today";
-    Toast.show(context, msg, 1, "#011627");
+    Toast.show(service, msg, 1, "#011627");
   }
 };
 
@@ -356,7 +356,7 @@ code.PHONE_USAGE_DIALOG = function (real, service) {
  */
 code.USAGE_TOAST = function (real, pkg, service) {
   if (!real) {
-    Toast.show(context, "You've already used Facebook for 23 minutes today!", 1, "#FFA730");
+    Toast.show(service, "You've already used Facebook for 23 minutes today!", 1, "#FFA730");
     return;
   }
 
@@ -365,7 +365,7 @@ code.USAGE_TOAST = function (real, pkg, service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_TOAST}]);
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
-    Toast.show(context, msg, 1, "#FFA730");
+    Toast.show(service, msg, 1, "#FFA730");
   }
 };
 
@@ -516,7 +516,7 @@ var resetDurationInterventions = function() {
  */
 code.DURATION_TOAST = function (real, pkg, service) {
   if (!real) {
-    Toast.show(context, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
+    Toast.show(service, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
     return;
   }
   var now = System.currentTimeMillis();
@@ -525,7 +525,7 @@ code.DURATION_TOAST = function (real, pkg, service) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var msg = "You've been on " + applicationName + " for " + Math.ceil((Date.now() - sessionStart )/ MIN_IN_MS) + " minutes this visit";
-      Toast.show(context, msg, 1, "#2EC4B6");
+      Toast.show(service, msg, 1, "#2EC4B6");
       durationToastID = 0;
     }, INTERVAL_DURATION_TST);
   }
@@ -613,7 +613,7 @@ var pausedThisVisit = false;
 var playNode;
 code.VIDEO_BLOCKER = function (real, node, pkg) {
   if (!real) {
-    Toast.show(context, "No demo available for this nudge!", 0);
+    Toast.show(service, "No demo available for this nudge!", 0);
     return;
   }
 

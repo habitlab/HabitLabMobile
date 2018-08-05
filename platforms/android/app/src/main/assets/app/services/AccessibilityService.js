@@ -163,7 +163,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
-
+            console.log("trying out new package: " + activePackage)
             // This logic is for the "conservation" experiment.
             var canRun = true
             if (storage.getExperiment().includes("conservation") &&
@@ -171,12 +171,13 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                   // If packages the conservation experiment is running and the packages
                   // is labeled as infrequent, interventions should be given out on
                   // average one out of every 5 times.
-
+                    console.log('this is an infrequent package')
                   canRun = interventionRequestCounter % 5 == 4 ? true : false
                   interventionRequestCounter += 1
             }
 
             if (currentApplication.isBlacklisted && canRun) {
+                console.log('we\'re assigning an intervention')
               logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
             }
         } else if (currentApplication.isBlacklisted) {
