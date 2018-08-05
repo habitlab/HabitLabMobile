@@ -5,6 +5,12 @@
 //	compile 'com.android.support:recyclerview-v7:+'
 //}
 
+dependencies {
+  compile 'com.google.android.gms:play-services-identity:15.0.1'
+  compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+	compile 'com.google.android.gms:play-services-auth:15.0.1'
+}
+
 android {  
   defaultConfig {  
     generatedDensities = []

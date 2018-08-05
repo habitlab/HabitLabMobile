@@ -52,7 +52,13 @@ var CSSSource = (function () {
         this.parse();
     }
     CSSSource.fromURI = function (uri, keyframes) {
-        var appRelativeUri = CSSSource.pathRelativeToApp(uri);
+        var appRelativeUri = uri;
+        if (appRelativeUri.startsWith("/")) {
+            var app = file_system_1.knownFolders.currentApp().path + "/";
+            if (appRelativeUri.startsWith(app)) {
+                appRelativeUri = "./" + appRelativeUri.substr(app.length);
+            }
+        }
         try {
             var cssOrAst = global.loadModule(appRelativeUri);
             if (cssOrAst) {
@@ -71,18 +77,6 @@ var CSSSource = (function () {
         }
         return CSSSource.fromFile(appRelativeUri, keyframes);
     };
-    CSSSource.pathRelativeToApp = function (uri) {
-        if (!uri.startsWith("/")) {
-            return uri;
-        }
-        var appPath = file_system_1.knownFolders.currentApp().path;
-        if (!uri.startsWith(appPath)) {
-            trace_1.write(uri + " does not start with " + appPath, trace_1.categories.Error, trace_1.messageType.error);
-            return uri;
-        }
-        var relativeUri = "." + uri.substr(appPath.length);
-        return relativeUri;
-    };
     CSSSource.fromFile = function (url, keyframes) {
         var cssFileUrl = url.replace(/\..\w+$/, ".css");
         if (cssFileUrl !== url) {
@@ -94,13 +88,9 @@ var CSSSource = (function () {
         var file = CSSSource.resolveCSSPathFromURL(url);
         return new CSSSource(undefined, url, file, keyframes, undefined);
     };
-    CSSSource.fromFileImport = function (url, keyframes, importSource) {
-        var file = CSSSource.resolveCSSPathFromURL(url, importSource);
-        return new CSSSource(undefined, url, file, keyframes, undefined);
-    };
-    CSSSource.resolveCSSPathFromURL = function (url, importSource) {
+    CSSSource.resolveCSSPathFromURL = function (url) {
         var app = file_system_1.knownFolders.currentApp().path;
-        var file = resolveFileNameFromUrl(url, app, file_system_1.File.exists, importSource);
+        var file = resolveFileNameFromUrl(url, app, file_system_1.File.exists);
         return file;
     };
     CSSSource.fromSource = function (source, keyframes, url) {
@@ -166,35 +156,18 @@ var CSSSource = (function () {
         }
     };
     CSSSource.prototype.createSelectorsFromImports = function () {
-        var _this = this;
+        var selectors = [];
         var imports = this._ast["stylesheet"]["rules"].filter(function (r) { return r.type === "import"; });
-        var urlFromImportObject = function (importObject) {
-            var importItem = importObject["import"];
-            var urlMatch = importItem && importItem.match(pattern);
-            return urlMatch && urlMatch[2];
-        };
-        var sourceFromImportObject = function (importObject) {
-            return importObject["position"] && importObject["position"]["source"];
-        };
-        var toUrlSourcePair = function (importObject) { return ({
-            url: urlFromImportObject(importObject),
-            source: sourceFromImportObject(importObject),
-        }); };
-        var getCssFile = function (_a) {
-            var url = _a.url, source = _a.source;
-            return source ?
-                CSSSource.fromFileImport(url, _this._keyframes, source) :
-                CSSSource.fromURI(url, _this._keyframes);
-        };
-        var cssFiles = imports
-            .map(toUrlSourcePair)
-            .filter(function (_a) {
-            var url = _a.url;
-            return !!url;
-        })
-            .map(getCssFile);
-        var selectors = cssFiles.map(function (file) { return (file && file.selectors) || []; });
-        return selectors.reduce(function (acc, val) { return acc.concat(val); }, []);
+        for (var i = 0; i < imports.length; i++) {
+            var importItem = imports[i]["import"];
+            var match = importItem && importItem.match(pattern);
+            var url = match && match[2];
+            if (url !== null && url !== undefined) {
+                var cssFile = CSSSource.fromURI(url, this._keyframes);
+                selectors = selectors.concat(cssFile.selectors);
+            }
+        }
+        return selectors;
     };
     CSSSource.prototype.createSelectorsFromSyntaxTree = function () {
         var _this = this;
@@ -567,7 +540,7 @@ var StyleScope = (function () {
     return StyleScope;
 }());
 exports.StyleScope = StyleScope;
-function resolveFileNameFromUrl(url, appDirectory, fileExists, importSource) {
+function resolveFileNameFromUrl(url, appDirectory, fileExists) {
     var fileName = typeof url === "string" ? url.trim() : "";
     if (fileName.indexOf("~/") === 0) {
         fileName = fileName.replace("~/", "");
@@ -581,12 +554,6 @@ function resolveFileNameFromUrl(url, appDirectory, fileExists, importSource) {
         if (fileName[0] === "~" && fileName[1] !== "/" && fileName[1] !== "\"") {
             fileName = fileName.substr(1);
         }
-        if (importSource) {
-            var importFile = resolveFilePathFromImport(importSource, fileName);
-            if (fileExists(importFile)) {
-                return importFile;
-            }
-        }
         var external_1 = file_system_1.path.join(appDirectory, "tns_modules", fileName);
         if (fileExists(external_1)) {
             return external_1;
@@ -595,14 +562,6 @@ function resolveFileNameFromUrl(url, appDirectory, fileExists, importSource) {
     return null;
 }
 exports.resolveFileNameFromUrl = resolveFileNameFromUrl;
-function resolveFilePathFromImport(importSource, fileName) {
-    var importSourceParts = importSource.split(file_system_1.path.separator);
-    var fileNameParts = fileName.split(file_system_1.path.separator)
-        .filter(function (p) { return !isCurrentDirectory(p); });
-    importSourceParts.pop();
-    fileNameParts.forEach(function (p) { return isParentDirectory(p) ? importSourceParts.pop() : importSourceParts.push(p); });
-    return importSourceParts.join(file_system_1.path.separator);
-}
 exports.applyInlineStyle = profiling_1.profile(function applyInlineStyle(view, styleStr) {
     var localStyle = "local { " + styleStr + " }";
     var inlineRuleSet = CSSSource.fromSource(localStyle, new Map()).selectors;
@@ -622,12 +581,6 @@ exports.applyInlineStyle = profiling_1.profile(function applyInlineStyle(view, s
         }
     });
 });
-function isCurrentDirectory(uriPart) {
-    return uriPart === ".";
-}
-function isParentDirectory(uriPart) {
-    return uriPart === "..";
-}
 function isKeyframe(node) {
     return node.type === "keyframes";
 }

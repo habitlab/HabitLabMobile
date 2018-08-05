@@ -198,9 +198,7 @@ var Frame = (function (_super) {
                     entry.resolvedPage._setupUI(context_1);
                 }
                 entry.recreated = false;
-                if (current) {
-                    current.recreated = false;
-                }
+                current.recreated = false;
             }
             _super.prototype.setCurrent.call(this, entry, isBack);
             this._processNavigationQueue(entry.resolvedPage);

@@ -27,7 +27,7 @@
     "nativescript-tooltip": "^2.1.0",
     "nativescript-version-number": "^1.1.0",
     "nativescript-videoplayer": "^4.1.0",
-    "tns-core-modules": "^4.2.0-2018-07-23-02",
+    "tns-core-modules": "^4.1.1",
     "uuid": "^3.3.2"
   },
   "devDependencies": {

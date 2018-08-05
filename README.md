@@ -19,6 +19,8 @@ Introduction
 
 HabitLabMobile is an app that allows users to design better mobile habits through a two-pronged approach: awareness of usage and a series of custom alerts. Users select which apps they want to spend less time on, and HabitLab will deploy 'interventions' when users have surpassed their goal times. 
 
+NOTE: If you are running `tns build android --release`, you will have to copy the `libs` folder from `platforms/android/app` to `platforms/android`.
+
 Features
 
 The main features of the HabitLab app are:

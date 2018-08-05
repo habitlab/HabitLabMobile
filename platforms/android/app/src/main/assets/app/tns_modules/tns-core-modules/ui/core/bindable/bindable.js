@@ -9,7 +9,6 @@ var utils_1 = require("../../../utils/utils");
 var trace_1 = require("../../../trace");
 exports.traceEnabled = trace_1.isEnabled;
 exports.traceWrite = trace_1.write;
-exports.traceError = trace_1.error;
 exports.traceCategories = trace_1.categories;
 exports.traceNotifyEvent = trace_1.notifyEvent;
 exports.isCategorySet = trace_1.isCategorySet;

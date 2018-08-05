@@ -204,7 +204,6 @@ var ActionBar = (function (_super) {
                 var drawableOrId = getDrawableOrResourceId(navButton.icon, appResources);
                 this.nativeViewProtected.setNavigationIcon(drawableOrId);
             }
-            this.nativeViewProtected.setNavigationContentDescription(navButton.text || null);
             var navBtn_1 = new WeakRef(navButton);
             this.nativeViewProtected.setNavigationOnClickListener(new android.view.View.OnClickListener({
                 onClick: function (v) {

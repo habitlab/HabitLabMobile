@@ -99,18 +99,6 @@ exports.interventionDetails = [
   summary: 'Sends a notification with your app visit count',
   style: 'notification'
 }, {
-  id: 9,
-  shortname: 'VIDEO_BLOCKER',
-  name: 'Block-Buster', 
-  icon: 'res://ic_videocam', 
-  functionality: "Video Pause Overlay", 
-  description: "Pauses YouTube videos until you confirm that you would like to continue watching", 
-  target: 'app', 
-  level: 'hard', 
-  apps: ['com.google.android.youtube'],
-  summary: 'Asks for confirmation before playing videos',
-  style: 'overlay'
-}, {
   id: 10,
   shortname: 'FULL_SCREEN_OVERLAY',
   name: 'No Peeking!', 

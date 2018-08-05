@@ -85,8 +85,6 @@ var ListViewBase = (function (_super) {
     };
     ListViewBase.prototype.scrollToIndex = function (index) {
     };
-    ListViewBase.prototype.scrollToIndexAnimated = function (index) {
-    };
     ListViewBase.prototype._getItemTemplate = function (index) {
         var templateKey = "default";
         if (this.itemTemplateSelector) {

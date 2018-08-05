@@ -1,26 +1,26 @@
 {
-  "_from": "tns-core-modules-widgets@next",
-  "_id": "tns-core-modules-widgets@4.2.0-2018-07-23-01",
+  "_from": "tns-core-modules-widgets@4.1.0",
+  "_id": "tns-core-modules-widgets@4.1.0",
   "_inBundle": false,
-  "_integrity": "sha512-4m+l9p82nt4JCC04bazWHLUfuGODB2VYZ1ZWb41awldSC5Oj/Kl3/K3Ts/te5mJMdL5uREEK8nXd+Y8zVj9OHw==",
+  "_integrity": "sha512-Wft3NCJ/++tAMd6nXqtiihX5gIvK0mAch7ft08cscg//NOkSi1OwZ2rhG8JmLSKeSwjtSPT0mw2/hts/bzuguw==",
   "_location": "/tns-core-modules-widgets",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "tns-core-modules-widgets@next",
+    "raw": "tns-core-modules-widgets@4.1.0",
     "name": "tns-core-modules-widgets",
     "escapedName": "tns-core-modules-widgets",
-    "rawSpec": "next",
+    "rawSpec": "4.1.0",
     "saveSpec": null,
-    "fetchSpec": "next"
+    "fetchSpec": "4.1.0"
   },
   "_requiredBy": [
     "/tns-core-modules"
   ],
-  "_resolved": "https://registry.npmjs.org/tns-core-modules-widgets/-/tns-core-modules-widgets-4.2.0-2018-07-23-01.tgz",
-  "_shasum": "618e9c1b27b79c2a8465b2f9ba56af969e434b8d",
-  "_spec": "tns-core-modules-widgets@next",
+  "_resolved": "https://registry.npmjs.org/tns-core-modules-widgets/-/tns-core-modules-widgets-4.1.0.tgz",
+  "_shasum": "bfb706fb5f246d2f44e7c652dbe4564fdf9c0261",
+  "_spec": "tns-core-modules-widgets@4.1.0",
   "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile/node_modules/tns-core-modules",
   "author": {
     "name": "NativeScript team"
@@ -47,5 +47,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "4.2.0-2018-07-23-01"
+  "version": "4.1.0"
 }

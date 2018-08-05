@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.stanfordhci.habitlab"
-	android:versionCode="22"
-	android:versionName="1.5.3">
+	android:versionCode="24"
+	android:versionName="1.5.5">
 	<!-- NOTE: When updating version code, be sure to also update the APP_VERSION field
 				in StorageUtil.js so the logging reflects the correct version.-->
 	<supports-screens
@@ -19,7 +19,7 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.GET_TASKS" />
-  <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" xmlns:tools="http://schemas.android.com/tools" tools:ignore="ProtectedPermissions" />
+  	<uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" xmlns:tools="http://schemas.android.com/tools" tools:ignore="ProtectedPermissions" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 	<uses-permission android:name="android.permission.WRITE_SETTINGS" />

@@ -249,7 +249,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$supportVer"
     debugImplementation "com.android.support:design:$supportVer"
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation "com.github.PhilJay:MPAndroidChart:v3.0.3"
+
 
     def sbgProjectExists = !findProject(':static-binding-generator').is(null)
     if (sbgProjectExists) {

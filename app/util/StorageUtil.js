@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 22
+var APP_VERSION = 24
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var SEC_IN_MS = 1000;
@@ -715,7 +715,7 @@ exports.updateAppTime = async function(currentApplication, time) {
     enabled = true
     appInfo['stats'][ idx % 28]['time'] += (time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
-    if (exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName, false)) {
+    if (exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName)) {
       frequent = true
     }
   }
@@ -1498,10 +1498,15 @@ if (exports.getExperiment().includes("conservation")) {
     if (appSettings.getString(packageName, "null") == "null") return false
     appInfo = JSON.parse(appSettings.getString(packageName, "null"))
     week = moment().isoWeek()
-    if (appInfo.frequentAssignmentWeek == null || appInfo.frequentAssignmentWeek
-    != week) {
+    if (appInfo.frequentAssignmentWeek == null || appInfo.frequentAssignmentWeek != week) {
+      if (appInfo.frequent == null) {
+        // randomly set first setting.
+        appInfo.frequent = Math.random() < .5 ? true : false
+      } else {
+        //Alternate between frequent and infrequent.
+        appInfo.frequent = !appInfo.frequent
+      }
       appInfo.frequentAssignmentWeek = week
-      appInfo.frequent = Math.random() < .5 ? true : false
       appSettings.setString(packageName, JSON.stringify(appInfo))
     }
     return appInfo.frequent

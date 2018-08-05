@@ -189,7 +189,6 @@ function rerender_dayview() {
 
 //Entries for the pie chart
 getDayEntries = function() {
-    console.log("trackApps:" + JSON.stringify(trackApps))
     var total = progressInfo.phoneStats[TODAY].time;
     var entries = new ArrayList();
      for(var i = 0; i < trackApps.length; i++) {
@@ -289,7 +288,6 @@ getWeekEntries = function() {
     for (var day = 6; day >=0; day--) {
         //array of values for each week
         var appValues = [];
-        console.log()
         for (var app = 0; app < trackApps.length; app++) {
             if (trackApps[app].name === "Other") {
                 appValues.push(other[TODAY-day]);
@@ -735,7 +733,7 @@ totalTimeMonth = function(value) {
 //Returns a list of apps used today with their name, visits, icon and minutes in ascending order
 getAppsToday = function() {
     var list = [];
-    console.log("progressInfo " + JSON.stringify(progressInfo.appStats) )
+    
     for (i = 0; i < progressInfo.appStats.length; i++) {
         var mins = progressInfo.appStats[i][TODAY].time;
         var visits = progressInfo.appStats[i][TODAY].visits;
