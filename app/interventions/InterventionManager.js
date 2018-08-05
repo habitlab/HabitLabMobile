@@ -40,24 +40,25 @@ var notificationID = {
 
 /*************************************************************
  *             EFFECTIVE INTERVENTION THRESHOLDS             *
- *    (when it's ok to start showing each interventions)     *
+ *    (when it's ok to start showing each interventions)
+ *     Currently, we have no thresholds.                     *
  *************************************************************/
 
 // visit interventions
-const THRESHOLD_VISIT_TST = 1;
-const THRESHOLD_VISIT_NTF = 1;
-const THRESHOLD_VISIT_DLG = 1;
+const THRESHOLD_VISIT_TST = 0;
+const THRESHOLD_VISIT_NTF = 0;
+const THRESHOLD_VISIT_DLG = 0;
 
 // glance/unlock interventions
-const THRESHOLD_GLANCES_NTF = 1;
-const THRESHOLD_UNLOCKS_TST = 1;
-const THRESHOLD_UNLOCKS_NTF = 1;
-const THRESHOLD_UNLOCKS_DLG = 1;
+const THRESHOLD_GLANCES_NTF = 0;
+const THRESHOLD_UNLOCKS_TST = 0;
+const THRESHOLD_UNLOCKS_NTF = 0;
+const THRESHOLD_UNLOCKS_DLG = 0;
 
 // usage interventions
-const THRESHOLD_USAGE_TST = 1;
-const THRESHOLD_USAGE_NTF = 1;
-const THRESHOLD_USAGE_DLG = 1;
+const THRESHOLD_USAGE_TST = 0;
+const THRESHOLD_USAGE_NTF = 0;
+const THRESHOLD_USAGE_DLG = 0;
 
 // visit duration interventions
 const INTERVAL_DURATION_TST = 300000;
@@ -65,14 +66,14 @@ const INTERVAL_DURATION_NTF = 600000;
 const INTERVAL_DURATION_DLG = 120000;
 
 // overlay interventions
-const THRESHOLD_FULLSCREEN_OVR = 1;
-const THRESHOLD_COUNTUP_TMR = 1;
-const THRESHOLD_COUNTDOWN_TMR = 1;
-const THRESHOLD_DIMSCREEN_OVR = 1;
-const THRESHOLD_APPLICATION_SLIDER_OVR = 1;
-const THRESHOLD_INTERSTITIAL_OVR = 1;
-const THRESHOLD_FLIPPER_OVR = 1;
-const THRESHOLD_POSITIVE_TST = 1;
+const THRESHOLD_FULLSCREEN_OVR = 0;
+const THRESHOLD_COUNTUP_TMR = 0;
+const THRESHOLD_COUNTDOWN_TMR = 0;
+const THRESHOLD_DIMSCREEN_OVR = 0;
+const THRESHOLD_APPLICATION_SLIDER_OVR = 0;
+const THRESHOLD_INTERSTITIAL_OVR = 0;
+const THRESHOLD_FLIPPER_OVR = 0;
+const THRESHOLD_POSITIVE_TST = 0;
 
 var MIN_IN_MS = 60000;
 
@@ -744,9 +745,9 @@ code.COUNTDOWN_TIMER_OVERLAY = function (real, pkg, service) {
  * right corner) that counts up. Timer is flickable.
  * Call dismissTimer to get rid of display.
  */
-var dimScreen = code.DIMMER_OVERLAY = function (real, pkg, service) {
+code.DIMMER_OVERLAY = function (real, pkg, service) {
   if (!real) {
-    DimmerOverlay.dim(0.2);
+    DimmerOverlay.dim(0.2, service);
     Timer.setTimeout(() => {
         DimmerOverlay.removeDimmer();
     }, 6500);
@@ -756,7 +757,7 @@ var dimScreen = code.DIMMER_OVERLAY = function (real, pkg, service) {
   var visits = StorageUtil.getVisits(pkg);
   if (visits > THRESHOLD_DIMSCREEN_OVR) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DIMMER_OVERLAY}]);
-    DimmerOverlay.dim(0.01);
+    DimmerOverlay.dim(0.01, service);
   }
 }
 

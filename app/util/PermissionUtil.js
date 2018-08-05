@@ -33,10 +33,13 @@ exports.checkSystemOverlayPermission = function () {
  * Launches intent to the system page where user can
  * allow permission to draw system overlays.
  */
-exports.launchSystemOverlayIntent = function () {
+exports.launchSystemOverlayIntent = function (service) {
+	console.log('trying to launch system overlay intent.')
 	var int = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
 	var foreground = application.android.foregroundActivity;
-	if (foreground) {
+	if (service) {
+		service.startActivity(int);
+	} else if (foreground) {
 		foreground.startActivity(int);
 	}
 }

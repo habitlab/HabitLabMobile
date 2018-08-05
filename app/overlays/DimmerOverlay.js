@@ -56,7 +56,7 @@ var bitmap = context.getResources().getDrawable(icon_id).getBitmap();
 var iconView;
 var iconTimerID;
 
-exports.dim = function(interval) {
+exports.dim = function(interval, service) {
 	exports.removeDimmer()
 	if (permissions.checkSystemOverlayPermission()) {
 		var brightness = android.provider.Settings.System.getInt(context.getContentResolver(),
@@ -93,7 +93,7 @@ exports.dim = function(interval) {
 			}
 		}, 1000);
 	} else {
-		permissions.launchSystemOverlayIntent();
+		permissions.launchSystemOverlayIntent(service);
 	}
 	
 }

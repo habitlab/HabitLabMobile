@@ -247,7 +247,7 @@ var TargetEnableDialog = android.view.View.extend({
 		var iconTop = (SCREEN_HEIGHT - HEADER_HEIGHT) / 2 - 1 * ICON_RADIUS - 0.05*TARGET_HEIGHT;
 		var iconBottom = iconTop + 2 * ICON_RADIUS;
 		// canvas.drawOval(iconLeft - 10, iconTop - 10, iconRight + 10, iconBottom + 10, ICON_BACK_FILL);
-		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
+		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 		canvas.drawRect(LEFT, HEADER_BOTTOM - 0.01*TARGET_HEIGHT, RIGHT, HEADER_BOTTOM + 0.01*TARGET_HEIGHT, ICON_FILL);
 
 		// add icon

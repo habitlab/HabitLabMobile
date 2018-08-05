@@ -59,7 +59,7 @@ var DialogView = android.view.View.extend({
 		var iconRight = iconLeft + 2 * ICON_RADIUS;
 		var iconTop = (SCREEN_HEIGHT) * 0.175;
 		var iconBottom = iconTop + 2 * ICON_RADIUS;
-		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
+		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
 		// add icon
 		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
@@ -88,7 +88,7 @@ var InterstitialView = android.view.View.extend({
 		var iconRight = iconLeft + 2 * ICON_RADIUS;
 		var iconTop = (SCREEN_HEIGHT) * 0.175;
 		var iconBottom = iconTop + 2 * ICON_RADIUS;
-		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, INTERSTITIAL_ICON);
+		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, INTERSTITIAL_ICON);
 
 		// add icon
 		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
@@ -196,8 +196,8 @@ exports.showOverlay = function (title, msg, pos, neg, posCallback, negCallback, 
 			}
 		}));
 		windowManager.addView(overlayPosButton, posButtonParams);
-    } else {
-        permissions.launchSystemOverlayIntent(); 
+    } else { 
+        permissions.launchSystemOverlayIntent(service); 
     }
 
 }
@@ -282,7 +282,7 @@ exports.showInterstitial = function(title, msg, button, callback, service) {
 			count++;
 		}, 100);
     } else {
-        permissions.launchSystemOverlayIntent(); 
+        permissions.launchSystemOverlayIntent(service); 
     }
 }
 

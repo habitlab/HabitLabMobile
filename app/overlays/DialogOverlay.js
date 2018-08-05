@@ -62,8 +62,8 @@ var DialogView = android.view.View.extend({
 		var iconRight = iconLeft + 2 * ICON_RADIUS;
 		var iconTop = (SCREEN_HEIGHT - DIALOG_HEIGHT) / 2 - 1 * ICON_RADIUS;
 		var iconBottom = iconTop + 2 * ICON_RADIUS;
-		canvas.drawOval(iconLeft - 10, iconTop - 10, iconRight + 10, iconBottom + 10, ICON_BACK_FILL);
-		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
+		canvas.drawRect(iconLeft - 10, iconTop - 10, iconRight + 10, iconBottom + 10, ICON_BACK_FILL);
+		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, ICON_FILL);
 
 		// add icon
 		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());

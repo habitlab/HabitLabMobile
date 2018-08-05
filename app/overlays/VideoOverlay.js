@@ -46,7 +46,7 @@ var OverlayView = android.view.View.extend({
 		canvas.drawLine(iconRight + canvas.getWidth() * 0.01, iconTop + diameter / 2,
 			0.93 * canvas.getWidth(), iconTop + diameter / 2, iconPaint);
 
-		canvas.drawOval(iconLeft, iconTop, iconRight, iconBottom, iconPaint);
+		canvas.drawRect(iconLeft, iconTop, iconRight, iconBottom, iconPaint);
 
 		// add icon
 		var icon_id = context.getResources().getIdentifier("ic_habitlab_white", "drawable", context.getPackageName());
