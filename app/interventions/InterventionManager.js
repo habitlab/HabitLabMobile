@@ -96,18 +96,18 @@ var code = {};
  * the specified package.
  */
 code.VISIT_TOAST = function(real, pkg, service) {
-  if (!real) {
-    Toast.show(service, "You've visited Facebook 8 times today", 1, "#E71D36");
-    return;
-  }
-
-  var visits = StorageUtil.getVisits(pkg);
-  if (visits >= THRESHOLD_VISIT_TST) {
-    StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_TOAST}]);
-    var app = UsageInformationUtil.getBasicInfo(pkg).name;
-    var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-    Toast.show(service, msg, 1, "#E71D36");
-  }
+    if (!real) {
+      Toast.show(context, "You've visited Facebook 8 times today", 1, "#E71D36");
+      return;
+    }
+  
+    var visits = StorageUtil.getVisits(pkg);
+    if (visits >= THRESHOLD_VISIT_TST) {
+      StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.VISIT_TOAST}]);
+      var app = UsageInformationUtil.getBasicInfo(pkg).name;
+      var msg = "You've opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
+      Toast.show(service, msg, 1, "#E71D36");
+    }
 };
 
 
@@ -278,7 +278,7 @@ const THRESHOLD_PHONE_USAGE_DLG = 180; // 3 hours
  */
 code.PHONE_USAGE_TOAST = function(real, service) {
   if (!real) {
-    Toast.show(service, "You've spent 3.6 hours on your phone today", 1, "#011627");
+    Toast.show(context, "You've spent 3.6 hours on your phone today", 1, "#011627");
     return;
   }
 
@@ -357,7 +357,7 @@ code.PHONE_USAGE_DIALOG = function (real, service) {
  */
 code.USAGE_TOAST = function (real, pkg, service) {
   if (!real) {
-    Toast.show(service, "You've already used Facebook for 23 minutes today!", 1, "#FFA730");
+    Toast.show(context, "You've already used Facebook for 23 minutes today!", 1, "#FFA730");
     return;
   }
 
@@ -596,6 +596,7 @@ var exitToHome = function (service) {
   // if statement to protect if the foreground activity becomes null (after a crash)
   if (service) {
     var toHome = new Intent(Intent.ACTION_MAIN);
+    toHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     toHome.addCategory(Intent.CATEGORY_HOME);
     service.startActivity(toHome);
   }
@@ -614,7 +615,7 @@ var pausedThisVisit = false;
 var playNode;
 code.VIDEO_BLOCKER = function (real, node, pkg) {
   if (!real) {
-    Toast.show(service, "No demo available for this nudge!", 0);
+    Toast.show(context, "No demo available for this nudge!", 0);
     return;
   }
 
@@ -747,7 +748,7 @@ code.COUNTDOWN_TIMER_OVERLAY = function (real, pkg, service) {
  */
 code.DIMMER_OVERLAY = function (real, pkg, service) {
   if (!real) {
-    DimmerOverlay.dim(0.2, service);
+    DimmerOverlay.dim(0.2, context);
     Timer.setTimeout(() => {
         DimmerOverlay.removeDimmer();
     }, 6500);
@@ -894,7 +895,7 @@ code.POSITIVE_TOAST = function(real, pkg, service) {
       }
       var bitmap = UsageInformationUtil.getApplicationBitmap(targetPkg);
       var cb = function () {
-        var launchIntent = context.getPackageManager().getLaunchIntentForPackage(targetPkg);
+        var launchIntent = service.getPackageManager().getLaunchIntentForPackage(targetPkg);
         service.startActivity(launchIntent)
       }
       var appName = UsageInformationUtil.getBasicInfo(targetPkg).name;

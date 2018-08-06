@@ -50,7 +50,7 @@ exports.pageLoaded = function(args) {
 };
 
 exports.goToAccessibilityPermission = function() {
-	frame.topmost().navigate('views/onboarding/accessibilityPermissionView/accessibilityPermissionView');
+  frame.topmost().navigate('views/onboarding/overlayPermissionView/overlayPermissionView')
 };
 
 exports.backEvent = function(args) {

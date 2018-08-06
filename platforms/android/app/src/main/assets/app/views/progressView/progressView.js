@@ -108,7 +108,7 @@ exports.pageLoaded = function(args) {
 
 
     if (!permissionUtil.checkAccessibilityPermission()) {
-        FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow app tracking!",
+        FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow our nudges to work!",
             "Take me there!", cb);
     }
 

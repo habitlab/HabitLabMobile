@@ -4,7 +4,8 @@ var IM = require('~/interventions/InterventionManager');
 var fancyAlert = require("nativescript-fancyalert");
 var frameModule = require('ui/frame');
 var observable = require("data/observable");
-
+var permissionUtil = require('~/util/PermissionUtil')
+var FancyAlert = require("~/util/FancyAlert")
 var drawer;
 var page;
 var mainSwitch;
@@ -89,6 +90,13 @@ exports.pageLoaded = function(args) {
   drawer = page.getViewById("sideDrawer");
   listView = page.getViewById('app-list-view');
   initializeList();
+  var cb = function() {
+    permissionUtil.launchAccessibilityServiceIntent();
+  };
+  if (!permissionUtil.checkAccessibilityPermission()) {
+    FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow our nudges to work!",
+        "Take me there!", cb);
+  }
 };
 
 exports.pageUnloaded = function(args) {

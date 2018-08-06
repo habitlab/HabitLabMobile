@@ -2,6 +2,7 @@ var frame = require('ui/frame')
 var fancyAlert = require("nativescript-fancyalert");
 var PermissionUtil = require("~/util/PermissionUtil");
 var page;
+const application = require("application");
 
 
 exports.pageLoaded = function(args) {
@@ -21,6 +22,19 @@ exports.giveDrawPermission = function(args) {
     });
   }
 };
+
+if (application.android) {
+  application.android.on(application.AndroidApplication.activityResumedEvent, function (args) {
+      console.log("Event: " + args.eventName + ", Activity: " + args.activity);
+      if  (frame.topmost() == page) {
+        if(PermissionUtil.checkSystemOverlayPermission()) {
+          frame.topmost().navigate({
+            moduleName: 'views/onboarding/accessibilityPermissionView/accessibilityPermissionView',
+          });
+        }
+      }
+  });
+}
 
 exports.backEvent = function(args) {
    args.cancel = true; 
