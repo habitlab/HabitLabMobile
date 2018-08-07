@@ -199,7 +199,7 @@ code.GLANCE_NOTIFICATION = function(real) {
  */
 code.UNLOCK_TOAST = function(real) {
   if (!real) {
-    Toast.show(service, "You've unlocked your phone 7 times today", 1, "#72E500");
+    Toast.show(context, "You've unlocked your phone 7 times today", 1, "#72E500");
     return;
   }
 
@@ -517,7 +517,7 @@ var resetDurationInterventions = function() {
  */
 code.DURATION_TOAST = function (real, pkg, service) {
   if (!real) {
-    Toast.show(service, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
+    Toast.show(context, "You've been on Facebook for 5 minutes this visit", 1, "#2EC4B6");
     return;
   }
   var now = System.currentTimeMillis();

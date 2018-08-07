@@ -56,6 +56,7 @@ var initializeList = function() {
       enabled: StorageUtil.isEnabledForApp(id, pkgName)
     };
   });
+  console.log(JSON.stringify(apps))
   pageData.set('apps', apps);
 };
 
@@ -86,7 +87,6 @@ exports.pageLoaded = function(args) {
   page = args.object;
   pageData = new observable.Observable();
   page.bindingContext = pageData;
-
   drawer = page.getViewById("sideDrawer");
   listView = page.getViewById('app-list-view');
   initializeList();

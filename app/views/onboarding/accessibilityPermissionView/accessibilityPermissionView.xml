@@ -5,6 +5,8 @@
         <StackLayout>
           <ScrollView height="80%">
             <StackLayout >
+              <Label textWrap="true" text="Ok. We promise this is the last time we will need to ask you for enabling permissions."></Label>
+              <Label textWrap="true" text="The Accessibility permission allows us to sense which app you are using so we can give you an appropriate nudge if you asked for it."></Label>
               <Label textWrap="true" text="1. Tap the button below to get to your Settings." class="information"/>
               <Label textWrap="true" text="2. Once there, tap on 'HabitLab' to get to HabitLab's service page." class="information"/>
               <Image src="~/images/accessibility_example.jpg" class="information-image" />

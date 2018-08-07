@@ -75,6 +75,7 @@ exports.getIdToken = async function() {
         //Cool! We can just get the id.
         return task.getResult().getIdToken()
     } else {
+        moveOn()
         // We need to have the user sign in.
         var signInIntent = mGoogleSignInClient.getSignInIntent()
         application.android.foregroundActivity.startActivityForResult(signInIntent, RC_SIGN_IN)

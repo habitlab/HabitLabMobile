@@ -2,6 +2,7 @@
   actionBarHidden="true" xmlns:VideoPlayer="nativescript-videoplayer">
 		<StackLayout>
         <Label text="Enable Drawing" textWrap='true' class="title"/>
+        <Label text="Many nudges require us to draw on top of other applications. To allow nudges to work, please enable the overlay permission." textWrap="true"></Label>
         <!-- <VideoPlayer:Video class="firstVideo"
           controls="false" 
           loop="true" autoplay="true"
