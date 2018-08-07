@@ -1,12 +1,14 @@
 var frame = require('ui/frame')
 var fancyAlert = require("nativescript-fancyalert");
 var PermissionUtil = require("~/util/PermissionUtil");
+var StorageUtil = require("~/util/StorageUtil")
 var page;
 const application = require("application");
 
 
 exports.pageLoaded = function(args) {
-	page = args.object;
+  page = args.object;
+  StorageUtil.addLogEvents([{category: "navigation", index: "overlayPermissionView"}])
   fancyAlert.TNSFancyAlert.showInfo("Let us nudge you!", "Some of our nudges need to be able to show you alerts while you are in other apps. Please enable the overlay permission for us.", "Got it!");
 };
 

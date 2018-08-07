@@ -122,7 +122,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         }
 
         // inside habitlab or habitlab intervention showing
-        if (activePackage === "com.stanfordhci.habitlab") {
+        if (activePackage === "com.stanfordhci.habitlab" && eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             var now = Date.now();
             var timeSpentOnPhone = now - screenOnTime;
 
@@ -133,7 +133,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             screenOnTime = now;
             return; // skip over habitlab
         }
-
 
 
         // Lockdown Mode
@@ -163,7 +162,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
-            console.log("trying out new package: " + activePackage)
             // This logic is for the "conservation" experiment.
             var canRun = true
             if (storage.getExperiment().includes("conservation") &&
@@ -179,8 +177,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             if (currentApplication.isBlacklisted && canRun) {
               logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
             }
-        } else if (currentApplication.isBlacklisted) {
-            //TODO: Get video blocker working. (true, event.getSource(), currentApplication.packageName); // youtube only
         }
     },
 
@@ -220,6 +216,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  */
 function closeRecentVisit(now) {
     var timeSpent = now - currentApplication.visitStart;
+    console.log("closing visit for " + currentApplication.packageName + " for " + timeSpent/1000 +
+     " secs/" + timeSpent/(60 * 1000) + " minutes")
     if (currentApplication.packageName != null && currentApplication.packageName != "android") {
         storage.updateAppTime(currentApplication, timeSpent);
     }

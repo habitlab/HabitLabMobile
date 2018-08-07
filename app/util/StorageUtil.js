@@ -7,10 +7,10 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 28
+var APP_VERSION = 29
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
-var SEC_IN_MS = 1000;
+var MS_IN_SEC = 1000;
 
 /************************************
  *             HELPERS              *
@@ -720,7 +720,7 @@ exports.updateAppTime = async function(currentApplication, time) {
     }
   }
   // Now, log today's portion of the session.
-  var session_object = {timestamp: start.getTime(), duration: Math.round(time / SEC_IN_MS),
+  var session_object = {timestamp: start.getTime(), duration: Math.round(time / MS_IN_SEC),
     enabled: enabled, frequent: frequent, domain: packageName,
     interventions: currentApplication.interventions, isoWeek: moment().isoWeeks()}
   logSession(session_object)
@@ -1295,6 +1295,9 @@ exports.addLogEvents = function(events) {
         log[e.category][e.index] = 1;
       }
     }
+    e.timestamp = Date.now()
+    console.log("Sending " + JSON.stringify(e) + " for user " + exports.getUserID())
+    send_event_log(e)
   });
   appSettings.setString('log', JSON.stringify(log));
 };
@@ -1472,6 +1475,19 @@ function send_setting_change_log(data) {
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
     method: "POST",
     headers: { "Content-Type": "application/json"},
+    content: JSON.stringify(data)
+  })
+}
+
+/**
+ * This sends user interactions with the app so we can figure out possible causes of attrition, esp. in onboarding.
+ * @param {event} data 
+ */
+function send_event_log(data) {
+  http.request({ 
+    url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=events",
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
     content: JSON.stringify(data)
   })
 }

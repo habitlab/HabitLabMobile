@@ -27,7 +27,7 @@ exports.pageLoaded = function(args) {
   page.bindingContext = source
   pkgs = StorageUtil.getSelectedPackages();
   toToggle = {};
-
+  StorageUtil.addLogEvents([{category: "navigation", index: "watchListOnboardingView"}])
   timer.setTimeout(() => {
     createGrid();
   }, 1000);

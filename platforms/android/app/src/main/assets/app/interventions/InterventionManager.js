@@ -525,7 +525,7 @@ code.DURATION_TOAST = function (real, pkg, service) {
     durationToastID = Timer.setTimeout(() => {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
-      var msg = "You've been on " + applicationName + " for " + Math.ceil((Date.now() - sessionStart )/ MIN_IN_MS) + " minutes this visit";
+      var msg = "You've been on " + applicationName + " for " + Math.round((now - sessionStart )/ MIN_IN_MS) + " minutes this visit";
       Toast.show(service, msg, 1, "#2EC4B6");
       durationToastID = 0;
     }, INTERVAL_DURATION_TST);
@@ -552,7 +552,7 @@ code.DURATION_NOTIFICATION = function (real, pkg, service) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var title = applicationName + " Visit Length";
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil((Date.now() - sessionStart) / MIN_IN_MS) + " minutes";
+      msg += " been using " + applicationName + " for " + Math.round((now - sessionStart) / MIN_IN_MS) + " minutes";
       NotificationUtil.sendNotification(context, title, msg, notificationID.DURATION, 10);
       durationNotifID = 0;
     }, INTERVAL_DURATION_NTF)
@@ -577,7 +577,7 @@ code.DURATION_DIALOG = function (real, pkg, service) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_DIALOG}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
-      msg += " been using " + applicationName + " for " + Math.ceil((Date.now() - sessionStart) / MIN_IN_MS) + " minutes";
+      msg += " been using " + applicationName + " for " + Math.round((now - sessionStart) / MIN_IN_MS) + " minutes";
       DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
       durationDialogID = 0;
       code.DURATION_DIALOG(true, pkg)
