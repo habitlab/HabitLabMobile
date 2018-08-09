@@ -484,7 +484,7 @@ exports.togglePackage = function(packageName) {
  * Checks if the given package name is blacklisted.
  */
 exports.isPackageSelected = function(packageName) {
-  return JSON.parse(appSettings.getString('selectedPackages')).includes(packageName);
+  return JSON.parse(appSettings.getString('selectedPackages'. '[]')).includes(packageName);
 };
 
 
