@@ -63,7 +63,7 @@ const THRESHOLD_USAGE_DLG = 0;
 // visit duration interventions
 const INTERVAL_DURATION_TST = 300000;
 const INTERVAL_DURATION_NTF = 600000;
-const INTERVAL_DURATION_DLG = 120000;
+const INTERVAL_DURATION_DLG = 1200000;
 
 // overlay interventions
 const THRESHOLD_FULLSCREEN_OVR = 0;

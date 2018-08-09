@@ -34,7 +34,6 @@ exports.checkSystemOverlayPermission = function () {
  * allow permission to draw system overlays.
  */
 exports.launchSystemOverlayIntent = function (service) {
-	console.log('trying to launch system overlay intent.')
 	var int = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
 	var foreground = application.android.foregroundActivity;
 	if (service) {
@@ -78,7 +77,7 @@ exports.launchAccessibilityServiceIntent = function () {
 	var foreground = application.android.foregroundActivity;
 	if (foreground) {
 		foreground.startActivity(int);
-		foreground.finish();
+		foreground.finish() //DO NOT DELETE THIS: THE ACCESSIBILITY SERVICE WILL CRASH IF YOU DO
 	}
 }
 

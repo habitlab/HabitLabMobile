@@ -48,6 +48,7 @@ var Typeface = android.graphics.Typeface;
 var Resources = android.content.res.Resources;
 var SCREEN_HEIGHT = Resources.getSystem().getDisplayMetrics().heightPixels;
 var FancyAlert = require("~/util/FancyAlert");
+const application = require("application")
 
 var TODAY = 27;
 var page;
@@ -106,10 +107,15 @@ exports.pageLoaded = function(args) {
     }
 
 
-
+    const overlayCallback = function() {
+        permissionUtil.launchSystemOverlayIntent(context)
+    }
     if (!permissionUtil.checkAccessibilityPermission()) {
-        FancyAlert.show(FancyAlert.type.INFO, "Oops!", "Looks like our accessibility service was stopped, please re-enable to allow our nudges to work!",
+        FancyAlert.show(FancyAlert.type.INFO, "Accessibility", "Looks like our accessibility service was stopped, please re-enable to allow our nudges to work!",
             "Take me there!", cb);
+    } else if (!permissionUtil.checkSystemOverlayPermission()) {
+        FancyAlert.show(FancyAlert.type.INFO, "Drawing", "Looks like our overlay permission was turned off. Please re-enable the the system overlay permission!", 
+        "Take me to settings!", overlayCallback)
     }
 
   	drawer = page.getViewById("sideDrawer");
@@ -121,7 +127,7 @@ exports.pageLoaded = function(args) {
       // to choose some.
       frameModule.topmost().navigate('views/onboarding/watchlistOnboardingView/watchlistOnboardingView');
       return
-    }
+    } 
     setUp();
 };
 

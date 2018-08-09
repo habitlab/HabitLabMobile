@@ -17,6 +17,7 @@ const CancelOverlay = require("~/overlays/CancelOverlay");
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
 const AccessibilityService = android.accessibilityservice.AccessibilityService;
+const AccessibilityWindowInfo = android.view.accessibility.AccessibilityWindowInfo
 
 // packages to ignore (might need to compile a list as time goes on)
 const ignore = ["com.android.systemui",
@@ -30,7 +31,16 @@ const ignore = ["com.android.systemui",
     "com.android.systemui"
 ];
 
-
+/**
+ * This package buffer checks if we navigated to HabitLab for good. If a bunch of  events are fired in row
+ * under HabitLab's name, then we must have actually navigated to the app as opposed to been given
+ * an intervention.
+ */
+let packageBuffer = {
+    packageName: "",
+    count: 0,
+    latestEvent: Date.now()
+}
 
 /**************************************
  *       TRACKING FUNCTIONALITY       *
@@ -120,18 +130,36 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
             return; // ignore certain pacakges
         }
+        //This buffer listens for ALL accessibility events.
+        packageBuffer.latestEvent = Date.now()
+        if (packageBuffer.currentApplication != activePackage) {
+            packageBuffer.currentApplication = activePackage
+            packageBuffer.count = 1
+        } else  {
+            packageBuffer.count++
+        }
+        
+        //HABITLAB SECTION
+        if (activePackage === "com.stanfordhci.habitlab" && activePackage != currentApplication.packageName) {
+            // this is just a habitlab intervention showing. We don't want this  event to be interpreted as switching apps.
+            if (event.getContentDescription() != "HabitLab" && packageBuffer.count < 5 && Date.now() - packageBuffer.latestEvent < 3000) {
+                var now = Date.now();
+                var timeSpentOnPhone = now - screenOnTime;
 
-        // inside habitlab or habitlab intervention showing
-        if (activePackage === "com.stanfordhci.habitlab" && eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            var now = Date.now();
-            var timeSpentOnPhone = now - screenOnTime;
-
-            if (screenOnTime) {
-                storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
+                if (screenOnTime) {
+                    storage.updateTotalTime(timeSpentOnPhone); // update time for progress view
+                }
+                screenOnTime = now;
+                return; // skip over the new session stuff.
+            } else {
+                //Either habitlab just started, or they've been using it. let's treat it as a closed session.
+                interventionManager.removeOverlays();
+                interventionManager.resetDurationInterventions();
+                var now = Date.now();
+                closeRecentVisit(now);
+                openNewVisit(now, activePackage);
+                return
             }
-
-            screenOnTime = now;
-            return; // skip over habitlab
         }
 
 
@@ -144,7 +172,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 var goal = storage.getLockdownDuration();
                 var progress = Math.round((Date.now() - (storage.getLockdownEnd() - goal*60000))/60000);
                 var remaining = goal - progress;
-
                 var msg = "You have " + remaining + " minutes remaining in Lockdown Mode. All apps on your watchlist are off-limits.";
                 var closeMsg = "Got it";
                 lockdownOverlay.showOverlay("You're in Lockdown Mode!", msg, closeMsg, progress, goal, null, lockdownCb);
@@ -154,7 +181,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         } else if (lockdownSeen && !storage.inLockdownMode()) {
             lockdownSeen = 0;
         }
-
+        
         // main blacklisted logic
         if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             interventionManager.removeOverlays();
@@ -162,6 +189,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
+            
             // This logic is for the "conservation" experiment.
             var canRun = true
             if (storage.getExperiment().includes("conservation") &&
@@ -169,11 +197,9 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                   // If packages the conservation experiment is running and the packages
                   // is labeled as infrequent, interventions should be given out on
                   // average one out of every 5 times.
-                    console.log('this is an infrequent package')
                   canRun = interventionRequestCounter % 5 == 4 ? true : false
                   interventionRequestCounter += 1
             }
-
             if (currentApplication.isBlacklisted && canRun) {
               logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
             }
@@ -215,9 +241,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  * length information to StorageUtil.
  */
 function closeRecentVisit(now) {
+    console.log("closing " + currentApplication.packageName + " session")
     var timeSpent = now - currentApplication.visitStart;
-    console.log("closing visit for " + currentApplication.packageName + " for " + timeSpent/1000 +
-     " secs/" + timeSpent/(60 * 1000) + " minutes")
     if (currentApplication.packageName != null && currentApplication.packageName != "android") {
         storage.updateAppTime(currentApplication, timeSpent);
     }
@@ -231,6 +256,7 @@ function closeRecentVisit(now) {
  * Mark the visit start time.
  */
 function openNewVisit(now, pkg) {
+    console.log("opening " + pkg + " session")
     currentApplication.packageName = pkg;
     currentApplication.visitStart = now;
     currentApplication.interventions = []

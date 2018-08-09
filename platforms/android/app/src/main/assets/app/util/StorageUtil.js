@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 29
+var APP_VERSION = 32
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
@@ -1296,7 +1296,6 @@ exports.addLogEvents = function(events) {
       }
     }
     e.timestamp = Date.now()
-    console.log("Sending " + JSON.stringify(e) + " for user " + exports.getUserID())
     send_event_log(e)
   });
   appSettings.setString('log', JSON.stringify(log));
