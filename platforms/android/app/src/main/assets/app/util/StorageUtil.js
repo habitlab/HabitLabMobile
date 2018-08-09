@@ -281,7 +281,6 @@ exports.setUpDB = function(erasingData) {
   if (erasingData) {
     sendLog();
   }
-
   if (!appSettings.getString('userID')) {
     appSettings.setString('userID', genUserId());
   }
@@ -484,7 +483,7 @@ exports.togglePackage = function(packageName) {
  * Checks if the given package name is blacklisted.
  */
 exports.isPackageSelected = function(packageName) {
-  return JSON.parse(appSettings.getString('selectedPackages')).includes(packageName);
+  return JSON.parse(appSettings.getString('selectedPackages', '[]')).includes(packageName);
 };
 
 
@@ -1523,6 +1522,19 @@ if (exports.getExperiment().includes("conservation")) {
       }
       appInfo.frequentAssignmentWeek = week
       appSettings.setString(packageName, JSON.stringify(appInfo))
+      // Now, log that we have updated their goals.
+      http.request({
+        url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        content: JSON.stringify({
+          "type": "set_frequency",
+          "package": packageName,
+          "frequency": appInfo.frequent,
+          "timestamp": Date.now(),
+          "isoWeek": week
+        })
+      })
     }
     return appInfo.frequent
   }

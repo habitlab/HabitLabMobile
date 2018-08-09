@@ -281,7 +281,6 @@ exports.setUpDB = function(erasingData) {
   if (erasingData) {
     sendLog();
   }
-
   if (!appSettings.getString('userID')) {
     appSettings.setString('userID', genUserId());
   }
@@ -484,7 +483,7 @@ exports.togglePackage = function(packageName) {
  * Checks if the given package name is blacklisted.
  */
 exports.isPackageSelected = function(packageName) {
-  return JSON.parse(appSettings.getString('selectedPackages'. '[]')).includes(packageName);
+  return JSON.parse(appSettings.getString('selectedPackages', '[]')).includes(packageName);
 };
 
 

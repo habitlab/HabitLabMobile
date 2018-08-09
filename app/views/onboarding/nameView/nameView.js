@@ -21,7 +21,8 @@ exports.pageLoaded = function(args) {
   } else if (StorageUtil.isOnboardingComplete()) {
     viewFile = 'goalsView';
     view = 'goalsView';
-  } else if (PermissionUtil.checkAccessibilityPermission()) {
+  } else if (PermissionUtil.checkAccessibilityPermission() && (appSettings.getString('userID'))) { 
+    // Checks to see if accessibility is enabled AND they set up the database.
     viewFile = 'goalsView';
     view = 'goalsView';
     if (!StorageUtil.isOnboardingComplete()) {
