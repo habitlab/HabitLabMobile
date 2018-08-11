@@ -525,7 +525,6 @@ code.DURATION_TOAST = function (real, pkg, service) {
       StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.DURATION_TOAST}]);
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var now = System.currentTimeMillis();
-      console.log(now + " " + sessionStart + " " + Math.round((now - sessionStart )/ MIN_IN_MS))
       var msg = "You've been on " + applicationName + " for " + Math.round((now - sessionStart )/ MIN_IN_MS) + " minutes this visit";
       Toast.show(service, msg, 1, "#2EC4B6");
       durationToastID = 0;

@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 32
+var APP_VERSION = 34
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
@@ -720,7 +720,7 @@ exports.updateAppTime = async function(currentApplication, time) {
   }
   // Now, log today's portion of the session.
   var session_object = {timestamp: start.getTime(), duration: Math.round(time / MS_IN_SEC),
-    enabled: enabled, frequent: frequent, domain: packageName,
+    enabled: enabled, frequent: frequent, domain: packageName, utcOffset: moment().utcOffset(), 
     interventions: currentApplication.interventions, isoWeek: moment().isoWeeks()}
   logSession(session_object)
 };
@@ -1513,13 +1513,8 @@ if (exports.getExperiment().includes("conservation")) {
     appInfo = JSON.parse(appSettings.getString(packageName, "null"))
     week = moment().isoWeek()
     if (appInfo.frequentAssignmentWeek == null || appInfo.frequentAssignmentWeek != week) {
-      if (appInfo.frequent == null) {
-        // randomly set first setting.
-        appInfo.frequent = Math.random() < .5 ? true : false
-      } else {
-        //Alternate between frequent and infrequent.
-        appInfo.frequent = !appInfo.frequent
-      }
+      // randomly set new frequency
+      appInfo.frequent = Math.random() < .5 ? true : false
       appInfo.frequentAssignmentWeek = week
       appSettings.setString(packageName, JSON.stringify(appInfo))
       // Now, log that we have updated their goals.
@@ -1528,11 +1523,13 @@ if (exports.getExperiment().includes("conservation")) {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         content: JSON.stringify({
+          "_id": "set_frequency",
           "type": "set_frequency",
           "package": packageName,
           "frequency": appInfo.frequent,
           "timestamp": Date.now(),
-          "isoWeek": week
+          "isoWeek": week,
+          "utcOffset": moment().utcOffset()
         })
       })
     }

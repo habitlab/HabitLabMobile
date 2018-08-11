@@ -241,7 +241,6 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  * length information to StorageUtil.
  */
 function closeRecentVisit(now) {
-    console.log("closing " + currentApplication.packageName + " session")
     var timeSpent = now - currentApplication.visitStart;
     if (currentApplication.packageName != null && currentApplication.packageName != "android") {
         storage.updateAppTime(currentApplication, timeSpent);
@@ -256,7 +255,6 @@ function closeRecentVisit(now) {
  * Mark the visit start time.
  */
 function openNewVisit(now, pkg) {
-    console.log("opening " + pkg + " session")
     currentApplication.packageName = pkg;
     currentApplication.visitStart = now;
     currentApplication.interventions = []
