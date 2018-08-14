@@ -70,7 +70,9 @@ exports.getIdToken = async function() {
     // Build a GoogleSignInClient with the options specified by gso.
     var mGoogleSignInClient = GoogleSignIn.getClient(application.android.context.getApplicationContext(), gso)
     var task = await mGoogleSignInClient.silentSignIn()
-    if (task.isSuccessful()) {
+    if (StorageUtil.isSignedIn()) {
+        moveOn()
+    } else if (task.isSuccessful()) {
         StorageUtil.addLogEvents([{category: "sucessfully signed in", index: "askForEmailView"}])
         moveOn()
         //Cool! We can just get the id.

@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 34
+var APP_VERSION = 36
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
@@ -730,6 +730,9 @@ exports.updateAppTime = async function(currentApplication, time) {
  * Returns time on the app so far today (in minutes).
  */
 exports.getAppTime = function(packageName) {
+  if (!packageName) {
+    return 0
+  }
   return Math.ceil(JSON.parse(appSettings.getString(packageName)).stats[index()]['time']);
 };
 
@@ -1263,6 +1266,7 @@ exports.getErrorQueue = function() {
  * Adds an error to the queue.
  */
 exports.addError = function(error) {
+  error.version = APP_VERSION
   var queue = appSettings.getString('errorQueue');
   queue = queue && JSON.parse(queue) || [];
   queue.push(error);
@@ -1335,7 +1339,7 @@ exports.addLogEvents = function(events) {
       enabled_list = data[pkg]['enabled']
       data[pkg]['enabled'] = []
       for (var i = 0; i < enabled_list.length; i++) {
-        if (enabled_list[i]) {
+        if (enabled_list[i] && ID.interventionDetails[i]) {
           data[pkg]['enabled'].push(ID.interventionDetails[i]['shortname'])
         }
       }
@@ -1367,7 +1371,7 @@ exports.updateDB = function() {
   var mainEnabled = JSON.parse(appSettings.getString('enabled'));
   var diff = ID.interventionDetails.length - mainEnabled.length;
   if (diff) {
-    appSettings.setString('enabled', JSON.stringify(mainEnabled.concat(Array(diff).fill(true))));
+    appSettings.setString('enabled', JSON.stringify((Array(ID.interventionDetails.length).fill(true))));
     var pkgs = JSON.parse(appSettings.getString('selectedPackages'));
     pkgs.forEach(function(pkg) {
       var pkgInfo = JSON.parse(appSettings.getString(pkg));
@@ -1400,6 +1404,7 @@ exports.setTargetPresets = function() {
  * @param {string} token the Google Id token to pass to the server.
  */
 exports.registerUser = function(token) {
+  appSettings.setString("signedIn", "true")
   object = {userid: userid = exports.getUserID(), token: token, from: "android", type: exports.getExperiment()}
   http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/register_user_with_email" ,
@@ -1407,6 +1412,10 @@ exports.registerUser = function(token) {
     headers: { "Content-Type": "application/json" },
     content: JSON.stringify(object)
   })
+}
+
+exports.isSignedIn = function() {
+  return appSettings.getString("signedIn", "false") == "true"
 }
 
 /**

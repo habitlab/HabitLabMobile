@@ -56,7 +56,6 @@ var initializeList = function() {
       enabled: StorageUtil.isEnabledForApp(id, pkgName)
     };
   });
-  console.log(JSON.stringify(apps))
   pageData.set('apps', apps);
 };
 

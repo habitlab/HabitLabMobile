@@ -8,15 +8,7 @@ var page;
 
 exports.pageLoaded = function(args) {
 	page = args.object;
-
-  if (PermissionUtil.checkAccessibilityPermission()) {
-    frameModule.topmost().navigate({
-      moduleName: 'views/goalsView/goalsView',
-      clearHistory: true
-    });
-  } else {
-    fancyAlert.TNSFancyAlert.showSuccess("Almost there!", "We need to be able to monitor the apps you've selected so we can help you build better habits! Please enable the service for HabitLab.", "I'm on it!");
-  }
+  fancyAlert.TNSFancyAlert.showSuccess("Almost there!", "We need to be able to monitor the apps you've selected so we can help you build better habits! Please enable the service for HabitLab.", "I'm on it!");
 };
 
 //When the user taps the 'give permission' button - If the user hasn't already given permission, open settings

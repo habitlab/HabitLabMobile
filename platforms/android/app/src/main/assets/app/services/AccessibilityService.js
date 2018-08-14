@@ -73,33 +73,28 @@ var lockdownSeen = 0;
 var ScreenReceiver = android.content.BroadcastReceiver.extend({
     onReceive: function(context, intent) {
         // decide whether or not to run an on-launch intervention
-
         var action = intent.getAction();
-
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
             storage.glanced();
-            logSessionIntervention(interventionManager.nextScreenOnIntervention())
+            //TODO: enabled once we are more confident  that   this works.
+            logSessionIntervention(interventionManager.nextScreenOnIntervention(context))
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
             screenOnTime = Date.now();
             storage.unlocked();
-            logSessionIntervention(interventionManager.nextScreenUnlockIntervention())
+            logSessionIntervention(interventionManager.nextScreenUnlockIntervention(context))
 
             var versionName = new VersionNumber().get();
             if (versionName !== storage.checkVersionName()) {
-                storage.updateDB();
                 storage.setVersionName(versionName); // so it's a one-shot
+                storage.updateDB();
             }
-
-
         } else if (action === android.content.Intent.ACTION_SCREEN_OFF) {
             var now = Date.now();
             closeRecentVisit(now);
             var timeSpentOnPhone = now - screenOnTime;
-
             if (screenOnTime) {
                 storage.updateTotalTime(timeSpentOnPhone);
             }
-
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
             currentApplication.packageName = "";

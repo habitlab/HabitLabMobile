@@ -79,7 +79,6 @@ var initializeList = function() {
 
 exports.onItemTap = function(args) {
   var tappedItem = pageData.get('nudges')[args.index];
-  console.log(tappedItem)
   if (!tappedItem.isHeader) { // if what's been clicked is not a header
     search.dismissSoftInput();
     frameModule.topmost().navigate({

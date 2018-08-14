@@ -8,7 +8,8 @@
         <Label text="Design your time on your phone" textWrap='true' id="welcome" />
         <Label text=""></Label><Label text=""></Label>
         <Label text="Your name is only stored locally and is to personalize your HabitLab experience." textWrap="true"></Label>
-         <!-- <Button text="Get started" id="start-button" tap="checkNameNextPage"/> -->
-     </StackLayout>
+        <Button text="Get started" id="start-button" tap="checkNameNextPage"/>
+  </StackLayout>
+     
 
 </Page>

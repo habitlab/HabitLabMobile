@@ -177,7 +177,9 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 			closeButton = new Button(context);
 		closeButton.setText("X");
 		closeButton.setTextColor(Color.WHITE);
-		closeButton.setStateListAnimator(null);
+		if (closeButton.setStateListAnimator) {
+			closeButton.setStateListAnimator(null);
+		}
 		closeButton.getBackground().setColorFilter(Color.parseColor("#8d978d"), android.graphics.PorterDuff.Mode.MULTIPLY);
 		closeButton.getBackground().setAlpha(170);
 		closeButton.setOnClickListener(new android.view.View.OnClickListener({

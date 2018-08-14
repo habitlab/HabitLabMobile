@@ -146,7 +146,7 @@ code.VISIT_NOTIFICATION = function(real, pkg, service) {
  */
 code.VISIT_DIALOG = function (real, pkg, service) {
   if (!real) {
-    DialogOverlay.showOneOptionDialogOverlay("You've opened Facebook 12 times today", "Okay");
+    DialogOverlay.showOneOptionDialogOverlay("You've opened Facebook 12 times today", "Okay", context);
     return;
   }
 
@@ -156,7 +156,7 @@ code.VISIT_DIALOG = function (real, pkg, service) {
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
     msg += " opened " + app + " " + visits + (visits === 1 ? " time" : " times") + " today";
-    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
   }
 }
 
@@ -173,7 +173,7 @@ code.VISIT_DIALOG = function (real, pkg, service) {
  * number of glances (determined by
  * THRESHOLD_GLANCES_NTF).
  */
-code.GLANCE_NOTIFICATION = function(real) {
+code.GLANCE_NOTIFICATION = function(real, context) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Glance Alert",
       "You've glanced at your phone 7 times today", notificationID.VISIT, 10);
@@ -197,17 +197,17 @@ code.GLANCE_NOTIFICATION = function(real) {
  * Displays a toast if the device has an effective number
  * of unlocks (determined by THRESHOLD_UNLOCKS_TST).
  */
-code.UNLOCK_TOAST = function(real) {
+code.UNLOCK_TOAST = function(real, context) {
   if (!real) {
     Toast.show(context, "You've unlocked your phone 7 times today", 1, "#72E500");
     return;
   }
 
   var unlocks = StorageUtil.getUnlocks();
-  if (unlocks >= THRESHOLD_UNLOCKS_TST) {
+  if (unlocks >= THRESHOLD_UNLOCKS_TST && context) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_TOAST}]);
     var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today";
-    Toast.show(service, msg, 1, "#72E500");
+    Toast.show(context, msg, 1, "#72E500");
   }
 };
 
@@ -246,17 +246,17 @@ code.UNLOCK_NOTIFICATION = function(real) {
  */
 code.UNLOCK_DIALOG = function (real, service) {
   if (!real) {
-    DialogOverlay.showOneOptionDialogOverlay("You've unlocked your phone 18 times today", "Okay");
+    DialogOverlay.showOneOptionDialogOverlay("You've unlocked your phone 18 times today", "Okay", context);
     return;
   }
 
   var unlocks = StorageUtil.getUnlocks();
-  if (unlocks >= THRESHOLD_UNLOCKS_DLG) {
+  if (unlocks >= THRESHOLD_UNLOCKS_DLG && service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_DIALOG}]);
     var title = 'Unlock Alert';
     var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
     msg += " unlocked your phone " + unlocks + (unlocks === 1 ? ' time' : ' times') + ' today';
-    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
   }
 }
 
@@ -283,7 +283,7 @@ code.PHONE_USAGE_TOAST = function(real, service) {
   }
 
   var time = StorageUtil.getTotalTime();
-  if (time >= THRESHOLD_PHONE_USAGE_TST) {
+  if (time >= THRESHOLD_PHONE_USAGE_TST && service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_TOAST}]);
     var hours = Math.round(10 * (time / 60)) / 10;
     var msg = "You've spent " + hours + " hours on your phone today";
@@ -327,17 +327,17 @@ code.PHONE_USAGE_NOTIFICATION = function(real, service) {
  */
 code.PHONE_USAGE_DIALOG = function (real, service) {
   if (!real) {
-    DialogOverlay.showOneOptionDialogOverlay("You've spent 5.1 hours on your phone today", "Okay");
+    DialogOverlay.showOneOptionDialogOverlay("You've spent 5.1 hours on your phone today", "Okay", context);
     return;
   }
 
   var time = StorageUtil.getTotalTime();
-  if (time >= THRESHOLD_PHONE_USAGE_DLG) {
+  if (time >= THRESHOLD_PHONE_USAGE_DLG && service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.PHONE_USAGE_DIALOG}]);
     var hours = Math.round(10 * (time / 60)) / 10;
     var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
     msg += " already spent " + hours + ' hours on your phone today';
-    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
   }
 }
 
@@ -362,7 +362,7 @@ code.USAGE_TOAST = function (real, pkg, service) {
   }
 
   var minutes = StorageUtil.getAppTime(pkg);
-  if (minutes >= THRESHOLD_USAGE_TST) {
+  if (minutes >= THRESHOLD_USAGE_TST &&) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_TOAST}]);
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
@@ -383,7 +383,6 @@ code.USAGE_NOTIFICATION = function (real, pkg, service) {
       "You've already used Facebook for 27 minutes today!", notificationID.USAGE, 10);
     return;
   }
-
   var minutes = StorageUtil.getAppTime(pkg);
   if (minutes >= THRESHOLD_USAGE_NTF) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
@@ -391,7 +390,7 @@ code.USAGE_NOTIFICATION = function (real, pkg, service) {
     var title = app + " Usage Alert"
     var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
     msg += " already used " + app + " for " + minutes + " minutes today.";
-    NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
+    NotificationUtil.sendNotification(service, title, msg, notificationID.USAGE, 10);
   }
 };
 
@@ -404,7 +403,7 @@ code.USAGE_NOTIFICATION = function (real, pkg, service) {
  */
 code.USAGE_DIALOG = function (real, pkg, service) {
   if (!real) {
-    DialogOverlay.showOneOptionDialogOverlay("You've already used Facebook for 47 minutes today!", "Okay");
+    DialogOverlay.showOneOptionDialogOverlay("You've already used Facebook for 47 minutes today!", "Okay", context);
     return;
   }
 
@@ -414,7 +413,7 @@ code.USAGE_DIALOG = function (real, pkg, service) {
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", that's" : "That's"
     msg += " already " + minutes + " minutes on " + app + " today!";
-    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+    DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
   }
 };
 
@@ -437,11 +436,10 @@ code.QUOTE_NOTIFICATION = function (real, pkg, service) {
   let quoteArray = []
   var quoteData = require('~/interventions/quotes')
   for (let {quoteAuthor, quoteText} of quoteData) {
-    quoteArray[quoteText + ' (' + quoteAuthor + ')']
+    quoteArray.push(quoteText + ' (' + quoteAuthor + ')')
   }
   StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
-  var app = UsageInformationUtil.getBasicInfo(pkg).name;
-  var title = app + " Usage Alert";
+  var title = "Some Inspiration"
   var msg = quoteArray[Math.floor(Math.random() * quoteArray.length)];
   NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
 };
@@ -459,18 +457,20 @@ code.QUOTE_NOTIFICATION = function (real, pkg, service) {
 code.TIME_NOTIFICATION = function (real, pkg, service) {
   if (!real) {
     NotificationUtil.sendNotification(context, "App Usage Alert",
-    "You've used your targeted apps for 55 minutes today", notificationID.USAGE, 10);
+    "You've used your watchlisted apps for 55 minutes today", notificationID.USAGE, 10);
     return;
   }
   StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_NOTIFICATION}]);
   var packages =  StorageUtil.getSelectedPackages()
   var totalUsage = 0
   for (var i = 0; i < packages.length; i++) {
-    totalUsage += StorageUtil.getAppTime(pkg);
+    if (packages[i]) {
+      totalUsage += StorageUtil.getAppTime(packages[i]);
+    }
   }
   var app = UsageInformationUtil.getBasicInfo(pkg).name;
   var title = "Usage Alert"
-  var msg = "You've used your targeted apps for " + totalUsage + " minutes today.";
+  var msg = "You've used your watchlisted apps for " + totalUsage + " minutes today.";
   NotificationUtil.sendNotification(context, title, msg, notificationID.USAGE, 10);
 };
 
@@ -567,7 +567,7 @@ code.DURATION_NOTIFICATION = function (real, pkg, service) {
  */
 code.DURATION_DIALOG = function (real, pkg, service) {
   if (!real) {
-    DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay");
+    DialogOverlay.showOneOptionDialogOverlay("You've been using Facebook for 15 minutes", "Okay", context);
     return;
   }
   if (!durationDialogID) {
@@ -577,7 +577,7 @@ code.DURATION_DIALOG = function (real, pkg, service) {
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       var now = System.currentTimeMillis();
       msg += " been using " + applicationName + " for " + Math.round((now - sessionStart) / MIN_IN_MS) + " minutes";
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay");
+      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
       durationDialogID = 0;
       code.DURATION_DIALOG(true, pkg)
     }, INTERVAL_DURATION_DLG);
@@ -1064,17 +1064,17 @@ var nextOnLaunchIntervention = function(pkg, service) {
   return func_and_name.shortname
 };
 
-var nextScreenOnIntervention = function() {
+var nextScreenOnIntervention = function(context) {
   var run = Math.random();
-  if (run < 0.075) {
-    code.GLANCE_NOTIFICATION(true);
+  if (run < .075) {
+    code.GLANCE_NOTIFICATION(true, context);
   }
   return "GLANCE_NOTIFICATION"
 }
 
-var nextScreenUnlockIntervention = function() {
+var nextScreenUnlockIntervention = function(context) {
   var run = Math.random();
-  if (run < 0.15) {
+  if (run < .075) {
     var randomDifficulty = Math.random();
     var index;
     var func_and_name;
@@ -1087,7 +1087,7 @@ var nextScreenUnlockIntervention = function() {
     }
     // TODO there are no hard interventions for screen unlock (phone) type
     if (StorageUtil.canIntervene(ID.interventionIDs[func_and_name.shortname])) {
-      func_and_name.func(true);
+      func_and_name.func(true, context);
     }
     return func_and_name.shortname
   }

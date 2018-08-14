@@ -7,6 +7,6 @@
           controls="false" 
           loop="true" autoplay="true"
             src="~/videos/OverlayPermission.mp4"  /> -->
-        <Button text="Give Overlay Permission" tap="giveDrawPermission"/>
+        <Button text="{{ button_text }}" tap="giveDrawPermission"/>
     </StackLayout>
 </Page>

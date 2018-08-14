@@ -187,7 +187,7 @@ exports.removeTwoOptionDialog = function () {
 var oneOptionView;
 var oneOptionText;
 var oneOptionButton;
-exports.showOneOptionDialogOverlay = function (msg, buttonText) {
+exports.showOneOptionDialogOverlay = function (msg, buttonText, context) {
 	var color = changeIconColor(5);
     if (permissions.checkSystemOverlayPermission()) {
 		// In case there already was an overlay dialog, remove it.
