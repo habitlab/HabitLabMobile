@@ -173,7 +173,7 @@ code.VISIT_DIALOG = function (real, pkg, service) {
  * number of glances (determined by
  * THRESHOLD_GLANCES_NTF).
  */
-code.GLANCE_NOTIFICATION = function(real, context) {
+code.GLANCE_NOTIFICATION = function(real, service) {
   if (!real) {
     NotificationUtil.sendNotification(context, "Glance Alert",
       "You've glanced at your phone 7 times today", notificationID.VISIT, 10);
@@ -186,7 +186,7 @@ code.GLANCE_NOTIFICATION = function(real, context) {
     var title = 'Glance Alert';
     var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
     msg += " glanced at your phone " + glances + (glances === 1 ? ' time' : ' times') + ' today';
-    NotificationUtil.sendNotification(context, title, msg, notificationID.GLANCE, 10);
+    NotificationUtil.sendNotification(service, title, msg, notificationID.GLANCE, 10);
   }
 };
 
@@ -197,17 +197,17 @@ code.GLANCE_NOTIFICATION = function(real, context) {
  * Displays a toast if the device has an effective number
  * of unlocks (determined by THRESHOLD_UNLOCKS_TST).
  */
-code.UNLOCK_TOAST = function(real, context) {
+code.UNLOCK_TOAST = function(real, service) {
   if (!real) {
     Toast.show(context, "You've unlocked your phone 7 times today", 1, "#72E500");
     return;
   }
 
   var unlocks = StorageUtil.getUnlocks();
-  if (unlocks >= THRESHOLD_UNLOCKS_TST && context) {
+  if (unlocks >= THRESHOLD_UNLOCKS_TST && service) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.UNLOCK_TOAST}]);
     var msg = "You've unlocked your phone " + unlocks + (unlocks === 1 ? " time" : " times") + " today";
-    Toast.show(context, msg, 1, "#72E500");
+    Toast.show(service, msg, 1, "#72E500");
   }
 };
 
@@ -265,7 +265,7 @@ code.UNLOCK_DIALOG = function (real, service) {
 /*************************************
  *     PHONE USAGE INTERVENTIONS     *
  *************************************/
-const THRESHOLD_PHONE_USAGE_TST = 60; // 1 hour
+const THRESHOLD_PHONE_USAGE_TST = 60; // 1 hour 
 const THRESHOLD_PHONE_USAGE_NTF = 120; // 2 hours
 const THRESHOLD_PHONE_USAGE_DLG = 180; // 3 hours
 
@@ -362,7 +362,7 @@ code.USAGE_TOAST = function (real, pkg, service) {
   }
 
   var minutes = StorageUtil.getAppTime(pkg);
-  if (minutes >= THRESHOLD_USAGE_TST &&) {
+  if (minutes >= THRESHOLD_USAGE_TST) {
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.USAGE_TOAST}]);
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = "You've already spent " + minutes + " minutes on " + app + " today!";
@@ -771,7 +771,7 @@ code.DIMMER_OVERLAY = function (real, pkg, service) {
 code.APPLICATION_SLIDER = function(real, pkg, service) {
   if (!real) {
     var msg = "How much time would you like to spend on Facebook this visit?";
-    SliderOverlay.showSliderOverlay(msg, null);
+    SliderOverlay.showSliderOverlay(msg, null, context);
     return;
   }
 
@@ -779,16 +779,14 @@ code.APPLICATION_SLIDER = function(real, pkg, service) {
     if (setTime === 0) {
       setTime = 0.05;
     }
-
     TimerOverlay.showCountDownTimer(setTime, exitToHome, (service));
   };
-
   var visits = StorageUtil.getVisits(pkg);
   if (visits > THRESHOLD_APPLICATION_SLIDER_OVR) {
     var app = UsageInformationUtil.getBasicInfo(pkg).name;
     var msg = "How much time would you like to spend on " + app + " this visit?";
     StorageUtil.addLogEvents([{category: "nudges", index: ID.interventionIDs.APPLICATION_SLIDER}]);
-    SliderOverlay.showSliderOverlay(msg, cb);
+    SliderOverlay.showSliderOverlay(msg, cb, service);
   }
 }
 

@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 36
+var APP_VERSION = 37
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
@@ -473,7 +473,7 @@ exports.togglePackage = function(packageName) {
   }
 
   appSettings.setString('selectedPackages', JSON.stringify(list));
-  send_setting_change_log({type: 'toggled package ' + packageName,
+  send_setting_change_log({type: 'toggled package ' + packageName + ' removed: ' + removed,
                         packages: list})
   return !removed;
 };

@@ -91,7 +91,7 @@ var negButtons;
 var seekBar;
 var labelText;
 var setTime = 10;
-exports.showSliderOverlay = function (msg, callback) {
+exports.showSliderOverlay = function (msg, callback, context) {
 	if (permissions.checkSystemOverlayPermission()) {
 		// add whole screen view
 		var dialogParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,

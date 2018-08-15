@@ -172,6 +172,8 @@ exports.pageUnloaded = function(args) {
     if (!app) {
       return;
     }
+    //This function checks if the package is enabled, and adds it if it isn't.
+    StorageUtil.addPackage(app.packageName)
     StorageUtil.changeAppGoal(app.packageName, app.value, app.name === 'mins' ? 'minutes' : app.name);
   });
 

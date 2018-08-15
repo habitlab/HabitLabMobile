@@ -76,7 +76,6 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
         var action = intent.getAction();
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
             storage.glanced();
-            //TODO: enabled once we are more confident  that   this works.
             logSessionIntervention(interventionManager.nextScreenOnIntervention(context))
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
             screenOnTime = Date.now();
@@ -196,7 +195,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                   interventionRequestCounter += 1
             }
             if (currentApplication.isBlacklisted && canRun) {
-              logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
+                logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
             }
         }
     },
