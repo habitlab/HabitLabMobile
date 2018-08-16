@@ -32,7 +32,7 @@ Button {
 #icon{
 	height: 10%;
 	margin: 5%;
-	margin-top: 20%;
+	margin-top: 5%;
     animation-name: opacity;
     animation-duration: 3;
 }

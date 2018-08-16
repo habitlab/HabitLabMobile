@@ -103,7 +103,7 @@ exports.onItemTap = function(args) {
           break;
       case("Alerts"):
           var name = StorageUtil.getName();
-          DialogOverlay.showOneOptionDialogOverlay("Hey " + name + ", this is an alert!", "Ok");
+          DialogOverlay.showOneOptionDialogOverlay("Hey " + name + ", this is an alert!", "Ok", context);
           break;
       default:
           break;

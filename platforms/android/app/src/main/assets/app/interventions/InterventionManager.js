@@ -526,7 +526,9 @@ code.DURATION_TOAST = function (real, pkg, service) {
       var applicationName = UsageInformationUtil.getBasicInfo(pkg).name;
       var now = System.currentTimeMillis();
       var msg = "You've been on " + applicationName + " for " + Math.round((now - sessionStart )/ MIN_IN_MS) + " minutes this visit";
-      Toast.show(service, msg, 1, "#2EC4B6");
+      if (service  != null) { //It's possible that the  service somehow stopped in the past  duration time
+        Toast.show(service, msg, 1, "#2EC4B6");
+      }
       durationToastID = 0;
     }, INTERVAL_DURATION_TST);
   }
@@ -577,7 +579,9 @@ code.DURATION_DIALOG = function (real, pkg, service) {
       var msg = shouldPersonalize() ? "Hey " + StorageUtil.getName() + ", you've" : "You've";
       var now = System.currentTimeMillis();
       msg += " been using " + applicationName + " for " + Math.round((now - sessionStart) / MIN_IN_MS) + " minutes";
-      DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
+      if (service != null) {
+        DialogOverlay.showOneOptionDialogOverlay(msg, "Okay", service);
+      }
       durationDialogID = 0;
       code.DURATION_DIALOG(true, pkg)
     }, INTERVAL_DURATION_DLG);

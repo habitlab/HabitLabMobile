@@ -13,6 +13,7 @@ const ID = require("~/interventions/InterventionData");
 const videoBlocker = require("~/overlays/VideoOverlay");
 const lockdownOverlay = require("~/overlays/LockdownOverlay");
 const CancelOverlay = require("~/overlays/CancelOverlay");
+const StorageUtil = require("~/util/StorageUtil")
 
 // native APIs
 const AccessibilityEvent = android.view.accessibility.AccessibilityEvent;
@@ -76,11 +77,22 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
         var action = intent.getAction();
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
             storage.glanced();
-            logSessionIntervention(interventionManager.nextScreenOnIntervention(context))
+            try {
+                logSessionIntervention(interventionManager.nextScreenOnIntervention(context))    
+            } catch(e) {
+                //To prevent app crashing stuffs, we'll just log it
+                console.log(e.printStackTrace())
+            }
+            
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
             screenOnTime = Date.now();
             storage.unlocked();
-            logSessionIntervention(interventionManager.nextScreenUnlockIntervention(context))
+            try  {
+                logSessionIntervention(interventionManager.nextScreenUnlockIntervention(context))
+            } catch (e) {
+                console.log(e.printStackTrace())
+            }
+            
 
             var versionName = new VersionNumber().get();
             if (versionName !== storage.checkVersionName()) {
@@ -195,7 +207,12 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                   interventionRequestCounter += 1
             }
             if (currentApplication.isBlacklisted && canRun) {
-                logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
+                try {
+                    logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
+                } catch(e) {
+                    console.log(e.printStackTrace())
+                }
+                
             }
         }
     },
@@ -236,7 +253,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
  */
 function closeRecentVisit(now) {
     var timeSpent = now - currentApplication.visitStart;
-    if (currentApplication.packageName != null && currentApplication.packageName != "android") {
+    if (currentApplication.packageName != "" && currentApplication.packageName != null && currentApplication.packageName != "android") {
         storage.updateAppTime(currentApplication, timeSpent);
     }
 }

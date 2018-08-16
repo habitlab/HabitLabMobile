@@ -10,7 +10,9 @@ const fromObject = require("data/observable").fromObject;
 exports.pageLoaded = function(args) {
   page = args.object
   source = fromObject({
-    button_text: "Give Overlay Permission"
+    button_text: "Give Overlay Permission",
+    text_field : "Many nudges require us to draw on top of other applications. To allow nudges to work, please enable the overlay permission.",
+    done: "visible"
   })
   page.bindingContext = source
   StorageUtil.addLogEvents([{category: "navigation", index: "overlayPermissionView"}])
@@ -23,6 +25,8 @@ exports.pageLoaded = function(args) {
   } else {
     //Set button text to move on:
     source.set("button_text", "Move On")
+    source.set("text_field",  "Awesome! You enabled the overlay permission!")
+    source.set("done", "hidden")
   }
   
 };
@@ -33,12 +37,16 @@ exports.giveDrawPermission = function(args) {
   if(!PermissionUtil.checkSystemOverlayPermission()) {
     PermissionUtil.launchSystemOverlayIntent();
   } else {
-    frame.topmost().navigate({
-      moduleName: 'views/onboarding/accessibilityPermissionView/accessibilityPermissionView',
-    });
+    exports.moveOn()
   }
 };
 
 exports.backEvent = function(args) {
    args.cancel = true; 
+}
+
+exports.moveOn = function(args) {
+  frame.topmost().navigate({
+    moduleName: 'views/onboarding/accessibilityPermissionView/accessibilityPermissionView',
+  });
 }

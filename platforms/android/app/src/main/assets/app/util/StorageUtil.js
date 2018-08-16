@@ -7,10 +7,12 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 37
+var APP_VERSION = 38
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
+
+exports.APP_VERSION = APP_VERSION
 
 /************************************
  *             HELPERS              *

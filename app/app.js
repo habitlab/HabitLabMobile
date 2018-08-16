@@ -34,6 +34,7 @@ var getErrorDetails = function (args) {
 }
 
 function send_log(data) {
+  data.version = StorageUtil.version
   return http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + StorageUtil.getUserID() + "&logname=error",
     method: "POST",

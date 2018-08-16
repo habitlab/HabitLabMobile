@@ -190,49 +190,52 @@ var oneOptionButton;
 exports.showOneOptionDialogOverlay = function (msg, buttonText, context) {
 	var color = changeIconColor(5);
     if (permissions.checkSystemOverlayPermission()) {
-		// In case there already was an overlay dialog, remove it.
-		exports.removeOneOptionDialog()
-		// add whole screen view
-		var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
-			WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-			PixelFormat.TRANSLUCENT);
-		viewParams.gravity = Gravity.LEFT | Gravity.TOP;
-		oneOptionView = new DialogView(context);
-		windowManager.addView(oneOptionView, viewParams);
+		if (context) {
+			// In case there already was an overlay dialog, remove it.
+			exports.removeOneOptionDialog()
+			// add whole screen view
+			var viewParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
+				WindowManager.LayoutParams.MATCH_PARENT, permissions.getOverlayType(),
+				WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				PixelFormat.TRANSLUCENT);
+			viewParams.gravity = Gravity.LEFT | Gravity.TOP;
+			oneOptionView = new DialogView(context);
+			windowManager.addView(oneOptionView, viewParams);
 
-		// add text
-		var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
-			0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT,
-			permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
-		textParams.gravity = Gravity.LEFT | Gravity.TOP;
-		oneOptionText = new TextView(context);
-		oneOptionText.setText(msg);
-		oneOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
-		oneOptionText.setTextColor(Color.BLACK);
-		oneOptionText.setHorizontallyScrolling(false);
-		oneOptionText.setGravity(Gravity.CENTER);
-		windowManager.addView(oneOptionText, textParams);
+			// add text
+			var textParams = new WindowManager.LayoutParams(0.8 * DIALOG_WIDTH, 0.65 * DIALOG_HEIGHT,
+				0.1 * (SCREEN_WIDTH + DIALOG_WIDTH), 0.37 * SCREEN_HEIGHT,
+				permissions.getOverlayType(), 0, PixelFormat.TRANSLUCENT);
+			textParams.gravity = Gravity.LEFT | Gravity.TOP;
+			oneOptionText = new TextView(context);
+			oneOptionText.setText(msg);
+			oneOptionText.setTextSize(TypedValue.COMPLEX_UNIT_PT, 10);
+			oneOptionText.setTextColor(Color.BLACK);
+			oneOptionText.setHorizontallyScrolling(false);
+			oneOptionText.setGravity(Gravity.CENTER);
+			windowManager.addView(oneOptionText, textParams);
 
-		// add positive button
-		var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH,
-			0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH,
-			0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, permissions.getOverlayType(),
-			WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-			WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-			PixelFormat.TRANSLUCENT);
-		posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
-		oneOptionButton = new Button(context);
-		oneOptionButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
-		oneOptionButton.setText(buttonText);
-		oneOptionButton.setTextColor(Color.WHITE);
-		oneOptionButton.setOnClickListener(new android.view.View.OnClickListener({
-			onClick: function() {
-				exports.removeOneOptionDialog();
-			}
-		}));
-		windowManager.addView(oneOptionButton, posButtonParams);
+			// add positive button
+			var posButtonParams = new WindowManager.LayoutParams(0.6 * DIALOG_WIDTH,
+				0.275 * DIALOG_HEIGHT, 0.1 * SCREEN_WIDTH + 0.2 * DIALOG_WIDTH,
+				0.35 * SCREEN_HEIGHT + 0.625 * DIALOG_HEIGHT, permissions.getOverlayType(),
+				WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+				PixelFormat.TRANSLUCENT);
+			posButtonParams.gravity = Gravity.LEFT | Gravity.TOP;
+			oneOptionButton = new Button(context);
+			oneOptionButton.getBackground().setColorFilter(Color.parseColor(color), android.graphics.PorterDuff.Mode.MULTIPLY);
+			oneOptionButton.setText(buttonText);
+			oneOptionButton.setTextColor(Color.WHITE);
+			oneOptionButton.setOnClickListener(new android.view.View.OnClickListener({
+				onClick: function() {
+					exports.removeOneOptionDialog();
+				}
+			}));
+			windowManager.addView(oneOptionButton, posButtonParams);
+		}	
+		
     } else {
         permissions.launchSystemOverlayIntent(); 
     }

@@ -1,12 +1,17 @@
 <Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo" 
   actionBarHidden="true" xmlns:VideoPlayer="nativescript-videoplayer">
-		<StackLayout>
+    <StackLayout>
         <Label text="Enable Drawing" textWrap='true' class="title"/>
-        <Label text="Many nudges require us to draw on top of other applications. To allow nudges to work, please enable the overlay permission." textWrap="true"></Label>
+        <Label text="{{ text_field }}" textWrap="true"></Label>
         <!-- <VideoPlayer:Video class="firstVideo"
           controls="false" 
           loop="true" autoplay="true"
             src="~/videos/OverlayPermission.mp4"  /> -->
-        <Button text="{{ button_text }}" tap="giveDrawPermission"/>
+            <Button text="{{ button_text }}" tap="giveDrawPermission"></Button>
+            <Label class="help" text="Already enabled the overlay permission but still stuck? Here are some tips." textWrap ="true" visibility="{{ done}}"></Label>
+            <Label text="1. Try disabling and re-enabling the permission." textWrap="true" visibility="{{ done }}"> </Label>
+            <Label text="2. Restart your phone with the overlay permission enabled." textWrap="true" visibility="{{ done }}"></Label>
+            <Label text="If you you are  still stuck and want to enable this later, you can move on below." textWrap="true" visibility="{{ done }}"></Label>
+            <Button text="Enable Later" tap="moveOn" visibility="{{ done }}"></Button>
     </StackLayout>
 </Page>
