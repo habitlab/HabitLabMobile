@@ -37,6 +37,7 @@
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/nameView/nameView.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/nudgesOnboardingView/nudgesOnboardingView.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/askForEmailView/askForEmailView.js
+/Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/termsView/termsView.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/overlayPermissionView/overlayPermissionView.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/watchlistOnboardingView/watchlistOnboardingView.js
 /Users/drewgregory/Documents/CURIS/HabitLabMobile/platforms/android/app/src/main/assets/app/views/onboarding/accessibilityPermissionView/accessibilityPermissionView.js

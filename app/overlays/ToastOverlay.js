@@ -159,7 +159,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 					if (callback) {
 						callback();
 					}
-						exports.removeOverlay();
+					exports.removeOverlay();
 				}
 		}));
 

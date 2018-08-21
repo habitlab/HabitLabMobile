@@ -15,13 +15,16 @@ exports.pageLoaded = function(args) {
   var viewFile = "";
   var view = "";
 
-  if (StorageUtil.isTutorialComplete()) {
+	if (!StorageUtil.hasAcceptedTerms()) {
+		viewFile = 'onboarding/termsView'
+		view = 'termsView'
+	} else if (StorageUtil.isTutorialComplete()) {
     viewFile = 'progressView';
     view = 'progressView';
   } else if (StorageUtil.isOnboardingComplete()) {
     viewFile = 'goalsView';
     view = 'goalsView';
-  } else if (PermissionUtil.checkAccessibilityPermission() && (appSettings.getString('userID'))) { 
+  } else if (PermissionUtil.checkAccessibilityPermission() && (StorageUtil.getUserID('userID') != "noIDFound")) {
     // Checks to see if accessibility is enabled AND they set up the database.
     viewFile = 'goalsView';
     view = 'goalsView';
@@ -42,7 +45,7 @@ exports.pageLoaded = function(args) {
   }
 };
 
-//Only lets the user continue past the first slide if a name is entered
+// Only lets the user continue past the first slide if a name is entered
 // else, a dialog appears
 exports.checkNameNextPage = function(args) {
 	var name = nameField.text;

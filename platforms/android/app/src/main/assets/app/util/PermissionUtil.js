@@ -36,6 +36,7 @@ exports.checkSystemOverlayPermission = function () {
 exports.launchSystemOverlayIntent = function (service) {
 	var int = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
 	var foreground = application.android.foregroundActivity;
+	int.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 	if (service) {
 		service.startActivity(int);
 	} else if (foreground) {

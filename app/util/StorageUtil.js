@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 38
+var APP_VERSION = 43
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
@@ -370,6 +370,20 @@ exports.setTutorialComplete = function() {
   appSettings.setBoolean('tutorialComplete', true);
 };
 
+/**
+ * Returns true if user has accepted IRB, false otherwise.
+ */
+exports.hasAcceptedTerms = function() {
+  return appSettings.getBoolean('acceptedTerms')
+};
+
+/**
+  * Logs that the user has accepted the terms.
+  */
+exports.acceptTerms = function() {
+  appSettings.setBoolean('acceptedTerms', true)
+}
+
 /* export: setTargetOn
  * --------------------
  * Sets the boolean 'targetOn' to true which means the user has enabled
@@ -722,7 +736,7 @@ exports.updateAppTime = async function(currentApplication, time) {
   }
   // Now, log today's portion of the session.
   var session_object = {timestamp: start.getTime(), duration: Math.round(time / MS_IN_SEC),
-    enabled: enabled, frequent: frequent, domain: packageName, utcOffset: moment().utcOffset(), 
+    enabled: enabled, frequent: frequent, domain: packageName, utcOffset: moment().utcOffset(),
     interventions: currentApplication.interventions, isoWeek: moment().isoWeeks()}
   logSession(session_object)
 };
@@ -1289,6 +1303,9 @@ exports.clearErrorQueue = function() {
  * Pass an array of events to add (to limit database read and writes).
  */
 exports.addLogEvents = function(events) {
+  if (appSettings.getString('log', 'null') == 'null') {
+    exports.setUpDB()
+  }
   var log = JSON.parse(appSettings.getString('log'));
   events.forEach(function (e) {
     if (e.setValue) {
@@ -1490,10 +1507,10 @@ function send_setting_change_log(data) {
 
 /**
  * This sends user interactions with the app so we can figure out possible causes of attrition, esp. in onboarding.
- * @param {event} data 
+ * @param {event} data
  */
 function send_event_log(data) {
-  http.request({ 
+  http.request({
     url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=events",
     method: "POST",
     headers: {"Content-Type": "application/json"},
@@ -1511,6 +1528,26 @@ if ((exports.getExperiment().includes("null"))) {
   appSettings.setBoolean('onboardingComplete', false);
 }
 
+TLDs = ['android', 'google', 'apps', 'app', 'info', 'aaa', 'abb', 'abc', 'ac', 'aco', 'ad', 'ads', 'ae', 'aeg', 'af', 'afl', 'ag', 'ai', 'aig', 'al', 'am', 'anz', 'ao', 'aol', 'app', 'aq', 'ar', 'art', 'as', 'at', 'au', 'aw', 'aws', 'ax', 'axa', 'az', 'ba', 'bar', 'bb', 'bbc', 'bbt', 'bcg', 'bcn', 'bd', 'be', 'bet', 'bf', 'bg', 'bh', 'bi', 'bid', 'bio', 'biz', 'bj', 'bm', 'bms', 'bmw', 'bn', 'bnl', 'bo', 'bom', 'boo', 'bot', 'box', 'br', 'bs', 'bt', 'buy', 'bv', 'bw', 'by', 'bz', 'bzh', 'ca', 'cab', 'cal', 'cam', 'car', 'cat', 'cba', 'cbn', 'cbs', 'cc', 'cd', 'ceb', 'ceo', 'cf', 'cfa', 'cfd', 'cg', 'ch', 'ci', 'ck', 'cl', 'cm', 'cn', 'co', 'com', 'cr', 'crs', 'csc', 'cu', 'cv', 'cw', 'cx', 'cy', 'cz', 'dad', 'day', 'dds', 'de', 'dev', 'dhl', 'diy', 'dj', 'dk', 'dm', 'dnp', 'do', 'dog', 'dot', 'dtv', 'dvr', 'dz', 'eat', 'ec', 'eco', 'edu', 'ee', 'eg', 'er', 'es', 'esq', 'et', 'eu', 'eus', 'fan', 'fi', 'fit', 'fj', 'fk', 'fly', 'fm', 'fo', 'foo', 'fox', 'fr', 'frl', 'ftr', 'fun', 'fyi', 'ga', 'gal', 'gap', 'gb', 'gd', 'gdn', 'ge', 'gea', 'gf', 'gg', 'gh', 'gi', 'gl', 'gle', 'gm', 'gmo', 'gmx', 'gn', 'goo', 'gop', 'got', 'gov', 'gp', 'gq', 'gr', 'gs', 'gt', 'gu', 'gw', 'gy', 'hbo', 'hiv', 'hk', 'hkt', 'hm', 'hn', 'hot', 'how', 'hr', 'ht', 'hu', 'ibm', 'ice', 'icu', 'id', 'ie', 'ifm', 'il', 'im', 'in', 'inc', 'ing', 'ink', 'int', 'io', 'iq', 'ir', 'is', 'ist', 'it', 'itv', 'jcb', 'jcp', 'je', 'jio', 'jlc', 'jll', 'jm', 'jmp', 'jnj', 'jo', 'jot', 'joy', 'jp', 'ke', 'kfh', 'kg', 'kh', 'ki', 'kia', 'kim', 'km', 'kn', 'kp', 'kpn', 'kr', 'krd', 'kw', 'ky', 'kz', 'la', 'lat', 'law', 'lb', 'lc', 'lds', 'li', 'lk', 'llc', 'lol', 'lpl', 'lr', 'ls', 'lt', 'ltd', 'lu', 'lv', 'ly', 'ma', 'man', 'map', 'mba', 'mc', 'md', 'me', 'med', 'men', 'mg', 'mh', 'mil', 'mit', 'mk', 'ml', 'mlb', 'mls', 'mm', 'mma', 'mn', 'mo', 'moe', 'moi', 'mom', 'mov', 'mp', 'mq', 'mr', 'ms', 'msd', 'mt', 'mtn', 'mtr', 'mu', 'mv', 'mw', 'mx', 'my', 'mz', 'na', 'nab', 'nba', 'nc', 'ne', 'nec', 'net', 'new', 'nf', 'nfl', 'ng', 'ngo', 'nhk', 'ni', 'nl', 'no', 'now', 'np', 'nr', 'nra', 'nrw', 'ntt', 'nu', 'nyc', 'nz', 'obi', 'off', 'om', 'one', 'ong', 'onl', 'ooo', 'org', 'ott', 'ovh', 'pa', 'pay', 'pe', 'pet', 'pf', 'pg', 'ph', 'phd', 'pid', 'pin', 'pk', 'pl', 'pm', 'pn', 'pnc', 'pr', 'pro', 'pru', 'ps', 'pt', 'pub', 'pw', 'pwc', 'py', 'qa', 'qvc', 're', 'red', 'ren', 'ril', 'rio', 'rip', 'ro', 'rs', 'ru', 'run', 'rw', 'rwe', 'sa', 'sap', 'sas', 'sb', 'sbi', 'sbs', 'sc', 'sca', 'scb', 'sd', 'se', 'ses', 'sew', 'sex', 'sfr', 'sg', 'sh', 'si', 'sj', 'sk', 'ski', 'sky', 'sl', 'sm', 'sn', 'so', 'soy', 'sr', 'srl', 'srt', 'st', 'stc', 'su', 'sv', 'sx', 'sy', 'sz', 'tab', 'tax', 'tc', 'tci', 'td', 'tdk', 'tel', 'tf', 'tg', 'th', 'thd', 'tj', 'tjx', 'tk', 'tl', 'tm', 'tn', 'to', 'top', 'tr', 'trv', 'tt', 'tui', 'tv', 'tvs', 'tw', 'tz', 'ua', 'ubs', 'ug', 'uk', 'uno', 'uol', 'ups', 'us', 'uy', 'uz', 'va', 'vc', 've', 'vet', 'vg', 'vi', 'vig', 'vin', 'vip', 'vn', 'vu', 'wed', 'wf', 'win', 'wme', 'wow', 'ws', 'wtc', 'wtf', 'xin', 'xxx', 'xyz', 'ye', 'you', 'yt', 'yun', 'za', 'zip', 'zm', 'zw']
+
+/**
+ * Gets the generalized name for a package that allows for cross-device comparisons.
+ * i.e. com.facebook.katana -> facebook
+ * @param package: app package name
+ */
+getName = function(packageName) {
+  //Convert to lower case.
+  packageName = packageName.toLowerCase()
+  //Break up into
+  subs = packageName.split('.')
+  //Cut out TLDS (.com, .org, .net, etc)
+  subs = subs.filter(obj => TLDs.indexOf(obj) < 0)
+  if (subs.length > 0) {
+    return subs[0]
+  }
+  return packageName
+};
+
 if (exports.getExperiment().includes("conservation")) {
   /**
    * Checks if this package is denoted as deserving a "frequent" assignment
@@ -1521,13 +1558,13 @@ if (exports.getExperiment().includes("conservation")) {
   exports.isPackageFrequent = function(packageName) {
     // If not enabled package, it's definitely not frequent.
     if (appSettings.getString(packageName, "null") == "null") return false
-    appInfo = JSON.parse(appSettings.getString(packageName, "null"))
-    week = moment().isoWeek()
+    let appInfo = JSON.parse(appSettings.getString(packageName, "null"))
+    let  week = moment().isoWeek()
+    let name = getName(packageName)
     if (appInfo.frequentAssignmentWeek == null || appInfo.frequentAssignmentWeek != week) {
-      // randomly set new frequency
-      appInfo.frequent = Math.random() < .5 ? true : false
-      appInfo.frequentAssignmentWeek = week
-      appSettings.setString(packageName, JSON.stringify(appInfo))
+      // set frequency setting
+      let frequent = Math.random() < .5 ? true : false
+      appSettings.setString("frequency_" + name, frequent ? "frequent" : "infrequent")
       // Now, log that we have updated their goals.
       http.request({
         url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" + exports.getUserID() + "&logname=settings",
@@ -1537,13 +1574,21 @@ if (exports.getExperiment().includes("conservation")) {
           "_id": "set_frequency",
           "type": "set_frequency",
           "package": packageName,
-          "frequency": appInfo.frequent,
+          "frequency": appSettings.getString("frequency_" + name, "null") === "frequent",
           "timestamp": Date.now(),
           "isoWeek": week,
           "utcOffset": moment().utcOffset()
         })
       })
+      //Lastly, let's log that we have set the frequency for this week
+      appInfo.frequentAssignmentWeek = week
+      appSettings.setString(packageName, JSON.stringify(appInfo))
     }
-    return appInfo.frequent
+    //Older versions didn't store it as a name.
+    if (appSettings.getString("frequency_" + name,"null") == "null") {
+      return appInfo.frequent
+    }
+    return appSettings.getString("frequency_" + name, "null") === "frequent"
+
   }
 }

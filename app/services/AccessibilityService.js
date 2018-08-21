@@ -81,16 +81,17 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
                 logSessionIntervention(interventionManager.nextScreenOnIntervention(context))    
             } catch(e) {
                 //To prevent app crashing stuffs, we'll just log it
-                console.log(e.printStackTrace())
+                StorageUtil.addError(makeError(e))
             }
             
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
             screenOnTime = Date.now();
             storage.unlocked();
             try  {
+                
                 logSessionIntervention(interventionManager.nextScreenUnlockIntervention(context))
             } catch (e) {
-                console.log(e.printStackTrace())
+                StorageUtil.addError(makeError(e))
             }
             
 
@@ -210,7 +211,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 try {
                     logSessionIntervention(interventionManager.nextOnLaunchIntervention(currentApplication.packageName, this))
                 } catch(e) {
-                    console.log(e.printStackTrace())
+                    StorageUtil.addError(makeError(e))
                 }
                 
             }
@@ -297,6 +298,13 @@ function setUpScreenReceiver() {
     context.registerReceiver(receiver, filterUnlocked);
 }
 
+/**
+ * If the error is in a try-catch block, the stacktrace just won't be there. So, let's make our own object!
+ * @param {Error} e 
+ */
+function makeError(e){
+    return {"name" : e.name, "message": e.message, "stackTrace": "N/A"}
+}
 
 /**
  * markMidnight
