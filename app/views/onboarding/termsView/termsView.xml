@@ -1,0 +1,36 @@
+<Page loaded="pageLoaded" unloaded="pageUnloaded" navigatingTo="navigatingTo"
+  actionBarHidden="true">
+	<GridLayout class="page">
+		<StackLayout>
+			<StackLayout id="icon">
+
+			</StackLayout>
+			<StackLayout id="instructions">
+				<Label textWrap="true" id="title" text="Welcome to HabitLab!"> </Label>
+				<Label textWrap="true" id="instructions" text="To begin, please accept the terms and conditions"></Label>
+			</StackLayout>
+
+			<ScrollView id="terms" >
+				<StackLayout class="home-panel">
+					<Label textWrap="true" text="HabitLab is a research project run by the Stanford HCI Group."></Label>
+					<Label></Label>
+					<Label textWrap="true" text="Description: HabitLab is a research study on developing better online habits. You can participate by installing and using the HabitLab Android app. The app will ask you to specify some goals (such as spending less time on Facebook), and will deploy various interventions that aim to help you achieve those goals. It will log data related to progress on your goals (such as time spent on domains), which will be used by our algorithms to determine which interventions work for you. Data will not be shared with anyone outside our research team."></Label>
+					<Label></Label>
+					<Label textWrap="true" text="Time Involvement: You can participate for as long as you want by keeping the app installed."></Label>
+					<Label></Label>
+					<Label textWrap="true" text="Risks and Benefits: There are no forseeable risks associated with using HabitLab. We cannot and do not guarantee or promise that you will receive any benefits from using HabitLab."></Label>
+					<Label></Label>
+					<Label textWrap="true" text="Subject's Rights: If you have read this form and have decided to participate in this project, please understand your participation is voluntary and you have the right to withdraw your consent or discontinue participation at any time without penalty or loss of benefits to which you are otherwise entitled. The alternative is not to participate. You have the right to uninstall our app at any time. Your individual privacy will be maintained in all published and written data resulting from the study."></Label>
+					<Label></Label>
+					<Label textWrap="true" text="Contact Information: If you have any questions, concerns or complaints about this research, its procedures, risks and benefits, contact the Protocol Director, Geza Kovacs (email hidden to avoid harvesting, please see http://www.gkovacs.com/#contact"></Label>
+					<Label></Label>
+					<Label textWrap="true" text="Independent Contact: If you are not satisfied with how this study is being conducted, or if you have any concerns, complaints, or general questions about the research or your rights as a participant, please contact the Stanford Institutional Review Board (IRB) to speak to someone independent of the research team. You can also write to the Stanford IRB, Stanford University, 3000 El Camino Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306."></Label>
+					<Label></Label>
+					<Label textWrap="true" text="For more information, please visit https://github.com/habitlab/habitlab/wiki/Privacy-Android"></Label>
+				</StackLayout>
+			</ScrollView>
+			<Button id="accept" text="I accept the terms and conditions" tap="acceptTerms"></Button>
+		</StackLayout>
+	</GridLayout>
+
+</Page>

@@ -205,9 +205,9 @@ function isBold(fontWeight) {
     return fontWeight === "bold" || fontWeight === "700" || fontWeight === "800" || fontWeight === "900";
 }
 exports.isBold = isBold;
-exports.textProperty = new view_1.Property({ name: "text", defaultValue: "" });
+exports.textProperty = new view_1.Property({ name: "text", defaultValue: "", affectsLayout: view_1.isAndroid });
 exports.textProperty.register(TextBaseCommon);
-exports.formattedTextProperty = new view_1.Property({ name: "formattedText", affectsLayout: view_1.isIOS, valueChanged: onFormattedTextPropertyChanged });
+exports.formattedTextProperty = new view_1.Property({ name: "formattedText", affectsLayout: true, valueChanged: onFormattedTextPropertyChanged });
 exports.formattedTextProperty.register(TextBaseCommon);
 function onFormattedTextPropertyChanged(textBase, oldValue, newValue) {
     if (oldValue) {

@@ -159,11 +159,10 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 					if (callback) {
 						callback();
 					}
-					exports.removeOverlay();
 				}
-		}));
+			}));
 
-		windowManager.addView(text, textParams);
+
 
 
 			// add neg button
@@ -187,6 +186,7 @@ exports.showToastOverlay = function (msg, iconBitmap, callback, real) {
 						exports.removeOverlay();
 				}
 		}));
+		windowManager.addView(text, textParams);
 		windowManager.addView(closeButton, closeButtonParams);
 	} else {
 		permissions.launchSystemOverlayIntent()

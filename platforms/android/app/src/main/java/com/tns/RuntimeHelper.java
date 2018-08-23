@@ -192,32 +192,9 @@ public final class RuntimeHelper {
 
                     // if app is in debuggable mode run livesync service
                     // runtime needs to be initialized before the NativeScriptSyncService is enabled because it uses runtime.runScript(...)
-                    try {
-                        @SuppressWarnings("unchecked")
-                        Class NativeScriptSyncService = Class.forName("com.tns.NativeScriptSyncService");
+                    initLiveSync(runtime, logger, app);
 
-                        @SuppressWarnings("unchecked")
-                        Constructor cons = NativeScriptSyncService.getConstructor(new Class[] {Runtime.class, Logger.class, Context.class});
-                        Object syncService = cons.newInstance(runtime, logger, app);
-
-                        @SuppressWarnings("unchecked")
-                        Method syncMethod = NativeScriptSyncService.getMethod("sync");
-                        syncMethod.invoke(syncService);
-
-                        @SuppressWarnings("unchecked")
-                        Method startServerMethod = NativeScriptSyncService.getMethod("startServer");
-                        startServerMethod.invoke(syncService);
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    }
+                    waitForLiveSync(app);
                 }
 
                 runtime.runScript(new File(appDir, "internal/ts_helpers.js"));
@@ -253,6 +230,32 @@ public final class RuntimeHelper {
         }
     }
 
+    private static void waitForLiveSync(Application app) {
+        boolean needToWait = false;
+
+        // CLI will create this file when initial sync is needed and then will remove it after syncing the fails and restarting the app
+        File liveSyncFile = new File("/data/local/tmp/" + app.getPackageName() + "-livesync-in-progress");
+        if(liveSyncFile.exists()) {
+            needToWait = true;
+            Long lastModified = liveSyncFile.lastModified();
+            // we check for lastModified == 0 as this might happen if we cannot get the actual modified date
+            if(lastModified > 0) {
+                Long fileCreatedBeforeMillis = System.currentTimeMillis() - lastModified;
+                // if last modified date is more than a minute before the current time discard the file as most probably this is a leftover
+                if (fileCreatedBeforeMillis > 60000) {
+                    needToWait = false;
+                }
+            }
+        }
+
+        if(needToWait) {
+            try {
+                // wait for the livesync to complete and it should restart the app after deleting the livesync-in-progress file
+                Thread.sleep(30000);
+            } catch (Exception ex) { }
+        }
+    }
+
     private static void registerTimezoneChangedListener(Context context, final Runtime runtime) {
         IntentFilter timezoneFilter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
 
@@ -285,6 +288,48 @@ public final class RuntimeHelper {
         };
 
         context.registerReceiver(timezoneReceiver, timezoneFilter);
+    }
+
+    public static void initLiveSync(Application app) {
+        Runtime currentRuntime = Runtime.getCurrentRuntime();
+        if (!currentRuntime.getIsLiveSyncStarted()) {
+            initLiveSync(currentRuntime, currentRuntime.getLogger(), app);
+            currentRuntime.setIsLiveSyncStarted(true);
+        }
+
+    }
+
+    public static void initLiveSync(Runtime runtime, Logger logger, Application app){
+        boolean isDebuggable = Util.isDebuggableApp(app);
+
+        if(!isDebuggable){
+            return;
+        }
+
+        // if app is in debuggable mode run livesync service
+        // runtime needs to be initialized before the NativeScriptSyncService is enabled because it uses runtime.runScript(...)
+        try {
+            @SuppressWarnings("unchecked")
+            Class NativeScriptSyncService = Class.forName("com.tns.NativeScriptSyncServiceSocketImpl");
+
+            @SuppressWarnings("unchecked")
+            Constructor cons = NativeScriptSyncService.getConstructor(new Class[] {Runtime.class, Logger.class, Context.class});
+            Object syncService = cons.newInstance(runtime, logger, app);
+
+            @SuppressWarnings("unchecked")
+            Method startServerMethod = NativeScriptSyncService.getMethod("startServer");
+            startServerMethod.invoke(syncService);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     private static final String logTag = "MyApp";

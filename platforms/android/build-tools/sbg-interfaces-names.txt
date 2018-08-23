@@ -1247,9 +1247,9 @@ org.nativescript.widgets.FlexboxLayout.DividerMode
 org.nativescript.widgets.FlexboxLayout.FlexDirection
 org.nativescript.widgets.FlexboxLayout.FlexWrap
 org.nativescript.widgets.FlexboxLayout.JustifyContent
+org.nativescript.widgets.TabLayout.TabColorizer
 org.nativescript.widgets.image.BitmapOwner
 org.nativescript.widgets.image.Worker.OnImageLoadedListener
-org.nativescript.widgets.TabLayout.TabColorizer
 android.arch.lifecycle.LifecycleOwner
 android.arch.lifecycle.LifecycleObserver
 android.arch.lifecycle.OnLifecycleEvent

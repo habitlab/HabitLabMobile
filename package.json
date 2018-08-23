@@ -6,7 +6,7 @@
   "nativescript": {
     "id": "com.stanfordhci.habitlab",
     "tns-android": {
-      "version": "4.1.3"
+      "version": "4.2.0"
     }
   },
   "dependencies": {
@@ -27,7 +27,7 @@
     "nativescript-tooltip": "^2.1.0",
     "nativescript-version-number": "^1.1.0",
     "nativescript-videoplayer": "^4.1.0",
-    "tns-core-modules": "^4.1.1",
+    "tns-core-modules": "^4.2.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -35,6 +35,7 @@
     "babel-types": "^6.26.0",
     "babylon": "6.4.5",
     "lazy": "1.0.11",
-    "nativescript-dev-android-snapshot": "^0.*.*"
+    "nativescript-dev-android-snapshot": "^0.*.*",
+    "nativescript-dev-webpack": "^0.15.1"
   }
 }

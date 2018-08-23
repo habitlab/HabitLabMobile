@@ -15,7 +15,20 @@ var ListPickerBase = (function (_super) {
             return " ";
         }
         var item = this.isItemsSource ? this.items.getItem(index) : this.items[index];
-        return (item === undefined || item === null) ? index + "" : item + "";
+        return (item === undefined || item === null) ? index + "" : this.parseItem(item);
+    };
+    ListPickerBase.prototype.parseItem = function (item) {
+        return this.textField ? item[this.textField] + "" : item + "";
+    };
+    ListPickerBase.prototype.updateSelectedValue = function (index) {
+        var newVal = null;
+        if (index >= 0) {
+            var item = this.items[index];
+            newVal = this.valueField ? item[this.valueField] : item;
+        }
+        if (this.selectedValue !== newVal) {
+            this.set("selectedValue", newVal);
+        }
     };
     ListPickerBase = __decorate([
         view_1.CSSType("ListPicker")
@@ -41,6 +54,7 @@ exports.selectedIndexProperty = new view_1.CoercibleProperty({
         else {
             value = -1;
         }
+        target.updateSelectedValue(value);
         return value;
     }
 });
@@ -52,4 +66,19 @@ exports.itemsProperty = new view_1.Property({
     }
 });
 exports.itemsProperty.register(ListPickerBase);
+exports.textFieldProperty = new view_1.Property({
+    name: "textField",
+    defaultValue: ""
+});
+exports.textFieldProperty.register(ListPickerBase);
+exports.valueFieldProperty = new view_1.Property({
+    name: "valueField",
+    defaultValue: ""
+});
+exports.valueFieldProperty.register(ListPickerBase);
+exports.selectedValueProperty = new view_1.Property({
+    name: "selectedValue",
+    defaultValue: null
+});
+exports.selectedValueProperty.register(ListPickerBase);
 //# sourceMappingURL=list-picker-common.js.map

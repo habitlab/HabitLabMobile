@@ -1,0 +1,42 @@
+.home-panel{
+    vertical-align: center; 
+    font-size: 20;
+    margin: 15;
+}
+
+.description-label{
+    margin-bottom: 15;
+}
+
+#terms{
+    height:50%;
+    background-color: #FFFFFF;
+    color: #000000
+}
+
+#accept {
+    height: 20%;
+    background-color: #FD8D3A
+}
+
+#icon {
+    height: 10%
+}
+
+#title{ 
+    font-size: 30;
+    text-align: center
+}
+#instructions {
+    font-size: 15;
+    text-align: center
+}
+
+#instructions {
+    height: 20%
+}
+
+.page {
+    background-color: #67D4C9;
+    color: #FFFFFF
+}

@@ -3,6 +3,7 @@ var enabled = false;
 var _categories = {};
 var _writers = [];
 var _eventListeners = [];
+var _errorHandler;
 function enable() {
     enabled = true;
 }
@@ -169,4 +170,32 @@ var ConsoleWriter = (function () {
     return ConsoleWriter;
 }());
 addWriter(new ConsoleWriter());
+var DefaultErrorHandler = (function () {
+    function DefaultErrorHandler() {
+    }
+    DefaultErrorHandler.prototype.handlerError = function (error) {
+        throw error;
+    };
+    return DefaultErrorHandler;
+}());
+exports.DefaultErrorHandler = DefaultErrorHandler;
+setErrorHandler(new DefaultErrorHandler());
+function getErrorHandler() {
+    return _errorHandler;
+}
+exports.getErrorHandler = getErrorHandler;
+function setErrorHandler(handler) {
+    _errorHandler = handler;
+}
+exports.setErrorHandler = setErrorHandler;
+function error(error) {
+    if (!_errorHandler) {
+        return;
+    }
+    if (typeof error === "string") {
+        error = new Error(error);
+    }
+    _errorHandler.handlerError(error);
+}
+exports.error = error;
 //# sourceMappingURL=trace.js.map

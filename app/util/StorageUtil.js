@@ -7,7 +7,7 @@ var moment = require('moment')
 var Calendar = java.util.Calendar;
 var System = java.lang.System;
 
-var APP_VERSION = 43
+var APP_VERSION = 48
 var DAY_IN_MS = 86400000;
 var MIN_IN_MS = 60000;
 var MS_IN_SEC = 1000;
@@ -274,6 +274,18 @@ var setUpLogging = function() {
     nudges: Array(ID.interventionDetails.length).fill(0)
   }));
 };
+
+
+/**
+ * Checks if the DB  has been setup. If not, it sets up.
+ */
+ exports.checkDBSetup = function() {
+   if (appSettings.getString('log', 'null') == 'null') {
+     exports.setUpDB()
+     exports.addLogEvents([{setValue: new Date().toLocaleString(),
+       category: 'navigation', index: 'started_onboarding'}]);
+   }
+ }
 
 /* export: setUp
  * -------------
@@ -715,7 +727,8 @@ exports.updateAppTime = async function(currentApplication, time) {
   //Let's store this session information locally if this app is on our watchlist.
   var appInfo = appSettings.getString(packageName, "null");
 
-  let enabled = false
+  let enabled = exports.isPackageSelected(packageName) //watchlist
+  let target = exports.isTargetPackageSelected(packageName) //target
   let frequent = false
   if (appInfo != "null") {
     appInfo = JSON.parse(appInfo)
@@ -727,16 +740,15 @@ exports.updateAppTime = async function(currentApplication, time) {
       // duration is in seconds, but the local storage saves it in minutes.
       appInfo['stats'][idx % 28]['time'] += (yesterdayTime / MIN_IN_MS )
     }
-    enabled = true
     appInfo['stats'][ idx % 28]['time'] += (time / MIN_IN_MS)
     appSettings.setString(packageName, JSON.stringify(appInfo));
-    if (exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName)) {
+    if (enabled && exports.getExperiment().includes("conservation") && exports.isPackageFrequent(packageName)) {
       frequent = true
     }
   }
   // Now, log today's portion of the session.
   var session_object = {timestamp: start.getTime(), duration: Math.round(time / MS_IN_SEC),
-    enabled: enabled, frequent: frequent, domain: packageName, utcOffset: moment().utcOffset(),
+    enabled: enabled, target: target, frequent: frequent, domain: packageName, utcOffset: moment().utcOffset(),
     interventions: currentApplication.interventions, isoWeek: moment().isoWeeks()}
   logSession(session_object)
 };
@@ -1590,5 +1602,23 @@ if (exports.getExperiment().includes("conservation")) {
     }
     return appSettings.getString("frequency_" + name, "null") === "frequent"
 
+  }
+
+  // I stupidly forgot to setup DB before making them accept the terms in version 43,
+  // so I need to check if this new key has been saved. If not, that means that we
+  // failed and should send a log out again with the real user id.
+  if (exports.hasAcceptedTerms() && exports.getUserID() != "noIDFound" &&
+      appSettings.getString("acceptedButNotLogged", "null") == "null") {
+    http.request({
+      url: "https://habitlab-mobile-website.herokuapp.com/addtolog?userid=" +
+            exports.getUserID() + "&logname=settings",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      content: JSON.stringify({
+        version: exports.APP_VERSION,
+        _id: "accept_terms"
+      })
+    });
+    appSettings.setString("acceptedButNotLogged", "false")
   }
 }

@@ -37,7 +37,7 @@ exports.getJSON = getJSON;
 function getImage(arg) {
     return httpRequest
         .request(typeof arg === "string" ? { url: arg, method: "GET" } : arg)
-        .then(function (responce) { return responce.content.toImage(); });
+        .then(function (response) { return response.content.toImage(); });
 }
 exports.getImage = getImage;
 function getFile(arg, destinationFilePath) {

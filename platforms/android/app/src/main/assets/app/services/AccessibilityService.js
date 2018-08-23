@@ -29,7 +29,11 @@ const ignore = ["com.android.systemui",
     "com.whirlscape.minuumkeyboard",
     "com.whirlscape.minuumfree",
     "com.android.vending",
-    "com.android.systemui"
+    "com.android.systemui",
+    "android",
+    "abc.apple.emoji.theme.gif.keyboard",
+    "com.android.providers.downloads",
+    "com.osfans.trime"
 ];
 
 /**
@@ -78,22 +82,22 @@ var ScreenReceiver = android.content.BroadcastReceiver.extend({
         if (action === android.content.Intent.ACTION_SCREEN_ON) {
             storage.glanced();
             try {
-                logSessionIntervention(interventionManager.nextScreenOnIntervention(context))    
+                logSessionIntervention(interventionManager.nextScreenOnIntervention(context))
             } catch(e) {
                 //To prevent app crashing stuffs, we'll just log it
                 StorageUtil.addError(makeError(e))
             }
-            
+
         } else if (action === android.content.Intent.ACTION_USER_PRESENT) {
             screenOnTime = Date.now();
             storage.unlocked();
             try  {
-                
+
                 logSessionIntervention(interventionManager.nextScreenUnlockIntervention(context))
             } catch (e) {
                 StorageUtil.addError(makeError(e))
             }
-            
+
 
             var versionName = new VersionNumber().get();
             if (versionName !== storage.checkVersionName()) {
@@ -134,7 +138,8 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
             return;
         }
         // packages to ignore
-        if (ignore.includes(activePackage) || activePackage.includes("inputmethod")) {
+        if (ignore.includes(activePackage) || activePackage.includes("inputmethod")
+            || activePackage.includes("keyboard")) {
             return; // ignore certain pacakges
         }
         //This buffer listens for ALL accessibility events.
@@ -145,7 +150,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         } else  {
             packageBuffer.count++
         }
-        
+
         //HABITLAB SECTION
         if (activePackage === "com.stanfordhci.habitlab" && activePackage != currentApplication.packageName) {
             // this is just a habitlab intervention showing. We don't want this  event to be interpreted as switching apps.
@@ -188,15 +193,18 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
         } else if (lockdownSeen && !storage.inLockdownMode()) {
             lockdownSeen = 0;
         }
-        
+
         // main blacklisted logic
-        if (currentApplication.packageName !== activePackage && eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+        if (currentApplication.packageName !== activePackage && (eventType === AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+        || packageBuffer.count > 15 /* freaking teslacoils launcher causes issues,
+        so this this > 15 business is just in case tesla coils closes our
+        session  and we don't get a window_state_changed for a while.*/)) {
             interventionManager.removeOverlays();
             interventionManager.resetDurationInterventions();
             var now = Date.now();
             closeRecentVisit(now);
             openNewVisit(now, activePackage);
-            
+
             // This logic is for the "conservation" experiment.
             var canRun = true
             if (storage.getExperiment().includes("conservation") &&
@@ -213,7 +221,7 @@ android.accessibilityservice.AccessibilityService.extend("com.habitlab.Accessibi
                 } catch(e) {
                     StorageUtil.addError(makeError(e))
                 }
-                
+
             }
         }
     },
@@ -300,7 +308,7 @@ function setUpScreenReceiver() {
 
 /**
  * If the error is in a try-catch block, the stacktrace just won't be there. So, let's make our own object!
- * @param {Error} e 
+ * @param {Error} e
  */
 function makeError(e){
     return {"name" : e.name, "message": e.message, "stackTrace": "N/A"}

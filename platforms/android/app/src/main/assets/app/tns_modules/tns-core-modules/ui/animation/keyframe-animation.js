@@ -123,20 +123,18 @@ var KeyframeAnimation = (function () {
             var animation = this._nativeAnimations[0];
             this._resetAnimationValues(this._target, animation);
         }
-        this._rejectAnimationFinishedPromise();
+        this._resetAnimations();
     };
     KeyframeAnimation.prototype.play = function (view) {
         var _this = this;
         if (this._isPlaying) {
-            var reason_1 = "Keyframe animation is already playing.";
-            trace_1.write(reason_1, trace_1.categories.Animation, trace_1.messageType.warn);
-            return new Promise(function (resolve, reject) {
-                reject(reason_1);
+            trace_1.write("Keyframe animation is already playing.", trace_1.categories.Animation, trace_1.messageType.warn);
+            return new Promise(function (resolve) {
+                resolve();
             });
         }
-        var animationFinishedPromise = new Promise(function (resolve, reject) {
+        var animationFinishedPromise = new Promise(function (resolve) {
             _this._resolve = resolve;
-            _this._reject = reject;
         });
         this._isPlaying = true;
         this._nativeAnimations = new Array();
@@ -189,17 +187,24 @@ var KeyframeAnimation = (function () {
             }
         }
         else {
-            var animationDef = this.animations[index];
-            animationDef.target = view;
-            var animation = new animation_1.Animation([animationDef]);
+            var animation = void 0;
+            var cachedAnimation = this._nativeAnimations[index - 1];
+            if (cachedAnimation) {
+                animation = cachedAnimation;
+            }
+            else {
+                var animationDef = this.animations[index];
+                animationDef.target = view;
+                animation = new animation_1.Animation([animationDef]);
+                this._nativeAnimations.push(animation);
+            }
             animation.play().then(function () {
                 _this.animate(view, index + 1, iterations);
+            }, function (error) {
+                trace_1.write(typeof error === "string" ? error : error.message, trace_1.categories.Animation, trace_1.messageType.warn);
             }).catch(function (error) {
-                if (error.message.indexOf("Animation cancelled") < 0) {
-                    throw error;
-                }
+                trace_1.write(typeof error === "string" ? error : error.message, trace_1.categories.Animation, trace_1.messageType.warn);
             });
-            this._nativeAnimations.push(animation);
         }
     };
     KeyframeAnimation.prototype._resolveAnimationFinishedPromise = function () {
@@ -208,11 +213,10 @@ var KeyframeAnimation = (function () {
         this._target = null;
         this._resolve();
     };
-    KeyframeAnimation.prototype._rejectAnimationFinishedPromise = function () {
+    KeyframeAnimation.prototype._resetAnimations = function () {
         this._nativeAnimations = new Array();
         this._isPlaying = false;
         this._target = null;
-        this._reject(new Error("Animation cancelled."));
     };
     KeyframeAnimation.prototype._resetAnimationValues = function (view, animation) {
         if ("backgroundColor" in animation) {

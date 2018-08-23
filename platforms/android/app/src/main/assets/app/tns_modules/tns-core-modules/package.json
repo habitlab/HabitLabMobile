@@ -1,17 +1,17 @@
 {
-  "_from": "tns-core-modules",
-  "_id": "tns-core-modules@4.1.1",
+  "_from": "tns-core-modules@latest",
+  "_id": "tns-core-modules@4.2.0",
   "_inBundle": false,
-  "_integrity": "sha512-AZCyJVw6f9tFDZJUOgsemEB6rEut+XL2x5pX2Kv8EPGmgUNvPrMfbv45L0SC7DLBQWstfh4/2hzsg92EBmOd9w==",
+  "_integrity": "sha512-tEbQfeXVp6i9RJAmC+erd63mr6NYw5nX/gzYDVb1Va52/Jdj9ZeGbXKAPyjVXZ3BGI6O9QM1jQUem/Ow6v5FqQ==",
   "_location": "/tns-core-modules",
   "_phantomChildren": {},
   "_requested": {
     "type": "tag",
     "registry": true,
-    "raw": "tns-core-modules",
+    "raw": "tns-core-modules@latest",
     "name": "tns-core-modules",
     "escapedName": "tns-core-modules",
-    "rawSpec": "",
+    "rawSpec": "latest",
     "saveSpec": null,
     "fetchSpec": "latest"
   },
@@ -19,13 +19,13 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/tns-core-modules/-/tns-core-modules-4.1.1.tgz",
-  "_shasum": "df33f47d278de7e123a88ccbeea385131d548002",
-  "_spec": "tns-core-modules",
+  "_resolved": "https://registry.npmjs.org/tns-core-modules/-/tns-core-modules-4.2.0.tgz",
+  "_shasum": "27552eea5702cd8ade8d154af306b74aaa7112a3",
+  "_spec": "tns-core-modules@latest",
   "_where": "/Users/drewgregory/Documents/CURIS/HabitLabMobile",
   "bundleDependencies": false,
   "dependencies": {
-    "tns-core-modules-widgets": "4.1.0"
+    "tns-core-modules-widgets": "4.2.0"
   },
   "deprecated": false,
   "description": "Telerik NativeScript Core Modules",
@@ -36,6 +36,7 @@
   "files": [
     "**/*.d.ts",
     "**/*.js",
+    "**/platforms/ios/**",
     "**/package.json",
     "!android17.d.ts",
     "!ios.d.ts",
@@ -59,7 +60,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NativeScript/NativeScript/commit/4cd3a328f5da3cf2abb9df5b1f1e5faa106c5aa5"
+    "url": "https://github.com/NativeScript/NativeScript/commit/0e11d7572b239d1a6126a43e248d02bbcadb3dab"
   },
   "snapshot": {
     "android": {
@@ -72,5 +73,5 @@
     }
   },
   "typings": "tns-core-modules.d.ts",
-  "version": "4.1.1"
+  "version": "4.2.0"
 }

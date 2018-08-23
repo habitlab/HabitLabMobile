@@ -6,6 +6,7 @@ var fancyAlert = require('nativescript-fancyalert');
 var page;
 var nameField;
 
+
 exports.pageLoaded = function(args) {
 
 	page = args.object;
@@ -15,6 +16,8 @@ exports.pageLoaded = function(args) {
   var viewFile = "";
   var view = "";
 
+	//Sets up DB if necessary.
+	StorageUtil.checkDBSetup()
 	if (!StorageUtil.hasAcceptedTerms()) {
 		viewFile = 'onboarding/termsView'
 		view = 'termsView'
@@ -41,7 +44,6 @@ exports.pageLoaded = function(args) {
     });
   } else {
     StorageUtil.setUpDB();
-    StorageUtil.addLogEvents([{setValue: new Date().toLocaleString(), category: 'navigation', index: 'started_onboarding'}]);
   }
 };
 
