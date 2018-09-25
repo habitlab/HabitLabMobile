@@ -292,9 +292,6 @@ var setUpLogging = function() {
  * Resets all data to defaults. Does not get rid of onboarded, setUp, or name
  */
 exports.setUpDB = function(erasingData) {
-  if (erasingData) {
-    sendLog();
-  }
   if (!appSettings.getString('userID')) {
     appSettings.setString('userID', genUserId());
   }
@@ -471,7 +468,6 @@ exports.removePackage = function(packageName) {
   var targetlist = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
     return item !== packageName;
   });
-  sendLog();
   appSettings.remove(packageName);
   appSettings.setString('selectedPackages', JSON.stringify(list));
   appSettings.setString('targetPackages', JSON.stringify(targetlist));
@@ -488,7 +484,6 @@ exports.togglePackage = function(packageName) {
   var removed = false;
   var list = JSON.parse(appSettings.getString('selectedPackages')).filter(function (item) {
     if (item === packageName) {
-      sendLog();
       appSettings.remove(packageName);
       removed = true;
     }
@@ -551,7 +546,6 @@ exports.removeTargetPackage = function(packageName) {
   var list = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
     return item !== packageName;
   });
-  sendLog();
   appSettings.remove(packageName);
   appSettings.setString('targetPackages', JSON.stringify(list));
   send_setting_change_log({type: "removed target package " + packageName,
@@ -567,7 +561,6 @@ exports.toggleTargetPackage = function(packageName) {
   var removed = false;
   var list = JSON.parse(appSettings.getString('targetPackages')).filter(function (item) {
     if (item === packageName) {
-      sendLog();
       appSettings.remove(packageName);
       removed = true;
     }
@@ -675,7 +668,6 @@ var eraseExpiredData = function() {
   if (diff) {
 
     appSettings.setString('lastActive', today + '');
-    sendLog();
 
     for (var i = 0; i < diff; i++) {
       phoneInfo.stats[(today - i + 28) % 28] = PhStat();
@@ -1335,55 +1327,6 @@ exports.addLogEvents = function(events) {
   appSettings.setString('log', JSON.stringify(log));
 };
 
-/* exports: sendLog
- * ----------------
- * Sends the log to habitlab-mobile-website whenever the day is changed
- */
- var sendLog = function() {
-  if (!appSettings.getString('deviceID')) {
-    var application = require("application");
-    var deviceId = android.provider.Settings.Secure.getString(application.android.context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-    appSettings.setString('deviceID', '' + deviceId);
-  }
-
-  var log = JSON.parse(appSettings.getString('log'));
-  log['userID'] = appSettings.getString('userID');
-  log['deviceID'] = appSettings.getString('deviceID');
-  log['localTime'] = new Date().toLocaleString();
-  log['index'] = index();
-
-  var data = {};
-  data['lastActive'] = appSettings.getString('lastActive');
-
-  var list = JSON.parse(appSettings.getString('selectedPackages'));
-  list.push('phone');
-  list.push('enabled');
-  list.push('activeHours');
-  list.forEach(function (pkg) {
-    data[pkg] = JSON.parse(appSettings.getString(pkg));
-    //This whole "send past 28 days of visits" seems redundant, so let's make stats just for today
-    if (data[pkg]['stats'] != null) {
-      data[pkg]['stats'] = data[pkg]['stats'][index()]
-    }
-    //Also, a list of 'true' doesn't  really give much information about which interventions are enabled.
-    if (data[pkg]['enabled'] != null) {
-      enabled_list = data[pkg]['enabled']
-      data[pkg]['enabled'] = []
-      for (var i = 0; i < enabled_list.length; i++) {
-        if (enabled_list[i] && ID.interventionDetails[i]) {
-          data[pkg]['enabled'].push(ID.interventionDetails[i]['shortname'])
-        }
-      }
-    }
-  });
-  //Same thing with nudge counts:
-  if (log['nudges']) {
-    for (var i = 0; i < ID.interventionDetails.length;  i++) {
-      log['nudges'][i] = {name: ID.interventionDetails[i]['shortname'], count: log['nudges'][i]}
-    }
-  }
-  log.data = data
-};
 
 exports.getUserID = function() {
   return appSettings.getString('userID') || 'noIDFound';
@@ -1530,8 +1473,6 @@ function send_event_log(data) {
   })
 }
 
-exports.sendLog = sendLog
-
 if ((exports.getExperiment().includes("null"))) {
   // Old user. let's make them retake the tutorial so they can sign in.
   // Assign the user to an experimental group!!
@@ -1583,7 +1524,6 @@ if (exports.getExperiment().includes("conservation")) {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         content: JSON.stringify({
-          "_id": "set_frequency",
           "type": "set_frequency",
           "package": packageName,
           "frequency": appSettings.getString("frequency_" + name, "null") === "frequent",

@@ -140,7 +140,9 @@ exports.showSliderOverlay = function (msg, callback, context) {
 		seekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener({
 			onProgressChanged: function(seekBar, progress, fromUser) {
 				progressChangedValue = progress;
-				labelText.setText(progressChangedValue + " mins");
+				if (labelText) {
+					labelText.setText(progressChangedValue + " mins");
+				}
 			},
 			onStartTrackingTouch: function(seekBar) {
 
