@@ -4,7 +4,7 @@ This is the version of HabitLab for Android devices
 
 ## Try it
 
-https://play.google.com/store/apps/details?id=com.stanfordhci.habitlab
+https://github.com/habitlab/HabitLabMobile/releases
 
 ## Old information
 
