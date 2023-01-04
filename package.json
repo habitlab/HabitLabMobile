@@ -36,6 +36,6 @@
     "babylon": "6.4.5",
     "lazy": "1.0.11",
     "nativescript-dev-android-snapshot": "^0.*.*",
-    "nativescript-dev-webpack": "^0.15.1"
+    "nativescript-dev-webpack": "^1.5.1"
   }
 }
